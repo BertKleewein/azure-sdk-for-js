@@ -35,10 +35,10 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
     const tsLibrary = new TsLibrary(outputDir);
     tsLibrary
       .class({ name: "testClass", exports: true })
-      .import(`import * as test from 'foo';`)
-      .import(`import * as test from 'foo';`)
-      .import(`import * as test from 'foo';`)
-      .import(`import * as test from 'foo';`);
+      .import(`import * as test from "foo";`)
+      .import(`import * as test from "foo";`)
+      .import(`import * as test from "foo";`)
+      .import(`import * as test from "foo";`);
     return {
       name: "overlapping imports class",
       codeGenerator: tsLibrary,

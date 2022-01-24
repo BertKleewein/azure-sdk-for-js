@@ -4,7 +4,6 @@
 // Licensed under the MIT license.
 
 import { expect } from "chai";
-import { beforeEach } from "mocha";
 import sinon from "sinon";
 import { TsLibrary } from "../../../src/codeGenerator";
 import { MaterialClassGenerator } from "../../../src/parserGenerator/materialClassGenerator";

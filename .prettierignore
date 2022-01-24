@@ -6,3 +6,4 @@
 **/*.d.ts
 .env
 tsdoc-metadata.json
+**/test/node/codeGenerator/cases/*.ts
