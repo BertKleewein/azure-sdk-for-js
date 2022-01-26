@@ -7,4 +7,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-export class testClass {}
+export class testClass {
+}

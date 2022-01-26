@@ -10,8 +10,9 @@ export function processExpectedOutputFile(fileName: string) {
   // given the data in utf-8 format, we break it up based on carriage return line endings,
   // and then trim the leading and ending whitespaces.
   // it also removes the first line of the file, which should be an eslint disable comment.
-  return data
+  const result = data
     .split(/\n/)
     .map((line) => line.trim())
-    .slice(1);
+    .slice(1, -1);
+  return result;
 }

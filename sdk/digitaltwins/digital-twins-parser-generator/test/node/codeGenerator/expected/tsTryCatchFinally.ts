@@ -8,7 +8,8 @@
 /* eslint-disable sort-imports */
 
 export class testClass {
-  constructor() {}
+  constructor() {
+  }
 
   trySomething(input: any) {
     try {
@@ -16,7 +17,7 @@ export class testClass {
     } catch (e) {
       console.log(e);
     } finally {
-      console.log("in finally block");
+      console.log('in finally block');
     }
   }
 }
