@@ -5,7 +5,7 @@ import * as fs from "fs";
 
 const relativeDirectory = "./test/node/codeGenerator/expected";
 
-export function processExpectedOutputFile(fileName: string) {
+export function processExpectedOutputFile(fileName: string): string[] {
   const data = fs.readFileSync(`${relativeDirectory}/${fileName}`, "utf-8");
   // given the data in utf-8 format, we break it up based on carriage return line endings,
   // and then trim the leading and ending whitespaces.

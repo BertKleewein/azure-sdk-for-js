@@ -16,7 +16,7 @@ export class ContextHistory {
       .join(", ");
   }
 
-  get availableVersions() {
+  get availableVersions(): string {
     return this._availableVersions;
   }
 

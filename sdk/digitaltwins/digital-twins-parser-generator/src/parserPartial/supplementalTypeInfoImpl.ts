@@ -72,7 +72,7 @@ export class SupplementalTypeInfoImpl {
     );
   }
 
-  addCotypeVersion(version: number) {
+  addCotypeVersion(version: number): void {
     this._allowedCotypeVersions.push(version);
   }
 
@@ -80,7 +80,7 @@ export class SupplementalTypeInfoImpl {
    * Attach any constraints to properties that are not properties of this supplemental type.
    * @param {PropertyValueConstrainer} propertyValueConstrainer - A PropertyValueConstrainer to call back to add each constraint.
    */
-  attachConstraints(propertyValueConstrainer: PropertyValueConstrainer) {
+  attachConstraints(propertyValueConstrainer: PropertyValueConstrainer): void {
     for (let i = 0; i < this._propertyConstraints.length; i++) {
       const propertyConstraint = this._propertyConstraints[i];
       propertyValueConstrainer.addConstraint(
@@ -100,7 +100,7 @@ export class SupplementalTypeInfoImpl {
    * Bind properties that are instance of another property.
    * @param {PropertyInstanceBinder} propertyInstanceBinder - A PropertyInstanceBinder to call back to add each instance binding.
    */
-  bindInstanceProperties(propertyInstanceBinder: PropertyInstanceBinder) {
+  bindInstanceProperties(propertyInstanceBinder: PropertyInstanceBinder): void {
     // foreach key value pair in this.properties
     for (const [key, value] of Object.entries(this.properties)) {
       propertyInstanceBinder.addInstanceProperty(value.instanceProperty || "", key);
@@ -134,8 +134,8 @@ export class SupplementalTypeInfoImpl {
     parsingErrors: ParsingError[],
     parentId: string,
     propName: string,
-    propToken: any, // originally jtoken
-    properties: { [x: string]: any }
+    propToken: unknown, // originally jtoken
+    properties: { [x: string]: unknown }
   ): boolean {
     const propertyInfo: SupplementalPropertyInfoImpl = this.properties[propName];
     if (propertyInfo) {
@@ -258,7 +258,7 @@ export class SupplementalTypeInfoImpl {
   checkForRequiredProperties(
     parsingErrors: ParsingError[],
     parentId: string,
-    properties: { [x: string]: any }
+    properties: { [x: string]: unknown }
   ): void {
     for (const [key, value] of Object.entries(this.properties)) {
       if (!value.isOptional && !Object.keys(properties).includes(key)) {
@@ -284,9 +284,9 @@ export class SupplementalTypeInfoImpl {
    */
   trySetObjectProperty(
     propertyName: string,
-    value: any,
+    value: unknown,
     key: string | undefined,
-    properties: { [x: string]: any }
+    properties: { [x: string]: unknown }
   ): boolean {
     if (
       this.parentSupplementalType !== undefined &&
@@ -327,7 +327,7 @@ export class SupplementalTypeInfoImpl {
         properties[propertyName] = [];
       }
 
-      (properties[propertyName] as Array<any>).push(value);
+      (properties[propertyName] as Array<unknown>).push(value);
     } else {
       properties[propertyName] = value;
     }
@@ -355,7 +355,7 @@ export class SupplementalTypeInfoImpl {
     minCount?: number,
     dictionaryKey?: string,
     instanceProperty?: string
-  ) {
+  ): void {
     this.properties[propertyName] = new SupplementalPropertyInfoImpl(
       propertyTypeUri,
       isPlural,
@@ -372,7 +372,7 @@ export class SupplementalTypeInfoImpl {
    * @param propertyName - Name of the property whose type to constrain.
    * @param valueConstraint A ValueConstraint for values of this property.
    */
-  addConstraint(propertyName: string, valueConstraint: ValueConstraint) {
+  addConstraint(propertyName: string, valueConstraint: ValueConstraint): void {
     const newPropertyConstraint: PropertyConstraint = {
       PropertyName: propertyName,
       ValueConstraint: valueConstraint
@@ -385,7 +385,7 @@ export class SupplementalTypeInfoImpl {
     elementPropertyConstraints: ElementPropertyConstraint[],
     aggregateContext: AggregateContext,
     parsingErrors: ParsingError[],
-    token: any,
+    token: unknown,
     parentId: string,
     propName: string,
     valueConstraint?: ValueConstraint
@@ -434,7 +434,7 @@ export class SupplementalTypeInfoImpl {
         valueCount++;
       }
     } else if (Array.isArray(token)) {
-      token.forEach((elementToken: any) => {
+      token.forEach((elementToken: unknown) => {
         valueCount += this._parseToken(
           objectPropertyInfoList,
           elementPropertyConstraints,

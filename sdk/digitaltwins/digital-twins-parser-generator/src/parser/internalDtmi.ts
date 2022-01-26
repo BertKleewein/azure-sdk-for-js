@@ -61,43 +61,43 @@ export class InDTMI {
     }
   }
 
-  get value() {
+  get value(): string {
     return this._value;
   }
 
-  get autogenned() {
+  get autogenned(): boolean {
     return this._autogenned;
   }
 
-  get majorVersion() {
+  get majorVersion(): number {
     return this._majorVersion;
   }
 
-  get minorVersion() {
+  get minorVersion(): number {
     return this._minorVersion;
   }
 
-  get completeVersion() {
+  get completeVersion(): number {
     return this._completeVersion;
   }
 
-  get versionless() {
+  get versionless(): string {
     return this._versionless;
   }
 
-  get labels() {
+  get labels(): string[] {
     return this._labels;
   }
 
-  get isReserved() {
+  get isReserved(): boolean {
     return this._isReserved;
   }
 
-  get absolutePath() {
+  get absolutePath(): string {
     return this._absolutePath;
   }
 
-  get fragment() {
+  get fragment(): string {
     return this._fragment;
   }
 }

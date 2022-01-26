@@ -7,7 +7,7 @@ export class ValueParser {
   public static parseSingularStringToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     maxLength: number | undefined,
     pattern: RegExp | undefined,
     parsingErrors: ParsingError[]
@@ -96,7 +96,7 @@ export class ValueParser {
         })
       );
     } else if (Array.isArray(token)) {
-      if (token.length == 0) {
+      if (token.length === 0) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:integerNoValue", {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
@@ -125,8 +125,8 @@ export class ValueParser {
       value !== undefined &&
       minInclusive !== undefined &&
       maxInclusive !== undefined &&
-      minInclusive == maxInclusive &&
-      value != minInclusive
+      minInclusive === maxInclusive &&
+      value !== minInclusive
     ) {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:valueNotExact", {
@@ -155,7 +155,7 @@ export class ValueParser {
         createParsingError("dtmi:dtdl:parsingError:valueAboveMax", {
           cause: `{primaryId:p} property '${propertyName}' has value ${value}, which is greater than the allowed maximum of ${maxInclusive}.`,
           action:
-            minInclusive != undefined
+            minInclusive !== undefined
               ? `Reduce the value of '${propertyName}' to a value between ${maxInclusive} and ${maxInclusive} inclusive.`
               : `Reduce the value of '${propertyName}' to a value less than or equal to ${maxInclusive}.`,
           primaryId: elementId,
@@ -187,7 +187,7 @@ export class ValueParser {
     }
 
     if (Array.isArray(token)) {
-      if (token.length == 0) {
+      if (token.length === 0) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:booleanNoValue", {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
@@ -410,7 +410,7 @@ export class ValueParser {
     }
 
     if (Array.isArray(token)) {
-      if (token.length == 0) {
+      if (token.length === 0) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:identifierNoValue", {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,

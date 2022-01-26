@@ -19,11 +19,11 @@ export class VersionedContext {
     this._minorVersion = minorVersion;
   }
 
-  get majorVersion() {
+  get majorVersion(): number {
     return this._majorVersion;
   }
 
-  get minorVersion() {
+  get minorVersion(): number {
     return this._minorVersion;
   }
 
