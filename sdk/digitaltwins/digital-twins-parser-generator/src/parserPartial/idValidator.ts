@@ -19,19 +19,19 @@ export class IdValidator {
   static MAX_LENGTH = 2048;
   // codegen-outline-end
 
-  static idDefinitionMaxLengths = new Map<Number, Number>();
+  static idDefinitionMaxLengths = new Map<number, number>();
   // idDefinitionMaxLengths.set(2, MAX_LENGTH);
   // idDefinitionMaxLengths.set(3, MAX_LENGTH);
 
-  static idReferenceMaxLengths = new Map<Number, Number>();
+  static idReferenceMaxLengths = new Map<number, number>();
   // idReferenceMaxLengths.set(2, MAX_LENGTH);
   // idReferenceMaxLengths.set(3, MAX_LENGTH);
 
-  static idDefinitionRegexPatterns = new Map<Number, RegExp>();
+  static idDefinitionRegexPatterns = new Map<number, RegExp>();
   // idDefinitionRegexPatterns.set(2, GLOBAL_ID_PATTERN_2);
   // idDefinitionRegexPatterns.set(3, GLOBAL_ID_PATTERN_3);
 
-  static idReferenceRegexPatterns = new Map<Number, RegExp>();
+  static idReferenceRegexPatterns = new Map<number, RegExp>();
   // idReferenceRegexPatterns.set(2, GLOBAL_ID_PATTERN_2);
   // idReferenceRegexPatterns.set(3, GLOBAL_ID_PATTERN_3);
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 export const instantiationParams1 = {
   rawTypeName: "Array",
   rawBaseType: "Entity",

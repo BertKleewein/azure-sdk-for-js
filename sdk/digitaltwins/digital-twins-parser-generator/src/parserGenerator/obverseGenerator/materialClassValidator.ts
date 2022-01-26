@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 // Copyright (c) Microsoft Corporation.

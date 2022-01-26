@@ -14,7 +14,7 @@ export class InDTMI {
   private _minorVersion: number = -1;
   private _completeVersion: number = -1;
   private _versionless: string = "";
-  private _labels: String[];
+  private _labels: string[];
   private _isReserved: boolean = false;
   private _absolutePath: string = "";
   private _fragment: string = "";
