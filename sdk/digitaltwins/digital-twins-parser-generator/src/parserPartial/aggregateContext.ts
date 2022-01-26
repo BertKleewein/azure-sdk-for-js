@@ -307,7 +307,7 @@ export class AggregateContext {
     parsingErrors: ParsingError[]
   ): VersionedContext {
     const dtdlContextDtmi = InDTMI.createDtmi(contextString);
-    if (dtdlContextDtmi === undefined || dtdlContextDtmi.fragment != "") {
+    if (dtdlContextDtmi === undefined || dtdlContextDtmi.fragment !== "") {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContextSpecifier", {
           cause: `Model contains @context specifier '${contextString}' that is not a legal DTMI.`,
@@ -317,7 +317,7 @@ export class AggregateContext {
       throw new ParsingException(parsingErrors);
     }
 
-    if (dtdlContextDtmi.majorVersion == 0) {
+    if (dtdlContextDtmi.majorVersion === 0) {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:missingContextVersion", {
           cause: `Model contains @context specifier '${contextString}', which is invalid because it lacks a version number.`,
@@ -414,7 +414,7 @@ export class AggregateContext {
     }
 
     const affiliateContextDtmi = InDTMI.createDtmi(contextToken);
-    if (affiliateContextDtmi === undefined || affiliateContextDtmi.fragment != "") {
+    if (affiliateContextDtmi === undefined || affiliateContextDtmi.fragment !== "") {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContextSpecifier", {
           cause: `Model contains @context specifier '${contextToken}' that is not a legal DTMI.`,
@@ -434,7 +434,7 @@ export class AggregateContext {
       throw new ParsingException(parsingErrors);
     }
 
-    if (affiliateContextDtmi.majorVersion == 0) {
+    if (affiliateContextDtmi.majorVersion === 0) {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:missingContextVersion", {
           cause: `Model contains @context specifier '${contextToken}', which is invalid because it lacks a version number.`,
@@ -496,7 +496,7 @@ export class AggregateContext {
 
     for (const term in contextObj) {
       // eslint-disable-line guard-for-in
-      if (term == "") {
+      if (term === "") {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localTermEmpty", {
             cause: `@context defines local term that is an empty string.`,
@@ -506,7 +506,7 @@ export class AggregateContext {
         throw new ParsingException(parsingErrors);
       }
 
-      if (term == `dtmi`) {
+      if (term === `dtmi`) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localTermSchemePrefix", {
             cause: `@context contains a local definition for term 'dtmi' which is reserved as the scheme prefix for DTDL identifiers.`,
@@ -541,7 +541,7 @@ export class AggregateContext {
 
       const definition = contextObj[term];
 
-      if (definition == null) {
+      if (definition === null) {
         continue;
       } else if (typeof definition !== "string") {
         parsingErrors.push(

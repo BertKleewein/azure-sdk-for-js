@@ -46,7 +46,7 @@ export class Model {
         const elementIdValue = this.dict[objectPropertyInfo.elementId] as EntityInfoImpl;
         // TODO: isPartition will be a boolean value... So is this OR operation correct?
         const sourcePartition: string | undefined =
-          elementIdValue?.isPartition || elementIdValue?.definedIn == null
+          elementIdValue?.isPartition || elementIdValue?.definedIn === undefined
             ? objectPropertyInfo.elementId
             : elementIdValue?.definedIn;
         const targetPartition: string | undefined = this.dict[

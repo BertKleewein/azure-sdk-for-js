@@ -154,7 +154,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
       );
       checkRestrictionsMethodBody
         .if(
-          `!this.${this._methodName}(0, ${this._maxDepth}, ${this._elementIdName}, parsingErrors) && ${this._elementIdName} != undefined`
+          `!this.${this._methodName}(0, ${this._maxDepth}, ${this._elementIdName}, parsingErrors) && ${this._elementIdName} !== undefined`
         )
         .multiLine(`parsingErrors.push(createParsingError(`)
         .line(`'dtmi:dtdl:parsingError:excessiveDepth',`)

@@ -164,7 +164,7 @@ export class MaterialClassParser {
       .if(
         `Object.keys(object).length === 1 && Object.prototype.hasOwnProperty.call(object, '@id') && typeof object['@id'] === 'string'`
       )
-      .if(`allowIdReferenceSyntax && parentId!== undefined`)
+      .if(`allowIdReferenceSyntax && parentId !== undefined`)
       .line(
         `this.parseIdString(objectPropertyInfoList, elementPropertyConstraints, valueConstraints, childAggregateContext, parsingErrors, object['@id'], parentId, propName, keyProp, allowedVersions);`
       )
@@ -620,7 +620,7 @@ export class MaterialClassParser {
       .line(`property: propKey,`)
       .line(`}));`)
       .line("continue;");
-    forScope.if(`propKey[0] == '@'`).line("continue;");
+    forScope.if(`propKey[0] === '@'`).line("continue;");
     const switchScope = forScope.scope("switch (propKey)");
     materialProperties.forEach((property) => {
       property.addCaseToParseSwitch(
@@ -806,7 +806,7 @@ export class MaterialClassParser {
         "const objectPropertyInfo = {elementId: parentId, propertyName: propName ?? '', referencedElementId: elementId.value, keyProperty: keyProp, expectedKinds: this._concreteKinds[aggregateContext.dtdlVersion], allowedVersions: allowedVersions, badTypeCauseFormat: this._badTypeCauseFormat[aggregateContext.dtdlVersion], badTypeActionFormat: this._badTypeActionFormat[aggregateContext.dtdlVersion]};"
       )
       .line("objectPropertyInfoList.push(objectPropertyInfo);")
-      .if("valueConstraints != null && elementPropertyConstraints != null")
+      .if("valueConstraints !== null && elementPropertyConstraints !== null")
       .for("const vc of valueConstraints")
       .line(
         "const elementPropertyConstraint = {parentId: parentId, propertyName: propName ?? '', elementId: elementId.value, valueConstraint: vc};"

@@ -51,8 +51,8 @@ export class ModelParserImpl {
 
   async parse(jsonTexts: string[]): Promise<ModelDict> {
     if (
-      (this.options & ModelParsingOption.MandateTopLevelPartition) != 0 &&
-      (this.options & ModelParsingOption.PermitAnyTopLevelElement) != 0
+      (this.options & ModelParsingOption.MandateTopLevelPartition) !== 0 &&
+      (this.options & ModelParsingOption.PermitAnyTopLevelElement) !== 0
     ) {
       throw new Error(
         "Options MandateTopLevelPartition and PermitAnyTopLevelElement are both specfied but are incompatible."
@@ -171,7 +171,7 @@ export class ModelParserImpl {
       }
 
       const additionalJsonTexts = await this.dtmiResolver(undefinedIdentifiers);
-      if (additionalJsonTexts == null) {
+      if (additionalJsonTexts === null) {
         throw new ResolutionError(
           "DtmiResolver refused to resolve requisite references to element(s): " +
             undefinedIdentifiers.join(" "),
@@ -269,8 +269,8 @@ export class ModelParserImpl {
     const obj = token as { [prop: string]: string };
 
     const aggregateContext = new AggregateContext(
-      (this.options & ModelParsingOption.RejectUndefinedExtensions) != 0,
-      (this.options & ModelParsingOption.RejectNonDtmiContexts) != 0,
+      (this.options & ModelParsingOption.RejectUndefinedExtensions) !== 0,
+      (this.options & ModelParsingOption.RejectNonDtmiContexts) !== 0,
       this.maxDtdlVersion
     ).getChildContext(obj, parsingErrors);
 
@@ -294,7 +294,7 @@ export class ModelParserImpl {
       throw new ParsingException(parsingErrors);
     }
 
-    if ((this.options & ModelParsingOption.MandateTopLevelPartition) != 0) {
+    if ((this.options & ModelParsingOption.MandateTopLevelPartition) !== 0) {
       if (!PartitionTypeCollection.hasPartitionType(obj)) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:badType", {
@@ -306,7 +306,7 @@ export class ModelParserImpl {
         );
         throw new ParsingException(parsingErrors);
       }
-    } else if ((this.options & ModelParsingOption.PermitAnyTopLevelElement) == 0) {
+    } else if ((this.options & ModelParsingOption.PermitAnyTopLevelElement) === 0) {
       if (!RootableTypeCollection.hasRootableType(obj, aggregateContext.dtdlVersion)) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:badType", {

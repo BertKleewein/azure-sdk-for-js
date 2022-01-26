@@ -105,11 +105,11 @@ export class MaterialClassGenerator implements TypeGenerator {
     this._typeName = NameFormatter.formatNameAsInterface(rawTypeName);
     this._typeImplName = NameFormatter.formatNameAsImplementation(rawTypeName);
     this._parentTypeName =
-      materialClassDigest.parentClass == null
+      materialClassDigest.parentClass === null
         ? undefined
         : NameFormatter.formatNameAsInterface(materialClassDigest.parentClass);
     this._parentTypeImplName =
-      materialClassDigest.parentClass == null
+      materialClassDigest.parentClass === null
         ? undefined
         : NameFormatter.formatNameAsImplementation(materialClassDigest.parentClass);
     this._rawBaseType = rawBaseType;

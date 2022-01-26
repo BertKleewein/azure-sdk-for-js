@@ -48,7 +48,7 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
     const pathStart = contextId.indexOf(":") + 1;
     const pathLength = versionStart - pathStart - 1;
     // TODO: Validate that the translation lines up with the C# code.
-    // string rootName = string.Concat(contextId.Substring(pathStart, pathLength).Split(new char[] { ':' }).Where(s => s != 'context').Select((s, i) => i == 0 ? s : char.ToUpperInvariant(s[0]) + s.Substring(1)));
+    // string rootName = string.Concat(contextId.Substring(pathStart, pathLength).Split(new char[] { ':' }).Where(s => s !== 'context').Select((s, i) => i === 0 ? s : char.ToUpperInvariant(s[0]) + s.Substring(1)));
     const rootName: string = contextId
       .substr(pathStart, pathLength)
       .split(":")

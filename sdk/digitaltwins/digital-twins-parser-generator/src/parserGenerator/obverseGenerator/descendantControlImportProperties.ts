@@ -211,12 +211,12 @@ export class DescendantControlImportProperties implements DescendantControl {
 
       for (const materialProperty of materialProperties) {
         if (
-          materialProperty.propertyKind == PropertyKind.Object &&
+          materialProperty.propertyKind === PropertyKind.Object &&
           this._propertyNames.includes(materialProperty.propertyName)
         ) {
           materialProperty
             .checkPresence(concreteClassMethod.body)
-            .if("depth == depthLimit")
+            .if("depth === depthLimit")
             .line(
               `tooDeepElementId.ref = new InDTMI(this.${ParserGeneratorValues.IdentifierName});`
             )
@@ -234,7 +234,7 @@ export class DescendantControlImportProperties implements DescendantControl {
         const conditionalIncrement: string = isRelevantProperty ? " + 1" : "";
 
         if (
-          materialProperty.propertyKind == PropertyKind.Object &&
+          materialProperty.propertyKind === PropertyKind.Object &&
           (isRelevantProperty || !this._isNarrow)
         ) {
           const varName: { ref: string } = { ref: "item" };
@@ -336,11 +336,11 @@ export class DescendantControlImportProperties implements DescendantControl {
       description: `A ParsingErrors to which any parsing errors are added.`
     });
 
-    if (materialProperty.propertyRepresentation == PropertyRepresentation.List) {
+    if (materialProperty.propertyRepresentation === PropertyRepresentation.List) {
       method.body.line(
         `${paramName}.AddRange(this.${NameFormatter.formatNameAsProperty(importProperty)});`
       );
-    } else if (materialProperty.propertyRepresentation == PropertyRepresentation.Dictionary) {
+    } else if (materialProperty.propertyRepresentation === PropertyRepresentation.Dictionary) {
       method.body.line(
         `const currentObject = this._${fieldName} || this.${NameFormatter.formatNameAsField(
           materialProperty.propertyName

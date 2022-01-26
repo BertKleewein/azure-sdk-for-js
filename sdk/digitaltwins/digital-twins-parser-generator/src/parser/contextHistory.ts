@@ -47,7 +47,7 @@ export class ContextHistory {
 
     for (const versionedContext of this._versionedContexts) {
       if (
-        versionedContext.majorVersion == majorVersion &&
+        versionedContext.majorVersion === majorVersion &&
         versionedContext.minorVersion <= minorVersion &&
         (bestMatchContext === undefined ||
           versionedContext.minorVersion > bestMatchContext.minorVersion)

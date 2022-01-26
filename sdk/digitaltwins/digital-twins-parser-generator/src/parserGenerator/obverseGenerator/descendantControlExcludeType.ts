@@ -124,7 +124,7 @@ export class DescendantControlExcludeType implements DescendantControl {
     dtdlVersion: number,
     typeName: string
   ): void {
-    if (this._dtdlVersion == dtdlVersion && this._rootClass === typeName) {
+    if (this._dtdlVersion === dtdlVersion && this._rootClass === typeName) {
       const propertiesDesc: string = this._propertyNames.map((p) => `'${p}'`).join(" or ");
       const elementIdName: string = `excluded${this._excludeType}ElementId`;
 
