@@ -205,7 +205,7 @@ export class ModelParserImpl {
     }
   }
 
-  private async _parseTextsIntoModel(
+  private _parseTextsIntoModel(
     jsonTexts: string[],
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
