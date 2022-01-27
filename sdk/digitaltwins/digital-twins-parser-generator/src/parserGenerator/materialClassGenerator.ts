@@ -425,6 +425,7 @@ export class MaterialClassGenerator implements TypeGenerator {
         returnType: "void"
       });
       baseClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      // eslint-disable-next-line no-unused-expressions
       baseClassMethod.body;
     } else if (!this._isAbstract) {
       const concreteClassMethod = obverseClass.method({
@@ -432,6 +433,7 @@ export class MaterialClassGenerator implements TypeGenerator {
         returnType: "void"
       });
       concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      // eslint-disable-next-line no-unused-expressions
       concreteClassMethod.body;
 
       if (this._materialClassDigest.dtdlVersions) {
@@ -449,6 +451,7 @@ export class MaterialClassGenerator implements TypeGenerator {
         name: `checkRestrictionsV${dtdlVersion}`
       });
       versionSpecificClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      // eslint-disable-next-line no-unused-expressions
       versionSpecificClassMethod.body;
 
       for (const materialProperty of this._properties) {

@@ -88,6 +88,7 @@ export class TsClass extends TsDeclaration {
       access: access
     });
     if (!abstract) {
+      // eslint-disable-next-line no-unused-expressions
       tsMethod.body;
     }
     this._methods.push(tsMethod);

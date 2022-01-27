@@ -286,6 +286,7 @@ export class MaterialClassValidator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   static addJsonTypeCheck(scope: TsScope, jsonType: string, eltVar: string): void {
     switch (
       jsonType // Json types are same as TS/JS types. So string/number/object can go to default.
@@ -306,6 +307,7 @@ export class MaterialClassValidator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   static addDataTypeCheck(scope: TsScope, datatype: string, eltVar: string): void {
     switch (datatype) {
       case "int":
@@ -339,6 +341,7 @@ export class MaterialClassValidator {
   }
 
   static addInstancePropertyCheck(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     scope: TsScope,
     instanceProp: string,
     propertyDigests: { [x: string]: MaterialPropertyDigest },

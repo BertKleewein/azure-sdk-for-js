@@ -215,6 +215,7 @@ export class ModelGenerator implements TypeGenerator {
       returnType: "void"
     });
     checkRestrictionsMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+    // eslint-disable-next-line no-unused-expressions
     checkRestrictionsMethod.body; // TODO: IMPLEMENT ALL OF THESE
     // .line(`throw new Error('Method not implemented.');`);
   }
@@ -226,6 +227,7 @@ export class ModelGenerator implements TypeGenerator {
       returnType: "void"
     });
     applyTransformationsMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+    // eslint-disable-next-line no-unused-expressions
     applyTransformationsMethod.body;
     // .line(`throw new Error('Method not implemented.');`);
   }
