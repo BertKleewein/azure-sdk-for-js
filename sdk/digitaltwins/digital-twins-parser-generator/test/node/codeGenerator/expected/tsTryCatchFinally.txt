@@ -8,7 +8,8 @@
 /* eslint-disable sort-imports */
 
 export class testClass {
-  constructor() {}
+  constructor() {
+  }
 
   trySomething(input: any) {
     try {

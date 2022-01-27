@@ -12,11 +12,11 @@ const tsWhileTestCases: Array<(outputDir: string) => testCaseType> = [
     tsClass.ctor.parameter({ name: "foo", type: "number" }).body.line("this._foo = foo;");
     const whileMethod = tsClass
       .method({ name: "whileMethod" })
-      .parameter({ name: "input", type: "any" }).body;
+      .parameter({ name: "_input", type: "any" }).body;
     whileMethod.while("this._foo < 5").line("this._foo++;");
     whileMethod.line("console.log(this._foo);");
 
-    return { name: "while loop", codeGenerator: tsLibrary, fileName: "tsWhile.ts" };
+    return { name: "while loop", codeGenerator: tsLibrary, fileName: "tsWhile.txt" };
   }
 ];
 

@@ -8,7 +8,7 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
   function createSimpleClass(outputDir: string): testCaseType {
     const tsLibrary = new TsLibrary(outputDir);
     tsLibrary.class({ name: "testClass", exports: true });
-    return { name: "minimal class", codeGenerator: tsLibrary, fileName: "tsClass_1.ts" };
+    return { name: "minimal class", codeGenerator: tsLibrary, fileName: "tsClass_1.txt" };
   },
 
   function createClassWithConstructorAndFields(outputDir: string) {
@@ -27,7 +27,7 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
     return {
       name: "class with constructor and fields",
       codeGenerator: tsLibrary,
-      fileName: "tsClass_2.ts"
+      fileName: "tsClass_2.txt"
     };
   },
 
@@ -42,7 +42,7 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
     return {
       name: "overlapping imports class",
       codeGenerator: tsLibrary,
-      fileName: "tsClass_3.ts"
+      fileName: "tsClass_3.txt"
     };
   }
 ];

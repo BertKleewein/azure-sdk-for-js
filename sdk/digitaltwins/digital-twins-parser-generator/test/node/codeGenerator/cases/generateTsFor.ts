@@ -18,7 +18,7 @@ const tsForTestCases: Array<(outputDir: string) => testCaseType> = [
       .line("console.log(`outputting the value ${i}`);");
     forMethod.line("console.log(`For loop has completed ${this._foo}`);");
 
-    return { name: "for loop block", codeGenerator: tsLibrary, fileName: "tsFor.ts" };
+    return { name: "for loop block", codeGenerator: tsLibrary, fileName: "tsFor.txt" };
   }
 ];
 
