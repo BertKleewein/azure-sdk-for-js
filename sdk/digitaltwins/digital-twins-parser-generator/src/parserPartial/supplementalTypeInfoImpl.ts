@@ -318,7 +318,9 @@ export class SupplementalTypeInfoImpl {
       }
 
       if (key !== undefined) {
-        (properties[propertyName as keyof typeof properties] as {[x: string]: unknown})[key] = value;
+        (properties[propertyName as keyof typeof properties] as { [x: string]: unknown })[
+          key
+        ] = value;
       }
     } else if (propertyInfo.isPlural) {
       if (

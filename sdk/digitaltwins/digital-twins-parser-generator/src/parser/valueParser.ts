@@ -251,7 +251,7 @@ export class ValueParser {
       dict = ValueParser._getDictionaryFromLanguageMap(
         elementId,
         propertyName,
-        token as {[index: string]: unknown},
+        token as { [index: string]: unknown },
         parsingErrors
       );
     } else {
@@ -697,7 +697,7 @@ export class ValueParser {
             })
           );
         } else {
-          const codeToken = element as {[x: string]: unknown}["@language"];
+          const codeToken = element as { [x: string]: unknown }["@language"];
           if (typeof codeToken !== "string") {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:langStringElementCodeNotString", {
