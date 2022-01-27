@@ -28,10 +28,6 @@ export class TsInterface extends TsDeclaration {
     this._methods = [];
   }
 
-  get name(): string {
-    return this._name;
-  }
-
   get extends(): string | undefined {
     return this._thingToExtend;
   }
@@ -62,7 +58,7 @@ export class TsInterface extends TsDeclaration {
       text.push("export");
     }
 
-    text.push(`interface ${this._name}`);
+    text.push(`interface ${this.name}`);
 
     if (this._thingToExtend !== undefined && this._thingToExtend !== "") {
       text.push(`extends ${this._thingToExtend}`);

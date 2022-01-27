@@ -66,7 +66,9 @@ export class ModelParserImpl {
     // Warning: (ae-forgotten-export) The symbol "ParsingError" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static _parseObject(model: Model, objectPropertyInfoList: ParsedObjectPropertyInfo[], elementPropertyConstraints: ElementPropertyConstraint[], aggregateContext: AggregateContext, parsingErrors: ParsingError[], obj: object): void;
+    static _parseObject(_model: Model, _objectPropertyInfoList: ParsedObjectPropertyInfo[], _elementPropertyConstraints: ElementPropertyConstraint[], _aggregateContext: AggregateContext, _parsingErrors: ParsingError[], _obj: {
+        [prop: string]: string;
+    }): void;
     // (undocumented)
     static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl;
     // Warning: (ae-forgotten-export) The symbol "SupplementalTypeCollectionImpl" needs to be exported by the entry point index.d.ts
@@ -96,7 +98,7 @@ export enum ModelParsingOption {
 // @public (undocumented)
 export class ParserCodeGenerator {
     // (undocumented)
-    static execute(inputDigest: string, outputDirectory: string, dtdlVersion: string): void;
+    static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): void;
     }
 
 // @public (undocumented)
@@ -132,7 +134,7 @@ export class TsClass extends TsDeclaration {
     // (undocumented)
     field(input: TsFieldParams): TsClass;
     // (undocumented)
-    get fields(): TsField[];
+    fields: TsField[];
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)
@@ -146,7 +148,7 @@ export class TsClass extends TsDeclaration {
     // (undocumented)
     hasMethod(methodName: string): boolean;
     // (undocumented)
-    get inheritance(): TsInheritanceType[] | undefined;
+    inheritance?: TsInheritanceType[];
     // (undocumented)
     inline(filepath: string, identifier: string): void;
     // (undocumented)
@@ -157,8 +159,6 @@ export class TsClass extends TsDeclaration {
         access?: TsAccess;
         isStatic?: boolean;
     }): TsFunction;
-    // (undocumented)
-    get name(): string;
     // (undocumented)
     setter({ name, returnType, access }: {
         name: string;
@@ -208,7 +208,7 @@ export class TsDeclaration {
     // (undocumented)
     import(text: string): TsDeclaration;
     // (undocumented)
-    protected _name: string;
+    name: string;
     // (undocumented)
     get prefixCode(): TsMultiLine;
     // (undocumented)
@@ -268,8 +268,8 @@ export class TsEnum {
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)
-    get name(): string;
-    }
+    name: string;
+}
 
 // @public (undocumented)
 export interface TsEnumParams {
@@ -283,24 +283,24 @@ export interface TsEnumParams {
 export class TsField {
     constructor({ name, type, access, readonly, isStatic, summary, value, optional }: TsFieldParams);
     // (undocumented)
-    get access(): TsAccess | undefined;
+    access?: TsAccess;
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)
-    get isStatic(): boolean | undefined;
+    isStatic?: boolean;
     // (undocumented)
-    get name(): string;
+    name: string;
     // (undocumented)
-    get optional(): boolean | undefined;
+    optional?: boolean;
     // (undocumented)
-    get readonly(): boolean | undefined;
+    readonly?: boolean;
     // (undocumented)
-    get summary(): string | undefined;
+    summary?: string;
     // (undocumented)
-    get type(): string;
+    type: string;
     // (undocumented)
-    get value(): string | undefined;
-    }
+    value?: string;
+}
 
 // @public (undocumented)
 export interface TsFieldParams {
@@ -480,8 +480,6 @@ export class TsInterface extends TsDeclaration {
         name: string;
         returnType?: string;
     }): TsFunction;
-    // (undocumented)
-    get name(): string;
     }
 
 // @public (undocumented)
@@ -641,8 +639,6 @@ export class TsTypeAlias extends TsDeclaration {
     constructor({ name, typeToBeAliased, exports }: TsTypeAliasParams);
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
-    // (undocumented)
-    get name(): string;
     }
 
 // @public (undocumented)

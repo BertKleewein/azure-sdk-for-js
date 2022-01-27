@@ -318,7 +318,7 @@ export class SupplementalTypeInfoImpl {
       }
 
       if (key !== undefined) {
-        properties[propertyName][key] = value;
+        (properties[propertyName as keyof typeof properties] as {[x: string]: unknown})[key] = value;
       }
     } else if (propertyInfo.isPlural) {
       if (
@@ -456,7 +456,7 @@ export class SupplementalTypeInfoImpl {
             "Replace the value of property '{property}, with a valid DTMI or a term defined by DTDL -- see https://github.com/Azure/opendigitaltwins-dtdl/tree/master/DTDL.",
           primaryId: parentId,
           property: propName,
-          value: token
+          value: token as string | undefined
         })
       );
       valueCount++;

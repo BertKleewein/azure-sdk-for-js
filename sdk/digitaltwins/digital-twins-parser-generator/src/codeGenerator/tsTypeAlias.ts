@@ -12,15 +12,11 @@ export class TsTypeAlias extends TsDeclaration {
     this._typeAlias = typeToBeAliased;
   }
 
-  get name(): string {
-    return this._name;
-  }
-
   private get _decoratedName(): string {
     if (this._exports) {
-      return `export type ${this._name}`;
+      return `export type ${this.name}`;
     } else {
-      return `type ${this._name}`;
+      return `type ${this.name}`;
     }
   }
 
