@@ -6,13 +6,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import {
-  TsScope,
-  TsClass,
-  TsAccess,
-  TsConstructor,
-  TsInterface
-} from "../../codeGenerator";
+import { TsScope, TsClass, TsAccess, TsConstructor, TsInterface } from "../../codeGenerator";
 import { MaterialPropertyDigest } from "../metamodelDigest";
 import { MaterialProperty } from "./materialProperty";
 import { PropertyKind } from "./propertyKind";
@@ -92,7 +86,9 @@ export class InternalProperty extends MaterialProperty {
     _classIsPartition: boolean,
     _valueCountVar: string,
     _definedInVar: string
-  ): void { /* empty */ }
+  ): void {
+    /* empty */
+  }
 
   public addCaseToTrySetObjectPropertySwitch(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -109,7 +105,9 @@ export class InternalProperty extends MaterialProperty {
     _dtdlVersion: number,
     _typeName: string,
     _classIsAugmentable: boolean
-  ): void { /* empty */ }
+  ): void {
+    /* empty */
+  }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public initMissingPropertyVariable(dtdlVersion: number, scope: TsScope): void {
@@ -123,7 +121,9 @@ export class InternalProperty extends MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addImports(_obverseInterface: TsInterface): void { /* empty */ }
+  public addImports(_obverseInterface: TsInterface): void {
+    /* empty */
+  }
 
   public addMembers(
     _dtdlVersions: number[],
@@ -145,7 +145,7 @@ export class InternalProperty extends MaterialProperty {
       access: TsAccess.Public
     });
   }
-  
+
   private static _createEmptyPropertyDigest(): MaterialPropertyDigest {
     const emptyDigest = {
       _: {

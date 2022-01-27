@@ -8,5 +8,4 @@
 /* eslint-disable sort-imports */
 
 import * as test from "foo";
-export class testClass {
-}
+export class testClass {}

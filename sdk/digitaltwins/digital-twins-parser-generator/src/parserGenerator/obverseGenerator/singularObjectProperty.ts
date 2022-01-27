@@ -15,7 +15,6 @@ import { PropertyRestrictionRequiredValues } from "./propertyRestrictionRequired
 import { PropertyRestriction } from "./propertyRestriction";
 // example is property schema in material class telemetry
 export class SingularObjectProperty extends ObjectProperty {
-
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     varName.ref = `(this.${this.propertyName} as ${this.baseImplementation})`;

@@ -163,7 +163,7 @@ export class MaterialClassValidator {
       method.body.line(`throw new Error('cannot validate anything in an abstract class');`);
     }
   }
-  
+
   static generateValidateInstanceVersionMethod(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

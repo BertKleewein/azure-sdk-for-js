@@ -167,9 +167,13 @@ export class Model {
     throw new Error("Method not implemented.");
   }
 
-  applyTransformations(_parsingErrors: ParsingError[]): void { /* empty */ }
+  applyTransformations(_parsingErrors: ParsingError[]): void {
+    /* empty */
+  }
 
-  checkRestrictions(_parsingErrors: ParsingError[]): void { /* empty */ }
+  checkRestrictions(_parsingErrors: ParsingError[]): void {
+    /* empty */
+  }
 
   doesHaveType(_elementId: string, _typeId: string): boolean {
     return true;

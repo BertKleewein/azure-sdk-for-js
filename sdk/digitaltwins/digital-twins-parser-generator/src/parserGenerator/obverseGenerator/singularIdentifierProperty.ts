@@ -12,7 +12,6 @@ import { IdentifierProperty } from "./identifierProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 
 export class SingularIdentifierProperty extends IdentifierProperty {
-
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     varName.ref = `this.${this.propertyName}`;

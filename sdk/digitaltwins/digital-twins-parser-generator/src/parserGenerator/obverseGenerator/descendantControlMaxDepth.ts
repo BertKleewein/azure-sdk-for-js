@@ -184,5 +184,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
     _typeName: string,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _materialProperties: MaterialProperty[]
-  ): void { /* empty */}
+  ): void {
+    /* empty */
+  }
 }

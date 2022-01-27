@@ -68,7 +68,7 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
       // // TODO These may be used in the new values parser.
       // const _minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
       // const _maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
-      
+
       switchScope
         .line(`case '${this.propertyName}':`)
         .line(`case '${this.propertyNameUris[dtdlVersion]}':`);

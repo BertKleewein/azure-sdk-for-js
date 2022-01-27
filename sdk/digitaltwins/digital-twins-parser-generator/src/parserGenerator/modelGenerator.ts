@@ -157,7 +157,10 @@ export class ModelGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private _generateTrySetObjectPropertyMethod(modelClass: TsClass, referenceClassName: string): void {
+  private _generateTrySetObjectPropertyMethod(
+    modelClass: TsClass,
+    referenceClassName: string
+  ): void {
     const trySetObjectPropertyMethod = modelClass.method({
       name: "trySetObjectProperty",
       returnType: "boolean"

@@ -58,7 +58,7 @@ export class IdValidator {
     dtdlVersion: number
   ): string {
     let idString = "";
-    const idToken = (obj as {[x: string]: unknown})["@id"];
+    const idToken = (obj as { [x: string]: unknown })["@id"];
     if (idToken) {
       if (typeof idToken !== "string") {
         parsingErrors.push(
@@ -110,7 +110,7 @@ export class IdValidator {
       }
       let secondSeg = "";
       if (dtmiSeg) {
-        const segToken = (obj as {[x: string]: unknown})[dtmiSeg];
+        const segToken = (obj as { [x: string]: unknown })[dtmiSeg];
         if (!segToken || typeof segToken !== "string") {
           parsingErrors.push(
             createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {

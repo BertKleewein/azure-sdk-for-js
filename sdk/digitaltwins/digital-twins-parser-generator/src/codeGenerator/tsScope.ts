@@ -81,7 +81,14 @@ export class TsScope implements TsStatement {
     return tsForEach;
   }
 
-  function({ name, returnType, functionType, abstract, access, isStatic }: TsFunctionParams): TsFunction {
+  function({
+    name,
+    returnType,
+    functionType,
+    abstract,
+    access,
+    isStatic
+  }: TsFunctionParams): TsFunction {
     const tsFunction = new TsFunction({
       name: name,
       returnType: returnType,

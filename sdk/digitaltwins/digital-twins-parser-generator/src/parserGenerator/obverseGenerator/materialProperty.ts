@@ -145,7 +145,9 @@ export abstract class MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addImports(_obverseInterface: TsInterface): void { /* empty */ }
+  public addImports(_obverseInterface: TsInterface): void {
+    /* empty */
+  }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public setValue(dtdlVersion: number, scope: TsScope, infovar: string): void {
@@ -184,7 +186,9 @@ export abstract class MaterialProperty {
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchOnProperty: TsScope,
     _instancePropVariable: string
-  ): void { /* empty */}
+  ): void {
+    /* empty */
+  }
 
   /**
    * Add code to the CheckRestrictions method in the material class that has this property.
@@ -212,11 +216,17 @@ export abstract class MaterialProperty {
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchOnProperty: TsScope,
     _instancePropVariable: string
-  ): void { /* empty */ }
+  ): void {
+    /* empty */
+  }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCaseToDictionaryKeySwitch(_switchOnProperty: TsScope): void { /* empty */ }
+  public addCaseToDictionaryKeySwitch(_switchOnProperty: TsScope): void {
+    /* empty */
+  }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void { /* empty */ }
+  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void {
+    /* empty */
+  }
 }

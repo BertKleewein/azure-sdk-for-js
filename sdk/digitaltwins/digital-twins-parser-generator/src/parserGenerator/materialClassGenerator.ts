@@ -248,7 +248,7 @@ export class MaterialClassGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private _addMaterialClass(parserLibrary: TsLibrary): TsClass {
+  public _addMaterialClass(parserLibrary: TsLibrary): TsClass {
     const obverseInterface = parserLibrary.interface({
       name: this._typeName,
       exports: true,

@@ -54,7 +54,11 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  addRestriction(checkRestrictionsMethodBody: TsScope, dtdlVersion: number, typeName: string): void {
+  addRestriction(
+    checkRestrictionsMethodBody: TsScope,
+    dtdlVersion: number,
+    typeName: string
+  ): void {
     if (this._dtdlVersion === dtdlVersion && this._rootClass === typeName) {
       checkRestrictionsMethodBody.line(
         `const myUri: string = this.${NameFormatter.formatNameAsParameter(
@@ -88,7 +92,9 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
     _typeName: string,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _materialProperties: MaterialProperty[]
-  ): void { /* empty */ }
+  ): void {
+    /* empty */
+  }
 
   addCheckMethod(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

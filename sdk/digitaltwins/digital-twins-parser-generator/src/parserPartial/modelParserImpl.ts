@@ -145,7 +145,7 @@ export class ModelParserImpl {
       parsingErrors
     );
     // eslint-disable-next-line no-constant-condition
-    while (true) {  
+    while (true) {
       const undefinedIdentifierSet = new Set<string>();
 
       for (const objectPropertyInfo of objectPropertyInfoList) {
@@ -342,7 +342,7 @@ export class ModelParserImpl {
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _aggregateContext: AggregateContext,
     _parsingErrors: ParsingError[],
-    _obj: { [prop: string]: string}
+    _obj: { [prop: string]: string }
   ): void {
     throw new Error("_parseObject is not implemented.");
   }

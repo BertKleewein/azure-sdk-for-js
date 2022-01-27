@@ -183,6 +183,6 @@ export interface MetamodelDigest {
   supplementalTypes: { [typeUri: string]: SupplementalTypeDigest };
   quantitativeTypes: { [dtdlVersion: number]: QuantitativeTypeDigest[] };
   units: { [dtdlVersion: number]: { [unitType: string]: { [unit: string]: string } } };
-  elements: {[x: string]: unknown}[];
+  elements: { [x: string]: unknown }[];
   partitionRestrictions?: PartitionRestrictions;
 }

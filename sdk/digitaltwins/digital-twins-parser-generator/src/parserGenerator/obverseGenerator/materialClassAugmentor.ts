@@ -9,7 +9,6 @@ import { TsAccess, TsClass, TsInterface, TsScope } from "../../codeGenerator";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
 
 export class MaterialClassAugmentor {
-
   public static generateConstructorCode(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ctorScope: TsScope,

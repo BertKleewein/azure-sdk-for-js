@@ -29,7 +29,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
   public get propertyRepresentation(): PropertyRepresentation {
     return PropertyRepresentation.Dictionary;
   }
-  
+
   public get propertyType(): string | undefined {
     if (this.interfaceName !== undefined) {
       return `{[value: string]: ${this.interfaceName}}`;
@@ -68,7 +68,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
 
   // Generate code to determine whether the property has at least one value.
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public checkPresence(outerScope: TsScope) : TsScope {
+  public checkPresence(outerScope: TsScope): TsScope {
     return outerScope.if(`this.${this.propertyName} !== undefined`);
   }
 

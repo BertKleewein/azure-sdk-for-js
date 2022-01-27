@@ -17,7 +17,6 @@ import { MaterialProperty } from "./materialProperty";
 import { PropertyKind } from "./propertyKind";
 
 export class MaterialClassParser {
-
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public static generateConstructorCode(ctorScope: TsScope, _classIsBase: boolean): void {
     ctorScope.line(`this.undefinedTypes = [];`);
@@ -97,7 +96,10 @@ export class MaterialClassParser {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private static _generateDoesHaveTypeMethod(obverseClass: TsClass, classIsAbstract: boolean): void {
+  private static _generateDoesHaveTypeMethod(
+    obverseClass: TsClass,
+    classIsAbstract: boolean
+  ): void {
     const method = obverseClass
       .method({ name: "doesHaveType", returnType: "boolean", abstract: false, isStatic: false })
       .parameter({ name: "typeId", type: "string" });

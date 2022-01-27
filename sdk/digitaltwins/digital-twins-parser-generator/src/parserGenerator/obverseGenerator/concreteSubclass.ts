@@ -32,10 +32,17 @@ export class ConcreteSubclass {
     this._kindValue = NameFormatter.formatNameAsKindString(rawSubTypeName);
     this._subClassUri =
       dtdlContexts[ParserGeneratorValues.getDtdlContextIdString(dtdlVersion)][rawSubTypeName];
-    if (identifierRestrictionsToken && Object.prototype.hasOwnProperty.call(identifierRestrictionsToken, rawSubTypeName)) {
-      const idRestriction: {[x: string]: unknown} = (identifierRestrictionsToken as {[x: string]: unknown})[rawSubTypeName] as {[x: string]: unknown};
+    if (
+      identifierRestrictionsToken &&
+      Object.prototype.hasOwnProperty.call(identifierRestrictionsToken, rawSubTypeName)
+    ) {
+      const idRestriction: { [x: string]: unknown } = (identifierRestrictionsToken as {
+        [x: string]: unknown;
+      })[rawSubTypeName] as { [x: string]: unknown };
       if (Object.prototype.hasOwnProperty.call(idRestriction, dtdlVersion)) {
-        const idRestrictionObj: {[x: string]: unknown} = idRestriction[dtdlVersion] as {[x: string]: unknown};
+        const idRestrictionObj: { [x: string]: unknown } = idRestriction[dtdlVersion] as {
+          [x: string]: unknown;
+        };
         this._maxLength = idRestrictionObj.maxLength as number | undefined;
         this._pattern = idRestrictionObj.pattern as string | undefined;
       } else {
