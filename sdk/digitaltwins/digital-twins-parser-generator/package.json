@@ -27,6 +27,7 @@
     "test:node": "npm run build:test && npm run unit-test:node && npm run integration-test:node",
     "test": "npm run build:test && npm run unit-test && npm run integration-test",
     "unit-test:node": "mocha --require esm --reporter ../../../common/tools/mocha-multi-reporter.js --timeout 1200000 --full-trace \"dist-esm/test/{,!(browser)/**/}/*.spec.js\"",
+    "unit-test:browser": "echo no browser support for this tool",
     "unit-test": "npm run unit-test:node",
     "temp-unit-test": "mocha -r ts-node/register --timeout 1200000 test/node/*.spec.ts",
     "format-generated": "eslint src/generated --ext .ts --fix",
