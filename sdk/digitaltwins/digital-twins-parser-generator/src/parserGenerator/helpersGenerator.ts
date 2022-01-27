@@ -89,7 +89,7 @@ export class HelpersGenerator implements TypeGenerator {
 
   private _generateAreDictionariesIdEqualMethod(helpersClass: TsClass): void {
     const method = helpersClass.method({
-      name: "areDictioanriesIdEqual",
+      name: "areDictionariesIdEqual",
       returnType: "boolean",
       isStatic: true
     });
