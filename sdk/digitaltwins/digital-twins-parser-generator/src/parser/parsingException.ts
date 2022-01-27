@@ -19,7 +19,7 @@ export class ParsingException extends Error {
     this._parsingErrors = parsingErrors;
   }
 
-  get errors() {
+  get errors(): ParsingError[] {
     return this._parsingErrors;
   }
 }

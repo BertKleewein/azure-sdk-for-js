@@ -62,7 +62,7 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const collectionInterface = parserLibrary.interface({
       name: "SupplementalTypeCollection",
       exports: true

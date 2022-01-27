@@ -9,7 +9,7 @@
 import { TsAccess, TsClass, TsInterface, TsScope } from "../../codeGenerator";
 import { MaterialPropertyDigest } from "../metamodelDigest";
 import { MaterialProperty } from "./materialProperty";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 import { PropertyKind } from "./propertyKind";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
 

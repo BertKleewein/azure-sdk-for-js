@@ -55,7 +55,7 @@ export class PluralObjectProperty extends ObjectProperty {
   public addCaseToTrySetObjectPropertySwitch(
     switchScope: TsScope,
     valueVar: string,
-    keyVar: string
+    _keyVar: string
   ): void {
     switchScope.line(`case '${this.propertyName}':`);
     Object.values(this.propertyNameUris).forEach((strVal) => switchScope.line(`case '${strVal}':`));

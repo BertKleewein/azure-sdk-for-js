@@ -12,12 +12,12 @@ export class TsMultiLine implements TsStatement {
     this._statements = [];
   }
 
-  line(text: string) {
+  line(text: string): this {
     this._statements.push(new TsLine(text));
     return this;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  generateCode(codeWriter: CodeWriter): void {
     if (this._text !== undefined) {
       codeWriter.writeLine(this._text);
     }

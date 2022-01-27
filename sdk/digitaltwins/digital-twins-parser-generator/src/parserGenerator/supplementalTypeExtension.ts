@@ -75,7 +75,7 @@ export class SupplementalTypeExtension extends SupplementalType {
     }
   }
 
-  assignInfoVariable(scope: TsScope, dictionaryVariableName: string) {
+  assignInfoVariable(scope: TsScope, dictionaryVariableName: string): void {
     scope.line(
       `${dictionaryVariableName}.set(${this.typeVariableName}.value, ${this._infoVariableName});`
     );

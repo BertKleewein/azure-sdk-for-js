@@ -2,6 +2,6 @@
 // Licensed under the MIT license.
 
 export type Reference<T> = { ref: T | undefined };
-export const referenceInit = () => {
+export function referenceInit(): {ref: undefined} {
   return { ref: undefined };
-};
+}

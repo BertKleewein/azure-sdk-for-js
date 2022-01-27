@@ -28,18 +28,18 @@ export class PluralUntypedLiteralProperty extends UntypedLiteralProperty {
   }
 
   // TODO check if this code will be okay after example.
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = [];`);
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
-    obverseClass: TsClass,
-    switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _obverseClass: TsClass,
+    _switchScope: TsScope,
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&

@@ -8,7 +8,7 @@
 import { TsScope } from "../../codeGenerator";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
 import { MaterialProperty } from "./materialProperty";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 
 export class PropertyRestrictionRequiredValues implements PropertyRestriction {
   private _propertyName: string;

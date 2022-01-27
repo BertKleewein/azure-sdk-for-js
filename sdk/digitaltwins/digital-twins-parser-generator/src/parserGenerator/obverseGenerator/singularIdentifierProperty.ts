@@ -40,18 +40,18 @@ export class SingularIdentifierProperty extends IdentifierProperty {
   //   throw new Error('Method not implemented.');
   // }
 
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, _ctorScope: TsScope): void {
     // NOTE for Node : any SINGULAR IDENTIFIER types are never initialized inside a Constructor.
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
-    obverseClass: TsClass,
+    _obverseClass: TsClass,
     switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -83,7 +83,7 @@ export class SingularIdentifierProperty extends IdentifierProperty {
   public addCaseToTrySetObjectPropertySwitch(
     switchScope: TsScope,
     valueVar: string,
-    keyVar: string
+    _keyVar: string
   ): void {
     switchScope.line(`case '${this.propertyName}':`);
     Object.values(this.propertyNameUris).forEach((strVal) => switchScope.line(`case '${strVal}':`));

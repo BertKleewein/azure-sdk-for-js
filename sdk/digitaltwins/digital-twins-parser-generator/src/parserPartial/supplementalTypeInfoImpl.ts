@@ -78,7 +78,7 @@ export class SupplementalTypeInfoImpl {
 
   /**
    * Attach any constraints to properties that are not properties of this supplemental type.
-   * @param {PropertyValueConstrainer} propertyValueConstrainer - A PropertyValueConstrainer to call back to add each constraint.
+   * @param propertyValueConstrainer - A PropertyValueConstrainer to call back to add each constraint.
    */
   attachConstraints(propertyValueConstrainer: PropertyValueConstrainer): void {
     for (let i = 0; i < this._propertyConstraints.length; i++) {
@@ -98,7 +98,7 @@ export class SupplementalTypeInfoImpl {
 
   /**
    * Bind properties that are instance of another property.
-   * @param {PropertyInstanceBinder} propertyInstanceBinder - A PropertyInstanceBinder to call back to add each instance binding.
+   * @param propertyInstanceBinder - A PropertyInstanceBinder to call back to add each instance binding.
    */
   bindInstanceProperties(propertyInstanceBinder: PropertyInstanceBinder): void {
     // foreach key value pair in this.properties
@@ -124,7 +124,6 @@ export class SupplementalTypeInfoImpl {
    * @param propName - The name of the property by which the parent refers to this element, used for auto ID generation.
    * @param propToken - The property token to parse.
    * @param properties - A collection of properties to update with the property information.
-   * @return True if the property name is recognized.
    */
   tryParseProperty(
     model: Model,
@@ -370,7 +369,7 @@ export class SupplementalTypeInfoImpl {
   /**
    * Adds a type constraint to this supplemental type.
    * @param propertyName - Name of the property whose type to constrain.
-   * @param valueConstraint A ValueConstraint for values of this property.
+   * @param valueConstraint - A ValueConstraint for values of this property.
    */
   addConstraint(propertyName: string, valueConstraint: ValueConstraint): void {
     const newPropertyConstraint: PropertyConstraint = {

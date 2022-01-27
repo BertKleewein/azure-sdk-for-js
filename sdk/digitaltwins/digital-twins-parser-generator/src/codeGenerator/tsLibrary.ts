@@ -31,18 +31,18 @@ type TsLibraryObject = TsFunction | TsClass | TsEnum | TsInterface | TsTypeAlias
  */
 export class TsLibrary {
   private _outputDirectory: string;
-  private _tsDataStructres: TsLibraryObject[];
+  private _tsDataStructures: TsLibraryObject[];
   private _libraryHeader?: TsMultiLine;
   private _dependencyGraph: DependencyGraph;
 
   constructor(outputDir: string) {
     this._outputDirectory = outputDir;
 
-    this._tsDataStructres = [];
+    this._tsDataStructures = [];
     this._dependencyGraph = new DependencyGraph();
   }
 
-  libraryHeader(text: string) {
+  libraryHeader(text: string): TsMultiLine {
     if (this._libraryHeader !== undefined) {
       throw new Error("Cannot overwrite existing library header");
     }
@@ -51,9 +51,9 @@ export class TsLibrary {
     return tsMultiLine;
   }
 
-  class(input: TsClassParams) {
+  class(input: TsClassParams): TsClass {
     const tsClass = new TsClass(input);
-    this._tsDataStructres.push(tsClass);
+    this._tsDataStructures.push(tsClass);
     this._dependencyGraph.addNode(tsClass.name);
     if (tsClass.inheritance !== undefined) {
       tsClass.inheritance.forEach((element) => {
@@ -69,30 +69,30 @@ export class TsLibrary {
     return tsClass;
   }
 
-  function(input: TsFunctionParams) {
+  function(input: TsFunctionParams): TsFunction {
     const tsFunction = new TsFunction(input);
-    this._tsDataStructres.push(tsFunction);
+    this._tsDataStructures.push(tsFunction);
     this._dependencyGraph.addNode(tsFunction.name);
     return tsFunction;
   }
 
-  typeAlias(input: TsTypeAliasParams) {
+  typeAlias(input: TsTypeAliasParams): TsTypeAlias {
     const tsTypeAlias = new TsTypeAlias(input);
-    this._tsDataStructres.push(tsTypeAlias);
+    this._tsDataStructures.push(tsTypeAlias);
     this._dependencyGraph.addNode(tsTypeAlias.name);
     return tsTypeAlias;
   }
 
-  enum(input: TsEnumParams) {
+  enum(input: TsEnumParams): TsEnum {
     const tsEnum = new TsEnum(input);
-    this._tsDataStructres.push(tsEnum);
+    this._tsDataStructures.push(tsEnum);
     this._dependencyGraph.addNode(tsEnum.name);
     return tsEnum;
   }
 
-  interface(input: TsInterfaceParams) {
+  interface(input: TsInterfaceParams): TsInterface {
     const tsInterface = new TsInterface(input);
-    this._tsDataStructres.push(tsInterface);
+    this._tsDataStructures.push(tsInterface);
     this._dependencyGraph.addNode(tsInterface.name);
     return tsInterface;
   }
@@ -133,7 +133,7 @@ export class TsLibrary {
       filePaths.push(this.generateInternalFile());
       filePaths.push(this.generateIndexForGenerated());
     }
-    this._tsDataStructres.forEach((type) => {
+    this._tsDataStructures.forEach((type) => {
       const typeName = type.name;
       const fileName = pascalToCamel(typeName) + FILE_EXTENSION;
       const filePath = this._outputDirectory + DIR_SEP + fileName;

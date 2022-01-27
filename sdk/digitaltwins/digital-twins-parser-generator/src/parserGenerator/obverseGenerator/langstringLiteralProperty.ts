@@ -47,10 +47,10 @@ export class LangStringLiteralProperty extends LiteralProperty {
     dtdlVersion: number,
     obverseClass: TsClass,
     switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&

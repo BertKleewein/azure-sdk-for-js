@@ -7,7 +7,6 @@
 // Licensed under the MIT license.
 
 import { TsScope, TsClass } from "../../codeGenerator";
-import { ParserGeneratorValues } from "../parserGeneratorValues";
 import { IdentifierProperty } from "./identifierProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 
@@ -25,18 +24,18 @@ export class PluralIdentifierProperty extends IdentifierProperty {
     return "string[]";
   }
 
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = [];`);
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
-    obverseClass: TsClass,
-    switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _obverseClass: TsClass,
+    _switchScope: TsScope,
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -49,7 +48,7 @@ export class PluralIdentifierProperty extends IdentifierProperty {
   public addCaseToTrySetObjectPropertySwitch(
     switchScope: TsScope,
     valueVar: string,
-    keyVar: string
+    _keyVar: string
   ): void {
     switchScope.line(`case '${this.propertyName}':`);
     Object.values(this.propertyNameUris).forEach((strVal) => switchScope.line(`case '${strVal}':`));

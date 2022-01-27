@@ -3,7 +3,7 @@
 /* eslint-disable valid-jsdoc */
 /* eslint-disable no-unused-vars */
 
-import { TsAccess, TsClass, TsDeclarationType, TsInterface, TsLibrary } from "../codeGenerator";
+import { TsClass, TsDeclarationType, TsInterface, TsLibrary } from "../codeGenerator";
 import { NameFormatter } from "./nameFormatter";
 import { TypeGenerator } from "./typeGenerator";
 
@@ -22,7 +22,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const infoInterface: TsInterface = parserLibrary.interface({
       name: "SupplementalTypeInfo",
       exports: true

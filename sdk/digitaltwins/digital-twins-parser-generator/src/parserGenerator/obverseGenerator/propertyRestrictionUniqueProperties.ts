@@ -9,7 +9,7 @@ import { TsScope } from "../../codeGenerator";
 import { NameFormatter } from "../nameFormatter";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
 import { MaterialProperty } from "./materialProperty";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 
 export class PropertyRestrictionUniqueProperties implements PropertyRestriction {
   private _propertyName: string;

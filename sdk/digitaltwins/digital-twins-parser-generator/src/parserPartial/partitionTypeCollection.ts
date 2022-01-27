@@ -14,7 +14,7 @@ export class PartitionTypeCollection {
 
   /* TODO everything below here to the next comment block should be codegenned. */
 
-  static initialize() {
+  static initialize(): void {
     this._partitionTypeStrings = new Set<string>();
 
     this._partitionTypeStrings.add("Interface");
@@ -26,7 +26,7 @@ export class PartitionTypeCollection {
   /* TODO everything above here from the previous comment block should be codegenned. */
 
   // codegen-outline-begin methods
-  public static get partitionTypeDescription() {
+  public static get partitionTypeDescription(): string {
     return this._partitionTypeDescription;
   }
 

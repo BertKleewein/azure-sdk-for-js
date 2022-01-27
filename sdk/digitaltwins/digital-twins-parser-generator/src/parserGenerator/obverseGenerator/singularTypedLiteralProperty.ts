@@ -39,7 +39,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
     return this.literalType.getSingularType(this.optional);
   }
 
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     // NOTE for Node : any SINGULAR LITERAL types are never initialized inside a Constructor.
     if (this.datatype === "boolean") {
       ctorScope.line(
@@ -50,12 +50,12 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
-    obverseClass: TsClass,
+    _obverseClass: TsClass,
     switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&

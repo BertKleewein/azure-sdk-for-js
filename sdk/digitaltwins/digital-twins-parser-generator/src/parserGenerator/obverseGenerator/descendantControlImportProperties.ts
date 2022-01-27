@@ -92,13 +92,13 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
   }
 
-  addRestriction(checkRestrictionsMethodBody: TsScope, dtdlVersion: number, rawTypeName: string) {}
+  addRestriction(_checkRestrictionsMethodBody: TsScope, _dtdlVersion: number, _rawTypeName: string): void { /* empty */ }
 
   addTransformation(
     applyTransformationsMethodBody: TsScope,
     dtdlVersion: number,
     rawTypeName: string,
-    materialProperties: MaterialProperty[]
+    _materialProperties: MaterialProperty[]
   ): void {
     if (this._dtdlVersion === dtdlVersion && this._rootClass === rawTypeName) {
       for (const importProperty of this._importProperties) {
@@ -126,16 +126,16 @@ export class DescendantControlImportProperties implements DescendantControl {
 
         const forEachDtmi: TsForEach = ifSourcesNotNull.forEach(`sources`, `dtmi`);
 
-        for (const importProperty of this._importProperties) {
-          const importPropName: string = NameFormatter.formatNameAsProperty(importProperty);
+        for (const importProperty2 of this._importProperties) {
+          const importPropName2: string = NameFormatter.formatNameAsProperty(importProperty2);
 
           forEachDtmi.line(
             `(model.dict[dtmi] as ${NameFormatter.formatNameAsImplementation(
               this._definingClass
-            )}).import${importPropName}(new InDTMI(this.${
+            )}).import${importPropName2}(new InDTMI(this.${
               ParserGeneratorValues.IdentifierName
             }), \`${this._propertiesDesc}\`, this.${NameFormatter.formatNameAsParameter(
-              importPropName
+              importPropName2
             )} || {}, parsingErrors);`
           );
         }
@@ -166,7 +166,7 @@ export class DescendantControlImportProperties implements DescendantControl {
     classIsBase: boolean,
     classIsAbstract: boolean,
     materialProperties: MaterialProperty[]
-  ) {
+  ): void {
     if (obverseClass.hasMethod(this._getTransitivePropertiesMethodName)) {
       return;
     }
@@ -293,7 +293,7 @@ export class DescendantControlImportProperties implements DescendantControl {
     obverseClass: TsClass,
     materialProperties: MaterialProperty[],
     importProperty: string
-  ) {
+  ): void {
     const methodName: string = NameFormatter.formatNameAsMethod(
       this._importPropertyMethodNames[importProperty]
     );
@@ -375,7 +375,7 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
   }
 
-  _addField(obverseClass: TsClass, materialProperties: MaterialProperty[], importProperty: string) {
+  _addField(obverseClass: TsClass, materialProperties: MaterialProperty[], importProperty: string): void {
     const fieldName: string = `_${this._fieldNames[importProperty]}`;
     if (obverseClass.hasField(fieldName)) {
       return;

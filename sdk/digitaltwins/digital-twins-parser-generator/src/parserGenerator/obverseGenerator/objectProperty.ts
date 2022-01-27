@@ -11,7 +11,7 @@ import { MaterialPropertyDigest } from "../metamodelDigest";
 import { NameFormatter } from "../nameFormatter";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
 import { MaterialProperty } from "./materialProperty";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 import { PropertyKind } from "./propertyKind";
 
 export abstract class ObjectProperty extends MaterialProperty {

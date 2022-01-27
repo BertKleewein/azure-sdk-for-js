@@ -45,7 +45,7 @@ export class DescendantControlMaxCount implements DescendantControl {
 
   addMembers(
     obverseClass: TsClass,
-    typeName: string,
+    _typeName: string,
     classIsBase: boolean,
     classIsAbstract: boolean,
     materialProperties: MaterialProperty[]
@@ -169,9 +169,9 @@ export class DescendantControlMaxCount implements DescendantControl {
   }
 
   addTransformation(
-    applyTransformationsMethodBody: TsScope,
-    dtdlVersion: number,
-    typeName: string,
-    materialProperties: MaterialProperty[]
-  ): void {}
+    _applyTransformationsMethodBody: TsScope,
+    _dtdlVersion: number,
+    _typeName: string,
+    _materialProperties: MaterialProperty[]
+  ): void { /* empty */}
 }

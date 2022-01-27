@@ -6,13 +6,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsAccess, TsClass, TsConstructor, TsScope } from "../../codeGenerator";
+import { TsClass, TsFor, TsScope } from "../../codeGenerator";
 import { MaterialPropertyDigest } from "../metamodelDigest";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
-import { MaterialProperty } from "./materialProperty";
 import { ObjectProperty } from "./objectProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 // example is property contents in material class interface
 export class DictionaryObjectProperty extends ObjectProperty {
   private _keyProperty?: string;
@@ -55,7 +54,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
   }
 
   // Generate code to iterate through all elements of the property and assign each one to a variable.
-  public iterate(outerScope: TsScope, varName: { ref: string }) {
+  public iterate(outerScope: TsScope, varName: { ref: string }): TsFor {
     const forScope = outerScope.for(
       `const ${varName.ref} of Object.values(this.${this.propertyName} || {})`
     );

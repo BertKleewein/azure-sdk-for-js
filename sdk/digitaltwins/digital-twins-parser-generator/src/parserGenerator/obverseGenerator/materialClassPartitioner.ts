@@ -6,16 +6,16 @@ import { TsAccess, TsClass, TsFunction, TsInterface, TsScope } from "../../codeG
 import { NameFormatter } from "../nameFormatter";
 
 export class MaterialClassPartitioner {
-  static generateConstructorCode(scope: TsScope, classIsPartition: boolean) {
+  static generateConstructorCode(scope: TsScope, classIsPartition: boolean): void {
     scope.line(`this.isPartition = ${classIsPartition}`);
   }
   static addMembers(
     obverseClass: TsClass,
-    obverseInterface: TsInterface,
+    _obverseInterface: TsInterface,
     typeName: string,
     classIsPartition: boolean,
-    classIsBase: boolean
-  ) {
+    _classIsBase: boolean
+  ): void {
     obverseClass.field({ name: "isPartition", type: "boolean", access: TsAccess.Public });
 
     const setPartitionInfoMethod: TsFunction = obverseClass.method({

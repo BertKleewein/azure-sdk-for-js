@@ -3,20 +3,15 @@
 /* eslint-disable valid-jsdoc */
 /* eslint-disable no-unused-vars */
 
-import { TsAccess, TsClass, TsDeclarationType, TsInterface, TsLibrary } from "../codeGenerator";
+import { TsClass, TsDeclarationType, TsInterface, TsLibrary } from "../codeGenerator";
 import { TypeGenerator } from "./typeGenerator";
 
 export class SupplementalPropertyInfoGenerator implements TypeGenerator {
-  /**
-   * Initializes a new instance of the SupplementalPropertyInfoGenerator class.
-   */
-  constructor() {}
-
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const infoInterface: TsInterface = parserLibrary.interface({
       name: "SupplementalPropertyInfo",
       exports: true

@@ -8,7 +8,7 @@ export class RootableTypeCollection {
 
   /* TODO everything below here to the next comment block should be codegenned. */
 
-  static initialize() {
+  static initialize(): void {
     this._rootableTypeStrings = {
       "2": new Set<string>(),
       "3": new Set<string>()
@@ -31,7 +31,7 @@ export class RootableTypeCollection {
   /* TODO everything above here from the previous comment block should be codegenned. */
 
   // codegen-outline-begin methods
-  public static get rootableTypeDescriptions() {
+  public static get rootableTypeDescriptions(): {[dtdlVersion: number]: string} {
     return this._rootableTypeDescriptions;
   }
 

@@ -57,12 +57,13 @@ export class MaterialClassValidator {
       );
     }
   }
+
   static generateValidateInstanceStringMethod(
     obverseClass: TsClass,
     obverseInterface: TsInterface,
     classIsBase: boolean,
     classIsAbstract: boolean
-  ) {
+  ): void {
     if (classIsBase) {
       obverseInterface
         .method({
@@ -96,8 +97,8 @@ export class MaterialClassValidator {
     kindProperty: string,
     classIsBase: boolean,
     classIsAbstract: boolean,
-    criteriaText: any
-  ) {
+    criteriaText: unknown
+  ): void {
     const method = obverseClass
       .method({
         name: `${ParserGeneratorValues.ValidateInstanceMethodName}Element`,
@@ -106,7 +107,7 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public
       })
-      .parameter({ name: "instanceElt", type: "any" });
+      .parameter({ name: "instanceElt", type: "unknown" });
     if (classIsBase) {
       method.body.line(`throw new Error(this.${kindProperty}?.toString());`); // TODO Only normal error is fine?
     } else if (!classIsAbstract && criteriaText !== undefined) {
@@ -119,13 +120,14 @@ export class MaterialClassValidator {
       method.body.line(`throw new Error('cannot validate anything in an abstract class');`);
     }
   }
+
   static generateValidateInstanceInternalMethod(
     dtdlVersions: number[],
     obverseClass: TsClass,
     classIsBase: boolean,
     classIsAbstract: boolean,
-    criteriaText: any
-  ) {
+    criteriaText: unknown
+  ): void {
     const method = obverseClass
       .method({
         name: `${ParserGeneratorValues.ValidateInstanceMethodName}Internal`,
@@ -134,7 +136,7 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public
       })
-      .parameter({ name: "instanceElt", type: "any" })
+      .parameter({ name: "instanceElt", type: "unknown" })
       .parameter({ name: "instanceName", type: "string|undefined" });
     if (classIsBase) {
       method.body.line(`return false;`);
@@ -170,7 +172,7 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public
       })
-      .parameter({ name: "instanceElt", type: "any" })
+      .parameter({ name: "instanceElt", type: "unknown" })
       .parameter({ name: "instanceName", type: "string|undefined" });
     if (!classIsAbstract && instanceValidationDigest?.criteriaText !== undefined) {
       const elementConditionDigest = instanceValidationDigest[dtdlVersion]
@@ -221,6 +223,7 @@ export class MaterialClassValidator {
       method.body.line(`throw new Error('cannot validate anything in an abstract class');`);
     }
   }
+
   static addValidationChecks(
     dtdlVersion: number,
     obverseClass: TsClass,
@@ -230,7 +233,7 @@ export class MaterialClassValidator {
     eltVar: string,
     nameVar: string,
     level: string
-  ) {
+  ): void {
     if (instanceConditionDigest.jsonType !== undefined) {
       this.addJsonTypeCheck(scope, instanceConditionDigest.jsonType, eltVar);
     }
@@ -272,7 +275,8 @@ export class MaterialClassValidator {
       scope.if(`${nameVar} !== this.${instanceConditionDigest.nameHasValue}`).line("return false");
     }
   }
-  static addJsonTypeCheck(scope: TsScope, jsonType: string, eltVar: string) {
+
+  static addJsonTypeCheck(scope: TsScope, jsonType: string, eltVar: string): void {
     switch (
       jsonType // Json types are same as TS/JS types. So string/number/object can go to default.
     ) {
@@ -291,7 +295,8 @@ export class MaterialClassValidator {
         break;
     }
   }
-  static addDataTypeCheck(scope: TsScope, datatype: string, eltVar: string) {
+
+  static addDataTypeCheck(scope: TsScope, datatype: string, eltVar: string): void {
     switch (datatype) {
       case "int":
         scope
@@ -322,6 +327,7 @@ export class MaterialClassValidator {
         break;
     }
   }
+
   static addInstancePropertyCheck(
     scope: TsScope,
     instanceProp: string,
@@ -360,6 +366,7 @@ export class MaterialClassValidator {
         .line(`return false;`);
     }
   }
+
   static addPatternCheck(
     dtdlVersion: number,
     obverseClass: TsClass,
@@ -367,7 +374,7 @@ export class MaterialClassValidator {
     pattern: string,
     eltVar: string,
     prefix: string
-  ) {
+  ): void {
     const fieldname = `_${prefix}InstanceRegexPatternV${dtdlVersion}`;
     const uselessEscapeRemoved = pattern.replace("\\-", "-"); // only minus is causing issues for now.
     obverseClass.field({

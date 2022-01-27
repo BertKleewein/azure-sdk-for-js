@@ -18,7 +18,7 @@ export class StandardElements {
   // codegen-outline-end
 
   // codegen-outline-begin methods
-  static initialize() {
+  static initialize(): void {
     this._standardModel = new Model();
     this._elementReferences = {};
 
@@ -45,7 +45,7 @@ export class StandardElements {
     this._standardModel.setObjectProperties(objectPropertyInfoList, parsingErrors);
   }
 
-  public static tryAddElementToModel(model: Model, elementId: string) {
+  public static tryAddElementToModel(model: Model, elementId: string): boolean {
     if (this._standardModel.dict[elementId] === undefined) {
       return false;
     }

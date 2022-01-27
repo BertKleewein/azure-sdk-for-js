@@ -49,7 +49,7 @@ export class IdValidator {
   }
 
   public static parseIdProperty(
-    obj: any,
+    obj: unknown,
     parentId: string | undefined,
     propName: string | undefined,
     dtmiSeg: string | undefined,

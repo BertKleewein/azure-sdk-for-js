@@ -9,7 +9,7 @@
 import { TsAccess, TsClass, TsInterface } from "../../codeGenerator";
 import { MaterialPropertyDigest } from "../metamodelDigest";
 import { LiteralType } from "./literalType";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 import { LiteralProperty } from "./literalProperty";
 
 interface TypedLiteralPropertyParams {

@@ -8,12 +8,12 @@ export class TsMultiLineDocString extends TsMultiLine {
     super("/**");
   }
 
-  line(text: string) {
+  line(text: string): this {
     super.line(` * ${text}`);
     return this;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  generateCode(codeWriter: CodeWriter): void {
     super.line("**/");
     super.generateCode(codeWriter);
   }

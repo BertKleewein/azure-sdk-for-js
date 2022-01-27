@@ -15,7 +15,7 @@ export class ExtensionKindEnumGenerator implements TypeGenerator {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const tsEnum = parserLibrary.enum({
       name: NameFormatter.formatNameAsEnum("Extension"),
       exports: true

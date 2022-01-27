@@ -15,6 +15,7 @@ export abstract class LiteralProperty extends MaterialProperty {
   public get propertyKind(): PropertyKind {
     return PropertyKind.Literal;
   }
+
   public isParseable(dtdlVersion: number): boolean {
     return (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -22,7 +23,7 @@ export abstract class LiteralProperty extends MaterialProperty {
     );
   }
 
-  public hasCountRestriction(dtdlVersion: number): boolean {
+  public hasCountRestriction(_dtdlVersion: number): boolean {
     return false;
   }
 
@@ -37,9 +38,9 @@ export abstract class LiteralProperty extends MaterialProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
-    switchScope: TsScope,
-    valueVar: string,
-    keyVar: string
+    _switchScope: TsScope,
+    _valueVar: string,
+    _keyVar: string
   ): void {
     // pass
   }

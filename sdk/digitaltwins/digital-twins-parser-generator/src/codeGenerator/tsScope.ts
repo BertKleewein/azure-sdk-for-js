@@ -81,7 +81,7 @@ export class TsScope implements TsStatement {
     return tsForEach;
   }
 
-  function({ name, returnType, functionType, abstract, access, isStatic }: TsFunctionParams) {
+  function({ name, returnType, functionType, abstract, access, isStatic }: TsFunctionParams): TsFunction {
     const tsFunction = new TsFunction({
       name: name,
       returnType: returnType,
@@ -94,11 +94,11 @@ export class TsScope implements TsStatement {
     return tsFunction;
   }
 
-  statement(tsStatement: TsStatement) {
+  statement(tsStatement: TsStatement): void {
     this._statements.push(tsStatement);
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  generateCode(codeWriter: CodeWriter): void {
     if (this._firstLine) {
       codeWriter.writeLine(`${this._firstLine} `, true, this._suppressBreak);
     }

@@ -25,7 +25,6 @@ import {
 // TODO File needs to be generated and line needs to be un-commented before parsing or maaking package
 import { ParsedObjectPropertyInfo } from "./type/parsedObjectPropertyInfo";
 import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
-import { TypeChecker } from "../parser/type/typeChecker";
 type EntityInfoImpl = { [prop: string]: any }; // faking for now since the EntityInfoImpl class is not defined
 export class ModelParserImpl {
   // codegen-outline-begin fields
@@ -137,7 +136,7 @@ export class ModelParserImpl {
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     parsingErrors: ParsingError[]
-  ) {
+  ): Promise<void> {
     this._parseTextsIntoModel(
       jsonTexts,
       model,
@@ -145,9 +144,8 @@ export class ModelParserImpl {
       elementPropertyConstraints,
       parsingErrors
     );
-
-    while (true) {
-      // eslint-disable-line no-constant-condition
+    // eslint-disable-next-line no-constant-condition
+    while (true) {  
       const undefinedIdentifierSet = new Set<string>();
 
       for (const objectPropertyInfo of objectPropertyInfoList) {
@@ -214,7 +212,7 @@ export class ModelParserImpl {
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     parsingErrors: ParsingError[]
-  ) {
+  ): void {
     jsonTexts.forEach((jsonText: string, index: number) => {
       let documentToken: any;
       try {
@@ -244,7 +242,7 @@ export class ModelParserImpl {
     parsingErrors: ParsingError[],
     token: any,
     dtdlVersion: number
-  ) {
+  ): void {
     if (Array.isArray(token)) {
       for (const subToken of token) {
         this._parseToken(
@@ -337,13 +335,13 @@ export class ModelParserImpl {
   // codegen-outline-end
 
   static _parseObject(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    obj: object
-  ) {
+    _model: Model,
+    _objectPropertyInfoList: ParsedObjectPropertyInfo[],
+    _elementPropertyConstraints: ElementPropertyConstraint[],
+    _aggregateContext: AggregateContext,
+    _parsingErrors: ParsingError[],
+    _obj: { [prop: string]: string}
+  ): void {
     throw new Error("_parseObject is not implemented.");
   }
 }

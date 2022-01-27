@@ -6,10 +6,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsAccess, TsClass, TsField, TsInterface } from "../../codeGenerator";
+import { TsAccess, TsClass, TsInterface } from "../../codeGenerator";
 import { MaterialPropertyDigest } from "../metamodelDigest";
 import { LiteralProperty } from "./literalProperty";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 
 export abstract class UntypedLiteralProperty extends LiteralProperty {
   private _datatypeField: string;

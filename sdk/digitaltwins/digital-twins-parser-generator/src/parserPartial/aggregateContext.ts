@@ -54,7 +54,7 @@ export class AggregateContext {
     this._localPrefixDefinitions = {};
   }
 
-  get dtdlVersion() {
+  get dtdlVersion(): number {
     return this._activeDtdlContext === undefined ? 0 : this._activeDtdlContext.majorVersion;
   }
 

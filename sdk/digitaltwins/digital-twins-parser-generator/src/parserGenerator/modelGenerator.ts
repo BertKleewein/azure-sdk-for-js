@@ -38,7 +38,7 @@ export class ModelGenerator implements TypeGenerator {
    * NOTE: This is generating a "Partial Class". Therefore the code generated will merge in code blocks from
    * parserPartial/model.ts, as well as handwritten auxiliary code
    */
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const referenceClassName = NameFormatter.formatNameAsImplementation(
       ParserGeneratorValues.referenceObverseName
     );
@@ -53,27 +53,23 @@ export class ModelGenerator implements TypeGenerator {
       );
 
     modelClass.field({ name: "dict", type: "ModelDict" });
-    // TODO: This is going to be necesary if ParititonRestrictions are necessary.
-    // modelClass.field({name: '_parititionMaxBytes', type: '{[x:string]: number}', isStatic: true, readonly: true});
 
-    // this._generateModelStaticConstructor(modelClass);
     this._generateModelConstructor(modelClass);
     this._generateIsPartitionMethod(modelClass);
     this._generateAddTypeMethod(modelClass);
-    // this._generateSetPartitionInfoMethod(modelClass);
     this._generateDoesPropertyDictContainKeyMethod(modelClass);
     this._generateTrySetObjectPropertyMethod(modelClass, referenceClassName);
     this._generateIsKindInSetMethod(modelClass);
     this._generateGetKindStringMethod(modelClass);
 
-    this._generateCheckRestricitons(modelClass);
+    this._generateCheckRestrictions(modelClass);
     this._generateApplyTransformations(modelClass);
 
     // Inline Partial Class methods
     modelClass.inline("./src/parserPartial/model.ts", "method-block");
   }
 
-  // TODO: This is going to be necesary if ParititonRestrictions are necessary.
+  // TODO: This is going to be necessary if PartitionRestrictions are necessary.
   // private _generateModelStaticConstructor(modelClass: TsClass) {
   //   const staticConstructor = modelClass.staticCtor;
   //   staticConstructor.body;
@@ -92,12 +88,12 @@ export class ModelGenerator implements TypeGenerator {
   //   }
   // }
 
-  private _generateModelConstructor(modelClass: TsClass) {
+  private _generateModelConstructor(modelClass: TsClass): void {
     const constructor = modelClass.ctor;
     constructor.body.inline("./src/parserPartial/model.ts", "constructor");
   }
 
-  private _generateIsPartitionMethod(modelClass: TsClass) {
+  private _generateIsPartitionMethod(modelClass: TsClass): void {
     const isPartitionMethod = modelClass.method({ name: "isPartition", returnType: "boolean" });
     isPartitionMethod.parameter({ name: "elementId", type: "string" });
     isPartitionMethod.body.line(
@@ -105,7 +101,7 @@ export class ModelGenerator implements TypeGenerator {
     );
   }
 
-  private _generateAddTypeMethod(modelClass: TsClass) {
+  private _generateAddTypeMethod(modelClass: TsClass): void {
     const addTypeMethod = modelClass.method({ name: "addType", returnType: "void" });
     // TODO: correct? originally: setPartitionInfoMethod.Param("JToken", "partitionJToken", "<c>JToken</c> containing the partition JSON.");
     addTypeMethod
@@ -139,7 +135,7 @@ export class ModelGenerator implements TypeGenerator {
   //     .line(`this.dict[elementId]?.setPartitionInfo(partitionToken);`);
   // }
 
-  private _generateDoesPropertyDictContainKeyMethod(modelClass: TsClass) {
+  private _generateDoesPropertyDictContainKeyMethod(modelClass: TsClass): void {
     const doesPropertyDictContainKeyMethod = modelClass.method({
       name: "doesPropertyDictContainKey",
       returnType: "boolean"
@@ -153,7 +149,7 @@ export class ModelGenerator implements TypeGenerator {
     );
   }
 
-  private _generateTrySetObjectPropertyMethod(modelClass: TsClass, referenceClassName: string) {
+  private _generateTrySetObjectPropertyMethod(modelClass: TsClass, referenceClassName: string): void {
     const trySetObjectPropertyMethod = modelClass.method({
       name: "trySetObjectProperty",
       returnType: "boolean"
@@ -172,7 +168,7 @@ export class ModelGenerator implements TypeGenerator {
       );
   }
 
-  private _generateIsKindInSetMethod(modelClass: TsClass) {
+  private _generateIsKindInSetMethod(modelClass: TsClass): void {
     const isKindInSetMethod = modelClass.method({ name: "isKindInSet", returnType: "boolean" });
     isKindInSetMethod
       .parameter({ name: "elementId", type: "string" })
@@ -185,7 +181,7 @@ export class ModelGenerator implements TypeGenerator {
     isKindInSetMethod.body.line("return false;");
   }
 
-  private _generateGetKindStringMethod(modelClass: TsClass) {
+  private _generateGetKindStringMethod(modelClass: TsClass): void {
     const getKindStringMethod = modelClass.method({ name: "getKindString", returnType: "string" });
     getKindStringMethod.parameter({ name: "elementId", type: "string" });
     // TODO This weird fix is for an error that happens due to static loading of standard elements
@@ -202,7 +198,7 @@ export class ModelGenerator implements TypeGenerator {
       );
   }
 
-  private _generateCheckRestricitons(modelClass: TsClass) {
+  private _generateCheckRestrictions(modelClass: TsClass): void {
     const checkRestrictionsMethod = modelClass.method({
       name: "checkRestrictions",
       returnType: "void"
@@ -212,7 +208,7 @@ export class ModelGenerator implements TypeGenerator {
     // .line(`throw new Error('Method not implemented.');`);
   }
 
-  private _generateApplyTransformations(modelClass: TsClass) {
+  private _generateApplyTransformations(modelClass: TsClass): void {
     const applyTransformationsMethod = modelClass.method({
       name: "applyTransformations",
       returnType: "void"

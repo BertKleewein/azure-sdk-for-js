@@ -10,11 +10,11 @@ export class TsLine implements TsStatement {
     this._text = text;
   }
 
-  get text() {
+  get text(): string {
     return this._text;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  generateCode(codeWriter: CodeWriter): void {
     codeWriter.writeLine(this._text);
   }
 }

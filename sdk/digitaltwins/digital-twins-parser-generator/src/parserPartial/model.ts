@@ -27,7 +27,7 @@ export class Model {
 
   // codegen-outline-begin method-block
 
-  hasElementWithId(elementId: string) {
+  hasElementWithId(elementId: string): boolean {
     return Object.prototype.hasOwnProperty.call(this.dict, elementId);
   }
 
@@ -39,7 +39,7 @@ export class Model {
   setObjectProperties(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     parsingErrors: ParsingError[]
-  ) {
+  ): void {
     for (const objectPropertyInfo of objectPropertyInfoList) {
       if (!(this.dict[objectPropertyInfo.referencedElementId] as EntityInfoImpl)?.isPartition) {
         // TODO: will this ever be undefined?
@@ -151,31 +151,31 @@ export class Model {
   // codegen-outline-end
 
   trySetObjectProperty(
-    elementId: string,
-    propertyName: string,
-    referencedElementId: string,
-    dictKey: string
-  ) {
+    _elementId: string,
+    _propertyName: string,
+    _referencedElementId: string,
+    _dictKey: string
+  ): void {
     throw new Error("Method not implemented.");
   }
 
-  getKindString(referencedElementId: string): string {
+  getKindString(_referencedElementId: string): string {
     throw new Error("Method not implemented.");
   }
 
-  isKindInSet(referencedElementId: string, expectedKinds: any[]): boolean {
+  isKindInSet(_referencedElementId: string, _expectedKinds: any[]): boolean {
     throw new Error("Method not implemented.");
   }
 
-  applyTransformations(parsingErrors: ParsingError[]) {}
+  applyTransformations(_parsingErrors: ParsingError[]): void { /* empty */ }
 
-  checkRestrictions(parsingErrors: ParsingError[]) {}
+  checkRestrictions(_parsingErrors: ParsingError[]): void { /* empty */ }
 
-  doesHaveType(elementId: string, typeId: string) {
+  doesHaveType(_elementId: string, _typeId: string): boolean {
     return true;
   }
 
-  doesPropertyDictContainKey(elementId: string, propertyName: string, key: string): boolean {
+  doesPropertyDictContainKey(_elementId: string, _propertyName: string, _key: string): boolean {
     return false;
   }
 }

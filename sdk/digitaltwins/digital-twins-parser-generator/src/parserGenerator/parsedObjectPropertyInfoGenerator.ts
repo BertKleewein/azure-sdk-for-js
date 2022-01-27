@@ -16,7 +16,7 @@ export class ParsedObjectPropertyInfoGenerator implements TypeGenerator {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const parsedObjectInterface = parserLibrary.interface({
       name: "ParsedObjectPropertyInfo",
       exports: true

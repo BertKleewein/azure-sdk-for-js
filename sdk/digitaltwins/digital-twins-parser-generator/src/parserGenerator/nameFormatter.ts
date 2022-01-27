@@ -59,7 +59,7 @@ export class NameFormatter {
       ENUM_SUFFIX
     );
   }
-  public static formatNameAsEnumProperty(name: string) {
+  public static formatNameAsEnumProperty(name: string): string {
     // arraykind
     return (
       name.substring(VARIANT_INDEX, VARIANT_INDEX + 1).toLowerCase() +
@@ -67,11 +67,11 @@ export class NameFormatter {
       ENUM_SUFFIX
     );
   }
-  public static formatNameAsEnumValue(name: string) {
+  public static formatNameAsEnumValue(name: string): string {
     return name.toUpperCase();
   }
 
-  public static formatNameAsKindString(name: string) {
+  public static formatNameAsKindString(name: string): string {
     return name.toLowerCase();
   }
 
@@ -88,7 +88,7 @@ export class NameFormatter {
     );
   }
 
-  public static formatNameForEnumDisjunction(name: string) {
+  public static formatNameForEnumDisjunction(name: string): string {
     return (
       ENUM_PREFIX +
       name.substring(VARIANT_INDEX, VARIANT_INDEX + 1).toUpperCase() +

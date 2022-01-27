@@ -18,7 +18,7 @@ export class HelpersGenerator implements TypeGenerator {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  generateCode(parserLibrary: TsLibrary): void {
     const helpersClass = parserLibrary.class({ name: "Helpers", exports: true });
     helpersClass.docString.line("A static class that holds various helper functions.");
     helpersClass.import(`import {${this._baseClassName}} from './internal';`);
@@ -31,7 +31,7 @@ export class HelpersGenerator implements TypeGenerator {
     helpersClass.inline("./src/parserPartial/helpers.ts", "methods");
   }
 
-  private _generateAreListsIdEqualMethod(helpersClass: TsClass) {
+  private _generateAreListsIdEqualMethod(helpersClass: TsClass): void {
     // Checks the equality of two lists by comparing their identifier values.
     const method = helpersClass.method({
       name: "areListsIdEqual",
@@ -53,7 +53,7 @@ export class HelpersGenerator implements TypeGenerator {
     method.body.line("return true;");
   }
 
-  private _generateAreListsIdOrLiteralEqualMethod(helpersClass: TsClass) {
+  private _generateAreListsIdOrLiteralEqualMethod(helpersClass: TsClass): void {
     const method = helpersClass.method({
       name: "areListsIdOrLiteralEqual",
       returnType: "boolean",
@@ -85,7 +85,7 @@ export class HelpersGenerator implements TypeGenerator {
     method.body.line("return true;");
   }
 
-  private _generateAreDictionariesIdEqualMethod(helpersClass: TsClass) {
+  private _generateAreDictionariesIdEqualMethod(helpersClass: TsClass): void {
     const method = helpersClass.method({
       name: "areDictioanriesIdEqual",
       returnType: "boolean",
@@ -108,7 +108,7 @@ export class HelpersGenerator implements TypeGenerator {
     method.body.line("return true;");
   }
 
-  private _generateAreDictionariesIdOrLiteralEqualMethod(helpersClass: TsClass) {
+  private _generateAreDictionariesIdOrLiteralEqualMethod(helpersClass: TsClass): void {
     const method = helpersClass.method({
       name: "areDictionariesIdOrLiteralEqual",
       returnType: "boolean",

@@ -27,7 +27,7 @@ export class VersionedContext {
     return this._minorVersion;
   }
 
-  public addDefinition(term: string, dtmi: InDTMI) {
+  public addDefinition(term: string, dtmi: InDTMI): void {
     this._termDict[term] = dtmi;
     this._reverseTermDict[dtmi.value] = term;
   }

@@ -21,11 +21,11 @@ export class Helpers {
     return true;
   }
 
-  static getDataTypeString(datatype: any): string {
+  static getDataTypeString(_datatype: unknown): string {
     throw new Error("getDataTypeString is unnecessary in Typescript.");
   }
 
-  static getJsonTextFromToken(token: any): string {
+  static getJsonTextFromToken(_token: unknown): string {
     throw new Error("getJsonTextFromToken is unnecessary in Typescript.");
   }
   // codegen-outline-end

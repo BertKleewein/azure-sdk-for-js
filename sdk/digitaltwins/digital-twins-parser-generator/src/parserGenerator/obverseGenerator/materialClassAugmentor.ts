@@ -11,9 +11,9 @@ import { ParserGeneratorValues } from "../parserGeneratorValues";
 export class MaterialClassAugmentor {
   public static generateConstructorCode(
     ctorScope: TsScope,
-    classIsAbstract: boolean,
-    classIsBase: boolean
-  ) {
+    _classIsAbstract: boolean,
+    _classIsBase: boolean
+  ): void {
     ctorScope.line("this.supplementalTypeIds = [];");
     ctorScope.line("this.supplementalProperties = {};");
     ctorScope.line("this.supplementalTypes = [];");
@@ -26,7 +26,7 @@ export class MaterialClassAugmentor {
     classIsAbstract: boolean,
     classIsBase: boolean,
     anyObjectProperties: boolean
-  ) {
+  ): void {
     obverseClass.import(`import {SupplementalTypeInfo} from './internal';`);
     obverseClass.import(`import {SupplementalTypeInfoImpl} from './internal';`);
     if (classIsBase) {
@@ -136,7 +136,7 @@ export class MaterialClassAugmentor {
     }
   }
 
-  public static addChecksForRequiredProperties(body: TsScope, arg1: boolean) {
+  public static addChecksForRequiredProperties(body: TsScope, _arg1: boolean): void {
     body
       .for("const supplementalType of this.supplementalTypes")
       .line(
@@ -144,7 +144,7 @@ export class MaterialClassAugmentor {
       );
   }
 
-  static addTypeCheckLine(returnLine: TsScope, classIsAugmentable: boolean) {
+  static addTypeCheckLine(returnLine: TsScope, classIsAugmentable: boolean): void {
     if (classIsAugmentable) {
       returnLine.line(
         `|| this.supplementalTypes.some((st) => (st as SupplementalTypeInfoImpl).doesHaveType(typeId))`

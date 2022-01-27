@@ -53,6 +53,7 @@ export class SupplementalPropertyInfoImpl {
     this.isOptional = isOptional;
     this.dictionaryKey = dictionaryKey;
     this.instanceProperty = instanceProperty;
+    this.valueConstraint = valueConstraint;
 
     if (type.includes("dtmi:")) {
       this.valueConstraint = {

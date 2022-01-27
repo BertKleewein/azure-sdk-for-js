@@ -79,7 +79,7 @@ export class ValueParser {
   public static parseSingularIntegerToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     minInclusive: number | undefined,
     maxInclusive: number | undefined,
     parsingErrors: ParsingError[]
@@ -171,7 +171,7 @@ export class ValueParser {
   public static parseSingularBooleanToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): boolean {
     if (token === undefined) {
@@ -220,7 +220,7 @@ export class ValueParser {
   public static parseLangStringToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     defaultLang: string,
     maxLength: number | undefined,
     pattern: RegExp | undefined,
@@ -305,10 +305,10 @@ export class ValueParser {
   public static parseSingularLiteralToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
-  ): { value: any; typeFragment: string } {
-    let value: any;
+  ): { value: unknown; typeFragment: string } {
+    let value: unknown;
     let typeFragment: string = "";
 
     if (token === undefined) {
@@ -390,7 +390,7 @@ export class ValueParser {
   public static parseSingularIdentifierToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     maxLength: number | undefined,
     pattern: RegExp | undefined,
     parsingErrors: ParsingError[]
@@ -498,7 +498,7 @@ export class ValueParser {
   private static _getStringFromToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): string | undefined {
     if (typeof token === "object") {
@@ -555,7 +555,7 @@ export class ValueParser {
   private static _getIntegerFromToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): number | undefined {
     if (typeof token === "object") {
@@ -610,7 +610,7 @@ export class ValueParser {
   private static _getBooleanFromToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): boolean {
     if (typeof token === "object") {
@@ -665,7 +665,7 @@ export class ValueParser {
   private static _getDictionaryFromLanguageTaggedStringArray(
     elementId: string,
     propertyName: string,
-    array: any[],
+    array: unknown[],
     parsingErrors: ParsingError[]
   ): { [index: string]: string } {
     const dict: { [index: string]: string } = {};
@@ -781,7 +781,7 @@ export class ValueParser {
   private static _getDictionaryFromLanguageMap(
     elementId: string,
     propertyName: string,
-    obj: { [index: string]: any },
+    obj: { [index: string]: unknown },
     parsingErrors: ParsingError[]
   ): { [index: string]: string } {
     const dict: { [index: string]: string } = {};

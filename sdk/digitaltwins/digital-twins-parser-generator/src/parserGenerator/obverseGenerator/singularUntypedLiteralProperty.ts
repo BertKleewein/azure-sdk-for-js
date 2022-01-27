@@ -35,32 +35,32 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
     return "any";
   }
 
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, _ctorScope: TsScope): void {
     // NOTE for Node : any SINGULAR NON-LITERAL types should not be initialized inside a Constructor.
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
-    obverseClass: TsClass,
+    _obverseClass: TsClass,
     switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
       this.propertyDigest[dtdlVersion].allowed
     ) {
-      const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
-      const patternStr = this.propertyDigest[dtdlVersion].pattern
+      const _maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
+      const _patternStr = this.propertyDigest[dtdlVersion].pattern
         ? `this.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}`
         : undefined;
-      const defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
+      const _defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
       // TODO These may be used in the new values parser.
-      const minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
-      const maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
-
+      const _minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
+      const _maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
+      
       switchScope
         .line(`case '${this.propertyName}':`)
         .line(`case '${this.propertyNameUris[dtdlVersion]}':`);

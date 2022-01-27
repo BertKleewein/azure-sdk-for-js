@@ -43,7 +43,7 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
 
   addMembers(
     obverseClass: TsClass,
-    typeName: string,
+    _typeName: string,
     classIsBase: boolean,
     classIsAbstract: boolean,
     materialProperties: MaterialProperty[]
@@ -51,7 +51,7 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
     this.addCheckMethod(obverseClass, classIsBase, classIsAbstract, materialProperties);
   }
 
-  addRestriction(checkRestrictionsMethodBody: TsScope, dtdlVersion: number, typeName: string) {
+  addRestriction(checkRestrictionsMethodBody: TsScope, dtdlVersion: number, typeName: string): void {
     if (this._dtdlVersion === dtdlVersion && this._rootClass === typeName) {
       checkRestrictionsMethodBody.line(
         `const myUri: string = this.${NameFormatter.formatNameAsParameter(
@@ -79,18 +79,18 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
   }
 
   addTransformation(
-    applyTransformationsMethodBody: TsScope,
-    dtdlVersion: number,
-    typeName: string,
-    materialProperties: MaterialProperty[]
-  ): void {}
+    _applyTransformationsMethodBody: TsScope,
+    _dtdlVersion: number,
+    _typeName: string,
+    _materialProperties: MaterialProperty[]
+  ): void { /* empty */ }
 
   addCheckMethod(
     obverseClass: TsClass,
-    classIsBase: boolean,
-    classIsAbstract: boolean,
+    _classIsBase: boolean,
+    _classIsAbstract: boolean,
     materialProperties: MaterialProperty[]
-  ) {
+  ): void {
     if (obverseClass.hasMethod(this._checkMethodName)) {
       return;
     }

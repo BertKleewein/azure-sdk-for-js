@@ -23,7 +23,7 @@ import { PluralObjectProperty } from "./pluralObjectProperty";
 import { SingularObjectProperty } from "./singularObjectProperty";
 import { PluralIdentifierProperty } from "./pluralIdentifierProperty";
 import { SingularIdentifierProperty } from "./singularIdentifierProperty";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 import { PropertyRestrictionRequiredValues } from "./propertyRestrictionRequiredValues";
 import { PropertyRestrictionUniqueProperties } from "./propertyRestrictionUniqueProperties";
 
@@ -166,16 +166,16 @@ export class MaterialPropertyFactory {
       if (version === "_") {
         return; // skip underscore and stop processing this iteration
       }
-      const versionedPropertyDigest = versionedValue;
-      const verisonedRestrictions: PropertyRestriction[] = [];
+      const _versionedPropertyDigest = versionedValue;
+      const versionedRestrictions: PropertyRestriction[] = [];
       if (
         !Object.prototype.hasOwnProperty.call(propertyRestrictions, version) &&
         propertyRestrictions[(version as unknown) as number] === undefined
       ) {
-        propertyRestrictions[(version as unknown) as number] = verisonedRestrictions;
+        propertyRestrictions[(version as unknown) as number] = versionedRestrictions;
       }
       if (versionedValue.values !== undefined) {
-        verisonedRestrictions.push(
+        versionedRestrictions.push(
           new PropertyRestrictionRequiredValues(
             propertyName,
             versionedValue.values,
@@ -189,7 +189,7 @@ export class MaterialPropertyFactory {
         // eslint-disable-next-line no-empty
         for (const uniquePropName of versionedValue.uniqueProperties) {
           if (uniquePropName !== propertyDigest._.dictionaryKey) {
-            verisonedRestrictions.push(
+            versionedRestrictions.push(
               new PropertyRestrictionUniqueProperties(propertyName, uniquePropName)
             );
           }

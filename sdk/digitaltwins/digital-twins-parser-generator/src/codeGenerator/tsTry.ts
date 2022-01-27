@@ -11,13 +11,13 @@ export class TsTry extends TsScope {
     this._nestingScope = nestingScope;
   }
 
-  catch(text: string) {
+  catch(text: string): TsCatch {
     const tsCatch = new TsCatch(text, this._nestingScope);
     this._nestingScope.statement(tsCatch);
     return tsCatch;
   }
 
-  finally() {
+  finally(): TsFinally {
     const tsFinally = new TsFinally();
     this._nestingScope.statement(tsFinally);
     return tsFinally;

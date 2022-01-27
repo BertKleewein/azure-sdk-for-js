@@ -12,7 +12,7 @@ import { ParserGeneratorValues } from "../parserGeneratorValues";
 import { ObjectProperty } from "./objectProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 import { PropertyRestrictionRequiredValues } from "./propertyRestrictionRequiredValues";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 // example is property schema in material class telemetry
 export class SingularObjectProperty extends ObjectProperty {
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
@@ -94,7 +94,7 @@ export class SingularObjectProperty extends ObjectProperty {
     dtdlVersion: number,
     typeName: string,
     classIsAugmentable: boolean
-  ) {
+  ): void {
     super.addRestrictions(checkRestrictionsMethodBody, dtdlVersion, typeName, classIsAugmentable);
     if (
       Object.values(this.propertyDigest).some((versionedDigest) => versionedDigest.allowed) &&

@@ -7,7 +7,7 @@ import { TsScope } from "../codeGenerator";
 export class SupplementalCotype {
   private _kindValue: string;
 
-  constructor(cotype: string, kindEnum: string) {
+  constructor(cotype: string, _kindEnum: string) {
     this._kindValue = `'${NameFormatter.formatNameAsKindString(cotype)}'`;
   }
 

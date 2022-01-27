@@ -6,7 +6,7 @@
 
 import { TsAccess, TsClass, TsConstructor, TsInterface, TsScope } from "../../codeGenerator";
 import { MaterialPropertyDigest } from "../metamodelDigest";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 import { PropertyKind } from "./propertyKind";
 import { PropertyRepresentation } from "./propertyRepresentation";
 import { NameFormatter } from "../nameFormatter";
@@ -101,12 +101,12 @@ export abstract class MaterialProperty {
     return this._baseClassImplementationName;
   }
   // functions
-  public abstract isParseable(dtdlversion: number): boolean;
+  public abstract isParseable(dtdlVersion: number): boolean;
 
-  public abstract hasCountRestriction(dtdlversion: number): boolean;
+  public abstract hasCountRestriction(dtdlVersion: number): boolean;
 
   public abstract generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void;
-  public addConstructorParam(obverseClass: TsClass, ctor: TsConstructor): string | undefined {
+  public addConstructorParam(_obverseClass: TsClass, _ctor: TsConstructor): string | undefined {
     return undefined;
   }
 
@@ -119,10 +119,10 @@ export abstract class MaterialProperty {
   }
 
   public addMembers(
-    dtdlVersions: number[],
+    _dtdlVersions: number[],
     obverseClass: TsClass,
     obverseInterface: TsInterface,
-    classIsAugmentable: boolean
+    _classIsAugmentable: boolean
   ): void {
     obverseClass.field({
       name: this.propertyName + "?",
@@ -138,7 +138,7 @@ export abstract class MaterialProperty {
   }
 
   // Right now, this only works for interface.
-  public addImports(obverseInterface: TsInterface): void {}
+  public addImports(_obverseInterface: TsInterface): void { /* empty */ }
 
   public setValue(dtdlVersion: number, scope: TsScope, infovar: string): void {
     if (
@@ -167,25 +167,25 @@ export abstract class MaterialProperty {
     valueVar: string,
     keyVar: string
   ): void;
-  // TODO
+
   public addCaseForInstancePropertySwitch(
-    switchOnProperty: TsScope,
-    instancePropVariable: string
-  ): void {}
+    _switchOnProperty: TsScope,
+    _instancePropVariable: string
+  ): void { /* empty */}
 
   /**
    * Add code to the CheckRestrictions method in the material class that has this property.
    * @param checkRestrictionsMethodBody - A CsScope object to which to add the code.
    * @param dtdlVersion - The DTDL version that specifies the restrictions.
    * @param typeName - The type name (DTDL term) corresponding to the material class.
-   * @param classIsAugmentable - True if the material class is augmentable.
+   * @param _classIsAugmentable - True if the material class is augmentable.
    */
   addRestrictions(
     checkRestrictionsMethodBody: TsScope,
     dtdlVersion: number,
     typeName: string,
-    classIsAugmentable: boolean
-  ) {
+    _classIsAugmentable: boolean
+  ): void {
     if (this._propertyRestrictions !== undefined && this._propertyRestrictions[dtdlVersion]) {
       const restrictions = this._propertyRestrictions[dtdlVersion];
       for (const propertyRestriction of restrictions) {
@@ -196,11 +196,11 @@ export abstract class MaterialProperty {
 
   // TODO
   public addCaseForValueConstraintSwitch(
-    switchOnProperty: TsScope,
-    instancePropVariable: string
+    _switchOnProperty: TsScope,
+    _instancePropVariable: string
   ): void {}
 
-  public addCaseToDictionaryKeySwitch(switchOnProperty: TsScope): void {}
+  public addCaseToDictionaryKeySwitch(_switchOnProperty: TsScope): void {}
 
-  public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {}
+  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void {}
 }

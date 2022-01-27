@@ -11,12 +11,10 @@ import {
   TsClass,
   TsAccess,
   TsConstructor,
-  TsDeclarationType,
   TsInterface
 } from "../../codeGenerator";
-import { MaterialPropertyDigest, PropertyVersionDigest } from "../metamodelDigest";
+import { MaterialPropertyDigest } from "../metamodelDigest";
 import { MaterialProperty } from "./materialProperty";
-import { PropertyRestriction } from "./propertyRestricton";
 import { PropertyKind } from "./propertyKind";
 import { PropertyRepresentation } from "./propertyRepresentation";
 
@@ -53,20 +51,20 @@ export class InternalProperty extends MaterialProperty {
   public get propertyType(): string {
     return this._propertyType;
   }
-  public isParseable(dtdlVersion: number): boolean {
+  public isParseable(_dtdlVersion: number): boolean {
     return false;
   }
 
-  public hasCountRestriction(dtdlVersion: number): boolean {
+  public hasCountRestriction(_dtdlVersion: number): boolean {
     return false;
   }
 
-  public addConstructorParam(obverseClass: TsClass, ctor: TsConstructor): string {
+  public addConstructorParam(_obverseClass: TsClass, ctor: TsConstructor): string {
     const type = this.propertyType;
     ctor.parameter({ name: this.propertyName, type: type });
     return this.propertyName;
   }
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = ${this.propertyName};`);
   }
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
@@ -77,29 +75,29 @@ export class InternalProperty extends MaterialProperty {
     return outerScope;
   }
   public addCaseToParseSwitch(
-    dtdlVersion: number,
-    obverseClass: TsClass,
-    switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
-  ): void {}
+    _dtdlVersion: number,
+    _obverseClass: TsClass,
+    _switchScope: TsScope,
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
+  ): void { /* empty */ }
 
   public addCaseToTrySetObjectPropertySwitch(
-    switchScope: TsScope,
-    valueVar: string,
-    keyVar: string
+    _switchScope: TsScope,
+    _valueVar: string,
+    _keyVar: string
   ): void {
     // pass
   }
 
   public addRestrictions(
-    checkRestrictionsMethodBody: TsScope,
-    dtdlVersion: number,
-    typeName: string,
-    classIsAugmentable: boolean
-  ): void {}
+    _checkRestrictionsMethodBody: TsScope,
+    _dtdlVersion: number,
+    _typeName: string,
+    _classIsAugmentable: boolean
+  ): void { /* empty */ }
 
   public initMissingPropertyVariable(dtdlVersion: number, scope: TsScope): void {
     if (
@@ -110,13 +108,13 @@ export class InternalProperty extends MaterialProperty {
       scope.line(`let ${this.missingPropertyVariable} = true;`);
     }
   }
-  public addImports(obverseInterface: TsInterface): void {}
+  public addImports(_obverseInterface: TsInterface): void { /* empty */ }
 
   public addMembers(
-    dtdlVersions: number[],
+    _dtdlVersions: number[],
     obverseClass: TsClass,
     obverseInterface: TsInterface,
-    classIsAugmentable: boolean
+    _classIsAugmentable: boolean
   ): void {
     if (!obverseInterface.extends && this.propertyName !== "entityKind") {
       obverseInterface.field({ name: this.propertyName, type: this.propertyType });

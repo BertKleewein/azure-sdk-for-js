@@ -29,26 +29,26 @@ export class TsParameter {
     }
   }
 
-  get name() {
+  get name(): string {
     return this._name;
   }
 
-  get type() {
+  get type(): string | undefined {
     return this._type;
   }
 
-  get description() {
+  get description(): string | undefined {
     return this._description;
   }
 
-  private _chooseOptionalPunctuator() {
+  private _chooseOptionalPunctuator(): "?:" | ":" {
     if (this._optional) {
       return "?:";
     }
     return ":";
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  generateCode(codeWriter: CodeWriter): void {
     const suffix = this._initializer ? ` = ${this._initializer}` : "";
     const punctuation = this._chooseOptionalPunctuator();
     codeWriter.writeLine(`${this._name}${punctuation} ${this._type}${suffix}`);

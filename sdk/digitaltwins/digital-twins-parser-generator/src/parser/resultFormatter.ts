@@ -23,7 +23,7 @@ export class ResultFormatter {
     this._formattedResult = formatString;
   }
 
-  public install(key: string, value: string) {
+  public install(key: string, value: string): void {
     const undecoratedKey = "{" + key + "}";
     if (this._formatString.includes(undecoratedKey)) {
       this._formattedResult = this._formattedResult.replace(undecoratedKey, value);

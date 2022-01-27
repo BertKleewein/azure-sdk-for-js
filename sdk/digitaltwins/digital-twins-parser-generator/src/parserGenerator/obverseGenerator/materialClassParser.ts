@@ -17,7 +17,7 @@ import { MaterialProperty } from "./materialProperty";
 import { PropertyKind } from "./propertyKind";
 
 export class MaterialClassParser {
-  public static generateConstructorCode(ctorScope: TsScope, classIsBase: boolean) {
+  public static generateConstructorCode(ctorScope: TsScope, _classIsBase: boolean): void {
     ctorScope.line(`this.undefinedTypes = [];`);
     ctorScope.line(`this.undefinedProperties = {};`);
     // if (classIsBase) {
@@ -25,6 +25,7 @@ export class MaterialClassParser {
     //   ctorScope.line(`this._undefinedProperties = {};`);
     // }
   }
+
   public static addMembers(
     dtdlVersions: number[],
     obverseClass: TsClass,
@@ -40,7 +41,7 @@ export class MaterialClassParser {
     dtdlVersionToExtensibleClasses: TypeVersionToExtensibleMaterialClasses,
     dtdlVersionExtensibleMaterialSubtypes: TypeVersionToExtensibleMaterialSubTypes,
     properties: MaterialProperty[]
-  ) {
+  ): void {
     this._generateUndefinedTypeAndPropertiesProperties(obverseClass, obverseInterface, classIsBase);
     this._generateDoesHaveTypeMethod(obverseClass, classIsAbstract);
     this._generateSourceObjectProperty(obverseClass, classIsBase);
@@ -86,7 +87,7 @@ export class MaterialClassParser {
     }
 
     this._generateParseTokenMethod(obverseClass, typeName, classIsBase, classIsAbstract);
-    this._generateParseidStringMethod(obverseClass, typeName, classIsBase, classIsAbstract);
+    this._generateParseIdStringMethod(obverseClass, typeName, classIsBase, classIsAbstract);
   }
 
   private static _generateDoesHaveTypeMethod(obverseClass: TsClass, classIsAbstract: boolean) {
@@ -124,8 +125,8 @@ export class MaterialClassParser {
     obverseClass: TsClass,
     rawTypeName: string,
     typeName: string,
-    classIsBase: boolean,
-    classIsAbstract: boolean
+    _classIsBase: boolean,
+    _classIsAbstract: boolean
   ): void {
     const typeNameImpl = typeName + "Impl";
     obverseClass.import(`import {IdValidator} from './internal';`);
@@ -298,8 +299,8 @@ export class MaterialClassParser {
     tsClass: TsClass,
     typeName: string,
     kindEnum: string,
-    kindProperty: string,
-    classIsBase: boolean
+    _kindProperty: string,
+    _classIsBase: boolean
   ): void {
     const typeNameImpl = typeName + "Impl";
     const parseTypeArrayMethod = tsClass
@@ -425,7 +426,7 @@ export class MaterialClassParser {
 
   private static _generateDoesPropertyDictContainKeyMethod(
     obverseClass: TsClass,
-    classIsBase: boolean,
+    _classIsBase: boolean,
     properties: MaterialProperty[]
   ): void {
     const method = obverseClass.method({
@@ -577,8 +578,8 @@ export class MaterialClassParser {
   private static _generateParsePropertiesMethod(
     dtdlVersion: number,
     obverseClass: TsClass,
-    typeName: string,
-    classIsBase: boolean,
+    _typeName: string,
+    _classIsBase: boolean,
     classIsAbstract: boolean,
     classIsPartition: boolean,
     materialProperties: MaterialProperty[]
@@ -664,9 +665,9 @@ export class MaterialClassParser {
 
   private static _generateParseTokenMethod(
     obverseClass: TsClass,
-    typeName: string,
-    classIsBase: boolean,
-    classIsAbstract: boolean
+    _typeName: string,
+    _classIsBase: boolean,
+    _classIsAbstract: boolean
   ): void {
     const methodName = "parseToken";
     const parseTokenMethod = obverseClass
@@ -698,7 +699,7 @@ export class MaterialClassParser {
       )
       .line("valueCount++;");
 
-    const isArrayElseIfScope = typeTokenIfScope
+    const _isArrayElseIfScope = typeTokenIfScope
       .elseIf("Array.isArray(token)")
       .for("const elementToken of token")
       .line(
@@ -733,7 +734,7 @@ export class MaterialClassParser {
     obverseClass: TsClass,
     classIsAbstract: boolean,
     properties: MaterialProperty[]
-  ) {
+  ): void {
     if (!classIsAbstract && properties.some((prop) => prop.propertyKind === PropertyKind.Object)) {
       const method = obverseClass
         .method({ name: "addConstraint", returnType: "void", abstract: false, isStatic: false })
@@ -754,7 +755,7 @@ export class MaterialClassParser {
     obverseClass: TsClass,
     classIsAbstract: boolean,
     properties: MaterialProperty[]
-  ) {
+  ): void {
     if (!classIsAbstract && properties.some((prop) => prop.propertyKind === PropertyKind.Object)) {
       const method = obverseClass
         .method({
@@ -776,18 +777,18 @@ export class MaterialClassParser {
     }
   }
 
-  private static _generateSourceObjectProperty(obverseClass: TsClass, classIsBase: boolean): void {
+  private static _generateSourceObjectProperty(obverseClass: TsClass, _classIsBase: boolean): void {
     const fName = "sourceObject";
     const fType = "any";
     // TODO: Since this is public and accessible from model parser should this go to interface as well?
     obverseClass.field({ name: `${fName}`, access: TsAccess.Public, type: `${fType}` });
   }
 
-  private static _generateParseidStringMethod(
+  private static _generateParseIdStringMethod(
     obverseClass: TsClass,
-    typeName: string,
-    classIsBase: boolean,
-    classIsAbstract: boolean
+    _typeName: string,
+    _classIsBase: boolean,
+    _classIsAbstract: boolean
   ): void {
     const method = obverseClass
       .method({ name: "parseIdString", returnType: "void", abstract: false, isStatic: true })

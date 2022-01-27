@@ -12,7 +12,7 @@ export class TsTypeAlias extends TsDeclaration {
     this._typeAlias = typeToBeAliased;
   }
 
-  get name() {
+  get name(): string {
     return this._name;
   }
 
@@ -24,7 +24,7 @@ export class TsTypeAlias extends TsDeclaration {
     }
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  generateCode(codeWriter: CodeWriter): void {
     super.generateCode(codeWriter);
     codeWriter.writeLine(`${this._decoratedName} = ${this._typeAlias}`);
   }

@@ -24,7 +24,7 @@ export class ConcreteSubclass {
     rawSubTypeName: string,
     kindEnum: string,
     dtdlContexts: { [contextId: string]: Context },
-    identifierRestrictionsToken?: any
+    identifierRestrictionsToken?: unknown
   ) {
     this._dtdlVersion = dtdlVersion;
     this._rawSubTypeName = rawSubTypeName;
@@ -32,11 +32,12 @@ export class ConcreteSubclass {
     this._kindValue = NameFormatter.formatNameAsKindString(rawSubTypeName);
     this._subClassUri =
       dtdlContexts[ParserGeneratorValues.getDtdlContextIdString(dtdlVersion)][rawSubTypeName];
-    if (Object.prototype.hasOwnProperty.call(identifierRestrictionsToken, rawSubTypeName)) {
-      const idRestriction = identifierRestrictionsToken[rawSubTypeName];
+    if (identifierRestrictionsToken && Object.prototype.hasOwnProperty.call(identifierRestrictionsToken, rawSubTypeName)) {
+      const idRestriction: {[x: string]: unknown} = (identifierRestrictionsToken as {[x: string]: unknown})[rawSubTypeName] as {[x: string]: unknown};
       if (Object.prototype.hasOwnProperty.call(idRestriction, dtdlVersion)) {
-        this._maxLength = idRestriction[dtdlVersion].maxLength;
-        this._pattern = idRestriction[dtdlVersion].pattern;
+        const idRestrictionObj: {[x: string]: unknown} = idRestriction[dtdlVersion] as {[x: string]: unknown};
+        this._maxLength = idRestrictionObj.maxLength as number | undefined;
+        this._pattern = idRestrictionObj.pattern as string | undefined;
       } else {
         this._maxLength = undefined;
         this._pattern = undefined;

@@ -12,7 +12,7 @@ export class StringLiteralType implements LiteralType {
   canBeNull(isOptional: boolean): boolean {
     return true;
   }
-  getSingularType(isOptional: boolean): string {
+  getSingularType(_isOptional: boolean): string {
     return "string";
   }
   getInitialValue(isOptional: boolean): string {

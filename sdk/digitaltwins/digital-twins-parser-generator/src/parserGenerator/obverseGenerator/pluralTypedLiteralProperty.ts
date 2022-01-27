@@ -10,7 +10,7 @@ import { TsScope, TsClass } from "../../codeGenerator";
 import { MaterialPropertyDigest, PropertyVersionDigest } from "../metamodelDigest";
 import { LiteralType } from "./literalType";
 import { PropertyRepresentation } from "./propertyRepresentation";
-import { PropertyRestriction } from "./propertyRestricton";
+import { PropertyRestriction } from "./propertyRestriction";
 import { TypedLiteralProperty } from "./typedLiteralProperty";
 
 interface PluralTypedLiteralPropertyParams {
@@ -55,7 +55,7 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
     return `${this.literalType.getSingularType(false)}[]`;
   }
 
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = new ${this.propertyType}();`);
   }
 
@@ -68,12 +68,12 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
-    obverseClass: TsClass,
-    switchScope: TsScope,
-    classIsAugmentable: boolean,
-    classIsPartition: boolean,
-    valueCountVar: string,
-    definedInVar: string
+    _obverseClass: TsClass,
+    _switchScope: TsScope,
+    _classIsAugmentable: boolean,
+    _classIsPartition: boolean,
+    _valueCountVar: string,
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&

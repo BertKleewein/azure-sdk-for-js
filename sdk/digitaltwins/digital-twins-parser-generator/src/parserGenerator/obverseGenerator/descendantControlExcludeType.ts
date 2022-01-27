@@ -25,7 +25,7 @@ export class DescendantControlExcludeType implements DescendantControl {
     propertyNames: string[],
     isNarrow: boolean,
     excludeType: string,
-    kindEnum: string,
+    _kindEnum: string,
     kindProperty: string
   ) {
     this._dtdlVersion = dtdlVersion;
@@ -49,9 +49,9 @@ export class DescendantControlExcludeType implements DescendantControl {
   }
   addMembers(
     obverseClass: TsClass,
-    typeName: string,
-    classIsBase: boolean,
-    classIsAbstract: boolean,
+    _typeName: string,
+    _classIsBase: boolean,
+    _classIsAbstract: boolean,
     materialProperties: MaterialProperty[]
   ): void {
     if (obverseClass.hasMethod(this._methodName)) {
@@ -150,9 +150,9 @@ export class DescendantControlExcludeType implements DescendantControl {
     }
   }
   addTransformation(
-    applyTransformationsMethodBody: TsScope,
-    dtdlVersion: number,
-    typeName: string,
-    materialProperties: MaterialProperty[]
-  ): void {}
+    _applyTransformationsMethodBody: TsScope,
+    _dtdlVersion: number,
+    _typeName: string,
+    _materialProperties: MaterialProperty[]
+  ): void { /* empty */}
 }

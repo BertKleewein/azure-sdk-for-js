@@ -371,7 +371,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     return obverseClass;
   }
 
-  generateApplyTransformationMethods(obverseClass: TsClass) {
+  generateApplyTransformationMethods(obverseClass: TsClass): void {
     if (this._parentTypeName === undefined) {
       const baseClassMethod = obverseClass.method({
         name: "applyTransformations",
@@ -415,7 +415,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     }
   }
 
-  generateCheckRestrictionsMethods(obverseClass: TsClass, classIsAugmentable: boolean) {
+  generateCheckRestrictionsMethods(obverseClass: TsClass, classIsAugmentable: boolean): void {
     if (this._parentTypeName === undefined) {
       const baseClassMethod = obverseClass.method({
         name: "checkRestrictions",
