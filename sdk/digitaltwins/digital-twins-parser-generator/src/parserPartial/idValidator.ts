@@ -58,7 +58,7 @@ export class IdValidator {
     dtdlVersion: number
   ): string {
     let idString = "";
-    const idToken = obj["@id"];
+    const idToken = (obj as {[x: string]: unknown})["@id"];
     if (idToken) {
       if (typeof idToken !== "string") {
         parsingErrors.push(
@@ -66,7 +66,7 @@ export class IdValidator {
             cause: `Identifier ${idToken} is invalid.`,
             action:
               "Replace the identifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.",
-            value: idToken
+            value: idToken as string | undefined
           })
         );
         throw new ParsingException(parsingErrors);
@@ -110,7 +110,7 @@ export class IdValidator {
       }
       let secondSeg = "";
       if (dtmiSeg) {
-        const segToken = obj[dtmiSeg];
+        const segToken = (obj as {[x: string]: unknown})[dtmiSeg];
         if (!segToken || typeof segToken !== "string") {
           parsingErrors.push(
             createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {

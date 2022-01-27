@@ -11,21 +11,25 @@ import { ObjectProperty } from "./objectProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 // example is property extends in material class interface
 export class PluralObjectProperty extends ObjectProperty {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     const forScope = outerScope.for(`const ${varName.ref} of this.${this.propertyName} || []`);
     // TODO FOR NEW Change varName
     varName.ref = `(${varName.ref} as ${this.implementationName})`;
     return forScope;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
-    // TODO: HERE THIS IS .ANY(). Is replacing it with !== undefined enough?
     return outerScope.if(
       `this.${this.propertyName} !== undefined && this.${this.propertyName}.length !== 0`
     );
   }
+
   public get propertyRepresentation(): PropertyRepresentation {
     return PropertyRepresentation.List;
   }
+
   public get propertyType(): string | undefined {
     if (this.interfaceName !== undefined) {
       return `${this.interfaceName}[]`;
@@ -38,6 +42,7 @@ export class PluralObjectProperty extends ObjectProperty {
     } else return undefined;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
     if (obverseClass.name !== this.implementationName) {
       obverseClass.import(`import {${this.implementationName}} from './internal';`);
@@ -46,6 +51,7 @@ export class PluralObjectProperty extends ObjectProperty {
     ctorScope.line(`this.${this.propertyName} = [];`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     if (obverseInterface.name !== this.interfaceName) {
       obverseInterface.import(`import {${this.interfaceName}} from './internal';`);
@@ -53,6 +59,7 @@ export class PluralObjectProperty extends ObjectProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
     _keyVar: string

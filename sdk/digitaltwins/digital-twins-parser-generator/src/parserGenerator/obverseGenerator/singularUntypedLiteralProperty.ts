@@ -12,6 +12,7 @@ import { PropertyRepresentation } from "./propertyRepresentation";
 import { UntypedLiteralProperty } from "./untypedLiteralProperty";
 
 export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     varName.ref = `this.${this.propertyName}`;
 
@@ -21,6 +22,8 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
       return outerScope;
     }
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     if (this.propertyDigest._.optional) {
       return outerScope.if(`this.${this.propertyName} !== undefined`);
@@ -28,20 +31,25 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
       return outerScope;
     }
   }
+
   public get propertyRepresentation(): PropertyRepresentation {
     return this.optional ? PropertyRepresentation.NullableItem : PropertyRepresentation.Item;
   }
+
   public get propertyType(): string {
     return "any";
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(_obverseClass: TsClass, _ctorScope: TsScope): void {
     // NOTE for Node : any SINGULAR NON-LITERAL types should not be initialized inside a Constructor.
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
@@ -52,14 +60,14 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
       this.propertyDigest[dtdlVersion].allowed
     ) {
-      const _maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
-      const _patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `this.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}`
-        : undefined;
-      const _defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
-      // TODO These may be used in the new values parser.
-      const _minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
-      const _maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
+      // const _maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
+      // const _patternStr = this.propertyDigest[dtdlVersion].pattern
+      //   ? `this.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}`
+      //   : undefined;
+      // const _defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
+      // // TODO These may be used in the new values parser.
+      // const _minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
+      // const _maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
       
       switchScope
         .line(`case '${this.propertyName}':`)

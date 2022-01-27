@@ -25,9 +25,11 @@ export class DictionaryObjectProperty extends ObjectProperty {
     super(propertyName, propertyNameUris, propertyToken, propertyRestrictions);
     this._keyProperty = propertyToken._.dictionaryKey;
   }
+
   public get propertyRepresentation(): PropertyRepresentation {
     return PropertyRepresentation.Dictionary;
   }
+  
   public get propertyType(): string | undefined {
     if (this.interfaceName !== undefined) {
       return `{[value: string]: ${this.interfaceName}}`;
@@ -44,6 +46,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
     return this._keyProperty;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
     if (!this.inherited) {
       if (obverseClass.name !== this.interfaceName) {
@@ -54,6 +57,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
   }
 
   // Generate code to iterate through all elements of the property and assign each one to a variable.
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsFor {
     const forScope = outerScope.for(
       `const ${varName.ref} of Object.values(this.${this.propertyName} || {})`
@@ -63,13 +67,16 @@ export class DictionaryObjectProperty extends ObjectProperty {
   }
 
   // Generate code to determine whether the property has at least one value.
-  public checkPresence(outerScope: TsScope) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  public checkPresence(outerScope: TsScope) : TsScope {
     return outerScope.if(`this.${this.propertyName} !== undefined`);
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
     classIsPartition: boolean,
@@ -143,6 +150,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
     keyVar: string
@@ -156,6 +164,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
     switchScope.line("break;");
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addCaseToDictionaryKeySwitch(switchScope: TsScope): void {
     switchScope.line(`case '${this.propertyName}':`);
     switchScope

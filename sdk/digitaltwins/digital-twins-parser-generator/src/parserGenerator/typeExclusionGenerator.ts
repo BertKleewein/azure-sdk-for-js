@@ -10,6 +10,8 @@ export class TypeExclusionGenerator implements TypeGenerator {
       "TypeExclusion represents a restriction that excludes a specific type from specified descendants of a class, used for exemplification not parsing. Therefore it is not implemented in JS Parser."
     );
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(_parserLibrary: TsLibrary): void {
     throw new Error("Not Implemented!");
   }

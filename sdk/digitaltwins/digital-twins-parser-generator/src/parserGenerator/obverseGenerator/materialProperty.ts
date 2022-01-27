@@ -105,13 +105,18 @@ export abstract class MaterialProperty {
 
   public abstract hasCountRestriction(dtdlVersion: number): boolean;
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public abstract generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void;
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addConstructorParam(_obverseClass: TsClass, _ctor: TsConstructor): string | undefined {
     return undefined;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public abstract iterate(outerScope: TsScope, varName: { ref: string }): TsScope;
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public abstract checkPresence(outerScope: TsScope): TsScope;
 
   get keyProperty(): string | undefined {
@@ -120,7 +125,9 @@ export abstract class MaterialProperty {
 
   public addMembers(
     _dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     _classIsAugmentable: boolean
   ): void {
@@ -137,9 +144,10 @@ export abstract class MaterialProperty {
     }
   }
 
-  // Right now, this only works for interface.
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(_obverseInterface: TsInterface): void { /* empty */ }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public setValue(dtdlVersion: number, scope: TsScope, infovar: string): void {
     if (
       Object.prototype.hasOwnProperty.call(this._propertyToken, dtdlVersion) &&
@@ -150,11 +158,14 @@ export abstract class MaterialProperty {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public abstract initMissingPropertyVariable(dtdlVersion: number, scope: TsScope): void;
 
   public abstract addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
     classIsPartition: boolean,
@@ -163,12 +174,14 @@ export abstract class MaterialProperty {
   ): void;
 
   public abstract addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnProperty: TsScope,
     valueVar: string,
     keyVar: string
   ): void;
 
   public addCaseForInstancePropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchOnProperty: TsScope,
     _instancePropVariable: string
   ): void { /* empty */}
@@ -181,6 +194,7 @@ export abstract class MaterialProperty {
    * @param _classIsAugmentable - True if the material class is augmentable.
    */
   addRestrictions(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
     dtdlVersion: number,
     typeName: string,
@@ -194,13 +208,15 @@ export abstract class MaterialProperty {
     }
   }
 
-  // TODO
   public addCaseForValueConstraintSwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchOnProperty: TsScope,
     _instancePropVariable: string
-  ): void {}
+  ): void { /* empty */ }
 
-  public addCaseToDictionaryKeySwitch(_switchOnProperty: TsScope): void {}
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  public addCaseToDictionaryKeySwitch(_switchOnProperty: TsScope): void { /* empty */ }
 
-  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void {}
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void { /* empty */ }
 }

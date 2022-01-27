@@ -11,6 +11,7 @@ export class SupplementalCotype {
     this._kindValue = `'${NameFormatter.formatNameAsKindString(cotype)}'`;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addCotype(scope: TsScope, infoVariableName: string): void {
     scope.line(`${infoVariableName}.addCotype(${this._kindValue})`);
   }

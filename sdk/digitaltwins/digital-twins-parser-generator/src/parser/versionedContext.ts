@@ -27,6 +27,7 @@ export class VersionedContext {
     return this._minorVersion;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addDefinition(term: string, dtmi: InDTMI): void {
     this._termDict[term] = dtmi;
     this._reverseTermDict[dtmi.value] = term;

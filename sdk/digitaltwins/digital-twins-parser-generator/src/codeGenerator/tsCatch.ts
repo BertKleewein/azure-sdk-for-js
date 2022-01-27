@@ -5,13 +5,15 @@ import { TsFinally, TsScope } from "./internal";
 
 export class TsCatch extends TsScope {
   private _nestingScope: TsScope;
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   constructor(err: string, nestingScope: TsScope) {
     super(` catch (${err})`, true);
 
     this._nestingScope = nestingScope;
   }
 
-  finally() {
+  finally(): TsFinally {
     const tsFinally = new TsFinally();
     this._nestingScope.statement(tsFinally);
     return tsFinally;

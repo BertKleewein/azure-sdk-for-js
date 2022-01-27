@@ -30,6 +30,8 @@ export class ModelGenerator implements TypeGenerator {
     this._partitionClasses = partitionClasses;
     this._partitionRestrictions = partitionRestrictions;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
@@ -38,6 +40,7 @@ export class ModelGenerator implements TypeGenerator {
    * NOTE: This is generating a "Partial Class". Therefore the code generated will merge in code blocks from
    * parserPartial/model.ts, as well as handwritten auxiliary code
    */
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const referenceClassName = NameFormatter.formatNameAsImplementation(
       ParserGeneratorValues.referenceObverseName
@@ -88,11 +91,13 @@ export class ModelGenerator implements TypeGenerator {
   //   }
   // }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateModelConstructor(modelClass: TsClass): void {
     const constructor = modelClass.ctor;
     constructor.body.inline("./src/parserPartial/model.ts", "constructor");
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateIsPartitionMethod(modelClass: TsClass): void {
     const isPartitionMethod = modelClass.method({ name: "isPartition", returnType: "boolean" });
     isPartitionMethod.parameter({ name: "elementId", type: "string" });
@@ -101,6 +106,7 @@ export class ModelGenerator implements TypeGenerator {
     );
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateAddTypeMethod(modelClass: TsClass): void {
     const addTypeMethod = modelClass.method({ name: "addType", returnType: "void" });
     // TODO: correct? originally: setPartitionInfoMethod.Param("JToken", "partitionJToken", "<c>JToken</c> containing the partition JSON.");
@@ -135,6 +141,7 @@ export class ModelGenerator implements TypeGenerator {
   //     .line(`this.dict[elementId]?.setPartitionInfo(partitionToken);`);
   // }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateDoesPropertyDictContainKeyMethod(modelClass: TsClass): void {
     const doesPropertyDictContainKeyMethod = modelClass.method({
       name: "doesPropertyDictContainKey",
@@ -149,6 +156,7 @@ export class ModelGenerator implements TypeGenerator {
     );
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateTrySetObjectPropertyMethod(modelClass: TsClass, referenceClassName: string): void {
     const trySetObjectPropertyMethod = modelClass.method({
       name: "trySetObjectProperty",
@@ -168,6 +176,7 @@ export class ModelGenerator implements TypeGenerator {
       );
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateIsKindInSetMethod(modelClass: TsClass): void {
     const isKindInSetMethod = modelClass.method({ name: "isKindInSet", returnType: "boolean" });
     isKindInSetMethod
@@ -181,11 +190,12 @@ export class ModelGenerator implements TypeGenerator {
     isKindInSetMethod.body.line("return false;");
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateGetKindStringMethod(modelClass: TsClass): void {
     const getKindStringMethod = modelClass.method({ name: "getKindString", returnType: "string" });
     getKindStringMethod.parameter({ name: "elementId", type: "string" });
     // TODO This weird fix is for an error that happens due to static loading of standard elements
-    // which calls the construtor of BooleanInfo and says Cannot set property '2' of undefined
+    // which calls the constructor of BooleanInfo and says Cannot set property '2' of undefined
     // which means Cannot set BOOLEAN of undefined. And hence all entityKind field, param in constructor, getter
     // has been made to accept undefined.
     getKindStringMethod.body
@@ -198,6 +208,7 @@ export class ModelGenerator implements TypeGenerator {
       );
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateCheckRestrictions(modelClass: TsClass): void {
     const checkRestrictionsMethod = modelClass.method({
       name: "checkRestrictions",
@@ -208,6 +219,7 @@ export class ModelGenerator implements TypeGenerator {
     // .line(`throw new Error('Method not implemented.');`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateApplyTransformations(modelClass: TsClass): void {
     const applyTransformationsMethod = modelClass.method({
       name: "applyTransformations",

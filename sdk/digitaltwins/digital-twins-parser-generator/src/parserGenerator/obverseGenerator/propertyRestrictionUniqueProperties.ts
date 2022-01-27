@@ -24,8 +24,10 @@ export class PropertyRestrictionUniqueProperties implements PropertyRestriction 
   }
 
   addRestriction(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
     typeName: string,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperty: MaterialProperty
   ): void {
     checkRestrictionsMethodBody.line(`const ${this._hashSetName} = new Set<any>();`);

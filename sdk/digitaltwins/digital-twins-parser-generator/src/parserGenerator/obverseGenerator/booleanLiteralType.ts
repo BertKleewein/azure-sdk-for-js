@@ -9,13 +9,13 @@
 import { LiteralType } from "./literalType";
 
 export class BooleanLiteralType implements LiteralType {
-  canBeNull(isOptional: boolean): boolean {
+  canBeNull(_isOptional: boolean): boolean {
     return false;
   }
-  getSingularType(isOptional: boolean): string {
+  getSingularType(_isOptional: boolean): string {
     return "boolean";
   }
-  getInitialValue(isOptional: boolean): string {
+  getInitialValue(_isOptional: boolean): string {
     return "false";
   }
 }

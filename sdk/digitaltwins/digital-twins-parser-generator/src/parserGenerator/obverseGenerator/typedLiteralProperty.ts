@@ -47,7 +47,9 @@ export abstract class TypedLiteralProperty extends LiteralProperty {
 
   public addMembers(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     classIsAugmentable: boolean
   ): void {

@@ -45,6 +45,7 @@ export class StandardElements {
     this._standardModel.setObjectProperties(objectPropertyInfoList, parsingErrors);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public static tryAddElementToModel(model: Model, elementId: string): boolean {
     if (this._standardModel.dict[elementId] === undefined) {
       return false;
@@ -66,6 +67,7 @@ export class StandardElements {
   static parseResourceIntoStandardModel(
     resource: any[],
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     aggregateContext: AggregateContext,
     parsingErrors: ParsingError[]
   ): void {

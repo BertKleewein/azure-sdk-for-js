@@ -8,7 +8,8 @@ export class TsForEach extends TsScope {
     super(`${text}.forEach((${parameters}) => `);
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     if (this._firstLine) {
       codeWriter.writeLine(`${this._firstLine} `, true, this._suppressBreak);
     }

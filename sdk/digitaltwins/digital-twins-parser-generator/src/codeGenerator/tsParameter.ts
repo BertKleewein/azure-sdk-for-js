@@ -48,6 +48,7 @@ export class TsParameter {
     return ":";
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     const suffix = this._initializer ? ` = ${this._initializer}` : "";
     const punctuation = this._chooseOptionalPunctuator();

@@ -39,6 +39,7 @@ export class SupplementalProperty {
     }`;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addProperty(scope: TsScope, infoVariableName: string): void {
     const typeUriString = this._typeUri !== undefined ? `'${this._typeUri}'` : "undefined";
 

@@ -18,10 +18,12 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     this._baseEnumName = NameFormatter.formatNameForEnumDisjunction(baseName);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const infoInterface: TsInterface = parserLibrary.interface({
       name: "SupplementalTypeInfo",

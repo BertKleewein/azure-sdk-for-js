@@ -18,7 +18,9 @@ import { ParserGeneratorValues } from "../parserGeneratorValues";
 export class MaterialClassValidator {
   public static addMembers(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     kindProperty: string,
     classIsBase: boolean,
@@ -59,7 +61,9 @@ export class MaterialClassValidator {
   }
 
   static generateValidateInstanceStringMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     classIsBase: boolean,
     classIsAbstract: boolean
@@ -93,6 +97,7 @@ export class MaterialClassValidator {
   }
 
   static generateValidateInstanceElementMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     kindProperty: string,
     classIsBase: boolean,
@@ -123,6 +128,7 @@ export class MaterialClassValidator {
 
   static generateValidateInstanceInternalMethod(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     classIsBase: boolean,
     classIsAbstract: boolean,
@@ -157,13 +163,15 @@ export class MaterialClassValidator {
       method.body.line(`throw new Error('cannot validate anything in an abstract class');`);
     }
   }
+  
   static generateValidateInstanceVersionMethod(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     classIsAbstract: boolean,
     instanceValidationDigest: InstanceValidationDigest | undefined,
     propertyDigests: { [x: string]: MaterialPropertyDigest }
-  ) {
+  ): void {
     const method = obverseClass
       .method({
         name: `${ParserGeneratorValues.ValidateInstanceMethodName}V${dtdlVersion}`,
@@ -226,7 +234,9 @@ export class MaterialClassValidator {
 
   static addValidationChecks(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     scope: TsScope,
     instanceConditionDigest: InstanceConditionDigest,
     propertyDigests: { [x: string]: MaterialPropertyDigest },
@@ -369,7 +379,9 @@ export class MaterialClassValidator {
 
   static addPatternCheck(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     scope: TsScope,
     pattern: string,
     eltVar: string,

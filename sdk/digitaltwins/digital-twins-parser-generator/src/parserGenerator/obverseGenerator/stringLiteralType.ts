@@ -9,7 +9,7 @@
 import { LiteralType } from "./literalType";
 
 export class StringLiteralType implements LiteralType {
-  canBeNull(isOptional: boolean): boolean {
+  canBeNull(_isOptional: boolean): boolean {
     return true;
   }
   getSingularType(_isOptional: boolean): string {

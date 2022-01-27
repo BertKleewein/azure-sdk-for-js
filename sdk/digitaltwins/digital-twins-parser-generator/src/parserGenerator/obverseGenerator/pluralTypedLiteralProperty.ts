@@ -7,7 +7,7 @@
 // Licensed under the MIT license.
 
 import { TsScope, TsClass } from "../../codeGenerator";
-import { MaterialPropertyDigest, PropertyVersionDigest } from "../metamodelDigest";
+import { MaterialPropertyDigest } from "../metamodelDigest";
 import { LiteralType } from "./literalType";
 import { PropertyRepresentation } from "./propertyRepresentation";
 import { PropertyRestriction } from "./propertyRestriction";
@@ -41,9 +41,13 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
       literalType: literalType
     });
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     return outerScope.for(`const ${varName.ref} of this.${this.propertyName} || []`);
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     return outerScope.if(`this._${this.propertyName} !== undefined`);
   }
@@ -55,10 +59,12 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
     return `${this.literalType.getSingularType(false)}[]`;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = new ${this.propertyType}();`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addEqualsLine(ctorScope: TsScope): void {
     if (!this.propertyDigest._.inherited) {
       // TODO: This seems wrong. How should I properly do this Oliva?
@@ -68,7 +74,9 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,

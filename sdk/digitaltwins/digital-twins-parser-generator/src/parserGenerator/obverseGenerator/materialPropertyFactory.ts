@@ -166,7 +166,7 @@ export class MaterialPropertyFactory {
       if (version === "_") {
         return; // skip underscore and stop processing this iteration
       }
-      const _versionedPropertyDigest = versionedValue;
+      // const _versionedPropertyDigest = versionedValue;
       const versionedRestrictions: PropertyRestriction[] = [];
       if (
         !Object.prototype.hasOwnProperty.call(propertyRestrictions, version) &&

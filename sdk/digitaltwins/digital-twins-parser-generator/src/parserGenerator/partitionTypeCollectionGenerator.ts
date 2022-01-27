@@ -16,10 +16,13 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
   constructor(partitionClasses: string[]) {
     this._partitionClasses = partitionClasses;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const collectionClass = parserLibrary.class({ name: "PartitionTypeCollection", exports: true });
     collectionClass.docString.line("A collection of JSON partitions of a DTDL model.");

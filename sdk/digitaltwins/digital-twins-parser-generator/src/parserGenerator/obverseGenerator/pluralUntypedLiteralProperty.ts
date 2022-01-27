@@ -12,10 +12,12 @@ import { UntypedLiteralProperty } from "./untypedLiteralProperty";
 
 // C# doesn't have any typed literals or plural literals, so this class doesn't matter rn.
 export class PluralUntypedLiteralProperty extends UntypedLiteralProperty {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     return outerScope.for(`const ${varName.ref} of this.${this.propertyName} || []`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     return outerScope.if(`this.${this.propertyName} !== undefined`);
   }
@@ -23,18 +25,21 @@ export class PluralUntypedLiteralProperty extends UntypedLiteralProperty {
   public get propertyRepresentation(): PropertyRepresentation {
     return PropertyRepresentation.List;
   }
+
   public get propertyType(): string {
     return `unknown[]`;
   }
 
-  // TODO check if this code will be okay after example.
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = [];`);
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,

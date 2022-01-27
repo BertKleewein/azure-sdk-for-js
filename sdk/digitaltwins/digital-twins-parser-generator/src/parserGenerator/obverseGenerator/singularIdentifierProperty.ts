@@ -12,6 +12,8 @@ import { IdentifierProperty } from "./identifierProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 
 export class SingularIdentifierProperty extends IdentifierProperty {
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     varName.ref = `this.${this.propertyName}`;
 
@@ -22,6 +24,7 @@ export class SingularIdentifierProperty extends IdentifierProperty {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     if (this.propertyDigest._.optional) {
       return outerScope.if(`this.${this.propertyName} !== undefined`);
@@ -40,13 +43,16 @@ export class SingularIdentifierProperty extends IdentifierProperty {
   //   throw new Error('Method not implemented.');
   // }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(_obverseClass: TsClass, _ctorScope: TsScope): void {
     // NOTE for Node : any SINGULAR IDENTIFIER types are never initialized inside a Constructor.
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
@@ -81,6 +87,7 @@ export class SingularIdentifierProperty extends IdentifierProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
     _keyVar: string

@@ -4,19 +4,15 @@
 import { CodeWriter, TsEnumParams } from "./internal";
 
 export class TsEnum {
-  private _name: string;
+  name: string;
   private _exports?: boolean;
   private _members: { name: string; value?: string }[];
 
   constructor({ name, exports }: TsEnumParams) {
-    this._name = name;
+    this.name = name;
     this._exports = exports;
 
     this._members = [];
-  }
-
-  get name(): string {
-    return this._name;
   }
 
   enum(input: { name: string; value?: string }): TsEnum {
@@ -30,11 +26,12 @@ export class TsEnum {
     if (this._exports) {
       text.push("export");
     }
-    text.push(`enum ${this._name}`);
+    text.push(`enum ${this.name}`);
     return text.join(" ");
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     codeWriter.writeLine(`${this._decoratedName} `);
     codeWriter.openScope();
     this._members.forEach((enumMember) => {

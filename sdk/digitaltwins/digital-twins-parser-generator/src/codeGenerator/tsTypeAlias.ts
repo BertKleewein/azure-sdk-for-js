@@ -24,6 +24,7 @@ export class TsTypeAlias extends TsDeclaration {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     super.generateCode(codeWriter);
     codeWriter.writeLine(`${this._decoratedName} = ${this._typeAlias}`);

@@ -10,11 +10,12 @@ export class TsImport {
     this._tsImports = new Set();
   }
 
-  addTsImport(text: string) {
+  addTsImport(text: string): void {
     this._tsImports.add(text);
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     this._tsImports.forEach((statement) => {
       codeWriter.writeLine(statement);
     });
@@ -27,7 +28,8 @@ export class TsImportGeneric {
     this._statement = text;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     codeWriter.writeLine(this._statement);
   }
 }
@@ -41,7 +43,8 @@ export class TsRequireCommonJS {
     this._location = location;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     codeWriter.writeLine(`const ${this._importName} from '${this._location}';`);
   }
 }
@@ -55,7 +58,8 @@ export class TsImportStatementES6 {
     this._importStatement = importStatement;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     codeWriter.writeLine(`import {${this._importStatement}} from '${this._location}';`);
   }
 }
@@ -69,7 +73,8 @@ export class TsImportObjectES6 {
     this._objectName = objectName;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     if (this._objectName) {
       codeWriter.writeLine(`import * as ${this._objectName} from '${this._location}';`);
     } else {

@@ -126,9 +126,11 @@ export class SupplementalTypeInfoImpl {
    * @param properties - A collection of properties to update with the property information.
    */
   tryParseProperty(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     aggregateContext: AggregateContext,
     parsingErrors: ParsingError[],
     parentId: string,

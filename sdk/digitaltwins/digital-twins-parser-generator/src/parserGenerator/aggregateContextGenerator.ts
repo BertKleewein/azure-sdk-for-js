@@ -20,11 +20,13 @@ export class AggregateContextGenerator implements TypeGenerator {
     this._affiliateContextsImplicitDtdlVersions = affiliateContextsImplicitDtdlVersions;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
-  generateCode(parserLibrary: TsLibrary) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(parserLibrary: TsLibrary): void {
     const contextClass = parserLibrary.class({ name: "AggregateContext", exports: true });
     contextClass.import(
       `import {ContextHistory, InDTMI, ParsingError, createParsingError, ParsingException, VersionedContext} from '../parser';`
@@ -42,7 +44,8 @@ export class AggregateContextGenerator implements TypeGenerator {
     this._generateInlineMethods(contextClass);
   }
 
-  private _generateFields(contextClass: TsClass) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  private _generateFields(contextClass: TsClass): void {
     contextClass
       .field({
         name: "_dtdlVersionsAllowingLocalTerms",
@@ -60,11 +63,13 @@ export class AggregateContextGenerator implements TypeGenerator {
     contextClass.inline("./src/parserPartial/aggregateContext.ts", "fields");
   }
 
-  private _generateInlineMethods(contextClass: TsClass) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  private _generateInlineMethods(contextClass: TsClass): void {
     contextClass.inline("./src/parserPartial/aggregateContext.ts", "methods");
   }
 
-  private _generateStaticConstructor(contextClass: TsClass) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  private _generateStaticConstructor(contextClass: TsClass): void {
     for (const [key, value] of Object.entries(this._affiliateContextsImplicitDtdlVersions)) {
       contextClass.staticCtor.body.line(
         `this._affiliateContextsImplicitDtdlVersions['${key}'] = ${value};`
@@ -129,11 +134,12 @@ export class AggregateContextGenerator implements TypeGenerator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _addContextVersion(
     contextMethodBody: TsScope,
     contextSpecifier: string,
     termDefinitions: { [x: string]: string }
-  ) {
+  ): void {
     const versionString = contextSpecifier.substring(contextSpecifier.indexOf(";") + 1);
     const dotIx = versionString.indexOf(".");
     const majorVersion = Number.parseInt(versionString);

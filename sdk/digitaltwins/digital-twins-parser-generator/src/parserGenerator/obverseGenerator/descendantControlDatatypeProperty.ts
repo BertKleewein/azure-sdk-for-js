@@ -42,15 +42,18 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
   }
 
   addMembers(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _typeName: string,
     classIsBase: boolean,
     classIsAbstract: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[]
   ): void {
     this.addCheckMethod(obverseClass, classIsBase, classIsAbstract, materialProperties);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addRestriction(checkRestrictionsMethodBody: TsScope, dtdlVersion: number, typeName: string): void {
     if (this._dtdlVersion === dtdlVersion && this._rootClass === typeName) {
       checkRestrictionsMethodBody.line(
@@ -79,16 +82,20 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
   }
 
   addTransformation(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _applyTransformationsMethodBody: TsScope,
     _dtdlVersion: number,
     _typeName: string,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _materialProperties: MaterialProperty[]
   ): void { /* empty */ }
 
   addCheckMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _classIsBase: boolean,
     _classIsAbstract: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[]
   ): void {
     if (obverseClass.hasMethod(this._checkMethodName)) {

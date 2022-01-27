@@ -22,8 +22,11 @@ export class ExtensibleMaterialClass {
     this._className = NameFormatter.formatNameAsImplementation(typeName);
     this._kindValue = NameFormatter.formatNameAsEnumValue(typeName);
   }
+
   public addCaseToParseTypeStringSwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnExtensionKind: TsScope,
     extensibleMaterialSubtypes: string[],
     parentIdVar: string,

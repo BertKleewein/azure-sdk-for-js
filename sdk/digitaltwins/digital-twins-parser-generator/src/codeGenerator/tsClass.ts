@@ -24,8 +24,8 @@ export class TsClass extends TsDeclaration {
   private _isAbstract?: boolean;
   private _constructor?: TsConstructor;
   private _staticConstructor?: TsConstructor;
-  private _inheritance?: TsInheritanceType[];
-  private _fields: TsField[];
+  inheritance?: TsInheritanceType[];
+  fields: TsField[];
   private _methods: TsFunction[];
   private _getters: TsFunction[];
   private _setters: TsFunction[];
@@ -35,17 +35,13 @@ export class TsClass extends TsDeclaration {
   constructor({ name, exports, abstract, inheritance }: TsClassParams) {
     super({ name, type: TsDeclarationType.Class, exports: exports });
     this._isAbstract = abstract;
-    this._inheritance = inheritance;
+    this.inheritance = inheritance;
 
-    this._fields = [];
+    this.fields = [];
     this._methods = [];
     this._getters = [];
     this._setters = [];
     this._inlines = [];
-  }
-
-  get inheritance() {
-    return this._inheritance;
   }
 
   get ctor(): TsConstructor {
@@ -66,7 +62,7 @@ export class TsClass extends TsDeclaration {
 
   field(input: TsFieldParams): TsClass {
     const tsField = new TsField(input);
-    this._fields.push(tsField);
+    this.fields.push(tsField);
     return this;
   }
 
@@ -88,7 +84,8 @@ export class TsClass extends TsDeclaration {
       returnType: returnType,
       functionType: TsFunctionType.Method,
       abstract: abstract,
-      isStatic: isStatic
+      isStatic: isStatic,
+      access: access
     });
     if (!abstract) {
       tsMethod.body;
@@ -102,7 +99,7 @@ export class TsClass extends TsDeclaration {
   }
 
   hasField(fieldName: string): boolean {
-    return this._fields.some((f) => f.name === fieldName);
+    return this.fields.some((f) => f.name === fieldName);
   }
 
   getter({
@@ -147,14 +144,14 @@ export class TsClass extends TsDeclaration {
     this._inlines.push(new TsInline(filepath, identifier));
   }
 
-  get suffixCode() {
+  get suffixCode(): TsMultiLine {
     if (this._suffixCode === undefined) {
       this._suffixCode = new TsMultiLine();
     }
     return this._suffixCode;
   }
 
-  private get _decoratedName() {
+  private get _decoratedName(): string {
     const text: string[] = [];
     if (this._exports) {
       text.push("export");
@@ -164,10 +161,10 @@ export class TsClass extends TsDeclaration {
     }
 
     text.push(this._type);
-    text.push(this._name);
+    text.push(this.name);
 
-    if (this._inheritance !== undefined) {
-      this._inheritance.forEach((inheritance) => {
+    if (this.inheritance !== undefined) {
+      this.inheritance.forEach((inheritance) => {
         if (inheritance.type === TsDeclarationType.Class) {
           if (Array.isArray(inheritance.name)) {
             throw new Error("Multiple inheritance is only for interfaces in Typescript");
@@ -190,18 +187,11 @@ export class TsClass extends TsDeclaration {
     return text.join(" ");
   }
 
-  get name() {
-    return this._name;
-  }
-
-  get fields() {
-    return this._fields;
-  }
-
-  get tsConstructor() {
+  get tsConstructor(): TsConstructor | undefined {
     return this._constructor;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     super.generateCode(codeWriter);
 
@@ -209,8 +199,8 @@ export class TsClass extends TsDeclaration {
     codeWriter.openScope();
     codeWriter.break();
 
-    if (this._fields.length !== 0) {
-      this._fields.forEach((field) => {
+    if (this.fields.length !== 0) {
+      this.fields.forEach((field) => {
         field.generateCode(codeWriter);
       });
       codeWriter.break();
@@ -256,7 +246,7 @@ export class TsClass extends TsDeclaration {
     codeWriter.closeScope();
 
     if (this._staticConstructor !== undefined) {
-      codeWriter.writeLine(`${this._name}.initialize();`);
+      codeWriter.writeLine(`${this.name}.initialize();`);
     }
 
     if (this._suffixCode !== undefined) {

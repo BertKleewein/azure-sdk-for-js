@@ -10,11 +10,11 @@ export class DependencyGraph {
     this.nodes = [];
   }
 
-  addNode(name: string) {
+  addNode(name: string): void {
     this.nodes.push(name);
   }
 
-  addDirectedEdge(start: string, end: string) {
+  addDirectedEdge(start: string, end: string): void {
     if (start in this.edges) {
       this.edges[start].push(end);
     } else {
@@ -22,7 +22,7 @@ export class DependencyGraph {
     }
   }
 
-  _topologicalSortHelper(node: string, explored: Set<string>, s: Array<string>) {
+  _topologicalSortHelper(node: string, explored: Set<string>, s: Array<string>): void {
     explored.add(node);
     if (this.edges[node] !== undefined) {
       this.edges[node].forEach((n: string) => {

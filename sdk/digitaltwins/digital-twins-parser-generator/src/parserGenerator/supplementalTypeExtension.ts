@@ -46,6 +46,7 @@ export class SupplementalTypeExtension extends SupplementalType {
     this._parentTypeVariableName = `${this.getTypeVariableName(supplementalTypeDigest.parent)}`;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   defineInfoVariable(scope: TsScope, contextIdVariables: { [x: string]: string }): void {
     let parentTypeVar;
     if (this._parentTypeVariableName === "undefined") {
@@ -75,6 +76,7 @@ export class SupplementalTypeExtension extends SupplementalType {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   assignInfoVariable(scope: TsScope, dictionaryVariableName: string): void {
     scope.line(
       `${dictionaryVariableName}.set(${this.typeVariableName}.value, ${this._infoVariableName});`

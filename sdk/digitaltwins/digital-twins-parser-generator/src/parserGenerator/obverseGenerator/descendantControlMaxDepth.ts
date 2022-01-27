@@ -44,10 +44,12 @@ export class DescendantControlMaxDepth implements DescendantControl {
   }
 
   addMembers(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,
     _classIsAbstract: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[]
   ): void {
     if (obverseClass.hasMethod(this._methodName)) {
@@ -144,6 +146,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
   }
 
   addRestriction(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
     dtdlVersion: number,
     typeName: string
@@ -175,9 +178,11 @@ export class DescendantControlMaxDepth implements DescendantControl {
   }
 
   addTransformation(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _applyTransformationsMethodBody: TsScope,
     _dtdlVersion: number,
     _typeName: string,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _materialProperties: MaterialProperty[]
   ): void { /* empty */}
 }

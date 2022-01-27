@@ -13,10 +13,12 @@ export class ModelParserGenerator implements TypeGenerator {
     this._baseClassName = NameFormatter.formatNameAsImplementation(baseName);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const functionCreateParser = parserLibrary.function({
       name: "createParser",

@@ -15,10 +15,13 @@ export class StandardElementsGenerator implements TypeGenerator {
     this._baseClassName = NameFormatter.formatNameAsInterface(baseName);
     this._digestElements = digestElements;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const standardElementsClass = parserLibrary.class({ name: "StandardElements", exports: true });
     standardElementsClass.import(
@@ -38,7 +41,7 @@ export class StandardElementsGenerator implements TypeGenerator {
     standardElementsClass.suffixCode.line("StandardElements.initialize();");
   }
 
-  private _generateGetElementMethod(standardElementsClass: TsClass) {
+  private _generateGetElementMethod(standardElementsClass: TsClass): void {
     const method = standardElementsClass.method({
       name: "getElement",
       returnType: this._baseClassName,
@@ -48,7 +51,7 @@ export class StandardElementsGenerator implements TypeGenerator {
     method.body.line(`return this._standardModel.dict[elementId.value];`);
   }
 
-  private _generateGetDigestElementsMethod(standardElementsClass: TsClass) {
+  private _generateGetDigestElementsMethod(standardElementsClass: TsClass): void {
     const method = standardElementsClass.method({
       name: "getDigestElements",
       returnType: "any",

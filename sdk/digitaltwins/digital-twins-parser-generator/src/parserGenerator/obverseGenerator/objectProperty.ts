@@ -98,6 +98,7 @@ export abstract class ObjectProperty extends MaterialProperty {
     );
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public initMissingPropertyVariable(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&
@@ -110,7 +111,9 @@ export abstract class ObjectProperty extends MaterialProperty {
 
   public addMembers(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     classIsAugmentable: boolean
   ): void {
@@ -151,6 +154,7 @@ export abstract class ObjectProperty extends MaterialProperty {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     if (obverseInterface.name !== this.interfaceName) {
       obverseInterface.import(`import {${this.interfaceName}} from './internal';`);
@@ -159,7 +163,9 @@ export abstract class ObjectProperty extends MaterialProperty {
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
     classIsPartition: boolean,
@@ -230,6 +236,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   }
 
   public addCaseForInstancePropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnProperty: TsScope,
     instancePropVariable: string
   ): void {
@@ -246,6 +253,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   }
 
   public addCaseForValueConstraintSwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnProperty: TsScope,
     constraintVariable: string
   ): void {
@@ -261,6 +269,7 @@ export abstract class ObjectProperty extends MaterialProperty {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&

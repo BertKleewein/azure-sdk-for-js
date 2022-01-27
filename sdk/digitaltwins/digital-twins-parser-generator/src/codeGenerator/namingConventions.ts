@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-export function pascalToSnake(text: string) {
+export function pascalToSnake(text: string): string {
   // we could do this by setting the regex to a negative lookbehind on the starting character,
   // but this is not compatible with all browsers. Therefore we use a little workaround
   // to see if an unnecessary underscore was added, and if so, remove it.
@@ -10,7 +10,7 @@ export function pascalToSnake(text: string) {
   return intermediate.startsWith("_") ? intermediate.substring(1) : intermediate;
 }
 
-export function pascalToCamel(text: string) {
+export function pascalToCamel(text: string): string {
   // we could do this by setting the regex to a negative lookbehind on the starting character,
   // but this is not compatible with all browsers. Therefore we use a little workaround
   // to see if an unnecessary underscore was added, and if so, remove it.

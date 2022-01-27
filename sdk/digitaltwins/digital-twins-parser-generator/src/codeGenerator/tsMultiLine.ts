@@ -17,6 +17,7 @@ export class TsMultiLine implements TsStatement {
     return this;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     if (this._text !== undefined) {
       codeWriter.writeLine(this._text);

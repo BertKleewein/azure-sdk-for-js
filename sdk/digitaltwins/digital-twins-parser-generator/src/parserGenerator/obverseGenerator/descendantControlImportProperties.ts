@@ -71,10 +71,12 @@ export class DescendantControlImportProperties implements DescendantControl {
   }
 
   addMembers(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     rawTypeName: string,
     classIsBase: boolean,
     classIsAbstract: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[]
   ): void {
     this.addGetTransitivePropertiesMethod(
@@ -92,12 +94,15 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addRestriction(_checkRestrictionsMethodBody: TsScope, _dtdlVersion: number, _rawTypeName: string): void { /* empty */ }
 
   addTransformation(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     applyTransformationsMethodBody: TsScope,
     dtdlVersion: number,
     rawTypeName: string,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _materialProperties: MaterialProperty[]
   ): void {
     if (this._dtdlVersion === dtdlVersion && this._rootClass === rawTypeName) {
@@ -162,9 +167,11 @@ export class DescendantControlImportProperties implements DescendantControl {
   }
 
   addGetTransitivePropertiesMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     classIsBase: boolean,
     classIsAbstract: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[]
   ): void {
     if (obverseClass.hasMethod(this._getTransitivePropertiesMethodName)) {
@@ -290,7 +297,9 @@ export class DescendantControlImportProperties implements DescendantControl {
   }
 
   private _addImportPropertyMethods(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[],
     importProperty: string
   ): void {
@@ -375,6 +384,7 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   _addField(obverseClass: TsClass, materialProperties: MaterialProperty[], importProperty: string): void {
     const fieldName: string = `_${this._fieldNames[importProperty]}`;
     if (obverseClass.hasField(fieldName)) {

@@ -9,10 +9,13 @@ export class RootableTypeCollectionGenerator implements TypeGenerator {
   constructor(rootableClasses: { [x: number]: string[] }) {
     this._rootableClasses = rootableClasses;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const collectionClass = parserLibrary.class({ name: "RootableTypeCollection", exports: true });
     collectionClass.docString.line(

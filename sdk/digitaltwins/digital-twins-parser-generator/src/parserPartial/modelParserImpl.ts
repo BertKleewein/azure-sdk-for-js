@@ -335,9 +335,11 @@ export class ModelParserImpl {
   // codegen-outline-end
 
   static _parseObject(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _model: Model,
     _objectPropertyInfoList: ParsedObjectPropertyInfo[],
     _elementPropertyConstraints: ElementPropertyConstraint[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _aggregateContext: AggregateContext,
     _parsingErrors: ParsingError[],
     _obj: { [prop: string]: string}

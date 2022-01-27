@@ -242,12 +242,13 @@ export class MaterialClassGenerator implements TypeGenerator {
     );
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateType(parserLibrary: TsLibrary): void {
     this._addMaterialClass(parserLibrary);
   }
 
-  // TODO : Has been changed to public for testing. Please change once parsing done.
-  public _addMaterialClass(parserLibrary: TsLibrary): TsClass {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  private _addMaterialClass(parserLibrary: TsLibrary): TsClass {
     const obverseInterface = parserLibrary.interface({
       name: this._typeName,
       exports: true,
@@ -371,6 +372,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     return obverseClass;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateApplyTransformationMethods(obverseClass: TsClass): void {
     if (this._parentTypeName === undefined) {
       const baseClassMethod = obverseClass.method({
@@ -415,6 +417,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCheckRestrictionsMethods(obverseClass: TsClass, classIsAugmentable: boolean): void {
     if (this._parentTypeName === undefined) {
       const baseClassMethod = obverseClass.method({
@@ -466,6 +469,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateTrySetObjectPropertyMethod(obverseClass: TsClass): void {
     const trySetObjectPropertyMethod = obverseClass
       .method({
@@ -503,6 +507,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     trySetObjectPropertyMethod.body.line("return false;");
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateVersionlessTypes(obverseClass: TsClass): void {
     obverseClass.field({
       name: "_versionlessTypes",
@@ -516,6 +521,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateConcreteKinds(obverseClass: TsClass): void {
     obverseClass.field({
       name: "_concreteKinds",
@@ -535,6 +541,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateBadTypeFormatStrings(obverseClass: TsClass): void {
     obverseClass.field({
       name: "_badTypeActionFormat",

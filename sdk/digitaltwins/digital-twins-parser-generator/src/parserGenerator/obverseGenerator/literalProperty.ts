@@ -27,6 +27,7 @@ export abstract class LiteralProperty extends MaterialProperty {
     return false;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public initMissingPropertyVariable(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&
@@ -38,6 +39,7 @@ export abstract class LiteralProperty extends MaterialProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _valueVar: string,
     _keyVar: string
@@ -45,6 +47,7 @@ export abstract class LiteralProperty extends MaterialProperty {
     // pass
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&

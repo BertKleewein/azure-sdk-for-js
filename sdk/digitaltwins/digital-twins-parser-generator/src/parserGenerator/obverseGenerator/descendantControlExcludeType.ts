@@ -47,11 +47,14 @@ export class DescendantControlExcludeType implements DescendantControl {
   appliesToType(typeName: string): boolean {
     return this._rootClass === typeName;
   }
+
   addMembers(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,
     _classIsAbstract: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[]
   ): void {
     if (obverseClass.hasMethod(this._methodName)) {
@@ -119,7 +122,9 @@ export class DescendantControlExcludeType implements DescendantControl {
     concreteClassMethod.body.line(`return false;`);
     // }
   }
+
   addRestriction(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
     dtdlVersion: number,
     typeName: string
@@ -149,10 +154,13 @@ export class DescendantControlExcludeType implements DescendantControl {
         .line(`}));`);
     }
   }
+
   addTransformation(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _applyTransformationsMethodBody: TsScope,
     _dtdlVersion: number,
     _typeName: string,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _materialProperties: MaterialProperty[]
   ): void { /* empty */}
 }

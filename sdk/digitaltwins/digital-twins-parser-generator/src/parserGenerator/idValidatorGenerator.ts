@@ -16,10 +16,13 @@ export class IdValidatorGenerator implements TypeGenerator {
     this._identifierDefinitionRestrictions = identifierDefinitionRestrictions;
     this._identifierReferenceRestrictions = identifierReferenceRestrictions;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const restrictionsClass = parserLibrary.class({ name: "IdValidator", exports: true });
     restrictionsClass.docString.line(

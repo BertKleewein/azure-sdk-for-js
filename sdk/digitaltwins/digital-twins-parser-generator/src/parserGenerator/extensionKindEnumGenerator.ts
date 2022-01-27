@@ -11,10 +11,13 @@ export class ExtensionKindEnumGenerator implements TypeGenerator {
   constructor(extensionKinds: string[]) {
     this._extensionKinds = extensionKinds;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const tsEnum = parserLibrary.enum({
       name: NameFormatter.formatNameAsEnum("Extension"),

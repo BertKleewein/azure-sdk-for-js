@@ -14,10 +14,12 @@ export class HelpersGenerator implements TypeGenerator {
     this._baseClassName = NameFormatter.formatNameAsInterface(baseName);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const helpersClass = parserLibrary.class({ name: "Helpers", exports: true });
     helpersClass.docString.line("A static class that holds various helper functions.");

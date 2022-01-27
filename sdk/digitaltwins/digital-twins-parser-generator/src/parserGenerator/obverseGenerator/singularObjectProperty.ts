@@ -15,12 +15,15 @@ import { PropertyRestrictionRequiredValues } from "./propertyRestrictionRequired
 import { PropertyRestriction } from "./propertyRestriction";
 // example is property schema in material class telemetry
 export class SingularObjectProperty extends ObjectProperty {
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     varName.ref = `(this.${this.propertyName} as ${this.baseImplementation})`;
     // TODO FOR NEW Does this need to casted too ?
     return outerScope.if(`this.${this.propertyName} !== undefined`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     return outerScope.if(`this.${this.propertyName} !== undefined`);
   }
@@ -56,7 +59,8 @@ export class SingularObjectProperty extends ObjectProperty {
     return this.implementationName;
   }
 
-  public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  public generateConstructorCode(obverseClass: TsClass, _ctorScope: TsScope): void {
     // the field should be added as an optional. So no need to assign undefined to it.
     // NOTE for Node : any SINGULAR OBJECT types should not be initialized inside a Constructor.
     // if (obverseClass.name !== this.interfaceName) {
@@ -69,7 +73,9 @@ export class SingularObjectProperty extends ObjectProperty {
 
   public addMembers(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     classIsAugmentable: boolean
   ): void {
@@ -78,9 +84,10 @@ export class SingularObjectProperty extends ObjectProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
-    keyVar: string
+    _keyVar: string
   ): void {
     switchScope.line(`case '${this.propertyName}':`);
     Object.values(this.propertyNameUris).forEach((strVal) => switchScope.line(`case '${strVal}':`));
@@ -90,6 +97,7 @@ export class SingularObjectProperty extends ObjectProperty {
   }
 
   public addRestrictions(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
     dtdlVersion: number,
     typeName: string,

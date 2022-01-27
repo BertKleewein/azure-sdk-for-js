@@ -21,6 +21,7 @@ export class SupplementalType {
    * Define a variable for the supplemental type identifier value.
    * @param scope - A TsScope object to which to add generated code.
    */
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   defineIdVariable(scope: TsScope): void {
     scope.line(
       `const ${this.typeVariableName}: ${ParserGeneratorValues.IdentifierType} = new ${ParserGeneratorValues.IdentifierType}("${this.typeUri}");`
@@ -32,12 +33,14 @@ export class SupplementalType {
    * @param scope - A TsScope object to which to add generated code.
    * @param contextIdVariables - A Dictionary mapping context IDs to variables that hold the context ID values.
    */
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   defineInfoVariable(_scope: TsScope, _contextIdVariables: { [x: string]: string }): void {
-    // empty
+    /* empty */
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   assignInfoVariable(_scope: TsScope, _dictionaryVariableName: string): void {
-    // empty
+    /* empty */
   }
 
   /**

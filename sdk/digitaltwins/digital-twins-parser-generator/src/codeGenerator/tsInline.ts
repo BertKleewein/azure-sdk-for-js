@@ -7,6 +7,7 @@ import { resolve as resolvePath } from "path";
 
 export class TsInline implements TsStatement {
   private _inlineBlock: TsMultiLine;
+
   constructor(filepath: string, identifier: string) {
     let text;
     this._inlineBlock = new TsMultiLine();
@@ -43,7 +44,8 @@ export class TsInline implements TsStatement {
     }
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     this._inlineBlock.generateCode(codeWriter);
   }
 }

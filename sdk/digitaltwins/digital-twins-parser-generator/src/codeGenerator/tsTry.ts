@@ -5,6 +5,8 @@ import { TsCatch, TsFinally, TsScope } from "./internal";
 
 export class TsTry extends TsScope {
   private _nestingScope: TsScope;
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   constructor(nestingScope: TsScope) {
     super(`try`);
 

@@ -12,6 +12,7 @@ import { PropertyRepresentation } from "./propertyRepresentation";
 import { TypedLiteralProperty } from "./typedLiteralProperty";
 
 export class SingularTypedLiteralProperty extends TypedLiteralProperty {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     varName.ref = `this.${this.propertyName}`;
 
@@ -22,6 +23,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     if (this.literalType.canBeNull(this.propertyDigest._.optional)) {
       return outerScope.if(`this.${this.propertyName} !== undefined`);
@@ -39,6 +41,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
     return this.literalType.getSingularType(this.optional);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     // NOTE for Node : any SINGULAR LITERAL types are never initialized inside a Constructor.
     if (this.datatype === "boolean") {
@@ -50,7 +53,9 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,

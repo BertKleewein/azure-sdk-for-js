@@ -98,6 +98,7 @@ export class TsScope implements TsStatement {
     this._statements.push(tsStatement);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     if (this._firstLine) {
       codeWriter.writeLine(`${this._firstLine} `, true, this._suppressBreak);

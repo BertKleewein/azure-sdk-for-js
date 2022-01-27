@@ -6,11 +6,15 @@ import { TsAccess, TsClass, TsFunction, TsInterface, TsScope } from "../../codeG
 import { NameFormatter } from "../nameFormatter";
 
 export class MaterialClassPartitioner {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   static generateConstructorCode(scope: TsScope, classIsPartition: boolean): void {
     scope.line(`this.isPartition = ${classIsPartition}`);
   }
+
   static addMembers(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseInterface: TsInterface,
     typeName: string,
     classIsPartition: boolean,

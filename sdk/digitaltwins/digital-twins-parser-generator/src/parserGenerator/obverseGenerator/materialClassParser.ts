@@ -17,6 +17,8 @@ import { MaterialProperty } from "./materialProperty";
 import { PropertyKind } from "./propertyKind";
 
 export class MaterialClassParser {
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public static generateConstructorCode(ctorScope: TsScope, _classIsBase: boolean): void {
     ctorScope.line(`this.undefinedTypes = [];`);
     ctorScope.line(`this.undefinedProperties = {};`);
@@ -26,9 +28,12 @@ export class MaterialClassParser {
     // }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public static addMembers(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     rawTypeName: string,
     typeName: string,
@@ -40,6 +45,7 @@ export class MaterialClassParser {
     dtdlVersionToConcreteSubclasses: TypeVersionToConcreteSubclasses,
     dtdlVersionToExtensibleClasses: TypeVersionToExtensibleMaterialClasses,
     dtdlVersionExtensibleMaterialSubtypes: TypeVersionToExtensibleMaterialSubTypes,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     properties: MaterialProperty[]
   ): void {
     this._generateUndefinedTypeAndPropertiesProperties(obverseClass, obverseInterface, classIsBase);
@@ -90,7 +96,8 @@ export class MaterialClassParser {
     this._generateParseIdStringMethod(obverseClass, typeName, classIsBase, classIsAbstract);
   }
 
-  private static _generateDoesHaveTypeMethod(obverseClass: TsClass, classIsAbstract: boolean) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  private static _generateDoesHaveTypeMethod(obverseClass: TsClass, classIsAbstract: boolean): void {
     const method = obverseClass
       .method({ name: "doesHaveType", returnType: "boolean", abstract: false, isStatic: false })
       .parameter({ name: "typeId", type: "string" });
@@ -102,11 +109,14 @@ export class MaterialClassParser {
     returnLine.line(";");
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private static _generateUndefinedTypeAndPropertiesProperties(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     classIsBase: boolean
-  ) {
+  ): void {
     const fName = "undefinedTypes";
     const fType = "string[]";
     obverseClass.field({ name: `${fName}`, access: TsAccess.Public, type: `${fType}` });
@@ -122,6 +132,7 @@ export class MaterialClassParser {
 
   private static _generateParseObjectMethod(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     rawTypeName: string,
     typeName: string,
@@ -296,6 +307,7 @@ export class MaterialClassParser {
 
   private static _generateParseTypeArrayMethod(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     tsClass: TsClass,
     typeName: string,
     kindEnum: string,
@@ -425,8 +437,10 @@ export class MaterialClassParser {
   }
 
   private static _generateDoesPropertyDictContainKeyMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _classIsBase: boolean,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     properties: MaterialProperty[]
   ): void {
     const method = obverseClass.method({
@@ -450,6 +464,7 @@ export class MaterialClassParser {
 
   private static _generateTryParseTypeStringMethod(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     tsClass: TsClass,
     typeName: string,
     kindEnum: string,
@@ -577,6 +592,7 @@ export class MaterialClassParser {
 
   private static _generateParsePropertiesMethod(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,
@@ -664,6 +680,7 @@ export class MaterialClassParser {
   }
 
   private static _generateParseTokenMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,
@@ -699,12 +716,12 @@ export class MaterialClassParser {
       )
       .line("valueCount++;");
 
-    const _isArrayElseIfScope = typeTokenIfScope
-      .elseIf("Array.isArray(token)")
-      .for("const elementToken of token")
-      .line(
-        "valueCount += this.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, valueConstraints, aggregateContext, parsingErrors, elementToken, parentId, definedIn, propName, dtmiSeg, keyProp, idRequired, typeRequired, allowIdReferenceSyntax, allowedVersions);"
-      );
+    // const _isArrayElseIfScope = typeTokenIfScope
+    //   .elseIf("Array.isArray(token)")
+    //   .for("const elementToken of token")
+    //   .line(
+    //     "valueCount += this.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, valueConstraints, aggregateContext, parsingErrors, elementToken, parentId, definedIn, propName, dtmiSeg, keyProp, idRequired, typeRequired, allowIdReferenceSyntax, allowedVersions);"
+    //   );
 
     typeTokenIfScope
       .elseIf(`typeof token === 'object'`)
@@ -731,6 +748,7 @@ export class MaterialClassParser {
   }
 
   private static _generateAddConstraintMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     classIsAbstract: boolean,
     properties: MaterialProperty[]
@@ -752,6 +770,7 @@ export class MaterialClassParser {
   }
 
   private static _generateAddInstancePropertyMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     classIsAbstract: boolean,
     properties: MaterialProperty[]
@@ -785,6 +804,7 @@ export class MaterialClassParser {
   }
 
   private static _generateParseIdStringMethod(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,

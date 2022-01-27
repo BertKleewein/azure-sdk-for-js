@@ -53,43 +53,43 @@ export class TsFunction implements TsStatement {
     this._parameters = [];
   }
 
-  get name() {
+  get name(): string {
     return this._name;
   }
 
-  get funcName() {
+  get funcName(): string {
     return this._name;
   }
 
-  get returnType() {
+  get returnType(): string | undefined {
     return this._returnType;
   }
 
-  get functionType() {
+  get functionType(): TsFunctionType | undefined {
     return this._functionType;
   }
 
-  get isAbstract() {
+  get isAbstract(): boolean | undefined {
     return this._isAbstract;
   }
 
-  get access() {
+  get access(): TsAccess | undefined {
     return this._access;
   }
 
-  get exports() {
+  get exports(): boolean | undefined {
     return this._exports;
   }
 
-  get parameters() {
+  get parameters(): TsParameter[] {
     return this._parameters;
   }
 
-  get summaryLines() {
+  get summaryLines(): TsMultiLineDocString | undefined {
     return this._summaryLines;
   }
 
-  get body() {
+  get body(): TsScope {
     if (this._body === undefined) {
       const tsScope = new TsScope();
       this._body = tsScope;
@@ -98,11 +98,11 @@ export class TsFunction implements TsStatement {
     return this._body;
   }
 
-  get isStatic() {
+  get isStatic(): boolean | undefined {
     return this._static;
   }
 
-  import(text: string) {
+  import(text: string): this {
     if (this._importStatements === undefined) {
       this._importStatements = new TsImport();
     }
@@ -110,7 +110,7 @@ export class TsFunction implements TsStatement {
     return this;
   }
 
-  summary(text: string) {
+  summary(text: string): this {
     if (this._summaryLines === undefined) {
       this._summaryLines = new TsMultiLineDocString();
     }
@@ -160,7 +160,8 @@ export class TsFunction implements TsStatement {
     return text.join(" ");
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     if (this._importStatements !== undefined) {
       this._importStatements.generateCode(codeWriter);
     }

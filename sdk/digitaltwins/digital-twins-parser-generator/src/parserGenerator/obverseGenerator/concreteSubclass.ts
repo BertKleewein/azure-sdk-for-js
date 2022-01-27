@@ -58,6 +58,7 @@ export class ConcreteSubclass {
   }
 
   public addCaseToParseTypeStringSwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     methodScope: TsScope,
     elementInfoStr: string,
     elementIdStr: string,
@@ -110,6 +111,7 @@ export class ConcreteSubclass {
       .line("return true;");
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addEnumValue(staticInitScope: TsScope, varname: string): void {
     staticInitScope.line(`${varname}.push('${this._kindValue}');`);
   }

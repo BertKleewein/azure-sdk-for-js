@@ -20,10 +20,13 @@ export class MaterialTypeNameCollectionGenerator implements TypeGenerator {
       }
     }
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const className = "MaterialTypeNameCollection";
     const collectionClass = parserLibrary.class({ name: `${className}`, exports: true });

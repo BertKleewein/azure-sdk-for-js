@@ -8,7 +8,7 @@ import { MaterialClassGenerator } from "./materialClassGenerator";
 import { TsLibrary } from "../codeGenerator/tsLibrary";
 import { TypeGenerator } from "./typeGenerator";
 import { BaseKindEnumGenerator } from "./baseKindEnumGenerator";
-import { MaterialClassDigest, MaterialPropertyDigest, MetamodelDigest } from "./metamodelDigest";
+import { MaterialClassDigest, MetamodelDigest } from "./metamodelDigest";
 import { SupplementalTypeInfoGenerator } from "./supplementalTypeInfoGenerator";
 import { ModelGenerator } from "./modelGenerator";
 import { PartitionTypeCollectionGenerator } from "./partitionTypeCollectionGenerator";
@@ -30,7 +30,7 @@ import { ExtensibleMaterialClass } from "./obverseGenerator/extensibleMaterialCl
 import { SupplementalPropertyInfoGenerator } from "./supplementalPropertyInfoGenerator";
 
 export class CodeGenerator {
-  public static execute(inputDigest: string, outputDirectory: string, dtdlVersion: string) {
+  public static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): void {
     fs.readFile(inputDigest, (err: Error | null, rawMetamodelDigest: Buffer) => {
       if (err) throw err;
       const parsedMetamodelDigest = JSON.parse(rawMetamodelDigest.toString()) as MetamodelDigest;

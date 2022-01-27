@@ -11,9 +11,13 @@ import { IdentifierProperty } from "./identifierProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 
 export class PluralIdentifierProperty extends IdentifierProperty {
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     return outerScope.for(`const ${varName.ref} of this.${this.propertyName} || []`);
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(outerScope: TsScope): TsScope {
     return outerScope;
   }
@@ -24,13 +28,16 @@ export class PluralIdentifierProperty extends IdentifierProperty {
     return "string[]";
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(_obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = [];`);
   }
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
@@ -46,6 +53,7 @@ export class PluralIdentifierProperty extends IdentifierProperty {
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
     _keyVar: string

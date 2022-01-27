@@ -32,7 +32,7 @@ export class TsInterface extends TsDeclaration {
     return this._name;
   }
 
-  get extends() {
+  get extends(): string | undefined {
     return this._thingToExtend;
   }
 
@@ -70,7 +70,8 @@ export class TsInterface extends TsDeclaration {
     return text.join(" ");
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     super.generateCode(codeWriter);
     codeWriter.writeLine(`${this._decoratedName} `);
     codeWriter.openScope();

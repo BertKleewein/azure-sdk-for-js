@@ -27,9 +27,11 @@ export class PropertyRestrictionRequiredValues implements PropertyRestriction {
   }
 
   addRestriction(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
-    typeName: string,
-    materialProperty: MaterialProperty
+    _typeName: string,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    _materialProperty: MaterialProperty
   ): void {
     checkRestrictionsMethodBody
       .if(`this.${this._propertyName} !== undefined`)

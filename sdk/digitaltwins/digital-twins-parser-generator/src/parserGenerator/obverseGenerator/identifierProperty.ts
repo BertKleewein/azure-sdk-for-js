@@ -51,6 +51,7 @@ export abstract class IdentifierProperty extends MaterialProperty {
     return false;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public initMissingPropertyVariable(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&
@@ -63,7 +64,9 @@ export abstract class IdentifierProperty extends MaterialProperty {
 
   public addMembers(
     dtdlVersions: number[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     classIsAugmentable: boolean
   ): void {
@@ -84,10 +87,12 @@ export abstract class IdentifierProperty extends MaterialProperty {
     }
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     obverseInterface.import(`import {InDTMI} from '../parser/internalDtmi';`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&

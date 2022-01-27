@@ -12,10 +12,12 @@ import { LiteralProperty } from "./literalProperty";
 import { PropertyRepresentation } from "./propertyRepresentation";
 
 export class LangStringLiteralProperty extends LiteralProperty {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public iterate(outerScope: TsScope, varName: { ref: string }): TsScope {
     return outerScope.for(`const ${varName.ref} of Object.values(this.${this.propertyName} || {})`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public checkPresence(body: TsScope): TsScope {
     return body;
   }
@@ -32,11 +34,13 @@ export class LangStringLiteralProperty extends LiteralProperty {
     return "@language";
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = {};`);
     obverseClass.import(`import {LanguageStringType} from '../parser/type/langstringType';`);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     if (!obverseInterface.extends) {
       obverseInterface.import(`import {LanguageStringType} from '../parser/type/langstringType';`);
@@ -45,7 +49,9 @@ export class LangStringLiteralProperty extends LiteralProperty {
 
   public addCaseToParseSwitch(
     dtdlVersion: number,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,

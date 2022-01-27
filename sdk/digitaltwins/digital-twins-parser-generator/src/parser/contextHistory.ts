@@ -7,6 +7,7 @@ export class ContextHistory {
   private _versionedContexts: VersionedContext[];
   private _availableVersions: string;
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   constructor(versionedContexts: VersionedContext[]) {
     this._versionedContexts = versionedContexts;
     this._availableVersions = versionedContexts

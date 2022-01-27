@@ -43,8 +43,9 @@ export class SupplementalConstraint {
   /**
    * Add the constraint to a supplemental type instance.
    * @param scope - a TsScope object to which to add generated code.
-   * @param infoVariableName - Name of the supplementaly type info variable to which to add the cotype.
+   * @param infoVariableName - Name of the supplementary type info variable to which to add the cotype.
    */
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addConstraint(scope: TsScope, infoVariableName: string): void {
     scope.line(`${infoVariableName}.addConstraint(
       "${this._propertyName}", 

@@ -7,10 +7,12 @@ import { TsClass, TsDeclarationType, TsInterface, TsLibrary } from "../codeGener
 import { TypeGenerator } from "./typeGenerator";
 
 export class SupplementalPropertyInfoGenerator implements TypeGenerator {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const infoInterface: TsInterface = parserLibrary.interface({
       name: "SupplementalPropertyInfo",

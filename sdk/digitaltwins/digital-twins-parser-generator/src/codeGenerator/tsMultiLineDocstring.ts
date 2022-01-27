@@ -13,6 +13,7 @@ export class TsMultiLineDocString extends TsMultiLine {
     return this;
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     super.line("**/");
     super.generateCode(codeWriter);

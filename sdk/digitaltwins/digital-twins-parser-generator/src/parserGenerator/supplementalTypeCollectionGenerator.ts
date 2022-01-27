@@ -58,10 +58,13 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
     const suffix: string = contextId.substr(versionStart).replace(".", "_");
     return `${rootName}ContextIdV${suffix}`;
   }
+
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateType(parserLibrary: TsLibrary): void {
     this.generateCode(parserLibrary);
   }
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const collectionInterface = parserLibrary.interface({
       name: "SupplementalTypeCollection",

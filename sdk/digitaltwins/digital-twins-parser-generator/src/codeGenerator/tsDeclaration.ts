@@ -11,7 +11,7 @@ import {
 } from "./internal";
 
 export class TsDeclaration {
-  protected _name: string;
+  name: string;
   protected _type: TsDeclarationType;
   protected _exports: boolean;
   private _declarationHeader?: TsMultiLine;
@@ -20,7 +20,7 @@ export class TsDeclaration {
   private _prefixCode?: TsMultiLine;
 
   constructor({ name, type, exports = false }: TsDeclarationParams) {
-    this._name = name;
+    this.name = name;
     this._type = type;
     this._exports = exports;
   }
@@ -63,7 +63,8 @@ export class TsDeclaration {
     return this;
   }
 
-  generateCode(codeWriter: CodeWriter) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  generateCode(codeWriter: CodeWriter): void {
     if (this._declarationHeader !== undefined) {
       this._declarationHeader.generateCode(codeWriter);
     }
