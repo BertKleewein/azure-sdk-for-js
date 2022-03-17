@@ -116,7 +116,8 @@ $onboardedPackages = &$GetOnboardedDocsMsPackagesFn `
 $metadata = (Get-CSVMetadata).Where({
     $_.Package `
       -and $onboardedPackages.ContainsKey($_.Package) `
-      -and $_.Hide -ne 'true'
+      -and $_.Hide -ne 'true' `
+      -and $_.New -ne 'true'
   })
 
 $fileMetadata = @()
@@ -179,6 +180,7 @@ $serviceNameList = $services.Keys | Sort-Object
 
 
 $toc = @()
+$corePackageItems = @()
 foreach ($service in $serviceNameList) {
   Write-Host "Building service: $service"
 
@@ -187,12 +189,14 @@ foreach ($service in $serviceNameList) {
   # Client packages get individual entries
   $clientPackages = $packagesForToc.Values.Where({ $_.ServiceName -eq $service -and ('client' -eq $_.Type) })
   $clientPackages = $clientPackages | Select-Object * -Unique
-  if ($clientPackages) {
-    foreach ($clientPackage in $clientPackages) {
+  foreach ($clientPackage in $clientPackages) {
+    if ($service -eq 'Core') {
+      $corePackageItems += GetClientPackageNode -clientPackage $clientPackage
+    }
+    else {
       $packageItems += GetClientPackageNode -clientPackage $clientPackage
     }
   }
-
 
   # All management packages go under a single `Management` header in the ToC
   $mgmtPackages = $packagesForToc.Values.Where({ $_.ServiceName -eq $service -and ('mgmt' -eq $_.Type) })
@@ -202,12 +206,22 @@ foreach ($service in $serviceNameList) {
       -packageMetadata $mgmtPackages `
       -docRepoLocation $DocRepoLocation
 
-    $packageItems += [PSCustomObject]@{
-      name     = 'Management'
-      # There could be multiple packages, ensure this is treated as an array
-      # even if it is a single package
-      children = @($children)
-    };
+    if ($service -eq 'Core') {
+      $corePackageItems += [PSCustomObject]@{
+        name     = 'Management'
+        # There could be multiple packages, ensure this is treated as an array
+        # even if it is a single package
+        children = @($children)
+      }
+    }
+    else{
+      $packageItems += [PSCustomObject]@{
+        name     = 'Management'
+        # There could be multiple packages, ensure this is treated as an array
+        # even if it is a single package
+        children = @($children)
+      }
+    }
   }
 
   $uncategorizedPackages = $packagesForToc.Values.Where({ $_.ServiceName -eq $service -and !(@('client', 'mgmt') -contains $_.Type) })
@@ -291,6 +305,14 @@ $toc += [PSCustomObject]@{
   name            = 'Other';
   landingPageType = 'Service';
   items           = $otherPackageItems + @(
+    [PSCustomObject]@{
+      name            = "Core";
+      landingPageType = 'Service';
+      # All onboarded packages which have not been placed in the ToC will be
+      # handled by the docs system here. In this case the list would consist of
+      # packages whose ServiceName field is empty in the metadata.
+      children        = @($corePackageItems);
+    }
     [PSCustomObject]@{
       name            = "Uncategorized Packages";
       landingPageType = 'Service';
