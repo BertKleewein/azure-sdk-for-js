@@ -168,8 +168,6 @@ foreach ($package in $packagesForToc.Values) {
 $serviceNameList = $services.Keys | Sort-Object
 
 $toc = @()
-$corePackageItems = @()
-$coreServiceToc = @()
 foreach ($service in $serviceNameList) {
   Write-Host "Building service: $service"
 
@@ -179,12 +177,7 @@ foreach ($service in $serviceNameList) {
   $clientPackages = $packagesForToc.Values.Where({ $_.ServiceName -eq $service -and ('client' -eq $_.Type) })
   $clientPackages = $clientPackages | Select-Object * -Unique
   foreach ($clientPackage in $clientPackages) {
-    if ($service -eq 'Core') {
-      $corePackageItems += GetClientPackageNode -clientPackage $clientPackage
-    }
-    else {
-      $packageItems += GetClientPackageNode -clientPackage $clientPackage
-    }
+    $packageItems += GetClientPackageNode -clientPackage $clientPackage
   }
 
   # All management packages go under a single `Management` header in the ToC
@@ -195,21 +188,11 @@ foreach ($service in $serviceNameList) {
       -packageMetadata $mgmtPackages `
       -docRepoLocation $DocRepoLocation
 
-    if ($service -eq 'Core') {
-      $corePackageItems += [PSCustomObject]@{
-        name     = 'Management'
-        # There could be multiple packages, ensure this is treated as an array
-        # even if it is a single package
-        children = @($children)
-      }
-    }
-    else{
-      $packageItems += [PSCustomObject]@{
-        name     = 'Management'
-        # There could be multiple packages, ensure this is treated as an array
-        # even if it is a single package
-        children = @($children)
-      }
+    $packageItems += [PSCustomObject]@{
+      name     = 'Management'
+      # There could be multiple packages, ensure this is treated as an array
+      # even if it is a single package
+      children = @($children)
     }
   }
 
@@ -221,21 +204,12 @@ foreach ($service in $serviceNameList) {
   }
 
   $serviceReadmeBaseName = $service.ToLower().Replace(' ', '-')
-  if ($service -eq 'core') {
-    $coreServiceToc =[PSCustomObject]@{
-      name            = 'Core';
-      href            = "~/docs-ref-services/{moniker}/$serviceReadmeBaseName.md"
-      landingPageType = 'Service'
-      items           = @($corePackageItems)
-    }
-  }
-  else{
-    $serviceTocEntry = [PSCustomObject]@{
-      name            = $service;
-      href            = "~/docs-ref-services/{moniker}/$serviceReadmeBaseName.md"
-      landingPageType = 'Service'
-      items           = @($packageItems)
-    }
+
+  $serviceTocEntry = [PSCustomObject]@{
+    name            = $service;
+    href            = "~/docs-ref-services/{moniker}/$serviceReadmeBaseName.md"
+    landingPageType = 'Service'
+    items           = @($packageItems)
   }
   $toc += $serviceTocEntry
 }
@@ -298,7 +272,6 @@ if ($otherPackages) {
     }
   }
 }
-$otherPackageItems += @($coreServiceToc)
 $toc += [PSCustomObject]@{
   name            = 'Other';
   landingPageType = 'Service';
