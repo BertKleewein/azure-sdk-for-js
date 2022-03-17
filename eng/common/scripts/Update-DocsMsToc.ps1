@@ -175,7 +175,7 @@ foreach ($service in $serviceNameList) {
 
   # Client packages get individual entries
   $clientPackages = $packagesForToc.Values.Where({ $_.ServiceName -eq $service -and ('client' -eq $_.Type) })
-  $clientPackages = $clientPackages | Select-Object * -Unique
+  $clientPackages = $clientPackages | Sort-Object -Property Package
   foreach ($clientPackage in $clientPackages) {
     $packageItems += GetClientPackageNode -clientPackage $clientPackage
   }
