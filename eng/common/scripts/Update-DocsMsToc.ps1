@@ -105,8 +105,7 @@ $onboardedPackages = &$GetOnboardedDocsMsPackagesFn `
 $metadata = (Get-CSVMetadata).Where({
     $_.Package `
       -and $onboardedPackages.ContainsKey($_.Package) `
-      -and $_.Hide -ne 'true' `
-      -and $_.New -eq 'true'
+      -and $_.Hide -ne 'true' 
   })
 
 $fileMetadata = @()
