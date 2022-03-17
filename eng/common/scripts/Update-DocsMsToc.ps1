@@ -117,7 +117,7 @@ $metadata = (Get-CSVMetadata).Where({
     $_.Package `
       -and $onboardedPackages.ContainsKey($_.Package) `
       -and $_.Hide -ne 'true' `
-      -and $_.New -ne 'true'
+      -and $_.New -eq 'true'
   })
 
 $fileMetadata = @()
@@ -181,6 +181,7 @@ $serviceNameList = $services.Keys | Sort-Object
 
 $toc = @()
 $corePackageItems = @()
+$coreServiceToc = @()
 foreach ($service in $serviceNameList) {
   Write-Host "Building service: $service"
 
@@ -232,13 +233,22 @@ foreach ($service in $serviceNameList) {
   }
 
   $serviceReadmeBaseName = $service.ToLower().Replace(' ', '-')
-  $serviceTocEntry = [PSCustomObject]@{
-    name            = $service;
-    href            = "~/docs-ref-services/{moniker}/$serviceReadmeBaseName.md"
-    landingPageType = 'Service'
-    items           = @($packageItems)
+  if ($service -eq 'core') {
+    $coreServiceToc =[PSCustomObject]@{
+      name            = 'Core';
+      href            = "~/docs-ref-services/{moniker}/$serviceReadmeBaseName.md"
+      landingPageType = 'Service'
+      items           = @($corePackageItems)
+    }
   }
-
+  else{
+    $serviceTocEntry = [PSCustomObject]@{
+      name            = $service;
+      href            = "~/docs-ref-services/{moniker}/$serviceReadmeBaseName.md"
+      landingPageType = 'Service'
+      items           = @($packageItems)
+    }
+  }
   $toc += $serviceTocEntry
 }
 
@@ -300,19 +310,11 @@ if ($otherPackages) {
     }
   }
 }
-
+$otherPackageItems += @($coreServiceToc)
 $toc += [PSCustomObject]@{
   name            = 'Other';
   landingPageType = 'Service';
   items           = $otherPackageItems + @(
-    [PSCustomObject]@{
-      name            = "Core";
-      landingPageType = 'Service';
-      # All onboarded packages which have not been placed in the ToC will be
-      # handled by the docs system here. In this case the list would consist of
-      # packages whose ServiceName field is empty in the metadata.
-      children        = @($corePackageItems);
-    }
     [PSCustomObject]@{
       name            = "Uncategorized Packages";
       landingPageType = 'Service';
