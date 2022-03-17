@@ -178,7 +178,6 @@ foreach ($package in $packagesForToc.Values) {
 }
 $serviceNameList = $services.Keys | Sort-Object
 
-
 $toc = @()
 $corePackageItems = @()
 $coreServiceToc = @()
