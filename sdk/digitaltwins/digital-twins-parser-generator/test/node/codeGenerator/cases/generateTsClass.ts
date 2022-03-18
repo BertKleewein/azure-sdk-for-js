@@ -11,7 +11,7 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
     return { name: "minimal class", codeGenerator: tsLibrary, fileName: "tsClass_1.txt" };
   },
 
-  function createClassWithConstructorAndFields(outputDir: string) {
+  function createClassWithConstructorAndFields(outputDir: string): testCaseType {
     const tsLibrary = new TsLibrary(outputDir);
     tsLibrary
       .class({ name: "testClassWithConstructor", exports: true })

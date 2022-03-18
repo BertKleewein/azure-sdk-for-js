@@ -2,7 +2,7 @@
   "name": "@azure/digital-twins-parser-generator",
   "version": "1.0.0-beta.1",
   "description": "A tooling library for Azure Digital Twins",
-  "sdk-type": "tool",
+  "sdk-type": "utility",
   "author": "Microsoft Corporation",
   "license": "MIT",
   "main": "dist/index.js",

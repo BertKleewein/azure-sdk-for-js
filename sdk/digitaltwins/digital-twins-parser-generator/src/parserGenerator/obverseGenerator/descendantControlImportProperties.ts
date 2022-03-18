@@ -94,8 +94,8 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
   }
 
-  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addRestriction(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _checkRestrictionsMethodBody: TsScope,
     _dtdlVersion: number,
     _rawTypeName: string
@@ -390,9 +390,10 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
   }
 
-  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   _addField(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     materialProperties: MaterialProperty[],
     importProperty: string
   ): void {

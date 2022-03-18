@@ -19,7 +19,7 @@ const codeGeneratorTestCaseUnits = [tsClassCase, tsForCase, tsTryCatchFinallyCas
 /**
  * Code Generator Tests
  *
- * @description
+ * @remarks
  * This may look like a complicated block of code. It's a bit abstracted. The reason for this is so that we
  * can create individual generation samples modelled as 'cases' that we store in the 'cases' folder of this
  * directory.
@@ -49,7 +49,7 @@ describe("Code Generator", function() {
         const generatedScenario = generationScenario("./");
         it(`writes a ${generatedScenario.name}`, function() {
           const fakeFile: string[] = [];
-          const fakeWrite = function(input: string) {
+          const fakeWrite = function(input: string): void {
             fakeFile.push(input);
           };
           const fakeEnd = sinon.stub();

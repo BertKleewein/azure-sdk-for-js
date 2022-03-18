@@ -8,10 +8,10 @@ const tsTryCatchFinallyTestCases: Array<(outputDir: string) => testCaseType> = [
   function createSimpleClass(outputDir: string): testCaseType {
     const tsLibrary = new TsLibrary(outputDir);
     const tsClass = tsLibrary.class({ name: "testClass", exports: true });
-    tsClass.ctor.body;
     const trySomethingMethod = tsClass
       .method({ name: "trySomething" })
       .parameter({ name: "input", type: "any" }).body;
+    // eslint-disable-next-line promise/catch-or-return,promise/valid-params
     trySomethingMethod
       .try()
       .line("console.log(`${input.foo}`);")

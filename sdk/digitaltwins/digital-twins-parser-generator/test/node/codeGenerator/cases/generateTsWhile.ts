@@ -5,7 +5,7 @@ import { TsAccess, TsLibrary } from "../../../../src/codeGenerator";
 import { testCaseType } from "./common/testCaseType";
 
 const tsWhileTestCases: Array<(outputDir: string) => testCaseType> = [
-  function createClassWithWhileLoop(outputDir: string) {
+  function createClassWithWhileLoop(outputDir: string): testCaseType {
     const tsLibrary = new TsLibrary(outputDir);
     const tsClass = tsLibrary.class({ name: "testClass", exports: true });
     tsClass.field({ name: "_foo", type: "number", access: TsAccess.Private });

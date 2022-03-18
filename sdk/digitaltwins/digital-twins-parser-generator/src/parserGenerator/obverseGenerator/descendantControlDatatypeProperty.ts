@@ -53,8 +53,8 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
     this.addCheckMethod(obverseClass, classIsBase, classIsAbstract, materialProperties);
   }
 
-  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   addRestriction(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     checkRestrictionsMethodBody: TsScope,
     dtdlVersion: number,
     typeName: string
