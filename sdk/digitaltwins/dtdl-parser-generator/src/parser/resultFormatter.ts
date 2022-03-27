@@ -8,7 +8,7 @@ enum Expansion {
   Nominative = ":n",
   Possessive = ":p",
   Relative = ":r",
-  Elective = ":e"
+  Elective = ":e",
 }
 /* eslint-enable no-unused-vars */
 

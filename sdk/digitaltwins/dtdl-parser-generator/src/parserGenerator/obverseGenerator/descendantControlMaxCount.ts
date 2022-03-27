@@ -60,7 +60,7 @@ export class DescendantControlMaxCount implements DescendantControl {
       const baseClassMethod: TsFunction = obverseClass.method({
         name: this._methodName,
         returnType: "number",
-        abstract: true
+        abstract: true,
       });
       baseClassMethod.summary(
         `Get the count of all descendant ${this._propertyNames.join(" or ")} properties.`
@@ -68,7 +68,7 @@ export class DescendantControlMaxCount implements DescendantControl {
       baseClassMethod.parameter({
         name: "parsingErrors",
         type: "ParsingError[]",
-        description: `A list of ParsingErrors to which any parsing errors are added.`
+        description: `A list of ParsingErrors to which any parsing errors are added.`,
       });
     } else if (!classIsAbstract) {
       obverseClass.import(`import {TraversalStatus} from '../parser';`);
@@ -76,7 +76,7 @@ export class DescendantControlMaxCount implements DescendantControl {
       obverseClass.field({
         name: statusFieldName,
         type: "TraversalStatus",
-        access: TsAccess.Protected
+        access: TsAccess.Protected,
       });
       obverseClass.ctor.body.line(`this.${statusFieldName} = TraversalStatus.NotStarted`);
       const valueFieldName: string = `_countOf${this._coreName}Value`;
@@ -84,13 +84,13 @@ export class DescendantControlMaxCount implements DescendantControl {
         name: valueFieldName,
         type: "number",
         access: TsAccess.Protected,
-        value: 0
+        value: 0,
       });
       obverseClass.ctor.body.line(`this.${valueFieldName} = 0`);
 
       const concreteClassMethod: TsFunction = obverseClass.method({
         name: this._methodName,
-        returnType: "number"
+        returnType: "number",
       });
       concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
 
@@ -140,7 +140,7 @@ export class DescendantControlMaxCount implements DescendantControl {
     } else {
       const abstractClassMethod: TsFunction = obverseClass.method({
         name: this._methodName,
-        returnType: "number"
+        returnType: "number",
       });
       abstractClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
       abstractClassMethod.body.line(`throw new Error('Can not execute on an abstract class'); `);

@@ -41,7 +41,7 @@ export class MaterialClassAugmentor {
         returnType: `void`,
         abstract: false,
         isStatic: false,
-        access: TsAccess.Private
+        access: TsAccess.Private,
       })
       .parameter({ name: "dtmi", type: "string" })
       .parameter({ name: "supplementalType", type: "SupplementalTypeInfo|undefined" });
@@ -89,7 +89,7 @@ export class MaterialClassAugmentor {
           returnType: "boolean",
           abstract: false,
           isStatic: false,
-          access: TsAccess.Private
+          access: TsAccess.Private,
         })
         .parameter({ name: "model", type: "Model" })
         .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })

@@ -27,7 +27,7 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
     return {
       name: "class with constructor and fields",
       codeGenerator: tsLibrary,
-      fileName: "tsClass_2.txt"
+      fileName: "tsClass_2.txt",
     };
   },
 
@@ -42,9 +42,9 @@ const tsClassTestCases: Array<(outputDir: string) => testCaseType> = [
     return {
       name: "overlapping imports class",
       codeGenerator: tsLibrary,
-      fileName: "tsClass_3.txt"
+      fileName: "tsClass_3.txt",
     };
-  }
+  },
 ];
 
 export const tsClassCase = { unitUnderTest: "TsClass", testCases: tsClassTestCases };

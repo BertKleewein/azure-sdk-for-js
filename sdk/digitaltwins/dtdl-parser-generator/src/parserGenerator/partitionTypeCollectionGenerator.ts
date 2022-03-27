@@ -31,13 +31,13 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
       name: "_partitionTypeStrings",
       type: "Set<string>",
       access: TsAccess.Private,
-      isStatic: true
+      isStatic: true,
     });
     collectionClass.field({
       name: "_partitionTypeDescription",
       type: "string",
       access: TsAccess.Private,
-      isStatic: true
+      isStatic: true,
     });
     const constructor = collectionClass.method({ name: "initialize", isStatic: true });
     constructor.body.line(`this._partitionTypeStrings = new Set<string>()`);

@@ -8,7 +8,7 @@ import { TsAccess, TsClass, TsInterface, TsScope } from "../../codeGenerator";
 import {
   TypeVersionToConcreteSubclasses,
   TypeVersionToExtensibleMaterialClasses,
-  TypeVersionToExtensibleMaterialSubTypes
+  TypeVersionToExtensibleMaterialSubTypes,
 } from "../materialClassGenerator";
 import { ConcreteSubclass } from "./concreteSubclass";
 import { ExtensibleMaterialClass } from "./extensibleMaterialClass";
@@ -322,7 +322,7 @@ export class MaterialClassParser {
         name: "parseTypeArray",
         returnType: `${typeName}|undefined`,
         abstract: false,
-        isStatic: true
+        isStatic: true,
       })
       .parameter({ name: "tokenArr", type: "any[]" })
       .parameter({ name: "elementId", type: "string" })
@@ -447,7 +447,7 @@ export class MaterialClassParser {
   ): void {
     const method = obverseClass.method({
       name: "doesPropertyDictContainKey",
-      returnType: "boolean"
+      returnType: "boolean",
     });
     method
       .parameter({ name: "propertyName", type: "string" })
@@ -783,7 +783,7 @@ export class MaterialClassParser {
           name: "addInstanceProperty",
           returnType: "void",
           abstract: false,
-          isStatic: false
+          isStatic: false,
         })
         .parameter({ name: "propertyName", type: "string" })
         .parameter({ name: "instancePropertyName", type: "string" });

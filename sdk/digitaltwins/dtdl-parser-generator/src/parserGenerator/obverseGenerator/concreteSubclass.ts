@@ -36,9 +36,11 @@ export class ConcreteSubclass {
       identifierRestrictionsToken &&
       Object.prototype.hasOwnProperty.call(identifierRestrictionsToken, rawSubTypeName)
     ) {
-      const idRestriction: { [x: string]: unknown } = (identifierRestrictionsToken as {
-        [x: string]: unknown;
-      })[rawSubTypeName] as { [x: string]: unknown };
+      const idRestriction: { [x: string]: unknown } = (
+        identifierRestrictionsToken as {
+          [x: string]: unknown;
+        }
+      )[rawSubTypeName] as { [x: string]: unknown };
       if (Object.prototype.hasOwnProperty.call(idRestriction, dtdlVersion)) {
         const idRestrictionObj: { [x: string]: unknown } = idRestriction[dtdlVersion] as {
           [x: string]: unknown;

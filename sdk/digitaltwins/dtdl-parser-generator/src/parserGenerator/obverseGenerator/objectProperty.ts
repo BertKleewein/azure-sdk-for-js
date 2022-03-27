@@ -45,9 +45,8 @@ export abstract class ObjectProperty extends MaterialProperty {
       }
       const versionedClassName = propertyToken[keyDtdlVersion].class;
       if (versionedClassName !== undefined) {
-        this._versionedClassName[keyDtdlVersion] = NameFormatter.formatNameAsImplementation(
-          versionedClassName
-        );
+        this._versionedClassName[keyDtdlVersion] =
+          NameFormatter.formatNameAsImplementation(versionedClassName);
       }
     }
     this._valueConstraintsField = `${propertyName}ValueConstraints`;
@@ -126,13 +125,13 @@ export abstract class ObjectProperty extends MaterialProperty {
         name: `_${this.valueConstraintsField}`,
         access: TsAccess.Private,
         type: "ValueConstraint[]",
-        value: "[]"
+        value: "[]",
       });
       obverseClass.field({
         name: `_${this.instancePropertiesField}`,
         access: TsAccess.Private,
         type: "string[]",
-        value: "[]"
+        value: "[]",
       });
     }
     for (const dtdlVersion of dtdlVersions) {
@@ -148,7 +147,7 @@ export abstract class ObjectProperty extends MaterialProperty {
           name: `_${this.allowedVersionsField}V${dtdlVersion}`,
           access: TsAccess.Private,
           type: "Set<number>",
-          value: value
+          value: value,
         });
       }
     }

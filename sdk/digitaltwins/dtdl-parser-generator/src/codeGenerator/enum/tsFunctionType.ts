@@ -9,5 +9,5 @@ export enum TsFunctionType {
   Function = "function",
   Method = "method",
   Getter = "get",
-  Setter = "set"
+  Setter = "set",
 }

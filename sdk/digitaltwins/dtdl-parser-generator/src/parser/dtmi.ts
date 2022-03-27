@@ -16,7 +16,7 @@ export class DTMI extends InDTMI {
       cause: `${val} is not a legal DTMI.`,
       action:
         "Replace the identifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.",
-      primaryId: val
+      primaryId: val,
     });
   }
 }

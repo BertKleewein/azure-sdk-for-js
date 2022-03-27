@@ -52,13 +52,13 @@ export class AggregateContextGenerator implements TypeGenerator {
         type: "number[]",
         access: TsAccess.Private,
         isStatic: true,
-        value: "[0]"
+        value: "[0]",
       })
       .field({
         name: "_affiliateContextsImplicitDtdlVersions",
         type: `{[x:string]: number}`,
         isStatic: true,
-        value: "{}"
+        value: "{}",
       });
     contextClass.inline("./src/parserPartial/aggregateContext.ts", "fields");
   }
@@ -86,7 +86,7 @@ export class AggregateContextGenerator implements TypeGenerator {
       name: "_getDtdlContextHistory",
       returnType: `ContextHistory`,
       access: TsAccess.Private,
-      isStatic: true
+      isStatic: true,
     });
     dtdlContextMethod.body.line(`const versionedContexts: VersionedContext[] = [];`);
 
@@ -107,7 +107,7 @@ export class AggregateContextGenerator implements TypeGenerator {
             name: `_getAffiliate${affiliateIndex}ContextHistory`,
             returnType: `ContextHistory`,
             access: TsAccess.Private,
-            isStatic: true
+            isStatic: true,
           });
           affiliateContextMethod.body.line(`const versionedContexts: VersionedContext[] = [];`);
           affiliateContextMethods[affiliateIndex] = affiliateContextMethod;

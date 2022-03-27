@@ -18,17 +18,17 @@ const tsTryCatchFinallyTestCases: Array<(outputDir: string) => testCaseType> = [
       .catch("e")
       .line("console.log(e);")
       .finally()
-      .line("console.log(\"in finally block\");");
+      .line('console.log("in finally block");');
 
     return {
       name: "try catch finally block",
       codeGenerator: tsLibrary,
-      fileName: "tsTryCatchFinally.txt"
+      fileName: "tsTryCatchFinally.txt",
     };
-  }
+  },
 ];
 
 export const tsTryCatchFinallyCase = {
   unitUnderTest: "TsTryCatchFinally",
-  testCases: tsTryCatchFinallyTestCases
+  testCases: tsTryCatchFinallyTestCases,
 };

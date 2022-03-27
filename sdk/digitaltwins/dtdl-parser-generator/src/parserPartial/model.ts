@@ -49,9 +49,8 @@ export class Model {
           elementIdValue?.isPartition || elementIdValue?.definedIn === undefined
             ? objectPropertyInfo.elementId
             : elementIdValue?.definedIn;
-        const targetPartition: string | undefined = this.dict[
-          objectPropertyInfo.referencedElementId
-        ]?.definedIn;
+        const targetPartition: string | undefined =
+          this.dict[objectPropertyInfo.referencedElementId]?.definedIn;
         if (targetPartition !== undefined && targetPartition !== sourcePartition) {
           parsingErrors.push(
             createParsingError("dtmi:dtdl:parsingError:crossPartitionReference", {
@@ -59,7 +58,7 @@ export class Model {
               action: `Create a copy of \${secondaryId} under ${sourcePartition}, give it a unique @id value, and refer to it instead of \${secondaryId}.`,
               primaryId: objectPropertyInfo.elementId,
               secondaryId: objectPropertyInfo.referencedElementId,
-              property: objectPropertyInfo.propertyName
+              property: objectPropertyInfo.propertyName,
             })
           );
         }
@@ -77,7 +76,7 @@ export class Model {
             primaryId: objectPropertyInfo.elementId,
             secondaryId: objectPropertyInfo.referencedElementId,
             property: objectPropertyInfo.propertyName,
-            value: this.getKindString(objectPropertyInfo.referencedElementId)
+            value: this.getKindString(objectPropertyInfo.referencedElementId),
           })
         );
       }
@@ -96,7 +95,7 @@ export class Model {
             action: `Change the value of property '{property}' to an element defined in one of the following DTDL versions: {string.Join(" ,", objectPropertyInfo.AllowedVersions)}.`,
             primaryId: objectPropertyInfo.elementId,
             secondaryId: objectPropertyInfo.referencedElementId,
-            property: objectPropertyInfo.propertyName
+            property: objectPropertyInfo.propertyName,
           })
         );
       }
@@ -112,7 +111,7 @@ export class Model {
               action: `Add a '${objectPropertyInfo.keyProperty}' property with a string value that is unique across all values of '${objectPropertyInfo.propertyName}'.`,
               primaryId: objectPropertyInfo.elementId,
               property: objectPropertyInfo.propertyName,
-              value: objectPropertyInfo.keyProperty
+              value: objectPropertyInfo.keyProperty,
             })
           );
         }
@@ -135,7 +134,7 @@ export class Model {
             action: `Change the value of property '${objectPropertyInfo.keyProperty}' to a string value that is unique across all values of '${objectPropertyInfo.propertyName}'.`,
             primaryId: objectPropertyInfo.elementId,
             property: objectPropertyInfo.propertyName,
-            value: objectPropertyInfo.keyProperty
+            value: objectPropertyInfo.keyProperty,
           })
         );
       } else {

@@ -6,7 +6,7 @@ export const instantiationParams1 = {
   rawBaseType: "Entity",
   contexts: {
     "dtmi:dtdl:context;2": { Array: "dtmi:dtdl:class:Array;2" },
-    "dtmi:dtdl:context;3": { Array: "dtmi:dtdl:class:Array;3" }
+    "dtmi:dtdl:context;3": { Array: "dtmi:dtdl:class:Array;3" },
   },
   materialClassDigest: {
     dtdlVersions: [2, 3],
@@ -21,52 +21,50 @@ export const instantiationParams1 = {
         "is a JSON array that conforms to the specific Array element defined in the model",
       "2": {
         element: {
-          jsonType: "array"
+          jsonType: "array",
         },
         eachChild: {
-          instanceProperty: ["elementSchema"]
-        }
+          instanceProperty: ["elementSchema"],
+        },
       },
       "3": {
         element: {
-          jsonType: "array"
+          jsonType: "array",
         },
         eachChild: {
-          instanceProperty: ["elementSchema"]
-        }
-      }
+          instanceProperty: ["elementSchema"],
+        },
+      },
     },
     typeIds: [
       "dtmi:dtdl:class:Array",
       "dtmi:dtdl:class:ComplexSchema",
       "dtmi:dtdl:class:Entity",
-      "dtmi:dtdl:class:Schema"
+      "dtmi:dtdl:class:Schema",
     ],
     concreteSubclasses: {
       "2": ["Array"],
-      "3": ["Array"]
+      "3": ["Array"],
     },
     elementalSubclasses: {
       "2": [],
-      "3": []
+      "3": [],
     },
     elements: {
       "2": [],
-      "3": []
+      "3": [],
     },
     extensibleMaterialSubclasses: {
       "2": [],
-      "3": []
+      "3": [],
     },
     badTypeCauseFormat: {
-      "2":
-        "{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Array.",
-      "3":
-        "{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Array."
+      "2": "{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Array.",
+      "3": "{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Array.",
     },
     badTypeActionFormat: {
       "2": "Provide a value for property '{property}' with @type Array.",
-      "3": "Provide a value for property '{property}' with @type Array."
+      "3": "Provide a value for property '{property}' with @type Array.",
     },
     properties: {
       comment: {
@@ -80,7 +78,7 @@ export const instantiationParams1 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "A comment for model authors."
+          description: "A comment for model authors.",
         },
         "2": {
           idRequired: false,
@@ -88,7 +86,7 @@ export const instantiationParams1 = {
           maxCount: 1,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -96,8 +94,8 @@ export const instantiationParams1 = {
           maxCount: 1,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       description: {
         _: {
@@ -110,7 +108,7 @@ export const instantiationParams1 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "A localizable description for display."
+          description: "A localizable description for display.",
         },
         "2": {
           idRequired: false,
@@ -118,7 +116,7 @@ export const instantiationParams1 = {
           allowed: true,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -126,8 +124,8 @@ export const instantiationParams1 = {
           allowed: true,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       displayName: {
         _: {
@@ -140,7 +138,7 @@ export const instantiationParams1 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "A localizable name for display."
+          description: "A localizable name for display.",
         },
         "2": {
           idRequired: false,
@@ -148,7 +146,7 @@ export const instantiationParams1 = {
           allowed: true,
           maxLength: 64,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -156,8 +154,8 @@ export const instantiationParams1 = {
           allowed: true,
           maxLength: 64,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       elementSchema: {
         _: {
@@ -170,7 +168,8 @@ export const instantiationParams1 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "The data type of each element in the Array, which is an instance of Schema."
+          description:
+            "The data type of each element in the Array, which is an instance of Schema.",
         },
         "2": {
           idRequired: false,
@@ -180,7 +179,7 @@ export const instantiationParams1 = {
           maxCount: 1,
           minCount: 1,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -190,8 +189,8 @@ export const instantiationParams1 = {
           maxCount: 1,
           minCount: 1,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       languageVersion: {
         _: {
@@ -204,47 +203,47 @@ export const instantiationParams1 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "The version of DTDL used to author this element."
+          description: "The version of DTDL used to author this element.",
         },
         "2": {
           idRequired: false,
           allowed: false,
           typeRequired: true,
           value: 2,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
           allowed: false,
           typeRequired: true,
           value: 3,
-          uniqueAmong: []
-        }
-      }
-    }
+          uniqueAmong: [],
+        },
+      },
+    },
   },
   identifierDefinitions: {
     "2": {
       pattern:
         "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$",
-      maxLength: 2048
+      maxLength: 2048,
     },
     "3": {
       pattern:
         "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\\.[1-9][0-9]{0,5})?)?(?:#(?:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)?)?$",
-      maxLength: 2048
+      maxLength: 2048,
     },
     Interface: {
       "2": {
-        maxLength: 128
+        maxLength: 128,
       },
       "3": {
-        maxLength: 128
-      }
-    }
+        maxLength: 128,
+      },
+    },
   },
   descendantControls: [],
-  extensibleMaterialClasses: {}
+  extensibleMaterialClasses: {},
 };
 
 export const instantiationParams2 = {
@@ -252,7 +251,7 @@ export const instantiationParams2 = {
   rawBaseType: "Entity",
   contexts: {
     "dtmi:dtdl:context;2": { Array: "dtmi:dtdl:class:Array;2" },
-    "dtmi:dtdl:context;3": { Array: "dtmi:dtdl:class:Array;3" }
+    "dtmi:dtdl:context;3": { Array: "dtmi:dtdl:class:Array;3" },
   },
   materialClassDigest: {
     dtdlVersions: [2, 3],
@@ -265,7 +264,7 @@ export const instantiationParams2 = {
     typeIds: ["dtmi:dtdl:class:Entity"],
     concreteSubclasses: {
       "2": ["Array", "Property", "Relationship"],
-      "3": ["Array", "Property", "Relationship"]
+      "3": ["Array", "Property", "Relationship"],
     },
     elementalSubclasses: {
       "2": [
@@ -279,7 +278,7 @@ export const instantiationParams2 = {
         "Integer",
         "Long",
         "String",
-        "Time"
+        "Time",
       ],
       "3": [
         "Boolean",
@@ -292,8 +291,8 @@ export const instantiationParams2 = {
         "Integer",
         "Long",
         "String",
-        "Time"
-      ]
+        "Time",
+      ],
     },
     elements: {
       "2": [
@@ -301,43 +300,41 @@ export const instantiationParams2 = {
           id: "dtmi:dtdl:instance:CommandType:asynchronous;2",
           name: "asynchronous",
           description:
-            "The command will complete sometime after control returns to the caller. After the command completes, the result and any outputs are available."
+            "The command will complete sometime after control returns to the caller. After the command completes, the result and any outputs are available.",
         },
         {
           id: "dtmi:dtdl:instance:CommandType:synchronous;2",
           name: "synchronous",
           description:
-            "The command will be complete when control returns to the caller. The result and any outputs are available immediately."
-        }
+            "The command will be complete when control returns to the caller. The result and any outputs are available immediately.",
+        },
       ],
       "3": [
         {
           id: "dtmi:dtdl:instance:CommandType:asynchronous;3",
           name: "asynchronous",
           description:
-            "The command will complete sometime after control returns to the caller. After the command completes, the result and any outputs are available."
+            "The command will complete sometime after control returns to the caller. After the command completes, the result and any outputs are available.",
         },
         {
           id: "dtmi:dtdl:instance:CommandType:synchronous;3",
           name: "synchronous",
           description:
-            "The command will be complete when control returns to the caller. The result and any outputs are available immediately."
-        }
-      ]
+            "The command will be complete when control returns to the caller. The result and any outputs are available immediately.",
+        },
+      ],
     },
     extensibleMaterialSubclasses: {
       "2": ["Unit", "UnitAttribute"],
-      "3": ["LatentType", "NamedLatentType", "Unit", "UnitAttribute"]
+      "3": ["LatentType", "NamedLatentType", "Unit", "UnitAttribute"],
     },
     badTypeCauseFormat: {
-      "2":
-        "Top-level element{secondaryId:e} does not have @type of Array, Command, CommandPayload, Component, Enum, EnumValue, Field, Interface, Map, MapKey, MapValue, Object, Property, Relationship, or Telemetry.",
-      "3":
-        "Top-level element{secondaryId:e} does not have @type of Array, Command, CommandRequest, CommandResponse, Component, Enum, EnumValue, Field, Interface, Map, MapKey, MapValue, Object, Property, Relationship, or Telemetry."
+      "2": "Top-level element{secondaryId:e} does not have @type of Array, Command, CommandPayload, Component, Enum, EnumValue, Field, Interface, Map, MapKey, MapValue, Object, Property, Relationship, or Telemetry.",
+      "3": "Top-level element{secondaryId:e} does not have @type of Array, Command, CommandRequest, CommandResponse, Component, Enum, EnumValue, Field, Interface, Map, MapKey, MapValue, Object, Property, Relationship, or Telemetry.",
     },
     badTypeActionFormat: {
       "2": "Provide a @type in the set of allowable types.",
-      "3": "Provide a @type in the set of allowable types."
+      "3": "Provide a @type in the set of allowable types.",
     },
     properties: {
       comment: {
@@ -351,7 +348,7 @@ export const instantiationParams2 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "A comment for model authors."
+          description: "A comment for model authors.",
         },
         "2": {
           idRequired: false,
@@ -359,7 +356,7 @@ export const instantiationParams2 = {
           maxCount: 1,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -367,8 +364,8 @@ export const instantiationParams2 = {
           maxCount: 1,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       description: {
         _: {
@@ -381,7 +378,7 @@ export const instantiationParams2 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "A localizable description for display."
+          description: "A localizable description for display.",
         },
         "2": {
           idRequired: false,
@@ -389,7 +386,7 @@ export const instantiationParams2 = {
           allowed: true,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -397,8 +394,8 @@ export const instantiationParams2 = {
           allowed: true,
           maxLength: 512,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       displayName: {
         _: {
@@ -411,7 +408,7 @@ export const instantiationParams2 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "A localizable name for display."
+          description: "A localizable name for display.",
         },
         "2": {
           idRequired: false,
@@ -419,7 +416,7 @@ export const instantiationParams2 = {
           allowed: true,
           maxLength: 64,
           typeRequired: true,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
@@ -427,8 +424,8 @@ export const instantiationParams2 = {
           allowed: true,
           maxLength: 64,
           typeRequired: true,
-          uniqueAmong: []
-        }
+          uniqueAmong: [],
+        },
       },
       languageVersion: {
         _: {
@@ -441,45 +438,45 @@ export const instantiationParams2 = {
           shadowed: false,
           isKey: false,
           isSeg: false,
-          description: "The version of DTDL used to author this element."
+          description: "The version of DTDL used to author this element.",
         },
         "2": {
           idRequired: false,
           allowed: false,
           typeRequired: true,
           value: 2,
-          uniqueAmong: []
+          uniqueAmong: [],
         },
         "3": {
           idRequired: false,
           allowed: false,
           typeRequired: true,
           value: 3,
-          uniqueAmong: []
-        }
-      }
-    }
+          uniqueAmong: [],
+        },
+      },
+    },
   },
   identifierDefinitions: {
     "2": {
       pattern:
         "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$",
-      maxLength: 2048
+      maxLength: 2048,
     },
     "3": {
       pattern:
         "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\\.[1-9][0-9]{0,5})?)?(?:#(?:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)?)?$",
-      maxLength: 2048
+      maxLength: 2048,
     },
     Interface: {
       "2": {
-        maxLength: 128
+        maxLength: 128,
       },
       "3": {
-        maxLength: 128
-      }
-    }
+        maxLength: 128,
+      },
+    },
   },
   descendantControls: [],
-  extensibleMaterialClasses: {}
+  extensibleMaterialClasses: {},
 };

@@ -38,7 +38,7 @@ export class HelpersGenerator implements TypeGenerator {
     const method = helpersClass.method({
       name: "areListsIdEqual",
       returnType: "boolean",
-      isStatic: true
+      isStatic: true,
     });
     method
       .parameter({ name: "list1", type: `${this._baseClassName}[]` })
@@ -59,7 +59,7 @@ export class HelpersGenerator implements TypeGenerator {
     const method = helpersClass.method({
       name: "areListsIdOrLiteralEqual",
       returnType: "boolean",
-      isStatic: true
+      isStatic: true,
     });
     method
       .parameter({ name: "list1", type: `${this._baseClassName}[]` })
@@ -91,7 +91,7 @@ export class HelpersGenerator implements TypeGenerator {
     const method = helpersClass.method({
       name: "areDictionariesIdEqual",
       returnType: "boolean",
-      isStatic: true
+      isStatic: true,
     });
     method
       .parameter({ name: "dict1", type: `{[name:string]: ${this._baseClassName}}` })
@@ -114,7 +114,7 @@ export class HelpersGenerator implements TypeGenerator {
     const method = helpersClass.method({
       name: "areDictionariesIdOrLiteralEqual",
       returnType: "boolean",
-      isStatic: true
+      isStatic: true,
     });
     method
       .parameter({ name: "dict1", type: `{[name:string]: any}` })

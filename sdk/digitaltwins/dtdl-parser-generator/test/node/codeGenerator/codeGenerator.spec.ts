@@ -39,17 +39,17 @@ const codeGeneratorTestCaseUnits = [tsClassCase, tsForCase, tsTryCatchFinallyCas
  * will only run once, since only one test scenario has been implemented. But in the case of TsClass for
  * instance, there are multiple scenarios we want to test on TsClass, so we have multiple tests performed.
  */
-describe("Code Generator", function() {
-  afterEach(function() {
+describe("Code Generator", function () {
+  afterEach(function () {
     sinon.restore();
   });
   codeGeneratorTestCaseUnits.forEach((testCase) => {
-    describe(`${testCase.unitUnderTest}`, function() {
+    describe(`${testCase.unitUnderTest}`, function () {
       testCase.testCases.forEach((generationScenario) => {
         const generatedScenario = generationScenario("./");
-        it(`writes a ${generatedScenario.name}`, function() {
+        it(`writes a ${generatedScenario.name}`, function () {
           const fakeFile: string[] = [];
-          const fakeWrite = function(input: string): void {
+          const fakeWrite = function (input: string): void {
             fakeFile.push(input);
           };
           const fakeEnd = sinon.stub();

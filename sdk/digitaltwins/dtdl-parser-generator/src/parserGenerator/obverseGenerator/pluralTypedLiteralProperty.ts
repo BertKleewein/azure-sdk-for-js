@@ -30,7 +30,7 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
     propertyDigest,
     propertyRestrictions,
     datatype,
-    literalType
+    literalType,
   }: PluralTypedLiteralPropertyParams) {
     super({
       propertyName: propertyName,
@@ -38,7 +38,7 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
       propertyDigest: propertyDigest,
       propertyRestrictions: propertyRestrictions,
       datatype: datatype,
-      literalType: literalType
+      literalType: literalType,
     });
   }
 

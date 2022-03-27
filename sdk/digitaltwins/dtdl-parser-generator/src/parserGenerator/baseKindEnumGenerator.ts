@@ -34,7 +34,7 @@ export class BaseKindEnumGenerator implements TypeGenerator {
         const params = {
           name: typeAliasNameForBaseKind,
           typeToBeAliased: typeKindValuesOred,
-          exports: true
+          exports: true,
         };
         parserLibrary.typeAlias(params);
       }

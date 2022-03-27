@@ -14,7 +14,7 @@ import {
   TsFunctionType,
   TsInheritanceType,
   TsInline,
-  TsMultiLine
+  TsMultiLine,
 } from "./internal";
 
 /**
@@ -71,7 +71,7 @@ export class TsClass extends TsDeclaration {
     returnType,
     abstract,
     access,
-    isStatic
+    isStatic,
   }: {
     name: string;
     returnType?: string;
@@ -85,7 +85,7 @@ export class TsClass extends TsDeclaration {
       functionType: TsFunctionType.Method,
       abstract: abstract,
       isStatic: isStatic,
-      access: access
+      access: access,
     });
     if (!abstract) {
       // eslint-disable-next-line no-unused-expressions
@@ -106,7 +106,7 @@ export class TsClass extends TsDeclaration {
   getter({
     name,
     returnType,
-    access
+    access,
   }: {
     name: string;
     returnType?: string;
@@ -116,7 +116,7 @@ export class TsClass extends TsDeclaration {
       name: name,
       returnType: returnType,
       functionType: TsFunctionType.Getter,
-      access: access
+      access: access,
     });
     this._getters.push(tsGetter);
     return tsGetter;
@@ -125,7 +125,7 @@ export class TsClass extends TsDeclaration {
   setter({
     name,
     returnType,
-    access
+    access,
   }: {
     name: string;
     returnType?: string;
@@ -135,7 +135,7 @@ export class TsClass extends TsDeclaration {
       name: name,
       returnType: returnType,
       functionType: TsFunctionType.Setter,
-      access: access
+      access: access,
     });
     this._setters.push(tsSetter);
     return tsSetter;

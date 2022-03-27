@@ -27,19 +27,19 @@ export class RootableTypeCollectionGenerator implements TypeGenerator {
       type: "string",
       isStatic: true,
       access: TsAccess.Private,
-      value: `'@type'`
+      value: `'@type'`,
     });
     collectionClass.field({
       name: "_rootableTypeStrings",
       type: "{[dtdlVersion: number]: Set<string>}",
       isStatic: true,
-      access: TsAccess.Private
+      access: TsAccess.Private,
     });
     collectionClass.field({
       name: "_rootableTypeDescriptions",
       type: "{[dtdlVersion: number]: string}",
       isStatic: true,
-      access: TsAccess.Private
+      access: TsAccess.Private,
     });
 
     const constructor = collectionClass.staticCtor;

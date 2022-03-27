@@ -58,7 +58,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
 
     const method: TsFunction = obverseClass.method({
       name: this._methodName,
-      returnType: "boolean"
+      returnType: "boolean",
     });
     method.summary(
       `Check the nesting depth of all descendant ${this._propertyNames.join(" or ")} properties.`
@@ -66,22 +66,22 @@ export class DescendantControlMaxDepth implements DescendantControl {
     method.parameter({
       name: "depth",
       type: "number",
-      description: `The depth from the root to this element.`
+      description: `The depth from the root to this element.`,
     });
     method.parameter({
       name: `depthLimit`,
       type: "number",
-      description: `The allowed limit on the depth.`
+      description: `The allowed limit on the depth.`,
     });
     method.parameter({
       name: "tooDeepElementId",
       type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
-      description: `An out parameter for the ID of the first element that exceeds the depth.`
+      description: `An out parameter for the ID of the first element that exceeds the depth.`,
     }); // TODO: This is an out parameter... needs to be adjusted.
     method.parameter({
       name: "parsingErrors",
       type: "ParsingError[]",
-      description: "A ParsingError list to which any parsing errors are added."
+      description: "A ParsingError list to which any parsing errors are added.",
     });
 
     for (const materialProperty of materialProperties) {
@@ -165,8 +165,9 @@ export class DescendantControlMaxDepth implements DescendantControl {
         .line(
           `cause: \`{primaryId:n} is at the root of a ${
             this._isNarrow ? `chain of ` + this._propertiesDesc + ` properties` : `hierarchy`
-          } that exceeds ${this._maxDepth} levels -- {secondaryId:n} is at level ${this._maxDepth +
-            1}.\`,`
+          } that exceeds ${this._maxDepth} levels -- {secondaryId:n} is at level ${
+            this._maxDepth + 1
+          }.\`,`
         )
         .line(
           `action: \`Change the value of one or more ${this._propertiesDesc} properties in the hierarchy to reduce the nesting depth.\`,`

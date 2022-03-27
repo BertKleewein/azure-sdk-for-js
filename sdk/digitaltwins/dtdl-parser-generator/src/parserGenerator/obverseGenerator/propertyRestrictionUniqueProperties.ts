@@ -36,7 +36,7 @@ export class PropertyRestrictionUniqueProperties implements PropertyRestriction 
     );
     const varName = "item";
     const iterationScope = materialProperty.iterate(checkRestrictionsMethodBodyIfScope, {
-      ref: varName
+      ref: varName,
     });
     iterationScope
       .if(`${this._hashSetName}.has(${varName}.${this._uniquePropertyName})`)

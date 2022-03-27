@@ -11,7 +11,7 @@ import {
   TsParameter,
   TsParameterParams,
   TsScope,
-  TsStatement
+  TsStatement,
 } from "./internal";
 
 // Functions are the fundamental building block of any application in JavaScript.
@@ -40,7 +40,7 @@ export class TsFunction implements TsStatement {
     abstract,
     access,
     exports,
-    isStatic
+    isStatic,
   }: TsFunctionParams) {
     this._name = name;
     this._returnType = returnType;

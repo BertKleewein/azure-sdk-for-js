@@ -30,7 +30,7 @@ export abstract class TypedLiteralProperty extends LiteralProperty {
     propertyDigest,
     propertyRestrictions,
     datatype,
-    literalType
+    literalType,
   }: TypedLiteralPropertyParams) {
     super(propertyName, propertyNameUris, propertyDigest, propertyRestrictions);
     this._datatype = datatype;
@@ -65,7 +65,7 @@ export abstract class TypedLiteralProperty extends LiteralProperty {
           name: `${this.propertyName}PropertyRegexPatternV${dtdlVersion}`,
           type: "RegExp",
           access: TsAccess.Private,
-          value: `/${this.propertyDigest[dtdlVersion].pattern}/`
+          value: `/${this.propertyDigest[dtdlVersion].pattern}/`,
         });
       }
     }

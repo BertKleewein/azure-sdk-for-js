@@ -20,7 +20,7 @@ import {
   RootableTypeCollection,
   StandardElements,
   createParsingError,
-  DtmiResolver
+  DtmiResolver,
 } from "../parser/internal";
 // TODO File needs to be generated and line needs to be un-commented before parsing or maaking package
 import { ParsedObjectPropertyInfo } from "./type/parsedObjectPropertyInfo";
@@ -42,7 +42,8 @@ export class ModelParserImpl {
   dtmiResolver?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
-  static supplementalTypeCollection: SupplementalTypeCollectionImpl = new SupplementalTypeCollectionImpl();
+  static supplementalTypeCollection: SupplementalTypeCollectionImpl =
+    new SupplementalTypeCollectionImpl();
 
   getSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
     return ModelParserImpl.retrieveSupplementalTypeCollection();
@@ -91,7 +92,7 @@ export class ModelParserImpl {
             primaryId: elementPropertyConstraint.parentId,
             property: elementPropertyConstraint.propertyName,
             secondaryId: elementPropertyConstraint.elementId,
-            value: elementPropertyConstraint.valueConstraint.requiredTypesString
+            value: elementPropertyConstraint.valueConstraint.requiredTypesString,
           })
         );
       }
@@ -109,7 +110,7 @@ export class ModelParserImpl {
             primaryId: elementPropertyConstraint.parentId,
             property: elementPropertyConstraint.propertyName,
             secondaryId: elementPropertyConstraint.elementId,
-            value: elementPropertyConstraint.valueConstraint.requiredValuesString
+            value: elementPropertyConstraint.valueConstraint.requiredValuesString,
           })
         );
       }
@@ -261,7 +262,7 @@ export class ModelParserImpl {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:notJsonObject", {
           cause: `Top-level JSON element is neither a JSON object nor a JSON array of JSON objects.`,
-          action: `Update your model to follow the examples in https://github.com/Azure/opendigitaltwins-dtdl/tree/master/DTDL.`
+          action: `Update your model to follow the examples in https://github.com/Azure/opendigitaltwins-dtdl/tree/master/DTDL.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -279,7 +280,7 @@ export class ModelParserImpl {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:graphDisallowed", {
           cause: `Top-level JSON object contains '@graph' property, which is not allowed.`,
-          action: `Remove the'@graph' property, and elevate the value of this property to the top level of the JSON document.`
+          action: `Remove the'@graph' property, and elevate the value of this property to the top level of the JSON document.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -289,7 +290,7 @@ export class ModelParserImpl {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:missingTopLevelId", {
           cause: `Top-level element requires an identifer but none provided.`,
-          action: `Add an '@id' property whose value is a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.`
+          action: `Add an '@id' property whose value is a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -302,7 +303,7 @@ export class ModelParserImpl {
             cause: `Top-level element ${JSON.stringify(
               obj[ModelParserImpl.idKeyword]
             )} does not have @type of ${PartitionTypeCollection.partitionTypeDescription}.`,
-            action: `Provide a @type in the set of allowable types.`
+            action: `Provide a @type in the set of allowable types.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -316,7 +317,7 @@ export class ModelParserImpl {
             )} does not have @type of ${
               RootableTypeCollection.rootableTypeDescriptions[aggregateContext.dtdlVersion]
             }.`,
-            action: `Provide a @type in the set of allowable types.`
+            action: `Provide a @type in the set of allowable types.`,
           })
         );
         throw new ParsingException(parsingErrors);

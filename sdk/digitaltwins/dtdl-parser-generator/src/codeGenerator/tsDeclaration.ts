@@ -7,7 +7,7 @@ import {
   TsDeclarationType,
   TsImport,
   TsMultiLine,
-  TsMultiLineDocString
+  TsMultiLineDocString,
 } from "./internal";
 
 export class TsDeclaration {

@@ -10,5 +10,5 @@ export enum ModelParsingOption {
   MandateTopLevelPartition = 0x04,
   PermitAnyTopLevelElement = 0x08,
   ParseAllowsIdReferenceSyntax = 0x10,
-  ResolveAllowsIdReferenceSyntax = 0x20
+  ResolveAllowsIdReferenceSyntax = 0x20,
 }

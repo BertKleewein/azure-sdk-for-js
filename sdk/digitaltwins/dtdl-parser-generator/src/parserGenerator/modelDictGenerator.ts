@@ -23,7 +23,7 @@ export class ModelDictGenerator implements TypeGenerator {
     const modelDictType = parserLibrary.typeAlias({
       name: "ModelDict",
       typeToBeAliased: `{[id: string]: ${this._baseClassName}|undefined}`,
-      exports: true
+      exports: true,
     });
     modelDictType.import(`import {${this._baseClassName}} from './internal';`);
   }

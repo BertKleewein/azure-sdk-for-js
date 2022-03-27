@@ -58,7 +58,7 @@ export class SupplementalPropertyInfoImpl {
     if (type.includes("dtmi:")) {
       this.valueConstraint = {
         requiredTypes: [type],
-        requiredTypesString: AggregateContext.getTermOrUri(type)
+        requiredTypesString: AggregateContext.getTermOrUri(type),
       };
     }
     // codegen-outline-end

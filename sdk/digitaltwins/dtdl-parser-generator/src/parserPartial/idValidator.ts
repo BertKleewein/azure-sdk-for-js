@@ -66,7 +66,7 @@ export class IdValidator {
             cause: `Identifier ${idToken} is invalid.`,
             action:
               "Replace the identifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.",
-            value: idToken as string | undefined
+            value: idToken as string | undefined,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -77,7 +77,7 @@ export class IdValidator {
           createParsingError("dtmi:dtdl:parsingError:idTooLong", {
             cause: `Identifier ${idToken} is too long -- length limit is ${length}.`,
             action: `Select a shorter value for the identifier or trim current value to fewer than  ${length} characters.`,
-            value: idToken
+            value: idToken,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -89,7 +89,7 @@ export class IdValidator {
             cause: `Identifier ${idToken} is invalid.`,
             action:
               "Replace the identifier with a string that conforms to the DTMI syntax-- see https://github.com/Azure/digital-twin-model-identifier.",
-            value: idToken
+            value: idToken,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -103,7 +103,7 @@ export class IdValidator {
             action:
               'Add an "@id" property whose value is string that conforms to the DTMI syntax-- see https://github.com/Azure/digital-twin-model-identifier.',
             primaryId: parentId,
-            property: propName
+            property: propName,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -118,7 +118,7 @@ export class IdValidator {
               action: `Add a ${dtmiSeg} property with a string value that is unique across all values of ${propName}.`,
               primaryId: parentId,
               property: propName,
-              value: dtmiSeg
+              value: dtmiSeg,
             })
           );
           throw new ParsingException(parsingErrors);

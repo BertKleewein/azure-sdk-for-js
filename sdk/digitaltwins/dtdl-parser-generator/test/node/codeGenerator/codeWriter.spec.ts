@@ -10,12 +10,12 @@ import { expect } from "chai";
 import fs from "fs";
 import sinon from "sinon";
 
-describe("Code Writer", function() {
-  afterEach(function() {
+describe("Code Writer", function () {
+  afterEach(function () {
     sinon.restore();
   });
 
-  it("open brace", function() {
+  it("open brace", function () {
     const fakeWrite = sinon.stub();
     const fakeEnd = sinon.stub();
     const fakeStreamWriter = { write: fakeWrite, end: fakeEnd };
@@ -28,7 +28,7 @@ describe("Code Writer", function() {
     expect(fakeWrite.getCall(0).args[0]).to.equal("{\r\n");
   });
 
-  it("close brace", function() {
+  it("close brace", function () {
     const fakeWrite = sinon.stub();
     const fakeEnd = sinon.stub();
     const fakeStreamWriter = { write: fakeWrite, end: fakeEnd };
@@ -41,7 +41,7 @@ describe("Code Writer", function() {
     expect(fakeWrite.getCall(0).args[0]).to.equal("}");
   });
 
-  it("write line", function() {
+  it("write line", function () {
     const fakeWrite = sinon.stub();
     const fakeEnd = sinon.stub();
     const fakeStreamWriter = { write: fakeWrite, end: fakeEnd };
@@ -54,7 +54,7 @@ describe("Code Writer", function() {
     expect(fakeWrite.getCall(0).args[0]).to.equal("test code.\r\n");
   });
 
-  it("close stream", function() {
+  it("close stream", function () {
     const fakeWrite = sinon.stub();
     const fakeEnd = sinon.stub();
     const fakeStreamWriter = { write: fakeWrite, end: fakeEnd };

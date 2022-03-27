@@ -7,5 +7,5 @@ export enum TsDeclarationType {
   Interface = "interface",
   Enum = "enum",
   Function = "function",
-  TypeAlias = "typealias"
+  TypeAlias = "typealias",
 }

@@ -27,7 +27,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
   generateCode(parserLibrary: TsLibrary): void {
     const infoInterface: TsInterface = parserLibrary.interface({
       name: "SupplementalTypeInfo",
-      exports: true
+      exports: true,
     });
     infoInterface.import(`import {SupplementalPropertyInfo} from './internal'`);
     infoInterface.docString.line(
@@ -43,7 +43,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     const infoClass: TsClass = parserLibrary.class({
       name: "SupplementalTypeInfoImpl",
       exports: true,
-      inheritance: [{ name: "SupplementalTypeInfo", type: TsDeclarationType.Interface }]
+      inheritance: [{ name: "SupplementalTypeInfo", type: TsDeclarationType.Interface }],
     });
     infoClass.import(`import {PropertyConstraint} from '../parser';`);
     infoClass.import(
@@ -70,7 +70,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     infoClass.field({
       name: "allowedCotypeKinds",
       type: `${this._baseEnumName}[]`,
-      readonly: true
+      readonly: true,
     });
     infoClass.field({ name: "extensionKind", type: "ExtensionKind", readonly: true });
     infoClass.inline("./src/parserPartial/supplementalTypeInfoImpl.ts", "fields");
@@ -89,7 +89,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     const addCotypeMethod = infoClass
       .method({
         name: "addCotype",
-        returnType: "void"
+        returnType: "void",
       })
       .parameter({ name: "cotypeKind", type: `${this._baseEnumName}` });
     addCotypeMethod.body.line(`this.allowedCotypeKinds.push(cotypeKind);`);

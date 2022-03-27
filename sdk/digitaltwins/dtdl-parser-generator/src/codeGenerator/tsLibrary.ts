@@ -15,7 +15,7 @@ import {
   TsMultiLine,
   TsTypeAlias,
   TsTypeAliasParams,
-  pascalToCamel
+  pascalToCamel,
 } from "./internal";
 import fs from "fs";
 

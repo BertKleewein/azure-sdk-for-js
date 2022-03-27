@@ -81,7 +81,7 @@ export abstract class IdentifierProperty extends MaterialProperty {
           name: `${this.propertyName}PropertyRegexPatternV${dtdlVersion}`,
           type: "RegExp",
           access: TsAccess.Private,
-          value: `/${this.propertyDigest[dtdlVersion].pattern}/`
+          value: `/${this.propertyDigest[dtdlVersion].pattern}/`,
         });
       }
     }

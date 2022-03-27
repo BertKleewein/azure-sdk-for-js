@@ -68,17 +68,17 @@ export class DescendantControlExcludeType implements DescendantControl {
     obverseClass.field({
       name: idOfFieldName,
       type: `${ParserGeneratorValues.IdentifierType} | undefined`,
-      access: TsAccess.Protected
+      access: TsAccess.Protected,
     });
     obverseClass.ctor.body.line(`this.${idOfFieldName} = undefined;`);
 
     const concreteClassMethod = obverseClass.method({
       name: this._methodName,
-      returnType: "boolean"
+      returnType: "boolean",
     });
     concreteClassMethod.parameter({
       name: "elementId",
-      type: `Reference<${ParserGeneratorValues.IdentifierType}>`
+      type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
     });
 
     concreteClassMethod.body

@@ -145,7 +145,7 @@ export class ModelGenerator implements TypeGenerator {
   private _generateDoesPropertyDictContainKeyMethod(modelClass: TsClass): void {
     const doesPropertyDictContainKeyMethod = modelClass.method({
       name: "doesPropertyDictContainKey",
-      returnType: "boolean"
+      returnType: "boolean",
     });
     doesPropertyDictContainKeyMethod
       .parameter({ name: "elementId", type: "string" })
@@ -163,7 +163,7 @@ export class ModelGenerator implements TypeGenerator {
   ): void {
     const trySetObjectPropertyMethod = modelClass.method({
       name: "trySetObjectProperty",
-      returnType: "boolean"
+      returnType: "boolean",
     });
     trySetObjectPropertyMethod
       .parameter({ name: "elementId", type: "string" })
@@ -215,7 +215,7 @@ export class ModelGenerator implements TypeGenerator {
   private _generateCheckRestrictions(modelClass: TsClass): void {
     const checkRestrictionsMethod = modelClass.method({
       name: "checkRestrictions",
-      returnType: "void"
+      returnType: "void",
     });
     checkRestrictionsMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
     // eslint-disable-next-line no-unused-expressions
@@ -227,7 +227,7 @@ export class ModelGenerator implements TypeGenerator {
   private _generateApplyTransformations(modelClass: TsClass): void {
     const applyTransformationsMethod = modelClass.method({
       name: "applyTransformations",
-      returnType: "void"
+      returnType: "void",
     });
     applyTransformationsMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
     // eslint-disable-next-line no-unused-expressions

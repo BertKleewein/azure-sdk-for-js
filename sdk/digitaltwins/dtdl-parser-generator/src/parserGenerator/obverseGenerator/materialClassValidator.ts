@@ -10,7 +10,7 @@ import { TsAccess, TsClass, TsInterface, TsScope } from "../../codeGenerator";
 import {
   InstanceConditionDigest,
   InstanceValidationDigest,
-  MaterialPropertyDigest
+  MaterialPropertyDigest,
 } from "../metamodelDigest";
 import { NameFormatter } from "../nameFormatter";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
@@ -72,7 +72,7 @@ export class MaterialClassValidator {
       obverseInterface
         .method({
           name: `${ParserGeneratorValues.ValidateInstanceMethodName}`,
-          returnType: "boolean"
+          returnType: "boolean",
         })
         .parameter({ name: "instanceText", type: "string" });
     }
@@ -82,7 +82,7 @@ export class MaterialClassValidator {
         returnType: "boolean",
         abstract: false,
         isStatic: false,
-        access: TsAccess.Public
+        access: TsAccess.Public,
       })
       .parameter({ name: "instanceText", type: "string" });
     if (classIsAbstract) {
@@ -110,7 +110,7 @@ export class MaterialClassValidator {
         returnType: "boolean",
         abstract: false,
         isStatic: false,
-        access: TsAccess.Public
+        access: TsAccess.Public,
       })
       .parameter({ name: "instanceElt", type: "unknown" });
     if (classIsBase) {
@@ -140,7 +140,7 @@ export class MaterialClassValidator {
         returnType: "boolean",
         abstract: false,
         isStatic: false,
-        access: TsAccess.Public
+        access: TsAccess.Public,
       })
       .parameter({ name: "instanceElt", type: "unknown" })
       .parameter({ name: "instanceName", type: "string|undefined" });
@@ -178,7 +178,7 @@ export class MaterialClassValidator {
         returnType: "boolean",
         abstract: false,
         isStatic: false,
-        access: TsAccess.Public
+        access: TsAccess.Public,
       })
       .parameter({ name: "instanceElt", type: "unknown" })
       .parameter({ name: "instanceName", type: "string|undefined" });
@@ -397,7 +397,7 @@ export class MaterialClassValidator {
       access: TsAccess.Private,
       isStatic: false,
       type: "RegExp",
-      value: `/${uselessEscapeRemoved}/`
+      value: `/${uselessEscapeRemoved}/`,
     });
     scope.if(`!this.${fieldname}.test(${eltVar}.toString())`).line(`return false;`);
   }

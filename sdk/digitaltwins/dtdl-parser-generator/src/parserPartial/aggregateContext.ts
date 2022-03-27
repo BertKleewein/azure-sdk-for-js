@@ -11,7 +11,7 @@ import {
   IdValidator,
   InDTMI,
   ParsingException,
-  VersionedContext
+  VersionedContext,
 } from "../parser/internal";
 
 type TermDict = { [term: string]: InDTMI };
@@ -23,7 +23,8 @@ export class AggregateContext {
   // codegen-outline-begin fields
   private static readonly _contextKeyword: string = "@context";
   private static readonly _dtdlContextPrefix: string = "dtmi:dtdl:context;";
-  private static _termRegex: RegExp = /^[A-Za-z0-9\\-\\._~!\\$&'\\(\\)\\*\\+,;=][@A-Za-z0-9\\-\\._~!\\$&'\\(\\)\\*\\+,;=]*$/;
+  private static _termRegex: RegExp =
+    /^[A-Za-z0-9\\-\\._~!\\$&'\\(\\)\\*\\+,;=][@A-Za-z0-9\\-\\._~!\\$&'\\(\\)\\*\\+,;=]*$/;
 
   private static _dtdlContextHistory: ContextHistory;
   private static _affiliateContextHistories: { [affiliateName: string]: ContextHistory };
@@ -102,7 +103,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:missingContext", {
             cause: `No @context specifier in top-level JSON object.`,
-            action: `Add a '@context' property whose value is a valid DTDL context specifier, such as 'dtmi:dtdl:context;2'.`
+            action: `Add a '@context' property whose value is a valid DTDL context specifier, such as 'dtmi:dtdl:context;2'.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -121,7 +122,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContext", {
           cause: `Model contains @context value that is not a JSON string, object, or array of strings and objects.`,
-          action: `Remove all @context values other than JSON strings, objects, and arrays of strings and objects.`
+          action: `Remove all @context values other than JSON strings, objects, and arrays of strings and objects.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -189,7 +190,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:emptyContext", {
             cause: `Empty @context specifier in top-level JSON object.`,
-            action: `To the top-level '@context' property, add a string whose value is a valid DTDL context specifier, such as 'dtmi:dtdl:context;2'.`
+            action: `To the top-level '@context' property, add a string whose value is a valid DTDL context specifier, such as 'dtmi:dtdl:context;2'.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -238,7 +239,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:missingDtdlContext", {
           cause: `@context specifier in top-level JSON object does not include a DTDL context specifier as its string value or as the first entry of its array value.`,
-          action: `Set the first value of the '@context' property to a valid DTDL context specifier, such as 'dtmi:dtdl:context;2'.`
+          action: `Set the first value of the '@context' property to a valid DTDL context specifier, such as 'dtmi:dtdl:context;2'.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -254,20 +255,18 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:disallowedLocalContext", {
             cause: `@context value contains local context definitions, which are not allowed in DTDL version ${childDtdlContext.majorVersion}.`,
-            action: `Remove the local context object, or try specifiying a different version of DTDL.`
+            action: `Remove the local context object, or try specifiying a different version of DTDL.`,
           })
         );
         throw new ParsingException(parsingErrors);
       }
 
-      ({
-        childTermDefinitions,
-        childPrefixDefinitions
-      } = this._getChildDefinitionsfromContextObject(
-        contextArray[endIndex],
-        childDtdlContext.majorVersion,
-        parsingErrors
-      ));
+      ({ childTermDefinitions, childPrefixDefinitions } =
+        this._getChildDefinitionsfromContextObject(
+          contextArray[endIndex],
+          childDtdlContext.majorVersion,
+          parsingErrors
+        ));
       --endIndex;
     }
 
@@ -314,7 +313,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContextSpecifier", {
           cause: `Model contains @context specifier '${contextString}' that is not a legal DTMI.`,
-          action: `Replace the @context specifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.`
+          action: `Replace the @context specifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -324,7 +323,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:missingContextVersion", {
           cause: `Model contains @context specifier '${contextString}', which is invalid because it lacks a version number.`,
-          action: `Modify @context specifier so that DTDL version number follows ';'.`
+          action: `Modify @context specifier so that DTDL version number follows ';'.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -338,7 +337,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:unrecognizedContextVersion", {
           cause: `Model contains @context specifier '${contextString}', which specifies a DTDL version that is not recognized.`,
-          action: `Modify @context specifier to indicate one of the following DTDL versions: ${AggregateContext._dtdlContextHistory.availableVersions}.`
+          action: `Modify @context specifier to indicate one of the following DTDL versions: ${AggregateContext._dtdlContextHistory.availableVersions}.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -348,7 +347,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:disallowedContextVersion", {
           cause: `Model contains @context specifier '${contextString}', which specifies a DTDL version that exceeds the configured max version of ${this._maxDtdlVersion}.`,
-          action: `Modify @context specifier to indicate a DTDL major version no greater than ${this._maxDtdlVersion}.`
+          action: `Modify @context specifier to indicate a DTDL major version no greater than ${this._maxDtdlVersion}.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -358,7 +357,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContextSpecifierForVersion", {
           cause: `Model contains @context specifier '${contextString}', which is not a valid DTMI for DTDL version ${dtdlContextDtmi.majorVersion}.`,
-          action: `Change @context specifier to a valid DTMI for DTDL version ${dtdlContextDtmi.majorVersion} -- see https://github.com/Azure/digital-twin-model-identifier.`
+          action: `Change @context specifier to a valid DTMI for DTDL version ${dtdlContextDtmi.majorVersion} -- see https://github.com/Azure/digital-twin-model-identifier.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -377,7 +376,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localContextNotLast", {
             cause: `@context array contains a local context object that is not the last element in the array.`,
-            action: `Merge all local context definitions into a single object and locate it at the end of the @context array.`
+            action: `Merge all local context definitions into a single object and locate it at the end of the @context array.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -385,7 +384,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:invalidContextElement", {
             cause: `Model contains @context array with an element that is not a JSON string or object.`,
-            action: `Remove all @context array elements other than JSON strings and objects.`
+            action: `Remove all @context array elements other than JSON strings and objects.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -396,7 +395,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:dtdlContextFollowsAffiliate", {
           cause: `@context array contains DTDL context specifier '${contextToken}' after an affiliate context specifier.`,
-          action: `Rearrange context specifiers so that all DTDL context specifiers are at the beginning of @context array.`
+          action: `Rearrange context specifiers so that all DTDL context specifiers are at the beginning of @context array.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -407,7 +406,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:nonDtmiContextSpecifier", {
             cause: `Model contains @context specifier '${contextToken}', which is not a DTMI.`,
-            action: `Remove '${contextToken}' @context specifier.`
+            action: `Remove '${contextToken}' @context specifier.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -421,7 +420,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContextSpecifier", {
           cause: `Model contains @context specifier '${contextToken}' that is not a legal DTMI.`,
-          action: `Replace the @context specifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.`
+          action: `Replace the @context specifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -431,7 +430,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:invalidContextSpecifierForVersion", {
           cause: `Model contains @context specifier '${contextToken}', which is not a valid DTMI for DTDL version {dtdlVersion}.`,
-          action: `Change @context specifier to a valid DTMI for DTDL version ${dtdlVersion} -- see https://github.com/Azure/digital-twin-model-identifier.`
+          action: `Change @context specifier to a valid DTMI for DTDL version ${dtdlVersion} -- see https://github.com/Azure/digital-twin-model-identifier.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -441,7 +440,7 @@ export class AggregateContext {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:missingContextVersion", {
           cause: `Model contains @context specifier '${contextToken}', which is invalid because it lacks a version number.`,
-          action: `Modify @context specifier so that extension version number follows ';'.`
+          action: `Modify @context specifier so that extension version number follows ';'.`,
         })
       );
       throw new ParsingException(parsingErrors);
@@ -457,7 +456,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:unresolvableContextSpecifier", {
             cause: `Model contains @context specifier '${contextToken}', which is unrecognized.`,
-            action: `Remove '${contextToken}' @context specifier.`
+            action: `Remove '${contextToken}' @context specifier.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -477,7 +476,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:unresolvableContextVersion", {
             cause: `Model contains @context specifier '${contextToken}', which specifies a context version that is not recognized.`,
-            action: `Modify @context specifier to indicate one of the following versions: ${affiliateContextHistory.availableVersions}.`
+            action: `Modify @context specifier to indicate one of the following versions: ${affiliateContextHistory.availableVersions}.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -503,7 +502,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localTermEmpty", {
             cause: `@context defines local term that is an empty string.`,
-            action: `Use a non-empty string of characters for the term.`
+            action: `Use a non-empty string of characters for the term.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -513,7 +512,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localTermSchemePrefix", {
             cause: `@context contains a local definition for term 'dtmi' which is reserved as the scheme prefix for DTDL identifiers.`,
-            action: `Use a different term other than 'dtmi'.`
+            action: `Use a different term other than 'dtmi'.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -523,7 +522,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localTermInvalid", {
             cause: `@context defines local term '${term}' that contains invalid characters.`,
-            action: `Use a different term that does not begin with '@' and that contains only letters, digits, and the characters '@', '-', '.', '_', '~', '!', '$', '&', ''', '(', ')', '*', '+', ',', ';', '='.`
+            action: `Use a different term that does not begin with '@' and that contains only letters, digits, and the characters '@', '-', '.', '_', '~', '!', '$', '&', ''', '(', ')', '*', '+', ',', ';', '='.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -533,7 +532,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localTermReserved", {
             cause: `@context contains a local definition for term '${term}' that is defined by the DTDL context.`,
-            action: `Use a different term that is not a DTDL keyword.`
+            action: `Use a different term that is not a DTDL keyword.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -550,7 +549,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localDefinitionNotString", {
             cause: `@context contains a local definition for term '${term}' that is not a JSON string.`,
-            action: `Change the value of term '${term}' to a JSON string representing a valid DTMI or DTMI prefix.`
+            action: `Change the value of term '${term}' to a JSON string representing a valid DTMI or DTMI prefix.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -560,7 +559,7 @@ export class AggregateContext {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:localDefinitionNotDtmiScheme", {
             cause: `@context contains a local definition for term '${term}' whose value '${definition}' is not a DTMI or DTMI prefix.`,
-            action: `Change the value of term '${term}' to a JSON string representing a valid DTMI or DTMI prefix.`
+            action: `Change the value of term '${term}' to a JSON string representing a valid DTMI or DTMI prefix.`,
           })
         );
         throw new ParsingException(parsingErrors);
@@ -573,7 +572,7 @@ export class AggregateContext {
           parsingErrors.push(
             createParsingError("dtmi:dtdl:parsingError:localDefinitionNotDtmi", {
               cause: `@context contains a local definition for term '${term}' whose value '${definition}' is not a valid DTMI or DTMI prefix for DTDL version {dtdlVersion}.`,
-              action: `Change the value of term '${term}' to a JSON string representing a valid DTMI or DTMI prefix -- see https://github.com/Azure/digital-twin-model-identifier.`
+              action: `Change the value of term '${term}' to a JSON string representing a valid DTMI or DTMI prefix -- see https://github.com/Azure/digital-twin-model-identifier.`,
             })
           );
           throw new ParsingException(parsingErrors);

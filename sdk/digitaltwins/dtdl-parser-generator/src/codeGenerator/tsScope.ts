@@ -13,7 +13,7 @@ import {
   TsMultiLine,
   TsStatement,
   TsTry,
-  TsWhile
+  TsWhile,
 } from "./internal";
 
 export class TsScope implements TsStatement {
@@ -87,7 +87,7 @@ export class TsScope implements TsStatement {
     functionType,
     abstract,
     access,
-    isStatic
+    isStatic,
   }: TsFunctionParams): TsFunction {
     const tsFunction = new TsFunction({
       name: name,
@@ -95,7 +95,7 @@ export class TsScope implements TsStatement {
       functionType: functionType,
       abstract: abstract,
       access: access,
-      isStatic: isStatic
+      isStatic: isStatic,
     });
     this._statements.push(tsFunction);
     return tsFunction;

@@ -6,7 +6,7 @@ import {
   InDTMI,
   Model,
   ParsedObjectPropertyInfo,
-  ParsingError
+  ParsingError,
 } from "../parser/internal";
 import { ModelParserImpl } from "./modelParserImpl";
 import { ParsingException } from "../parser/parsingException";

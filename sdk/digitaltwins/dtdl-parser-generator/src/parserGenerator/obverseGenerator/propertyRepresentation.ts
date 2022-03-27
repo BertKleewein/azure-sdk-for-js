@@ -17,5 +17,5 @@ export enum PropertyRepresentation {
   List,
 
   // Property is represented as a dictionary.
-  Dictionary
+  Dictionary,
 }

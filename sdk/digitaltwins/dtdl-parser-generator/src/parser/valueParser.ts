@@ -20,7 +20,7 @@ export class ValueParser {
           cause: `{primaryId:p} property '${propertyName}' has no value.`,
           action: `Provide a string value for '${propertyName}'.`,
           primaryId: elementId,
-          property: propertyName
+          property: propertyName,
         })
       );
     } else if (Array.isArray(token)) {
@@ -30,7 +30,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
             action: `Provide a string value for '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
       } else if (token.length > 1) {
@@ -39,7 +39,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has multiple values but only one value is allowed.`,
             action: `Remove all but one of the values of '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
       } else {
@@ -56,7 +56,7 @@ export class ValueParser {
           action: `Select a shorter value for '${propertyName}' or trim current value to fewer than ${maxLength} characters.`,
           primaryId: elementId,
           property: propertyName,
-          value: value
+          value: value,
         })
       );
     }
@@ -68,7 +68,7 @@ export class ValueParser {
           action: `Modify the value of '${propertyName}' to make it match the regular expression '${pattern.source}'.`,
           primaryId: elementId,
           property: propertyName,
-          value: value
+          value: value,
         })
       );
     }
@@ -92,7 +92,7 @@ export class ValueParser {
           cause: `{primaryId:p} property '${propertyName}' has no value.`,
           action: `Provide an integer value for '${propertyName}'.`,
           primaryId: elementId,
-          property: propertyName
+          property: propertyName,
         })
       );
     } else if (Array.isArray(token)) {
@@ -102,7 +102,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
             action: `Provide an integer value for '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
       } else if (token.length > 1) {
@@ -111,7 +111,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has multiple values but only one value is allowed.`,
             action: `Remove all but one of the values of '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
       } else {
@@ -134,7 +134,7 @@ export class ValueParser {
           action: `Change the value of '${propertyName}' to ${minInclusive}.`,
           primaryId: elementId,
           property: propertyName,
-          value: value.toString()
+          value: value.toString(),
         })
       );
     } else if (value !== undefined && minInclusive !== undefined && value < minInclusive) {
@@ -147,7 +147,7 @@ export class ValueParser {
               : `Increase the value of '${propertyName}' to a value greater than or equal to ${minInclusive}.`,
           primaryId: elementId,
           property: propertyName,
-          value: value.toString()
+          value: value.toString(),
         })
       );
     } else if (value !== undefined && maxInclusive !== undefined && value > maxInclusive) {
@@ -160,7 +160,7 @@ export class ValueParser {
               : `Reduce the value of '${propertyName}' to a value less than or equal to ${maxInclusive}.`,
           primaryId: elementId,
           property: propertyName,
-          value: value.toString()
+          value: value.toString(),
         })
       );
     }
@@ -180,7 +180,7 @@ export class ValueParser {
           cause: `{primaryId:p} property '${propertyName}' has no value.`,
           action: `Provide an integer value for '${propertyName}'.`,
           primaryId: elementId,
-          property: propertyName
+          property: propertyName,
         })
       );
       return false;
@@ -193,7 +193,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
             action: `Provide a boolean value for '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
         return false;
@@ -205,7 +205,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has multiple values but only one value is allowed.`,
             action: `Remove all but one of the values of '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
         return false;
@@ -234,7 +234,7 @@ export class ValueParser {
           cause: `{primaryId:p} property '${propertyName}' has no value.`,
           action: `Either remove property '${propertyName}' or provide a value that is a string, a JSON-LD language map, or a JSON array of language-tagged strings.`,
           primaryId: elementId,
-          property: propertyName
+          property: propertyName,
         })
       );
       return {};
@@ -261,7 +261,7 @@ export class ValueParser {
           action: `Provide a value for '{propertyName}' that is a string, a JSON-LD language map, or a JSON array of language-tagged strings.`,
           primaryId: elementId,
           property: propertyName,
-          value: JSON.stringify(token)
+          value: JSON.stringify(token),
         })
       );
       return {};
@@ -276,7 +276,7 @@ export class ValueParser {
               action: `Select a shorter value for '${propertyName}' or trim current value to fewer than ${maxLength} characters.`,
               primaryId: elementId,
               property: propertyName,
-              value: dict[langCode]
+              value: dict[langCode],
             })
           );
         }
@@ -292,7 +292,7 @@ export class ValueParser {
               action: `Modify the value of '${propertyName}' to make it match the regular expression '${pattern.source}'.`,
               primaryId: elementId,
               property: propertyName,
-              value: dict[langCode]
+              value: dict[langCode],
             })
           );
         }
@@ -317,7 +317,7 @@ export class ValueParser {
           cause: `{primaryId:p} property '${propertyName}' has no value.`,
           action: `Provide a literal value for '${propertyName}'.`,
           primaryId: elementId,
-          property: propertyName
+          property: propertyName,
         })
       );
     } else if (Array.isArray(token)) {
@@ -327,7 +327,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
             action: `Provide a litaral value for '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
       } else if (token.length > 1) {
@@ -336,7 +336,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has multiple values but only one value is allowed.`,
             action: `Remove all but one of the values of '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
       } else if (typeof token[0] === "string") {
@@ -357,7 +357,7 @@ export class ValueParser {
             action: `Change the value of '${propertyName}' to a JSON string, integer, or boolean.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(token[0])
+            value: JSON.stringify(token[0]),
           })
         );
       }
@@ -379,7 +379,7 @@ export class ValueParser {
           action: `Change the value of '${propertyName}' to a JSON string, integer, or boolean.`,
           primaryId: elementId,
           property: propertyName,
-          value: JSON.stringify(token)
+          value: JSON.stringify(token),
         })
       );
     }
@@ -403,7 +403,7 @@ export class ValueParser {
           cause: `{primaryId:p} property '${propertyName}' has no value.`,
           action: `Provide a string value for '${propertyName}' that is a valid DTMI.`,
           primaryId: elementId,
-          property: propertyName
+          property: propertyName,
         })
       );
       return undefined;
@@ -416,7 +416,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has no value.`,
             action: `Provide a string value for '${propertyName}' that is a valid DTMI.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
         return undefined;
@@ -428,7 +428,7 @@ export class ValueParser {
             cause: `{primaryId:p} property '${propertyName}' has multiple values but only one value is allowed.`,
             action: `Remove all but one of the values of '${propertyName}'.`,
             primaryId: elementId,
-            property: propertyName
+            property: propertyName,
           })
         );
         return undefined;
@@ -443,7 +443,7 @@ export class ValueParser {
             action: `Change the value of '${propertyName}' to a JSON string that is a valid DTMI.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(token[0])
+            value: JSON.stringify(token[0]),
           })
         );
         return undefined;
@@ -459,7 +459,7 @@ export class ValueParser {
           action: `Change the value of '${propertyName}' to a JSON string that is a valid DTMI.`,
           primaryId: elementId,
           property: propertyName,
-          value: JSON.stringify(token)
+          value: JSON.stringify(token),
         })
       );
       return undefined;
@@ -474,7 +474,7 @@ export class ValueParser {
           action: `Select a shorter value for '${propertyName}' or trim current value to fewer than ${maxLength} characters.`,
           primaryId: elementId,
           property: propertyName,
-          value: value
+          value: value,
         })
       );
       return undefined;
@@ -487,7 +487,7 @@ export class ValueParser {
           action: `Modify the value of '${propertyName}' to make it match the legal syntaxt for a DTMI.`,
           primaryId: elementId,
           property: propertyName,
-          value: value
+          value: value,
         })
       );
     }
@@ -509,7 +509,7 @@ export class ValueParser {
             action: `Add an '@value' property with a string value to the object, or replace the object with a JSON string.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(token)
+            value: JSON.stringify(token),
           })
         );
         return undefined;
@@ -525,7 +525,7 @@ export class ValueParser {
             action: `Change the value of the '@value' property of '${propertyName}' to a JSON string.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(valToken)
+            value: JSON.stringify(valToken),
           })
         );
         return undefined;
@@ -543,7 +543,7 @@ export class ValueParser {
           action: `Change the value of '${propertyName}' to a JSON string.`,
           primaryId: elementId,
           property: propertyName,
-          value: JSON.stringify(token)
+          value: JSON.stringify(token),
         })
       );
       return undefined;
@@ -566,7 +566,7 @@ export class ValueParser {
             action: `Add an '@value' property with an integer value to the object, or replace the object with a JSON integer.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(token)
+            value: JSON.stringify(token),
           })
         );
         return undefined;
@@ -582,7 +582,7 @@ export class ValueParser {
             action: `Change the value of the '@value' property of '${propertyName}' to a JSON integer.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(valToken)
+            value: JSON.stringify(valToken),
           })
         );
         return undefined;
@@ -594,11 +594,13 @@ export class ValueParser {
     if (typeof token !== "number" || !Number.isInteger(token)) {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:integerNotInteger", {
-          cause: `{primaryId:p} property '${propertyName}' has value ${(token as any).toString()}, which is not a JSON integer.`,
+          cause: `{primaryId:p} property '${propertyName}' has value ${(
+            token as any
+          ).toString()}, which is not a JSON integer.`,
           action: `Change the value of '${propertyName}' to a JSON integer.`,
           primaryId: elementId,
           property: propertyName,
-          value: (token as any).toString()
+          value: (token as any).toString(),
         })
       );
       return undefined;
@@ -621,7 +623,7 @@ export class ValueParser {
             action: `Add an '@value' property with a boolean value to the object, or replace the object with a JSON boolean.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(token)
+            value: JSON.stringify(token),
           })
         );
         return false;
@@ -637,7 +639,7 @@ export class ValueParser {
             action: `Change the value of the '@value' property of '${propertyName}' to one of the JSON boolean values true or false.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(valToken)
+            value: JSON.stringify(valToken),
           })
         );
         return false;
@@ -649,11 +651,13 @@ export class ValueParser {
     if (typeof token !== "boolean") {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:booleanNotBoolean", {
-          cause: `{primaryId:p} property '${propertyName}' has value ${(token as any).toString()}, which is not a JSON boolean.`,
+          cause: `{primaryId:p} property '${propertyName}' has value ${(
+            token as any
+          ).toString()}, which is not a JSON boolean.`,
           action: `Change the value of '${propertyName}' to one of the JSON boolean values true or false.`,
           primaryId: elementId,
           property: propertyName,
-          value: (token as any).toString()
+          value: (token as any).toString(),
         })
       );
       return false;
@@ -674,11 +678,13 @@ export class ValueParser {
       if (typeof element !== "object") {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:langStringElementNotObject", {
-            cause: `{primaryId:p} property '${propertyName}' array has element '${(element as any).toString()}', which is not a JSON object.`,
+            cause: `{primaryId:p} property '${propertyName}' array has element '${(
+              element as any
+            ).toString()}', which is not a JSON object.`,
             action: `Change all elements in '${propertyName}' array to JSON objects.`,
             primaryId: elementId,
             property: propertyName,
-            value: (element as any).toString()
+            value: (element as any).toString(),
           })
         );
       } else {
@@ -693,7 +699,7 @@ export class ValueParser {
               )}', which does not contain a '@language' property.`,
               action: `Add a '@language' property whose string value is a valid ISO 639 language code -- see https://www.iso.org/iso-639-language-codes.html.`,
               primaryId: elementId,
-              property: propertyName
+              property: propertyName,
             })
           );
         } else {
@@ -707,7 +713,7 @@ export class ValueParser {
                 action: `Change the value of '${propertyName}' array element property '@language' to a JSON string that is a valid ISO 639 language code -- see https://www.iso.org/iso-639-language-codes.html.`,
                 primaryId: elementId,
                 property: propertyName,
-                value: JSON.stringify(codeToken)
+                value: JSON.stringify(codeToken),
               })
             );
           } else {
@@ -720,7 +726,7 @@ export class ValueParser {
                   action: `Change the language code '${langCode}' in to a valid ISO 639 language code -- see https://www.iso.org/iso-639-language-codes.html.`,
                   primaryId: elementId,
                   property: propertyName,
-                  value: langCode
+                  value: langCode,
                 })
               );
             }
@@ -732,7 +738,7 @@ export class ValueParser {
                   action: `Remove redundant instances of language code '${langCode}' from '${propertyName}' array.`,
                   primaryId: elementId,
                   property: propertyName,
-                  value: langCode
+                  value: langCode,
                 })
               );
             }
@@ -747,7 +753,7 @@ export class ValueParser {
               )}', which does not contain a '@value' property.`,
               action: `Ensure every object in property '${propertyName}' array has a '@value' property that is a string.`,
               primaryId: elementId,
-              property: propertyName
+              property: propertyName,
             })
           );
         } else {
@@ -761,7 +767,7 @@ export class ValueParser {
                 action: `Change the value of '${propertyName}' array element property '@value' to a JSON string.`,
                 primaryId: elementId,
                 property: propertyName,
-                value: JSON.stringify(valToken)
+                value: JSON.stringify(valToken),
               })
             );
           } else {
@@ -797,7 +803,7 @@ export class ValueParser {
             action: `Change the language code '${langCode}' in to a valid ISO 639 language code -- see https://www.iso.org/iso-639-language-codes.html.`,
             primaryId: elementId,
             property: propertyName,
-            value: langCode
+            value: langCode,
           })
         );
         assignOk = false;
@@ -814,7 +820,7 @@ export class ValueParser {
             action: `Change the value of '${propertyName}' with language code '${langCode}' to a JSON string.`,
             primaryId: elementId,
             property: propertyName,
-            value: JSON.stringify(langValue)
+            value: JSON.stringify(langValue),
           })
         );
         assignOk = false;

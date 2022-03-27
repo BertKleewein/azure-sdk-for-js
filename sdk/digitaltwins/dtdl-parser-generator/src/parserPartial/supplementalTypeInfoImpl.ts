@@ -14,7 +14,7 @@ import {
   PropertyValueConstrainer,
   SupplementalTypeInfo,
   SupplementalPropertyInfoImpl,
-  ValueConstraint
+  ValueConstraint,
 } from "../parser/internal";
 import { InDTMI } from "../parser/internalDtmi";
 import { Model } from "./model";
@@ -216,7 +216,7 @@ export class SupplementalTypeInfoImpl {
               cause: `{{primaryId:p}} property '{propName}' has '{valueCount}' value(s) but the required minimum count is '{propertyInfo.minCount}'.`,
               action: `Add one or more '{propName}' properties to the object until the minimum count is satisfied`,
               primaryId: parentId,
-              property: propName
+              property: propName,
             })
           );
         } else if (propertyInfo.maxCount !== undefined && valueCount > propertyInfo.maxCount) {
@@ -225,7 +225,7 @@ export class SupplementalTypeInfoImpl {
               cause: `{{primaryId:p}} property '{propName}' has {valueCount} value(s) but the allowed maximum count is {propertyInfo.MinCount}.`,
               action: `Remove one or more '{propName}' propertes from the object until the maximum count is satisfied.`,
               primaryId: parentId,
-              property: propName
+              property: propName,
             })
           );
         }
@@ -268,7 +268,7 @@ export class SupplementalTypeInfoImpl {
             cause: `{{primaryId:p}} property '${key}' is required but missing.`,
             action: `Add a '${key}' property to the object.`,
             primaryId: parentId,
-            property: key
+            property: key,
           })
         );
       }
@@ -318,9 +318,8 @@ export class SupplementalTypeInfoImpl {
       }
 
       if (key !== undefined) {
-        (properties[propertyName as keyof typeof properties] as { [x: string]: unknown })[
-          key
-        ] = value;
+        (properties[propertyName as keyof typeof properties] as { [x: string]: unknown })[key] =
+          value;
       }
     } else if (propertyInfo.isPlural) {
       if (
@@ -378,7 +377,7 @@ export class SupplementalTypeInfoImpl {
   addConstraint(propertyName: string, valueConstraint: ValueConstraint): void {
     const newPropertyConstraint: PropertyConstraint = {
       PropertyName: propertyName,
-      ValueConstraint: valueConstraint
+      ValueConstraint: valueConstraint,
     };
     this._propertyConstraints.push(newPropertyConstraint);
   }
@@ -411,14 +410,14 @@ export class SupplementalTypeInfoImpl {
             expectedKinds: undefined,
             allowedVersions: undefined,
             badTypeCauseFormat: undefined,
-            badTypeActionFormat: undefined
+            badTypeActionFormat: undefined,
           });
           if (valueConstraint !== undefined && elementPropertyConstraints !== undefined) {
             const elementPropertyConstraint = {
               parentId: parentId,
               propertyName: propName ?? "",
               elementId: elementId.value,
-              valueConstraint: valueConstraint
+              valueConstraint: valueConstraint,
             };
             elementPropertyConstraints.push(elementPropertyConstraint);
           }
@@ -429,7 +428,7 @@ export class SupplementalTypeInfoImpl {
               action: `Replace the value of property '{propName}', with a valid DTMI or a term defined by DTDL -- see https://github.com/Azure/opendigitaltwins-dtdl/tree/master/DTDL.`,
               primaryId: parentId,
               property: propName,
-              value: token
+              value: token,
             })
           );
         }
@@ -458,7 +457,7 @@ export class SupplementalTypeInfoImpl {
             "Replace the value of property '{property}, with a valid DTMI or a term defined by DTDL -- see https://github.com/Azure/opendigitaltwins-dtdl/tree/master/DTDL.",
           primaryId: parentId,
           property: propName,
-          value: token as string | undefined
+          value: token as string | undefined,
         })
       );
       valueCount++;

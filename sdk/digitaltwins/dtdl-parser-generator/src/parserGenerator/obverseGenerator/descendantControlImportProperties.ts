@@ -9,7 +9,7 @@ import {
   TsForEach,
   TsFunction,
   TsIf,
-  TsScope
+  TsScope,
 } from "../../codeGenerator";
 import { DescendantControl } from "./descendantControl";
 import { MaterialProperty } from "./materialProperty";
@@ -159,8 +159,9 @@ export class DescendantControlImportProperties implements DescendantControl {
           .line(
             `cause: \`{primaryId:n} is at the root of a ${
               this._isNarrow ? "chain of " + this._propertiesDesc + " properties" : "hierarchy"
-            } that exceeds ${this._maxDepth} levels -- {secondaryId:n} is at level ${this
-              ._maxDepth + 1}.\`,`
+            } that exceeds ${this._maxDepth} levels -- {secondaryId:n} is at level ${
+              this._maxDepth + 1
+            }.\`,`
           )
           .line(
             `action :\`Change the value of one or more ${this._propertiesDesc} properties in the hierarchy to reduce the nesting depth.\`,`
@@ -188,37 +189,37 @@ export class DescendantControlImportProperties implements DescendantControl {
       const baseClassMethod: TsFunction = obverseClass.method({
         name: this._getTransitivePropertiesMethodName,
         returnType: `Set<string> | undefined`,
-        abstract: true
+        abstract: true,
       });
       baseClassMethod.parameter({ name: "depth", type: ParserGeneratorValues.ObverseTypeInteger });
       baseClassMethod.parameter({
         name: "depthLimit",
         type: "number",
-        description: "The allowed limit on the depth."
+        description: "The allowed limit on the depth.",
       });
       baseClassMethod.parameter({
         name: "tooDeepElementId",
         type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
-        description: "An out parameter for the ID of the first element that exceeds the depth."
+        description: "An out parameter for the ID of the first element that exceeds the depth.",
       });
       baseClassMethod.parameter({
         name: "parsingErrors",
         type: "ParsingError[]",
-        description: "A ParsingError list to which any parsing errors are added."
+        description: "A ParsingError list to which any parsing errors are added.",
       });
     } else if (!classIsAbstract) {
       const concreteClassMethod: TsFunction = obverseClass.method({
         name: this._getTransitivePropertiesMethodName,
-        returnType: "Set<string> | undefined"
+        returnType: "Set<string> | undefined",
       });
       concreteClassMethod.parameter({ name: "depth", type: "number" });
       concreteClassMethod.parameter({
         name: "depthLimit",
-        type: ParserGeneratorValues.ObverseTypeInteger
+        type: ParserGeneratorValues.ObverseTypeInteger,
       });
       concreteClassMethod.parameter({
         name: "tooDeepElementId",
-        type: `Reference<${ParserGeneratorValues.IdentifierType}>`
+        type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
       });
       concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
 
@@ -333,22 +334,22 @@ export class DescendantControlImportProperties implements DescendantControl {
     method.parameter({
       name: "ancestorId",
       type: `${ParserGeneratorValues.IdentifierType}`,
-      description: `The identifier of the ancestor element whose obverse class invokes the method.`
+      description: `The identifier of the ancestor element whose obverse class invokes the method.`,
     });
     method.parameter({
       name: `importPropertyName`,
       type: `string`,
-      description: `The name of the property responsible for the importing.`
+      description: `The name of the property responsible for the importing.`,
     });
     method.parameter({
       name: paramName,
       type: materialProperty.propertyType,
-      description: `The destination for the copied values.`
+      description: `The destination for the copied values.`,
     });
     method.parameter({
       name: "parsingErrors",
       type: `ParsingError[]`,
-      description: `A ParsingErrors to which any parsing errors are added.`
+      description: `A ParsingErrors to which any parsing errors are added.`,
     });
 
     if (materialProperty.propertyRepresentation === PropertyRepresentation.List) {
@@ -409,7 +410,7 @@ export class DescendantControlImportProperties implements DescendantControl {
       name: fieldName,
       type: materialProperty.propertyType as string,
       access: TsAccess.Protected,
-      optional: true
+      optional: true,
     });
   }
 }

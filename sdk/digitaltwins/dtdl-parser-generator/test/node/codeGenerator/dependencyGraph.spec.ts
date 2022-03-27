@@ -8,8 +8,8 @@
 import { DependencyGraph } from "../../../src/codeGenerator";
 import { expect } from "chai";
 
-describe("DependencyGraph", function() {
-  it("add nodes to graph", function() {
+describe("DependencyGraph", function () {
+  it("add nodes to graph", function () {
     const dg = new DependencyGraph();
     dg.addNode("A");
     dg.addNode("B");
@@ -18,7 +18,7 @@ describe("DependencyGraph", function() {
     expect(dg.nodes).to.deep.equal(["A", "B", "C", "D"]);
   });
 
-  it("add directional edges", function() {
+  it("add directional edges", function () {
     const dg = new DependencyGraph();
     dg.addNode("A");
     dg.addNode("B");
@@ -28,7 +28,7 @@ describe("DependencyGraph", function() {
     expect(dg.edges).to.deep.equal({ A: ["B"] });
   });
 
-  it("sorts edges", function() {
+  it("sorts edges", function () {
     const dg = new DependencyGraph();
     dg.addNode("A");
     dg.addNode("B");

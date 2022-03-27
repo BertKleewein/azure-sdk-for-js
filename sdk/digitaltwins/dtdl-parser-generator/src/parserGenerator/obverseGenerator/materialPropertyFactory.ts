@@ -81,7 +81,7 @@ export class MaterialPropertyFactory {
             propertyDigest: propertyToken,
             propertyRestrictions: propertyRestrictions,
             datatype: propertyToken._.datatype,
-            literalType: literalType
+            literalType: literalType,
           });
         } else {
           // TODO: This will eventually get implemented, and idk why will be obversePropertyName....
@@ -91,7 +91,7 @@ export class MaterialPropertyFactory {
             propertyDigest: propertyToken,
             propertyRestrictions: propertyRestrictions,
             datatype: propertyToken._.datatype,
-            literalType: literalType
+            literalType: literalType,
           });
         }
       } else {
@@ -170,18 +170,16 @@ export class MaterialPropertyFactory {
       const versionedRestrictions: PropertyRestriction[] = [];
       if (
         !Object.prototype.hasOwnProperty.call(propertyRestrictions, version) &&
-        propertyRestrictions[(version as unknown) as number] === undefined
+        propertyRestrictions[version as unknown as number] === undefined
       ) {
-        propertyRestrictions[(version as unknown) as number] = versionedRestrictions;
+        propertyRestrictions[version as unknown as number] = versionedRestrictions;
       }
       if (versionedValue.values !== undefined) {
         versionedRestrictions.push(
           new PropertyRestrictionRequiredValues(
             propertyName,
             versionedValue.values,
-            dtdlContexts[
-              ParserGeneratorValues.getDtdlContextIdString((version as unknown) as number)
-            ]
+            dtdlContexts[ParserGeneratorValues.getDtdlContextIdString(version as unknown as number)]
           )
         );
       }

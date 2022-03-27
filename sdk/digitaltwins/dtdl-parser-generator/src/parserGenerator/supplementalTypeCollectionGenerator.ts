@@ -37,9 +37,8 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
 
     this._contextIdVariables = {};
     for (const key of Object.keys(contexts)) {
-      this._contextIdVariables[key] = SupplementalTypeCollectionGenerator.getContextIdVariableName(
-        key
-      );
+      this._contextIdVariables[key] =
+        SupplementalTypeCollectionGenerator.getContextIdVariableName(key);
     }
   }
 
@@ -68,17 +67,17 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
   generateCode(parserLibrary: TsLibrary): void {
     const collectionInterface = parserLibrary.interface({
       name: "SupplementalTypeCollection",
-      exports: true
+      exports: true,
     });
     collectionInterface.field({
       name: "supplementalTypes",
-      type: "Map<string, SupplementalTypeInfo>"
+      type: "Map<string, SupplementalTypeInfo>",
     });
     collectionInterface.import(`import {SupplementalTypeInfo} from './internal';`);
 
     const collectionClass = parserLibrary.class({
       name: "SupplementalTypeCollectionImpl",
-      exports: true
+      exports: true,
     });
     collectionClass.docString.line(
       "A collection of DTDL types that are not materialized as TS Classes"
@@ -94,7 +93,7 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
 
     collectionClass.field({
       name: "supplementalTypes",
-      type: `Map<${ParserGeneratorValues.ObverseTypeString}, SupplementalTypeInfo>`
+      type: `Map<${ParserGeneratorValues.ObverseTypeString}, SupplementalTypeInfo>`,
     });
 
     const constructor = collectionClass.ctor;

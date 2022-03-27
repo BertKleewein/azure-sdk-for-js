@@ -45,7 +45,7 @@ export class StandardElementsGenerator implements TypeGenerator {
     const method = standardElementsClass.method({
       name: "getElement",
       returnType: this._baseClassName,
-      isStatic: true
+      isStatic: true,
     });
     method.parameter({ name: "elementId", type: ParserGeneratorValues.IdentifierType });
     method.body.line(`return this._standardModel.dict[elementId.value];`);
@@ -55,7 +55,7 @@ export class StandardElementsGenerator implements TypeGenerator {
     const method = standardElementsClass.method({
       name: "getDigestElements",
       returnType: "any",
-      isStatic: true
+      isStatic: true,
     });
     const digests = method.body.multiLine("return [");
     for (const digestElement of this._digestElements) {

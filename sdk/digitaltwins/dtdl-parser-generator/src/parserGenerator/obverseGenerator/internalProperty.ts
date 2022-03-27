@@ -142,7 +142,7 @@ export class InternalProperty extends MaterialProperty {
     obverseClass.field({
       name: this.propertyName,
       type: this.propertyType,
-      access: TsAccess.Public
+      access: TsAccess.Public,
     });
   }
 
@@ -157,8 +157,8 @@ export class InternalProperty extends MaterialProperty {
         shadowed: false,
         isKey: false,
         isSeg: false,
-        description: ""
-      }
+        description: "",
+      },
     };
     return emptyDigest;
   }

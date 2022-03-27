@@ -16,7 +16,7 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
   generateCode(parserLibrary: TsLibrary): void {
     const infoInterface: TsInterface = parserLibrary.interface({
       name: "SupplementalPropertyInfo",
-      exports: true
+      exports: true,
     });
     infoInterface.import(`import {ValueConstraint} from '../parser';`);
     infoInterface.docString.line(
@@ -34,7 +34,7 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
     const infoClass: TsClass = parserLibrary.class({
       name: "SupplementalPropertyInfoImpl",
       exports: true,
-      inheritance: [{ name: "SupplementalPropertyInfo", type: TsDeclarationType.Interface }]
+      inheritance: [{ name: "SupplementalPropertyInfo", type: TsDeclarationType.Interface }],
     });
     infoClass.import(`import {SupplementalPropertyInfo} from './internal';`);
     infoClass.import(`import {ValueConstraint} from '../parser'`);

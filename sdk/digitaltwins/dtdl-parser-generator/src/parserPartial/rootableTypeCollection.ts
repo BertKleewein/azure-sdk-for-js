@@ -11,7 +11,7 @@ export class RootableTypeCollection {
   static initialize(): void {
     this._rootableTypeStrings = {
       "2": new Set<string>(),
-      "3": new Set<string>()
+      "3": new Set<string>(),
     };
 
     this._rootableTypeStrings[2].add("Interface");
@@ -24,7 +24,7 @@ export class RootableTypeCollection {
         .join(" or "),
       "3": Array.from(this._rootableTypeStrings[3].values())
         .map((s) => `'${s}'`)
-        .join(" or ")
+        .join(" or "),
     };
   }
 

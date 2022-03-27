@@ -118,7 +118,7 @@ export class CodeGenerator {
         // TODO: This type coercsion seems bad... maybe we should make the dictionary in metamodelDigest into a mapping?
         extensibleMaterialClasses[key].push(
           new ExtensibleMaterialClass(
-            (key as unknown) as number,
+            key as unknown as number,
             extensibleMaterialClassName,
             baseKindEnum
           )
@@ -144,7 +144,7 @@ export class CodeGenerator {
           contexts: metamodelDigest.contexts,
           identifierDefinitions: metamodelDigest.identifierDefinition,
           descendantControls: descendantControls,
-          extensibleMaterialClasses: extensibleMaterialClasses
+          extensibleMaterialClasses: extensibleMaterialClasses,
         })
       );
     }
@@ -156,7 +156,7 @@ export class CodeGenerator {
         contexts: metamodelDigest.contexts,
         identifierDefinitions: metamodelDigest.identifierDefinition,
         descendantControls: descendantControls,
-        extensibleMaterialClasses: extensibleMaterialClasses
+        extensibleMaterialClasses: extensibleMaterialClasses,
       })
     );
 
@@ -181,7 +181,7 @@ export class CodeGenerator {
       badTypeCauseFormat: {},
       badTypeActionFormat: {},
       properties: {},
-      instance: { criteriaText: "" }
+      instance: { criteriaText: "" },
     };
     return emptyDigest;
   }

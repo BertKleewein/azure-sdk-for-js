@@ -112,16 +112,16 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
     obverseClass.field({
       name: checkedFieldName,
       type: "string | undefined",
-      access: TsAccess.Protected
+      access: TsAccess.Protected,
     });
     obverseClass.ctor.body.line(`this.${checkedFieldName} = undefined`);
     const concreteClassMethod = obverseClass.method({
       name: this._checkMethodName,
-      returnType: "void"
+      returnType: "void",
     });
     concreteClassMethod.parameter({
       name: "ancestorId",
-      type: ParserGeneratorValues.IdentifierType
+      type: ParserGeneratorValues.IdentifierType,
     });
     concreteClassMethod.parameter({ name: "datatype", type: "string" });
     concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });

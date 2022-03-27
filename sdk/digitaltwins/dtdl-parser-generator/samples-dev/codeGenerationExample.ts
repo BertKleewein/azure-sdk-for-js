@@ -12,7 +12,7 @@ function main() {
   const tsClass = tsLibrary.class({
     name: "testClass",
     exports: true,
-    inheritance: [{ name: "WindInterface", type: TsDeclarationType.Interface }]
+    inheritance: [{ name: "WindInterface", type: TsDeclarationType.Interface }],
   });
 
   // Add imports

@@ -24,13 +24,13 @@ export class MaterialClassPartitioner {
 
     const setPartitionInfoMethod: TsFunction = obverseClass.method({
       name: "setPartitionInfo",
-      returnType: "void"
+      returnType: "void",
     });
     setPartitionInfoMethod.summary(`Set partition information.`);
     setPartitionInfoMethod.parameter({
       name: "partitionJsonText",
       type: "string",
-      description: "A string containing the partition JSON text"
+      description: "A string containing the partition JSON text",
     });
     if (classIsPartition) {
       setPartitionInfoMethod.body.line(`this.partitionJsonText = partitionJsonText;`);
@@ -46,12 +46,12 @@ export class MaterialClassPartitioner {
       obverseClass.field({
         name: "partitionJsonText",
         type: "string | undefined",
-        access: TsAccess.Private
+        access: TsAccess.Private,
       });
 
       const getJsonLdTextMethod: TsFunction = obverseClass.method({
         name: "getJsonLdText",
-        returnType: "string"
+        returnType: "string",
       });
       getJsonLdTextMethod.summary(
         `Gets a JSON string that holds the portion of the DTDL model that defines this ${typeName}.`
@@ -60,7 +60,7 @@ export class MaterialClassPartitioner {
 
       const getJsonLdMethod: TsFunction = obverseClass.method({
         name: "getJsonLd",
-        returnType: "any"
+        returnType: "any",
       });
       getJsonLdMethod.summary(
         `Gets a JsonElement that holds the portion of the DTDL model that defines this ${typeName}.`

@@ -23,7 +23,7 @@ export class ModelParserGenerator implements TypeGenerator {
     const functionCreateParser = parserLibrary.function({
       name: "createParser",
       exports: true,
-      returnType: "ModelParser"
+      returnType: "ModelParser",
     });
     functionCreateParser.summary(`Function for creation of the model parser.`);
     functionCreateParser.import(`import {ModelParsingOption} from '../parser';`);
@@ -46,7 +46,7 @@ export class ModelParserGenerator implements TypeGenerator {
       .parameter({ name: "jsonTexts", type: "string[]" });
     modelParserInterface.method({
       name: "getSupplementalTypeCollection",
-      returnType: "SupplementalTypeCollection"
+      returnType: "SupplementalTypeCollection",
     });
     modelParserInterface.import(`import {DtmiResolver, ModelParsingOption} from '../parser';`);
     modelParserInterface.import(
@@ -57,7 +57,7 @@ export class ModelParserGenerator implements TypeGenerator {
     const parserClass = parserLibrary.class({
       name: "ModelParserImpl",
       exports: true,
-      inheritance: [inheritance]
+      inheritance: [inheritance],
     });
     parserClass.docString.line(`Class for parsing the DTDL langauge.`);
     parserClass.import(
@@ -73,7 +73,7 @@ export class ModelParserGenerator implements TypeGenerator {
     const parseObjectMethod = parserClass.method({
       name: "_parseObject",
       isStatic: true,
-      access: TsAccess.Private
+      access: TsAccess.Private,
     });
     parseObjectMethod
       .parameter({ name: "model", type: "Model" })

@@ -39,25 +39,25 @@ export class IdValidatorGenerator implements TypeGenerator {
       name: "idDefinitionMaxLengths",
       isStatic: true,
       type: "Map<Number, Number>",
-      value: "new Map()"
+      value: "new Map()",
     });
     restrictionsClass.field({
       name: "idDefinitionRegexPatterns",
       isStatic: true,
       type: "Map<Number, RegExp>",
-      value: "new Map()"
+      value: "new Map()",
     });
     restrictionsClass.field({
       name: "idReferenceMaxLengths",
       isStatic: true,
       type: "Map<Number, Number>",
-      value: "new Map()"
+      value: "new Map()",
     });
     restrictionsClass.field({
       name: "idReferenceRegexPatterns",
       isStatic: true,
       type: "Map<Number, RegExp>",
-      value: "new Map()"
+      value: "new Map()",
     });
 
     for (const [key, value] of Object.entries(this._identifierDefinitionRestrictions)) {

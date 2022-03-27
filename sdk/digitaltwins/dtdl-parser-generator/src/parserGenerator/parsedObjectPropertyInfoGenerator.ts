@@ -22,14 +22,14 @@ export class ParsedObjectPropertyInfoGenerator implements TypeGenerator {
   generateCode(parserLibrary: TsLibrary): void {
     const parsedObjectInterface = parserLibrary.interface({
       name: "ParsedObjectPropertyInfo",
-      exports: true
+      exports: true,
     });
     parsedObjectInterface.import(`import {InDTMI} from '../parser';`);
     parsedObjectInterface.import(`import {${this._baseKindEnum}} from './internal'`);
     parsedObjectInterface.field({
       name: "expectedKinds",
       type: `${this._baseKindEnum}[]`,
-      optional: true
+      optional: true,
     });
     parsedObjectInterface.inline("./src/parserPartial/type/parsedObjectPropertyInfo.ts", "fields");
   }

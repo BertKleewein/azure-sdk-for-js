@@ -43,7 +43,7 @@ export class MaterialTypeNameCollectionGenerator implements TypeGenerator {
     const isMaterialTypeMethod = collectionClass.method({
       name: "isMaterialType",
       returnType: "boolean",
-      isStatic: true
+      isStatic: true,
     });
     isMaterialTypeMethod.parameter({ name: "typeString", type: "string" });
     isMaterialTypeMethod.body.line(`return MaterialTypeNameCollection.typeNames.has(typeString)`);

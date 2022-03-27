@@ -17,7 +17,7 @@ const tsWhileTestCases: Array<(outputDir: string) => testCaseType> = [
     whileMethod.line("console.log(this._foo);");
 
     return { name: "while loop", codeGenerator: tsLibrary, fileName: "tsWhile.txt" };
-  }
+  },
 ];
 
 export const tsWhileCase = { unitUnderTest: "TsWhile", testCases: tsWhileTestCases };

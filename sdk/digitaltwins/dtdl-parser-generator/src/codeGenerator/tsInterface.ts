@@ -9,7 +9,7 @@ import {
   TsFieldParams,
   TsFunction,
   TsFunctionType,
-  TsInterfaceParams
+  TsInterfaceParams,
 } from "./internal";
 import { TsInline } from "./tsInline";
 
@@ -42,7 +42,7 @@ export class TsInterface extends TsDeclaration {
     const tsMethod = new TsFunction({
       name: name,
       returnType: returnType,
-      functionType: TsFunctionType.Method
+      functionType: TsFunctionType.Method,
     });
     this._methods.push(tsMethod);
     return tsMethod;

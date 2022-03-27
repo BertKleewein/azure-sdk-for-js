@@ -134,12 +134,12 @@ export abstract class MaterialProperty {
     obverseClass.field({
       name: this.propertyName + "?",
       type: this.propertyType !== undefined ? this.propertyType : "any",
-      access: TsAccess.Public
+      access: TsAccess.Public,
     });
     if (!this.inherited) {
       obverseInterface.field({
         name: this.propertyName + "?",
-        type: this.propertyType !== undefined ? this.propertyType : "any"
+        type: this.propertyType !== undefined ? this.propertyType : "any",
       });
     }
   }
@@ -176,7 +176,7 @@ export abstract class MaterialProperty {
   ): void;
 
   public abstract addCaseToTrySetObjectPropertySwitch(
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnProperty: TsScope,
     valueVar: string,
     keyVar: string

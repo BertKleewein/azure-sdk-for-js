@@ -17,5 +17,5 @@ export enum PropertyKind {
   Identifier,
 
   // An internal property.
-  Internal
+  Internal,
 }
