@@ -75,13 +75,14 @@ export class DictionaryObjectProperty extends ObjectProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    obverseClass: TsClass,
+    staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
     classIsPartition: boolean,
     valueCountVar: string,
-    definedInVar: string
+    definedInVar: string,
+    elementInfoStr: string
   ): void {
     // DIFFERENCE : this generator passes in '${this.keyProperty}' for the keyProp parameter, but the superclass passes in undefined.
     // Otherwise, the two methods are the same for child and super class.
@@ -89,18 +90,18 @@ export class DictionaryObjectProperty extends ObjectProperty {
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
       this.propertyDigest[dtdlVersion].allowed
     ) {
-      obverseClass.importObject(this.versionedClassName[dtdlVersion] as string);
+      staticClass.importObject(this.versionedClassName[dtdlVersion] as string);
 
       const propertyVersionDigest = this.propertyDigest[dtdlVersion];
       const valueCountAssignment = this.hasCountRestriction(dtdlVersion)
         ? `${valueCountVar} = `
         : "";
       const valueConstraints = classIsAugmentable
-        ? `this._${this.valueConstraintsField}`
+        ? `${elementInfoStr}._${this.valueConstraintsField}`
         : "undefined";
       const definedIn = classIsPartition
-        ? `this.${ParserGeneratorValues.IdentifierName}`
-        : `${definedInVar} ?? this.${ParserGeneratorValues.IdentifierName}`;
+        ? `${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`
+        : `${definedInVar} ?? ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`;
       const dtmiSegment = `${this.dtmiSegment}`;
 
       switchScope
@@ -110,9 +111,10 @@ export class DictionaryObjectProperty extends ObjectProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, ${elementInfoStr}._${this.allowedVersionsField}V${dtdlVersion});`
       );
-      obverseClass.importObject(this.versionedStaticClassName[dtdlVersion]);
+
+      staticClass.importObject(this.versionedStaticClassName[dtdlVersion]);
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope
           .if(`${valueCountVar} < ${propertyVersionDigest.minCount}`)
@@ -125,8 +127,8 @@ export class DictionaryObjectProperty extends ObjectProperty {
           .line(
             `action: \`Add one or more '${this.propertyName}' to the object until the minimum count is satisfied.\`,`
           )
-          .line(`primaryId: this.id,`)
-          .line(`property: this._${this.propertyName},`)
+          .line(`primaryId: ${elementInfoStr}.id,`)
+          .line(`property: ${elementInfoStr}._${this.propertyName},`)
           .line(`}));`);
       }
 
@@ -142,7 +144,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
           .line(
             `action: \`Remove one or more '${this.propertyName}' to the object until the maximum count is satisfied.\`,`
           )
-          .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
+          .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
           .line(`property: '${this.propertyName}',`)
           .line(`}));`);
       }
@@ -152,10 +154,13 @@ export class DictionaryObjectProperty extends ObjectProperty {
 
   public addCaseToTrySetObjectPropertySwitch(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
     keyVar: string
   ): void {
+    obverseClass.importObject(this.implementationName as string);
     switchScope.line(`case '${this.propertyName}':`);
     Object.values(this.propertyNameUris).forEach((strVal) => switchScope.line(`case '${strVal}':`));
     switchScope

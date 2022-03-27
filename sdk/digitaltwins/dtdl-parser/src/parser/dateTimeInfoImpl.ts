@@ -40,8 +40,8 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
   public undefinedTypes: string[];
   public undefinedProperties: { [name: string]: any };
   public sourceObject: any;
-  private _elementValueInstanceRegexPatternV2: RegExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|(?:\+|-)[0-9]{2}:[0-9]{2})$/;
-  private _elementValueInstanceRegexPatternV3: RegExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|(?:\+|-)[0-9]{2}:[0-9]{2})$/;
+  public _elementValueInstanceRegexPatternV2: RegExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|(?:\+|-)[0-9]{2}:[0-9]{2})$/;
+  public _elementValueInstanceRegexPatternV3: RegExp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|(?:\+|-)[0-9]{2}:[0-9]{2})$/;
   public isPartition: boolean;
   protected static _versionlessTypes: Set<string>;
   protected _checkedForDescendantSchemaOrContentsComponentNarrow: boolean;
@@ -100,41 +100,6 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);
     }
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

@@ -60,6 +60,14 @@ export class TsClass extends TsDeclaration {
     return this._staticConstructor;
   }
 
+  importObject(objectName: string, location?: string): TsClass {
+    if (objectName != this.name) {
+      return super.importObject(objectName, location) as TsClass;
+    } else {
+      return this;
+    }
+  }
+
   field(input: TsFieldParams): TsClass {
     const tsField = new TsField(input);
     this.fields.push(tsField);

@@ -25,6 +25,8 @@ export class MaterialClassAugmentor {
     obverseClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    staticClass: TsClass,
     typeName: string,
     classIsAbstract: boolean,
     classIsBase: boolean,
@@ -83,15 +85,16 @@ export class MaterialClassAugmentor {
     obverseClass.field({ name: fieldName, type: fieldType, access: TsAccess.Public });
 
     if (!classIsAbstract) {
-      const method2 = obverseClass
+      const method2 = staticClass
         .method({
           name: "tryParseSupplementalProperty",
           returnType: "boolean",
           abstract: false,
-          isStatic: false,
-          access: TsAccess.Private,
+          isStatic: true,
+          access: TsAccess.Public,
         })
         .parameter({ name: "model", type: "Model" })
+        .parameter({ name: "elementInfo", type: obverseClass.name })
         .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
         .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
         .parameter({ name: "aggregateContext", type: "AggregateContext" })
@@ -103,9 +106,9 @@ export class MaterialClassAugmentor {
         .if("propDtmi === undefined")
         .line("return false;");
       method2.body
-        .for("const supplementalType of this.supplementalTypes")
+        .for("const supplementalType of elementInfo.supplementalTypes")
         .if(
-          `(supplementalType as SupplementalTypeInfoImpl).tryParseProperty(model, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, this.${ParserGeneratorValues.IdentifierName}, propDtmi.value, propToken, this.supplementalProperties)`
+          `(supplementalType as SupplementalTypeInfoImpl).tryParseProperty(model, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, elementInfo.${ParserGeneratorValues.IdentifierName}, propDtmi.value, propToken, elementInfo.supplementalProperties)`
         )
         .line("return true;");
       method2.body.line("return false;");
@@ -135,11 +138,16 @@ export class MaterialClassAugmentor {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public static addTryParseSupplementalProperty(scope: TsScope, classIsAugmentable: boolean): void {
+  public static addTryParseSupplementalProperty(
+    staticClass: TsClass,
+    scope: TsScope,
+    classIsAugmentable: boolean,
+    ElementInfoStr: string
+  ): void {
     if (classIsAugmentable) {
       scope
         .if(
-          "this.tryParseSupplementalProperty(model, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, propKey, propValue)"
+          `${staticClass.name}.tryParseSupplementalProperty(model, ${ElementInfoStr}, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, propKey, propValue)`
         )
         .line("continue;");
     }
@@ -148,9 +156,9 @@ export class MaterialClassAugmentor {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public static addChecksForRequiredProperties(body: TsScope, _arg1: boolean): void {
     body
-      .for("const supplementalType of this.supplementalTypes")
+      .for("const supplementalType of elementInfo.supplementalTypes")
       .line(
-        `(supplementalType as SupplementalTypeInfoImpl).checkForRequiredProperties(parsingErrors, this.${ParserGeneratorValues.IdentifierName}, this.supplementalProperties);`
+        `(supplementalType as SupplementalTypeInfoImpl).checkForRequiredProperties(parsingErrors, elementInfo.${ParserGeneratorValues.IdentifierName}, elementInfo.supplementalProperties);`
       );
   }
 

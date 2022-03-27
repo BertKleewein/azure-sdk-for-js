@@ -22,7 +22,7 @@ import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ElementPropertyConstraint } from "./type";
 import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
-import { ModelParserStatic } from "./modelParserStatic";
+import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 export class ReferenceInfoStatic {
   protected static _concreteKinds: { [x: number]: ReferenceKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
@@ -32,6 +32,42 @@ export class ReferenceInfoStatic {
     this._concreteKinds = {};
     this._badTypeActionFormat = {};
     this._badTypeCauseFormat = {};
+  }
+
+  public static tryParseSupplementalProperty(
+    model: Model,
+    elementInfo: ReferenceInfoImpl,
+    objectPropertyInfoList: ParsedObjectPropertyInfo[],
+    elementPropertyConstraints: ElementPropertyConstraint[],
+    aggregateContext: AggregateContext,
+    parsingErrors: ParsingError[],
+    propName: string,
+    propToken: any
+  ): boolean {
+    const propDtmi = aggregateContext.createDtmi(propName);
+    if (propDtmi === undefined) {
+      return false;
+    }
+
+    for (const supplementalType of elementInfo.supplementalTypes) {
+      if (
+        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementInfo.id,
+          propDtmi.value,
+          propToken,
+          elementInfo.supplementalProperties
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   static parseObject(
@@ -271,7 +307,7 @@ export class ReferenceInfoStatic {
 
     elementInfo.ref.undefinedTypes = undefinedTypes;
     for (const supplementalTypeId of supplementalTypeIds) {
-      const supplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(
+      const supplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(
         supplementalTypeId
       );
       if (elementInfo.ref !== undefined && elementInfo.ref.entityKind !== undefined) {

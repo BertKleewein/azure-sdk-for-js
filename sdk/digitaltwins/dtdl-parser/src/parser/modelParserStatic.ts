@@ -12,7 +12,6 @@ import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ElementPropertyConstraint } from "./type";
 import { ParsingError } from "./parsingError";
 import { AggregateContext } from "./aggregateContext";
-import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
 export class ModelParserStatic {
   public static parseObject(
     model: Model,
@@ -41,12 +40,4 @@ export class ModelParserStatic {
       new Set()
     );
   }
-
-  // codegen-outline-begin methods
-  static supplementalTypeCollection: SupplementalTypeCollectionImpl = new SupplementalTypeCollectionImpl();
-
-  static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
-    return this.supplementalTypeCollection;
-  }
-  // codegen-outline-end
 }

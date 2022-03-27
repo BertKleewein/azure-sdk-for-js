@@ -293,7 +293,7 @@ export class MaterialClassParser {
       const switchCase = switchScope.scope(`case ${dtdlVersion}:`);
       switchCase
         .line(
-          `(elementInfo as ${typeNameImpl})?.parsePropertiesV${dtdlVersion}(model, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
+          `this.parsePropertiesV${dtdlVersion}(model, elementInfo as ${typeNameImpl}, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
         )
         .line(`break;`);
     }
@@ -402,11 +402,11 @@ export class MaterialClassParser {
 
     parseTypeArrayMethod.body.line(`elementInfo.ref.undefinedTypes = undefinedTypes;`);
 
-    staticClass.importObject("ModelParserStatic");
+    staticClass.importObject("SupplementalTypeInfoStatic");
     parseTypeArrayMethod.body
       .for(`const supplementalTypeId of supplementalTypeIds`)
       .line(
-        `const supplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(supplementalTypeId);`
+        `const supplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(supplementalTypeId);`
       )
       .if(`elementInfo.ref !== undefined && elementInfo.ref.entityKind !== undefined`)
       .if(
@@ -537,9 +537,10 @@ export class MaterialClassParser {
       .line("undefinedTypes = [];");
     supplementalTypeIdDefinedIfScope.line("undefinedTypes.push(typestring);").line("return true");
 
+    staticClass.importObject("SupplementalTypeInfoStatic");
     tryParseTypeStringMethod.body
       .line(
-        "const mapOfInDTMIToSupplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection().supplementalTypes;"
+        "const mapOfInDTMIToSupplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection().supplementalTypes;"
       )
       .if(
         "supplementalTypeId !== undefined && !mapOfInDTMIToSupplementalTypeInfo.has(supplementalTypeId.value)"
@@ -602,7 +603,7 @@ export class MaterialClassParser {
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     staticClass: TsClass,
-    _typeName: string,
+    typeName: string,
     _classIsBase: boolean,
     classIsAbstract: boolean,
     classIsPartition: boolean,
@@ -611,9 +612,11 @@ export class MaterialClassParser {
     // TODO : Remove parser generator values after pattern regex is written
     // obverseClass.import(`import {ParserGeneratorValues} from '../src/parserGenerator/parserGeneratorValues';`);
     const methodName = "parsePropertiesV" + dtdlVersion;
+    const typeNameImpl = typeName + "Impl";
     const parsePropertiesMethod = staticClass
       .method({ name: methodName, returnType: "void", abstract: false, isStatic: true })
       .parameter({ name: "model", type: "Model" })
+      .parameter({ name: "elementInfo", type: typeNameImpl })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
       .parameter({ name: "aggregateContext", type: "AggregateContext" })
@@ -631,7 +634,7 @@ export class MaterialClassParser {
       .importObject("createParsingError", "./parsingErrorImpl");
 
     materialProperties.forEach((property) => {
-      property.setValue(dtdlVersion, parsePropertiesMethod.body, "this");
+      property.setValue(dtdlVersion, parsePropertiesMethod.body, "elementInfo");
       parsePropertiesMethod.body.line("");
       property.initMissingPropertyVariable(dtdlVersion, parsePropertiesMethod.body);
     });
@@ -651,7 +654,7 @@ export class MaterialClassParser {
       .line(
         `action: \`Change the value of '{property}' to a value that is legal for this property.\`,`
       )
-      .line(`primaryId: this.id,`)
+      .line(`primaryId: elementInfo.id,`)
       .line(`property: propKey,`)
       .line(`}));`)
       .line("continue;");
@@ -665,27 +668,33 @@ export class MaterialClassParser {
         !classIsAbstract,
         classIsPartition,
         "valueCount",
-        "definedIn"
+        "definedIn",
+        "elementInfo"
       );
     });
 
-    MaterialClassAugmentor.addTryParseSupplementalProperty(forScope, !classIsAbstract);
+    MaterialClassAugmentor.addTryParseSupplementalProperty(
+      staticClass,
+      forScope,
+      !classIsAbstract,
+      "elementInfo"
+    );
 
     forScope
-      .if(`this.undefinedTypes !== undefined && this.undefinedTypes.length > 0`)
-      .line(`this.undefinedProperties[propKey] = propValue;`)
+      .if(`elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0`)
+      .line(`elementInfo.undefinedProperties[propKey] = propValue;`)
       .else()
       .line("parsingErrors.push(")
       .line(`createParsingError('dtmi:dtdl:parsingError:noTypeThatAllows',`)
       .line(`{`)
       .line(`cause: \`{primaryId:p} does not have a @type that allows property \${propKey}.\`,`)
       .line(`action: \`Remove property \${propKey} or correct if misspelled.\`,`)
-      .line(`primaryId: this.id,`)
+      .line(`primaryId: elementInfo.id,`)
       .line(`property: propKey,`)
       .line(`}));`);
 
     materialProperties.forEach((property) => {
-      property.addCheckForRequiredProperty(dtdlVersion, parsePropertiesMethod.body);
+      property.addCheckForRequiredProperty(dtdlVersion, parsePropertiesMethod.body, "elementInfo");
     });
 
     MaterialClassAugmentor.addChecksForRequiredProperties(

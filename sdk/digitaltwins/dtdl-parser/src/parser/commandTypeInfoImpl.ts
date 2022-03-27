@@ -97,41 +97,6 @@ export class CommandTypeInfoImpl implements CommandTypeInfo, TypeChecker {
     }
   }
 
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   doesHaveType(typeId: string): boolean {
     return (
       CommandTypeInfoImpl._versionlessTypes.has(new InDTMI(typeId).versionless) ||

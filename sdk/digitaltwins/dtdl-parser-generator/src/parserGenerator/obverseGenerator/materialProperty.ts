@@ -166,17 +166,20 @@ export abstract class MaterialProperty {
   public abstract addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    obverseClass: TsClass,
+    staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
     classIsPartition: boolean,
     valueCountVar: string,
-    definedInVar: string
+    definedInVar: string,
+    elementInfoStr: string
   ): void;
 
   public abstract addCaseToTrySetObjectPropertySwitch(
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnProperty: TsScope,
     valueVar: string,
     keyVar: string
@@ -226,7 +229,11 @@ export abstract class MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void {
+  public addCheckForRequiredProperty(
+    _dtdlVersion: number,
+    _scope: TsScope,
+    _elementInfoStr: string
+  ): void {
     /* empty */
   }
 }

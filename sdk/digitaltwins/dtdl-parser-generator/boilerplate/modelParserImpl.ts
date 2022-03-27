@@ -39,10 +39,6 @@ export class ModelParserImpl {
   options: ModelParsingOption;
   maxDtdlVersion?: number;
 
-  getSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
-    return ModelParserStatic.retrieveSupplementalTypeCollection();
-  }
-
   async parse(jsonTexts: string[]): Promise<ModelDict> {
     if (
       (this.options & ModelParsingOption.MandateTopLevelPartition) !== 0 &&

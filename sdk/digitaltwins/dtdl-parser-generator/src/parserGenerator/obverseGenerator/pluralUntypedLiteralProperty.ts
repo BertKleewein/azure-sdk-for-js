@@ -38,13 +38,14 @@ export class PluralUntypedLiteralProperty extends UntypedLiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _obverseClass: TsClass,
+    _staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string
+    _definedInVar: string,
+    _elementInfoStr: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&

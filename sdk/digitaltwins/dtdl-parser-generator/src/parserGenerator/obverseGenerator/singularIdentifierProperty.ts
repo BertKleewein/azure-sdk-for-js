@@ -50,13 +50,14 @@ export class SingularIdentifierProperty extends IdentifierProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _obverseClass: TsClass,
+    _staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string
+    _definedInVar: string,
+    elementInfoStr: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -64,7 +65,7 @@ export class SingularIdentifierProperty extends IdentifierProperty {
     ) {
       const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       const patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `this.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
+        ? `${elementInfoStr}.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
         : undefined;
 
       switchScope
@@ -77,15 +78,17 @@ export class SingularIdentifierProperty extends IdentifierProperty {
       switchScope
         .line("// eslint-disable-next-line no-case-declarations")
         .line(
-          `const strInDtmiVal = ValueParser.parseSingularIdentifierToken(this.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
+          `const strInDtmiVal = ValueParser.parseSingularIdentifierToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
         )
         // TODO The value returned from the parse method is a simple string. Have to convert to InDTMI
-        .line(`this.${this.propertyName} = strInDtmiVal`);
+        .line(`${elementInfoStr}.${this.propertyName} = strInDtmiVal`);
       switchScope.line("continue;");
     }
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    _obverseClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,

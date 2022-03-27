@@ -22,8 +22,9 @@ import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ElementPropertyConstraint } from "./type";
 import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
-import { ModelParserStatic } from "./modelParserStatic";
+import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
+import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
 import { SchemaInfoStatic } from "./schemaInfoStatic";
@@ -44,6 +45,42 @@ export class PropertyInfoStatic {
     this._badTypeActionFormat[3] = `Provide a value for property '{property}' with @type Property.`;
     this._badTypeCauseFormat[2] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Property.`;
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Property.`;
+  }
+
+  public static tryParseSupplementalProperty(
+    model: Model,
+    elementInfo: PropertyInfoImpl,
+    objectPropertyInfoList: ParsedObjectPropertyInfo[],
+    elementPropertyConstraints: ElementPropertyConstraint[],
+    aggregateContext: AggregateContext,
+    parsingErrors: ParsingError[],
+    propName: string,
+    propToken: any
+  ): boolean {
+    const propDtmi = aggregateContext.createDtmi(propName);
+    if (propDtmi === undefined) {
+      return false;
+    }
+
+    for (const supplementalType of elementInfo.supplementalTypes) {
+      if (
+        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementInfo.id,
+          propDtmi.value,
+          propToken,
+          elementInfo.supplementalProperties
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   static parseObject(
@@ -193,8 +230,9 @@ export class PropertyInfoStatic {
     (elementInfo as PropertyInfoImpl).sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        (elementInfo as PropertyInfoImpl)?.parsePropertiesV2(
+        this.parsePropertiesV2(
           model,
+          elementInfo as PropertyInfoImpl,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -207,8 +245,9 @@ export class PropertyInfoStatic {
       }
 
       case 3: {
-        (elementInfo as PropertyInfoImpl)?.parsePropertiesV3(
+        this.parsePropertiesV3(
           model,
+          elementInfo as PropertyInfoImpl,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -356,7 +395,7 @@ export class PropertyInfoStatic {
 
     elementInfo.ref.undefinedTypes = undefinedTypes;
     for (const supplementalTypeId of supplementalTypeIds) {
-      const supplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(
+      const supplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(
         supplementalTypeId
       );
       if (elementInfo.ref !== undefined && elementInfo.ref.entityKind !== undefined) {
@@ -443,7 +482,7 @@ export class PropertyInfoStatic {
       return true;
     }
 
-    const mapOfInDTMIToSupplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection()
+    const mapOfInDTMIToSupplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection()
       .supplementalTypes;
     if (
       supplementalTypeId !== undefined &&
@@ -512,6 +551,7 @@ export class PropertyInfoStatic {
 
   static parsePropertiesV2(
     model: Model,
+    elementInfo: PropertyInfoImpl,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     aggregateContext: AggregateContext,
@@ -520,7 +560,7 @@ export class PropertyInfoStatic {
     definedIn: string | undefined,
     allowIdReferenceSyntax: boolean
   ): void {
-    this.languageVersion = 2;
+    elementInfo.languageVersion = 2;
 
     let namePropertyMissing = true;
 
@@ -534,7 +574,7 @@ export class PropertyInfoStatic {
           createParsingError("dtmi:dtdl:parsingError:propertyValueNull", {
             cause: `{primaryId:p} property '{property}' has value null, which is not allowed in DTDL models.`,
             action: `Change the value of '{property}' to a value that is legal for this property.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -548,8 +588,8 @@ export class PropertyInfoStatic {
       switch (propKey) {
         case "comment":
         case "dtmi:dtdl:property:comment;2":
-          this.comment = ValueParser.parseSingularStringToken(
-            this.id,
+          elementInfo.comment = ValueParser.parseSingularStringToken(
+            elementInfo.id,
             "comment",
             propValue,
             512,
@@ -559,8 +599,8 @@ export class PropertyInfoStatic {
           continue;
         case "description":
         case "dtmi:dtdl:property:description;2":
-          this.description = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.description = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "description",
             propValue,
             "en",
@@ -571,8 +611,8 @@ export class PropertyInfoStatic {
           continue;
         case "displayName":
         case "dtmi:dtdl:property:displayName;2":
-          this.displayName = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.displayName = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "displayName",
             propValue,
             "en",
@@ -584,12 +624,12 @@ export class PropertyInfoStatic {
         case "name":
         case "dtmi:dtdl:property:name;2":
           namePropertyMissing = false;
-          this.name = ValueParser.parseSingularStringToken(
-            this.id,
+          elementInfo.name = ValueParser.parseSingularStringToken(
+            elementInfo.id,
             "name",
             propValue,
             64,
-            this.namePropertyRegexPatternV2,
+            elementInfo.namePropertyRegexPatternV2,
             parsingErrors
           );
           continue;
@@ -600,26 +640,26 @@ export class PropertyInfoStatic {
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
-            this._schemaValueConstraints,
+            elementInfo._schemaValueConstraints,
             aggregateContext,
             parsingErrors,
             propValue,
-            this.id,
-            definedIn ?? this.id,
+            elementInfo.id,
+            definedIn ?? elementInfo.id,
             "schema",
             undefined,
             undefined,
             false,
             true,
             allowIdReferenceSyntax,
-            this._schemaAllowedVersionsV2
+            elementInfo._schemaAllowedVersionsV2
           );
           if (valueCount < 1) {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:propertyCountBelowMin", {
                 cause: `{primaryId:p} property 'schema' has value valueCount values, but the required minimum count is 1`,
                 action: `Add one or more 'schema' to the object until the minimum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "schema"
               })
             );
@@ -630,7 +670,7 @@ export class PropertyInfoStatic {
               createParsingError("dtmi:dtdl:parsingError:propertyCountAboveMax", {
                 cause: `{primaryId:p} property 'schema' has value valueCount values, but the allowed maximum count is 1`,
                 action: `Remove one or more 'schema' to the object until the maximum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "schema"
               })
             );
@@ -639,8 +679,8 @@ export class PropertyInfoStatic {
           continue;
         case "writable":
         case "dtmi:dtdl:property:writable;2":
-          this.writable = ValueParser.parseSingularBooleanToken(
-            this.id,
+          elementInfo.writable = ValueParser.parseSingularBooleanToken(
+            elementInfo.id,
             "writable",
             propValue,
             parsingErrors
@@ -649,8 +689,9 @@ export class PropertyInfoStatic {
       }
 
       if (
-        this.tryParseSupplementalProperty(
+        PropertyInfoStatic.tryParseSupplementalProperty(
           model,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           aggregateContext,
@@ -662,14 +703,14 @@ export class PropertyInfoStatic {
         continue;
       }
 
-      if (this.undefinedTypes !== undefined && this.undefinedTypes.length > 0) {
-        this.undefinedProperties[propKey] = propValue;
+      if (elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0) {
+        elementInfo.undefinedProperties[propKey] = propValue;
       } else {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:noTypeThatAllows", {
             cause: `{primaryId:p} does not have a @type that allows property ${propKey}.`,
             action: `Remove property ${propKey} or correct if misspelled.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -681,7 +722,7 @@ export class PropertyInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property name is required but missing.",
           action: "Add a name property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "name"
         })
       );
@@ -692,17 +733,17 @@ export class PropertyInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property schema is required but missing.",
           action: "Add a schema property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "schema"
         })
       );
     }
 
-    for (const supplementalType of this.supplementalTypes) {
+    for (const supplementalType of elementInfo.supplementalTypes) {
       (supplementalType as SupplementalTypeInfoImpl).checkForRequiredProperties(
         parsingErrors,
-        this.id,
-        this.supplementalProperties
+        elementInfo.id,
+        elementInfo.supplementalProperties
       );
     }
   }
@@ -750,7 +791,7 @@ export class PropertyInfoStatic {
       return true;
     }
 
-    const mapOfInDTMIToSupplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection()
+    const mapOfInDTMIToSupplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection()
       .supplementalTypes;
     if (
       supplementalTypeId !== undefined &&
@@ -843,6 +884,7 @@ export class PropertyInfoStatic {
 
   static parsePropertiesV3(
     model: Model,
+    elementInfo: PropertyInfoImpl,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     aggregateContext: AggregateContext,
@@ -851,7 +893,7 @@ export class PropertyInfoStatic {
     definedIn: string | undefined,
     allowIdReferenceSyntax: boolean
   ): void {
-    this.languageVersion = 3;
+    elementInfo.languageVersion = 3;
 
     let namePropertyMissing = true;
 
@@ -865,7 +907,7 @@ export class PropertyInfoStatic {
           createParsingError("dtmi:dtdl:parsingError:propertyValueNull", {
             cause: `{primaryId:p} property '{property}' has value null, which is not allowed in DTDL models.`,
             action: `Change the value of '{property}' to a value that is legal for this property.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -879,8 +921,8 @@ export class PropertyInfoStatic {
       switch (propKey) {
         case "comment":
         case "dtmi:dtdl:property:comment;3":
-          this.comment = ValueParser.parseSingularStringToken(
-            this.id,
+          elementInfo.comment = ValueParser.parseSingularStringToken(
+            elementInfo.id,
             "comment",
             propValue,
             512,
@@ -890,8 +932,8 @@ export class PropertyInfoStatic {
           continue;
         case "description":
         case "dtmi:dtdl:property:description;3":
-          this.description = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.description = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "description",
             propValue,
             "en",
@@ -902,8 +944,8 @@ export class PropertyInfoStatic {
           continue;
         case "displayName":
         case "dtmi:dtdl:property:displayName;3":
-          this.displayName = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.displayName = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "displayName",
             propValue,
             "en",
@@ -915,12 +957,12 @@ export class PropertyInfoStatic {
         case "name":
         case "dtmi:dtdl:property:name;3":
           namePropertyMissing = false;
-          this.name = ValueParser.parseSingularStringToken(
-            this.id,
+          elementInfo.name = ValueParser.parseSingularStringToken(
+            elementInfo.id,
             "name",
             propValue,
             64,
-            this.namePropertyRegexPatternV3,
+            elementInfo.namePropertyRegexPatternV3,
             parsingErrors
           );
           continue;
@@ -931,26 +973,26 @@ export class PropertyInfoStatic {
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
-            this._schemaValueConstraints,
+            elementInfo._schemaValueConstraints,
             aggregateContext,
             parsingErrors,
             propValue,
-            this.id,
-            definedIn ?? this.id,
+            elementInfo.id,
+            definedIn ?? elementInfo.id,
             "schema",
             undefined,
             undefined,
             false,
             true,
             allowIdReferenceSyntax,
-            this._schemaAllowedVersionsV3
+            elementInfo._schemaAllowedVersionsV3
           );
           if (valueCount < 1) {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:propertyCountBelowMin", {
                 cause: `{primaryId:p} property 'schema' has value valueCount values, but the required minimum count is 1`,
                 action: `Add one or more 'schema' to the object until the minimum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "schema"
               })
             );
@@ -961,7 +1003,7 @@ export class PropertyInfoStatic {
               createParsingError("dtmi:dtdl:parsingError:propertyCountAboveMax", {
                 cause: `{primaryId:p} property 'schema' has value valueCount values, but the allowed maximum count is 1`,
                 action: `Remove one or more 'schema' to the object until the maximum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "schema"
               })
             );
@@ -970,8 +1012,8 @@ export class PropertyInfoStatic {
           continue;
         case "writable":
         case "dtmi:dtdl:property:writable;3":
-          this.writable = ValueParser.parseSingularBooleanToken(
-            this.id,
+          elementInfo.writable = ValueParser.parseSingularBooleanToken(
+            elementInfo.id,
             "writable",
             propValue,
             parsingErrors
@@ -980,8 +1022,9 @@ export class PropertyInfoStatic {
       }
 
       if (
-        this.tryParseSupplementalProperty(
+        PropertyInfoStatic.tryParseSupplementalProperty(
           model,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           aggregateContext,
@@ -993,14 +1036,14 @@ export class PropertyInfoStatic {
         continue;
       }
 
-      if (this.undefinedTypes !== undefined && this.undefinedTypes.length > 0) {
-        this.undefinedProperties[propKey] = propValue;
+      if (elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0) {
+        elementInfo.undefinedProperties[propKey] = propValue;
       } else {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:noTypeThatAllows", {
             cause: `{primaryId:p} does not have a @type that allows property ${propKey}.`,
             action: `Remove property ${propKey} or correct if misspelled.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -1012,7 +1055,7 @@ export class PropertyInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property name is required but missing.",
           action: "Add a name property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "name"
         })
       );
@@ -1023,17 +1066,17 @@ export class PropertyInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property schema is required but missing.",
           action: "Add a schema property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "schema"
         })
       );
     }
 
-    for (const supplementalType of this.supplementalTypes) {
+    for (const supplementalType of elementInfo.supplementalTypes) {
       (supplementalType as SupplementalTypeInfoImpl).checkForRequiredProperties(
         parsingErrors,
-        this.id,
-        this.supplementalProperties
+        elementInfo.id,
+        elementInfo.supplementalProperties
       );
     }
   }

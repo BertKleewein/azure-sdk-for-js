@@ -79,18 +79,21 @@ export class InternalProperty extends MaterialProperty {
   public addCaseToParseSwitch(
     _dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _obverseClass: TsClass,
+    _staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string
+    _definedInVar: string,
+    elementInfoStr: string
   ): void {
     /* empty */
   }
 
   public addCaseToTrySetObjectPropertySwitch(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    _obverseClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _valueVar: string,

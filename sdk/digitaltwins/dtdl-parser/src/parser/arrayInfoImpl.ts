@@ -38,10 +38,10 @@ export class ArrayInfoImpl implements ArrayInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public elementSchema?: SchemaInfo;
-  private _elementSchemaValueConstraints: ValueConstraint[] = [];
+  public _elementSchemaValueConstraints: ValueConstraint[] = [];
   private _elementSchemaInstanceProperties: string[] = [];
-  private _elementSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _elementSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public _elementSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _elementSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
   public languageVersion?: number;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
@@ -109,41 +109,6 @@ export class ArrayInfoImpl implements ArrayInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

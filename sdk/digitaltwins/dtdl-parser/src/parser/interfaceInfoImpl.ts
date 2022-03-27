@@ -26,6 +26,7 @@ import { ValueConstraint } from "./type";
 import { Model } from "./model";
 import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
+import { ContentInfoImpl } from "./contentInfoImpl";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
@@ -36,23 +37,23 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   public entityKind: InterfaceKinds;
   public comment?: string;
   public contents?: { [value: string]: ContentInfo };
-  private _contentsValueConstraints: ValueConstraint[] = [];
+  public _contentsValueConstraints: ValueConstraint[] = [];
   private _contentsInstanceProperties: string[] = [];
-  private _contentsAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _contentsAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public _contentsAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _contentsAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public extends?: InterfaceInfo[];
-  private _extendsValueConstraints: ValueConstraint[] = [];
+  public _extendsValueConstraints: ValueConstraint[] = [];
   private _extendsInstanceProperties: string[] = [];
-  private _extendsAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _extendsAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public _extendsAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _extendsAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
   public languageVersion?: number;
   public schemas?: ComplexSchemaInfo[];
-  private _schemasValueConstraints: ValueConstraint[] = [];
+  public _schemasValueConstraints: ValueConstraint[] = [];
   private _schemasInstanceProperties: string[] = [];
-  private _schemasAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _schemasAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _schemasAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _schemasAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -122,41 +123,6 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

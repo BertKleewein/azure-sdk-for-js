@@ -40,16 +40,16 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
   public maxMultiplicity?: number | undefined;
   public minMultiplicity?: number | undefined;
   public name?: string;
-  private namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  private namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public properties?: PropertyInfo[];
-  private _propertiesValueConstraints: ValueConstraint[] = [];
+  public _propertiesValueConstraints: ValueConstraint[] = [];
   private _propertiesInstanceProperties: string[] = [];
-  private _propertiesAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _propertiesAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public _propertiesAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _propertiesAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
   public target?: string;
-  private targetPropertyRegexPatternV2: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$/;
-  private targetPropertyRegexPatternV3: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\.[1-9][0-9]{0,5})?)?$/;
+  public targetPropertyRegexPatternV2: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$/;
+  public targetPropertyRegexPatternV3: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\.[1-9][0-9]{0,5})?)?$/;
   public writable?: boolean;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
@@ -119,41 +119,6 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

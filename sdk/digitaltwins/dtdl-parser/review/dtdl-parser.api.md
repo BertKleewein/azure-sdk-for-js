@@ -277,8 +277,6 @@ export interface ModelParser {
     // (undocumented)
     getModels?: DtmiResolver;
     // (undocumented)
-    getSupplementalTypeCollection(): SupplementalTypeCollection;
-    // (undocumented)
     maxDtdlVersion?: number;
     // (undocumented)
     options: ModelParsingOption;

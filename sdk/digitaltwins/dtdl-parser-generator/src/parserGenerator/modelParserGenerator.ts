@@ -47,10 +47,6 @@ export class ModelParserGenerator implements TypeGenerator {
     modelParserInterface
       .method({ name: "parse", returnType: "Promise<ModelDict>" })
       .parameter({ name: "jsonTexts", type: "string[]" });
-    modelParserInterface.method({
-      name: "getSupplementalTypeCollection",
-      returnType: "SupplementalTypeCollection",
-    });
     modelParserInterface
       .importObject("DtmiResolver", "./type")
       .importObject("ModelParsingOption", "./enum")
@@ -98,8 +94,7 @@ export class ModelParserGenerator implements TypeGenerator {
       .importObject("ParsedObjectPropertyInfo")
       .importObject("ElementPropertyConstraint", "./type")
       .importObject("ParsingError")
-      .importObject("AggregateContext")
-      .importObject("SupplementalTypeCollectionImpl");
+      .importObject("AggregateContext");
 
     const parseObjectMethod = staticClass.method({
       name: "parseObject",
@@ -132,7 +127,5 @@ export class ModelParserGenerator implements TypeGenerator {
       false,
       new Set(),
     )`);
-
-    staticClass.inline("./boilerplate/modelParserStatic.ts", "methods");
   }
 }

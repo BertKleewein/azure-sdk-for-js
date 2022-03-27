@@ -60,6 +60,8 @@ export class PluralObjectProperty extends ObjectProperty {
 
   public addCaseToTrySetObjectPropertySwitch(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     valueVar: string,
     _keyVar: string

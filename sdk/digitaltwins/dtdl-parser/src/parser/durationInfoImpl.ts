@@ -40,8 +40,8 @@ export class DurationInfoImpl implements DurationInfo, TypeChecker {
   public undefinedTypes: string[];
   public undefinedProperties: { [name: string]: any };
   public sourceObject: any;
-  private _elementValueInstanceRegexPatternV2: RegExp = /^P(?!$)(?:(?:\d+Y)|(?:\d+\.\d+Y$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:(?:\d+D)|(?:\d+\.\d+D$))?(?:T(?!$)(?:(?:\d+H)|(?:\d+\.\d+H$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:\d+(?:\.\d+)?S)?)?$/;
-  private _elementValueInstanceRegexPatternV3: RegExp = /^P(?!$)(?:(?:\d+Y)|(?:\d+\.\d+Y$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:(?:\d+D)|(?:\d+\.\d+D$))?(?:T(?!$)(?:(?:\d+H)|(?:\d+\.\d+H$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:\d+(?:\.\d+)?S)?)?$/;
+  public _elementValueInstanceRegexPatternV2: RegExp = /^P(?!$)(?:(?:\d+Y)|(?:\d+\.\d+Y$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:(?:\d+D)|(?:\d+\.\d+D$))?(?:T(?!$)(?:(?:\d+H)|(?:\d+\.\d+H$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:\d+(?:\.\d+)?S)?)?$/;
+  public _elementValueInstanceRegexPatternV3: RegExp = /^P(?!$)(?:(?:\d+Y)|(?:\d+\.\d+Y$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:(?:\d+D)|(?:\d+\.\d+D$))?(?:T(?!$)(?:(?:\d+H)|(?:\d+\.\d+H$))?(?:(?:\d+M)|(?:\d+\.\d+M$))?(?:\d+(?:\.\d+)?S)?)?$/;
   public isPartition: boolean;
   protected static _versionlessTypes: Set<string>;
   protected _checkedForDescendantSchemaOrContentsComponentNarrow: boolean;
@@ -100,41 +100,6 @@ export class DurationInfoImpl implements DurationInfo, TypeChecker {
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);
     }
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

@@ -41,15 +41,15 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
   public displayName?: LanguageStringType;
   public languageVersion?: number;
   public mapKey?: MapKeyInfo;
-  private _mapKeyValueConstraints: ValueConstraint[] = [];
+  public _mapKeyValueConstraints: ValueConstraint[] = [];
   private _mapKeyInstanceProperties: string[] = [];
-  private _mapKeyAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _mapKeyAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _mapKeyAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _mapKeyAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public mapValue?: MapValueInfo;
-  private _mapValueValueConstraints: ValueConstraint[] = [];
+  public _mapValueValueConstraints: ValueConstraint[] = [];
   private _mapValueInstanceProperties: string[] = [];
-  private _mapValueAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _mapValueAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _mapValueAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _mapValueAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -116,41 +116,6 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

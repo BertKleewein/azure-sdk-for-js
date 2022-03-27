@@ -39,13 +39,13 @@ export class ComponentInfoImpl implements ComponentInfo, TypeChecker {
   public displayName?: LanguageStringType;
   public languageVersion?: number;
   public name?: string;
-  private namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  private namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public schema?: InterfaceInfo;
-  private _schemaValueConstraints: ValueConstraint[] = [];
+  public _schemaValueConstraints: ValueConstraint[] = [];
   private _schemaInstanceProperties: string[] = [];
-  private _schemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public _schemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -112,41 +112,6 @@ export class ComponentInfoImpl implements ComponentInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

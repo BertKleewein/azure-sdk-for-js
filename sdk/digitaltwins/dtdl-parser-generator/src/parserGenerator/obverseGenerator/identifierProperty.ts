@@ -76,11 +76,11 @@ export abstract class IdentifierProperty extends MaterialProperty {
         Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
         this.propertyDigest[dtdlVersion].pattern !== undefined
       ) {
-        // TODO change to being intialized inside the constructor later.
+        // TODO change to being intialized inside the constructor later. or move to static class
         obverseClass.field({
           name: `${this.propertyName}PropertyRegexPatternV${dtdlVersion}`,
           type: "RegExp",
-          access: TsAccess.Private,
+          access: TsAccess.Public,
           value: `/${this.propertyDigest[dtdlVersion].pattern}/`,
         });
       }
@@ -93,7 +93,11 @@ export abstract class IdentifierProperty extends MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
+  public addCheckForRequiredProperty(
+    dtdlVersion: number,
+    scope: TsScope,
+    elementInfoStr: string
+  ): void {
     if (
       !this.optional &&
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -106,7 +110,7 @@ export abstract class IdentifierProperty extends MaterialProperty {
         .line("{")
         .line(`cause: '{primaryId:p} property ${this.propertyName} is required but missing.',`)
         .line(`action: 'Add a ${this.propertyName} property to the object.',`)
-        .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
+        .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
         .line(`property: '${this.propertyName}'`)
         .line(`}));`);
     }

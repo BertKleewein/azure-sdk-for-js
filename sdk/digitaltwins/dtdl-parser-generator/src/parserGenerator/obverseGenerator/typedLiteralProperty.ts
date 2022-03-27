@@ -60,11 +60,11 @@ export abstract class TypedLiteralProperty extends LiteralProperty {
         Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
         this.propertyDigest[dtdlVersion].pattern !== undefined
       ) {
-        // TODO change to being intialized inside the constructor later.
+        // TODO change to being intialized inside the constructor later. Or move to static?
         obverseClass.field({
           name: `${this.propertyName}PropertyRegexPatternV${dtdlVersion}`,
           type: "RegExp",
-          access: TsAccess.Private,
+          access: TsAccess.Public,
           value: `/${this.propertyDigest[dtdlVersion].pattern}/`,
         });
       }

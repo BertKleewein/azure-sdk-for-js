@@ -6,7 +6,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsScope } from "../../codeGenerator";
+import { TsScope, TsClass } from "../../codeGenerator";
 import { ParserGeneratorValues } from "../parserGeneratorValues";
 import { MaterialProperty } from "./materialProperty";
 import { PropertyKind } from "./propertyKind";
@@ -40,6 +40,8 @@ export abstract class LiteralProperty extends MaterialProperty {
 
   public addCaseToTrySetObjectPropertySwitch(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    _obverseClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _valueVar: string,
     _keyVar: string
@@ -48,7 +50,11 @@ export abstract class LiteralProperty extends MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
+  public addCheckForRequiredProperty(
+    dtdlVersion: number,
+    scope: TsScope,
+    elementInfoStr: string
+  ): void {
     if (
       !this.optional &&
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -61,7 +67,7 @@ export abstract class LiteralProperty extends MaterialProperty {
         .line("{")
         .line(`cause: '{primaryId:p} property ${this.propertyName} is required but missing.',`)
         .line(`action: 'Add a ${this.propertyName} property to the object.',`)
-        .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
+        .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
         .line(`property: '${this.propertyName}'`)
         .line(`}));`);
     }

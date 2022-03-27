@@ -396,7 +396,7 @@ export class MaterialClassValidator {
     const uselessEscapeRemoved = pattern.replace("\\-", "-"); // only minus is causing issues for now.
     obverseClass.field({
       name: `_${prefix}InstanceRegexPatternV${dtdlVersion}`,
-      access: TsAccess.Private,
+      access: TsAccess.Public,
       isStatic: false,
       type: "RegExp",
       value: `/${uselessEscapeRemoved}/`,

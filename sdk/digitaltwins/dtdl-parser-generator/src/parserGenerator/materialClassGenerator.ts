@@ -330,6 +330,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     MaterialClassAugmentor.addMembers(
       obverseClass,
       obverseInterface,
+      staticClass,
       this._typeName,
       this._isAbstract,
       this._parentTypeName === undefined,
@@ -511,7 +512,12 @@ export class MaterialClassGenerator implements TypeGenerator {
       if (this._typeName !== this._baseTypeName) {
         obverseClass.importObject(this._baseTypeName);
       }
-      prop.addCaseToTrySetObjectPropertySwitch(trySetObjectPropertyMethod.body, "value", "key");
+      prop.addCaseToTrySetObjectPropertySwitch(
+        obverseClass,
+        trySetObjectPropertyMethod.body,
+        "value",
+        "key"
+      );
     });
 
     trySetObjectPropertyMethod.body.line("default:").line("break;").line(`}`);

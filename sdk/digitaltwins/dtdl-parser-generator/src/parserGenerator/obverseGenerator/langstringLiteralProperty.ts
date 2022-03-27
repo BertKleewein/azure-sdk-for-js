@@ -51,13 +51,14 @@ export class LangStringLiteralProperty extends LiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    obverseClass: TsClass,
+    staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string
+    _definedInVar: string,
+    elementInfoStr: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -65,7 +66,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
     ) {
       const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       const patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `${obverseClass.name}.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}()`
+        ? `${staticClass.name}.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}()`
         : undefined;
       const defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
       switchScope
@@ -75,7 +76,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `this.${this.propertyName} = ValueParser.parseLangStringToken(this.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, '${defaultLangStr}', ${maxLenStr}, ${patternStr}, parsingErrors);`
+        `${elementInfoStr}.${this.propertyName} = ValueParser.parseLangStringToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, '${defaultLangStr}', ${maxLenStr}, ${patternStr}, parsingErrors);`
       );
 
       switchScope.line("continue;");

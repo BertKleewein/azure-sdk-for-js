@@ -91,6 +91,8 @@ export class TsClass extends TsDeclaration {
     // (undocumented)
     hasMethod(methodName: string): boolean;
     // (undocumented)
+    importObject(objectName: string, location?: string): TsClass;
+    // (undocumented)
     inheritance?: TsInheritanceType[];
     // (undocumented)
     inline(filepath: string, identifier: string): void;

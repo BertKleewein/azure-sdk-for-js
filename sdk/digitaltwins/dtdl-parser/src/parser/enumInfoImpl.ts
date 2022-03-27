@@ -40,16 +40,16 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public enumValues?: EnumValueInfo[];
-  private _enumValuesValueConstraints: ValueConstraint[] = [];
+  public _enumValuesValueConstraints: ValueConstraint[] = [];
   private _enumValuesInstanceProperties: string[] = [];
-  private _enumValuesAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _enumValuesAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _enumValuesAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _enumValuesAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public languageVersion?: number;
   public valueSchema?: PrimitiveSchemaInfo;
-  private _valueSchemaValueConstraints: ValueConstraint[] = [];
+  public _valueSchemaValueConstraints: ValueConstraint[] = [];
   private _valueSchemaInstanceProperties: string[] = [];
-  private _valueSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _valueSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _valueSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _valueSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -117,41 +117,6 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

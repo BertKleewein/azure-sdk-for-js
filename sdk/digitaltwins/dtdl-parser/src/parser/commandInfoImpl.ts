@@ -37,27 +37,27 @@ export class CommandInfoImpl implements CommandInfo, TypeChecker {
   public definedIn: string | undefined;
   public entityKind: CommandKinds;
   public commandType?: CommandTypeInfo;
-  private _commandTypeValueConstraints: ValueConstraint[] = [];
+  public _commandTypeValueConstraints: ValueConstraint[] = [];
   private _commandTypeInstanceProperties: string[] = [];
-  private _commandTypeAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _commandTypeAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _commandTypeAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _commandTypeAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public comment?: string;
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
   public name?: string;
-  private namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  private namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public request?: CommandPayloadInfo;
-  private _requestValueConstraints: ValueConstraint[] = [];
+  public _requestValueConstraints: ValueConstraint[] = [];
   private _requestInstanceProperties: string[] = [];
-  private _requestAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _requestAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _requestAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _requestAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public response?: CommandPayloadInfo;
-  private _responseValueConstraints: ValueConstraint[] = [];
+  public _responseValueConstraints: ValueConstraint[] = [];
   private _responseInstanceProperties: string[] = [];
-  private _responseAllowedVersionsV2: Set<number> = new Set<number>().add(2);
-  private _responseAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public _responseAllowedVersionsV2: Set<number> = new Set<number>().add(2);
+  public _responseAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -124,41 +124,6 @@ export class CommandInfoImpl implements CommandInfo, TypeChecker {
 
     (supplementalType as SupplementalTypeInfoImpl).attachConstraints(this);
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
-  }
-
-  private tryParseSupplementalProperty(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    propName: string,
-    propToken: any
-  ): boolean {
-    const propDtmi = aggregateContext.createDtmi(propName);
-    if (propDtmi === undefined) {
-      return false;
-    }
-
-    for (const supplementalType of this.supplementalTypes) {
-      if (
-        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          aggregateContext,
-          parsingErrors,
-          this.id,
-          propDtmi.value,
-          propToken,
-          this.supplementalProperties
-        )
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   doesHaveType(typeId: string): boolean {

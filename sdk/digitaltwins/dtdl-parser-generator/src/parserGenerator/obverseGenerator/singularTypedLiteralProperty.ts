@@ -54,13 +54,14 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    obverseClass: TsClass,
+    staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string
+    _definedInVar: string,
+    elementInfoStr: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -68,7 +69,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
     ) {
       const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       const patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `this.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
+        ? `${elementInfoStr}.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
         : undefined;
       const minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
       const maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
@@ -83,23 +84,23 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
       switch (this.datatype) {
         case "string":
           switchScope.line(
-            `this.${this.propertyName} = ValueParser.parseSingularStringToken(this.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
+            `${elementInfoStr}.${this.propertyName} = ValueParser.parseSingularStringToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
           );
           break;
         case "integer":
           switchScope.line(
-            `this.${this.propertyName} = ValueParser.parseSingularIntegerToken(this.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${minInclusiveStr}, ${maxInclusiveStr}, parsingErrors);`
+            `${elementInfoStr}.${this.propertyName} = ValueParser.parseSingularIntegerToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${minInclusiveStr}, ${maxInclusiveStr}, parsingErrors);`
           );
           break;
         case "boolean":
           switchScope.line(
-            `this.${this.propertyName} = ValueParser.parseSingularBooleanToken(this.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, parsingErrors);`
+            `${elementInfoStr}.${this.propertyName} = ValueParser.parseSingularBooleanToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, parsingErrors);`
           );
           break;
         default:
           throw Error(`Parsing logic for ${this.datatype} not written yet.`);
       }
-      obverseClass.importObject("ValueParser");
+      staticClass.importObject("ValueParser");
       switchScope.line("continue;");
     }
   }

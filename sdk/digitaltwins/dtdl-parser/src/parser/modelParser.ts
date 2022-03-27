@@ -15,6 +15,4 @@ export interface ModelParser {
   options: ModelParsingOption;
   maxDtdlVersion?: number;
   parse(jsonTexts: string[]): Promise<ModelDict>;
-
-  getSupplementalTypeCollection(): SupplementalTypeCollection;
 }

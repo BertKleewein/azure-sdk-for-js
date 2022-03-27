@@ -46,6 +46,7 @@ const filesToCopyDirectly = [
   "parsingException.ts",
   "resolutionError.ts",
   "resultFormatter.ts",
+  "supplementalTypeInfoStatic.ts",
   "valueParser.ts",
   "versionedContext.ts",
   "type/dtmiResolver.ts",

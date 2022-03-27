@@ -22,8 +22,9 @@ import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ElementPropertyConstraint } from "./type";
 import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
-import { ModelParserStatic } from "./modelParserStatic";
+import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
+import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
 import { MapKeyInfoImpl } from "./mapKeyInfoImpl";
 import { MapKeyInfoStatic } from "./mapKeyInfoStatic";
@@ -46,6 +47,42 @@ export class MapInfoStatic {
     this._badTypeActionFormat[3] = `Provide a value for property '{property}' with @type Map.`;
     this._badTypeCauseFormat[2] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Map.`;
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Map.`;
+  }
+
+  public static tryParseSupplementalProperty(
+    model: Model,
+    elementInfo: MapInfoImpl,
+    objectPropertyInfoList: ParsedObjectPropertyInfo[],
+    elementPropertyConstraints: ElementPropertyConstraint[],
+    aggregateContext: AggregateContext,
+    parsingErrors: ParsingError[],
+    propName: string,
+    propToken: any
+  ): boolean {
+    const propDtmi = aggregateContext.createDtmi(propName);
+    if (propDtmi === undefined) {
+      return false;
+    }
+
+    for (const supplementalType of elementInfo.supplementalTypes) {
+      if (
+        (supplementalType as SupplementalTypeInfoImpl).tryParseProperty(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementInfo.id,
+          propDtmi.value,
+          propToken,
+          elementInfo.supplementalProperties
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   static parseObject(
@@ -195,8 +232,9 @@ export class MapInfoStatic {
     (elementInfo as MapInfoImpl).sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        (elementInfo as MapInfoImpl)?.parsePropertiesV2(
+        this.parsePropertiesV2(
           model,
+          elementInfo as MapInfoImpl,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -209,8 +247,9 @@ export class MapInfoStatic {
       }
 
       case 3: {
-        (elementInfo as MapInfoImpl)?.parsePropertiesV3(
+        this.parsePropertiesV3(
           model,
+          elementInfo as MapInfoImpl,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -358,7 +397,7 @@ export class MapInfoStatic {
 
     elementInfo.ref.undefinedTypes = undefinedTypes;
     for (const supplementalTypeId of supplementalTypeIds) {
-      const supplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(
+      const supplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection().supplementalTypes.get(
         supplementalTypeId
       );
       if (elementInfo.ref !== undefined && elementInfo.ref.entityKind !== undefined) {
@@ -445,7 +484,7 @@ export class MapInfoStatic {
       return true;
     }
 
-    const mapOfInDTMIToSupplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection()
+    const mapOfInDTMIToSupplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection()
       .supplementalTypes;
     if (
       supplementalTypeId !== undefined &&
@@ -514,6 +553,7 @@ export class MapInfoStatic {
 
   static parsePropertiesV2(
     model: Model,
+    elementInfo: MapInfoImpl,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     aggregateContext: AggregateContext,
@@ -522,7 +562,7 @@ export class MapInfoStatic {
     definedIn: string | undefined,
     allowIdReferenceSyntax: boolean
   ): void {
-    this.languageVersion = 2;
+    elementInfo.languageVersion = 2;
 
     let mapKeyPropertyMissing = true;
 
@@ -535,7 +575,7 @@ export class MapInfoStatic {
           createParsingError("dtmi:dtdl:parsingError:propertyValueNull", {
             cause: `{primaryId:p} property '{property}' has value null, which is not allowed in DTDL models.`,
             action: `Change the value of '{property}' to a value that is legal for this property.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -549,8 +589,8 @@ export class MapInfoStatic {
       switch (propKey) {
         case "comment":
         case "dtmi:dtdl:property:comment;2":
-          this.comment = ValueParser.parseSingularStringToken(
-            this.id,
+          elementInfo.comment = ValueParser.parseSingularStringToken(
+            elementInfo.id,
             "comment",
             propValue,
             512,
@@ -560,8 +600,8 @@ export class MapInfoStatic {
           continue;
         case "description":
         case "dtmi:dtdl:property:description;2":
-          this.description = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.description = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "description",
             propValue,
             "en",
@@ -572,8 +612,8 @@ export class MapInfoStatic {
           continue;
         case "displayName":
         case "dtmi:dtdl:property:displayName;2":
-          this.displayName = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.displayName = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "displayName",
             propValue,
             "en",
@@ -589,26 +629,26 @@ export class MapInfoStatic {
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
-            this._mapKeyValueConstraints,
+            elementInfo._mapKeyValueConstraints,
             aggregateContext,
             parsingErrors,
             propValue,
-            this.id,
-            definedIn ?? this.id,
+            elementInfo.id,
+            definedIn ?? elementInfo.id,
             "mapKey",
             undefined,
             undefined,
             false,
             false,
             allowIdReferenceSyntax,
-            this._mapKeyAllowedVersionsV2
+            elementInfo._mapKeyAllowedVersionsV2
           );
           if (valueCount < 1) {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:propertyCountBelowMin", {
                 cause: `{primaryId:p} property 'mapKey' has value valueCount values, but the required minimum count is 1`,
                 action: `Add one or more 'mapKey' to the object until the minimum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapKey"
               })
             );
@@ -619,7 +659,7 @@ export class MapInfoStatic {
               createParsingError("dtmi:dtdl:parsingError:propertyCountAboveMax", {
                 cause: `{primaryId:p} property 'mapKey' has value valueCount values, but the allowed maximum count is 1`,
                 action: `Remove one or more 'mapKey' to the object until the maximum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapKey"
               })
             );
@@ -633,26 +673,26 @@ export class MapInfoStatic {
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
-            this._mapValueValueConstraints,
+            elementInfo._mapValueValueConstraints,
             aggregateContext,
             parsingErrors,
             propValue,
-            this.id,
-            definedIn ?? this.id,
+            elementInfo.id,
+            definedIn ?? elementInfo.id,
             "mapValue",
             undefined,
             undefined,
             false,
             false,
             allowIdReferenceSyntax,
-            this._mapValueAllowedVersionsV2
+            elementInfo._mapValueAllowedVersionsV2
           );
           if (valueCount < 1) {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:propertyCountBelowMin", {
                 cause: `{primaryId:p} property 'mapValue' has value valueCount values, but the required minimum count is 1`,
                 action: `Add one or more 'mapValue' to the object until the minimum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapValue"
               })
             );
@@ -663,7 +703,7 @@ export class MapInfoStatic {
               createParsingError("dtmi:dtdl:parsingError:propertyCountAboveMax", {
                 cause: `{primaryId:p} property 'mapValue' has value valueCount values, but the allowed maximum count is 1`,
                 action: `Remove one or more 'mapValue' to the object until the maximum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapValue"
               })
             );
@@ -673,8 +713,9 @@ export class MapInfoStatic {
       }
 
       if (
-        this.tryParseSupplementalProperty(
+        MapInfoStatic.tryParseSupplementalProperty(
           model,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           aggregateContext,
@@ -686,14 +727,14 @@ export class MapInfoStatic {
         continue;
       }
 
-      if (this.undefinedTypes !== undefined && this.undefinedTypes.length > 0) {
-        this.undefinedProperties[propKey] = propValue;
+      if (elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0) {
+        elementInfo.undefinedProperties[propKey] = propValue;
       } else {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:noTypeThatAllows", {
             cause: `{primaryId:p} does not have a @type that allows property ${propKey}.`,
             action: `Remove property ${propKey} or correct if misspelled.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -705,7 +746,7 @@ export class MapInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property mapKey is required but missing.",
           action: "Add a mapKey property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "mapKey"
         })
       );
@@ -716,17 +757,17 @@ export class MapInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property mapValue is required but missing.",
           action: "Add a mapValue property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "mapValue"
         })
       );
     }
 
-    for (const supplementalType of this.supplementalTypes) {
+    for (const supplementalType of elementInfo.supplementalTypes) {
       (supplementalType as SupplementalTypeInfoImpl).checkForRequiredProperties(
         parsingErrors,
-        this.id,
-        this.supplementalProperties
+        elementInfo.id,
+        elementInfo.supplementalProperties
       );
     }
   }
@@ -774,7 +815,7 @@ export class MapInfoStatic {
       return true;
     }
 
-    const mapOfInDTMIToSupplementalTypeInfo = ModelParserStatic.retrieveSupplementalTypeCollection()
+    const mapOfInDTMIToSupplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection()
       .supplementalTypes;
     if (
       supplementalTypeId !== undefined &&
@@ -867,6 +908,7 @@ export class MapInfoStatic {
 
   static parsePropertiesV3(
     model: Model,
+    elementInfo: MapInfoImpl,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     aggregateContext: AggregateContext,
@@ -875,7 +917,7 @@ export class MapInfoStatic {
     definedIn: string | undefined,
     allowIdReferenceSyntax: boolean
   ): void {
-    this.languageVersion = 3;
+    elementInfo.languageVersion = 3;
 
     let mapKeyPropertyMissing = true;
 
@@ -888,7 +930,7 @@ export class MapInfoStatic {
           createParsingError("dtmi:dtdl:parsingError:propertyValueNull", {
             cause: `{primaryId:p} property '{property}' has value null, which is not allowed in DTDL models.`,
             action: `Change the value of '{property}' to a value that is legal for this property.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -902,8 +944,8 @@ export class MapInfoStatic {
       switch (propKey) {
         case "comment":
         case "dtmi:dtdl:property:comment;3":
-          this.comment = ValueParser.parseSingularStringToken(
-            this.id,
+          elementInfo.comment = ValueParser.parseSingularStringToken(
+            elementInfo.id,
             "comment",
             propValue,
             512,
@@ -913,8 +955,8 @@ export class MapInfoStatic {
           continue;
         case "description":
         case "dtmi:dtdl:property:description;3":
-          this.description = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.description = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "description",
             propValue,
             "en",
@@ -925,8 +967,8 @@ export class MapInfoStatic {
           continue;
         case "displayName":
         case "dtmi:dtdl:property:displayName;3":
-          this.displayName = ValueParser.parseLangStringToken(
-            this.id,
+          elementInfo.displayName = ValueParser.parseLangStringToken(
+            elementInfo.id,
             "displayName",
             propValue,
             "en",
@@ -942,26 +984,26 @@ export class MapInfoStatic {
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
-            this._mapKeyValueConstraints,
+            elementInfo._mapKeyValueConstraints,
             aggregateContext,
             parsingErrors,
             propValue,
-            this.id,
-            definedIn ?? this.id,
+            elementInfo.id,
+            definedIn ?? elementInfo.id,
             "mapKey",
             undefined,
             undefined,
             false,
             false,
             allowIdReferenceSyntax,
-            this._mapKeyAllowedVersionsV3
+            elementInfo._mapKeyAllowedVersionsV3
           );
           if (valueCount < 1) {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:propertyCountBelowMin", {
                 cause: `{primaryId:p} property 'mapKey' has value valueCount values, but the required minimum count is 1`,
                 action: `Add one or more 'mapKey' to the object until the minimum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapKey"
               })
             );
@@ -972,7 +1014,7 @@ export class MapInfoStatic {
               createParsingError("dtmi:dtdl:parsingError:propertyCountAboveMax", {
                 cause: `{primaryId:p} property 'mapKey' has value valueCount values, but the allowed maximum count is 1`,
                 action: `Remove one or more 'mapKey' to the object until the maximum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapKey"
               })
             );
@@ -986,26 +1028,26 @@ export class MapInfoStatic {
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
-            this._mapValueValueConstraints,
+            elementInfo._mapValueValueConstraints,
             aggregateContext,
             parsingErrors,
             propValue,
-            this.id,
-            definedIn ?? this.id,
+            elementInfo.id,
+            definedIn ?? elementInfo.id,
             "mapValue",
             undefined,
             undefined,
             false,
             false,
             allowIdReferenceSyntax,
-            this._mapValueAllowedVersionsV3
+            elementInfo._mapValueAllowedVersionsV3
           );
           if (valueCount < 1) {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:propertyCountBelowMin", {
                 cause: `{primaryId:p} property 'mapValue' has value valueCount values, but the required minimum count is 1`,
                 action: `Add one or more 'mapValue' to the object until the minimum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapValue"
               })
             );
@@ -1016,7 +1058,7 @@ export class MapInfoStatic {
               createParsingError("dtmi:dtdl:parsingError:propertyCountAboveMax", {
                 cause: `{primaryId:p} property 'mapValue' has value valueCount values, but the allowed maximum count is 1`,
                 action: `Remove one or more 'mapValue' to the object until the maximum count is satisfied.`,
-                primaryId: this.id,
+                primaryId: elementInfo.id,
                 property: "mapValue"
               })
             );
@@ -1026,8 +1068,9 @@ export class MapInfoStatic {
       }
 
       if (
-        this.tryParseSupplementalProperty(
+        MapInfoStatic.tryParseSupplementalProperty(
           model,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           aggregateContext,
@@ -1039,14 +1082,14 @@ export class MapInfoStatic {
         continue;
       }
 
-      if (this.undefinedTypes !== undefined && this.undefinedTypes.length > 0) {
-        this.undefinedProperties[propKey] = propValue;
+      if (elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0) {
+        elementInfo.undefinedProperties[propKey] = propValue;
       } else {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:noTypeThatAllows", {
             cause: `{primaryId:p} does not have a @type that allows property ${propKey}.`,
             action: `Remove property ${propKey} or correct if misspelled.`,
-            primaryId: this.id,
+            primaryId: elementInfo.id,
             property: propKey
           })
         );
@@ -1058,7 +1101,7 @@ export class MapInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property mapKey is required but missing.",
           action: "Add a mapKey property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "mapKey"
         })
       );
@@ -1069,17 +1112,17 @@ export class MapInfoStatic {
         createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {
           cause: "{primaryId:p} property mapValue is required but missing.",
           action: "Add a mapValue property to the object.",
-          primaryId: this.id,
+          primaryId: elementInfo.id,
           property: "mapValue"
         })
       );
     }
 
-    for (const supplementalType of this.supplementalTypes) {
+    for (const supplementalType of elementInfo.supplementalTypes) {
       (supplementalType as SupplementalTypeInfoImpl).checkForRequiredProperties(
         parsingErrors,
-        this.id,
-        this.supplementalProperties
+        elementInfo.id,
+        elementInfo.supplementalProperties
       );
     }
   }

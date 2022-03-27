@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.
+// copyright (c) microsoft corporation.
 // Licensed under the MIT license.
 
 /* eslint-disable no-unused-vars */
@@ -131,7 +131,7 @@ export abstract class ObjectProperty extends MaterialProperty {
     ) {
       obverseClass.field({
         name: `_${this.valueConstraintsField}`,
-        access: TsAccess.Private,
+        access: TsAccess.Public,
         type: "ValueConstraint[]",
         value: "[]",
       });
@@ -153,7 +153,7 @@ export abstract class ObjectProperty extends MaterialProperty {
         }
         obverseClass.field({
           name: `_${this.allowedVersionsField}V${dtdlVersion}`,
-          access: TsAccess.Private,
+          access: TsAccess.Public,
           type: "Set<number>",
           value: value,
         });
@@ -171,13 +171,14 @@ export abstract class ObjectProperty extends MaterialProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    obverseClass: TsClass,
+    staticClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
     classIsPartition: boolean,
     valueCountVar: string,
-    definedInVar: string
+    definedInVar: string,
+    elementInfoStr: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -187,10 +188,12 @@ export abstract class ObjectProperty extends MaterialProperty {
       const valueCountAssignment = this.hasCountRestriction(dtdlVersion)
         ? `${valueCountVar} = `
         : "";
-      const valueConstraints = classIsAugmentable ? `this._${this.valueConstraintsField}` : "[]"; // send empty list
+      const valueConstraints = classIsAugmentable
+        ? `${elementInfoStr}._${this.valueConstraintsField}`
+        : "[]"; // send empty list
       const definedIn = classIsPartition
-        ? `this.${ParserGeneratorValues.IdentifierName}`
-        : `${definedInVar} ?? this.${ParserGeneratorValues.IdentifierName}`;
+        ? `${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`
+        : `${definedInVar} ?? ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`;
       const dtmiSegment = this.dtmiSegment !== undefined ? `'${this.dtmiSegment}'` : undefined;
 
       switchScope
@@ -199,13 +202,13 @@ export abstract class ObjectProperty extends MaterialProperty {
       if (!this.optional) {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
-      if (obverseClass.name !== this.versionedClassName[dtdlVersion]) {
-        obverseClass.importObject(this.versionedClassName[dtdlVersion] as string);
-      }
+      staticClass.importObject(this.versionedClassName[dtdlVersion] as string);
       switchScope.line(
-        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, ${elementInfoStr}._${this.allowedVersionsField}V${dtdlVersion});`
       );
-      obverseClass.importObject(this.versionedStaticClassName[dtdlVersion]);
+      if (staticClass.name !== this.versionedClassName[dtdlVersion]) {
+        staticClass.importObject(this.versionedStaticClassName[dtdlVersion]);
+      }
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope
           .if(`${valueCountVar} < ${propertyVersionDigest.minCount}`)
@@ -218,7 +221,7 @@ export abstract class ObjectProperty extends MaterialProperty {
           .line(
             `action: \`Add one or more '${this.propertyName}' to the object until the minimum count is satisfied.\`,`
           )
-          .line(`primaryId: this.id,`)
+          .line(`primaryId: ${elementInfoStr}.id,`)
           .line(`property: '${this.propertyName}',`)
           .line(`}));`);
       }
@@ -235,7 +238,7 @@ export abstract class ObjectProperty extends MaterialProperty {
           .line(
             `action: \`Remove one or more '${this.propertyName}' to the object until the maximum count is satisfied.\`,`
           )
-          .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
+          .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
           .line(`property: '${this.propertyName}',`)
           .line(`}));`);
       }
@@ -278,7 +281,11 @@ export abstract class ObjectProperty extends MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
+  public addCheckForRequiredProperty(
+    dtdlVersion: number,
+    scope: TsScope,
+    elementInfoStr: string
+  ): void {
     if (
       !this.optional &&
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -291,7 +298,7 @@ export abstract class ObjectProperty extends MaterialProperty {
         .line("{")
         .line(`cause: '{primaryId:p} property ${this.propertyName} is required but missing.',`)
         .line(`action: 'Add a ${this.propertyName} property to the object.',`)
-        .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
+        .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
         .line(`property: '${this.propertyName}'`)
         .line(`}));`);
     }

@@ -6,13 +6,10 @@
 
 import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
 
-export class ModelParserStatic {
-  // codegen-outline-begin methods
-  static supplementalTypeCollection: SupplementalTypeCollectionImpl =
-    new SupplementalTypeCollectionImpl();
+export class SupplementalTypeInfoStatic {
+  static supplementalTypeCollection: SupplementalTypeCollectionImpl = new SupplementalTypeCollectionImpl();
 
   static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
     return this.supplementalTypeCollection;
   }
-  // codegen-outline-end
 }

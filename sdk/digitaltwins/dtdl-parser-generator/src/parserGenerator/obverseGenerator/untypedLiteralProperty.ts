@@ -37,7 +37,7 @@ export abstract class UntypedLiteralProperty extends LiteralProperty {
   ): void {
     super.addMembers(dtdlVersions, obverseClass, obverseInterface, classIsAugmentable);
     const fieldName = `${this._datatypeField}`;
-    obverseClass.field({ name: fieldName, type: "string", access: TsAccess.Private, value: "" });
+    obverseClass.field({ name: fieldName, type: "string", access: TsAccess.Public, value: "" });
     const ctorScope = obverseClass.tsConstructor?.body;
     if (ctorScope !== undefined) {
       ctorScope.line(`this.${fieldName} = '';`);
