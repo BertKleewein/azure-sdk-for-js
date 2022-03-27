@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { ContentInfo } from "./contentInfo";
+import { TypeChecker } from "./type";
 import { PropertyInfo } from "./propertyInfo";
 import { InDTMI } from "./internalDtmi";
 export interface RelationshipInfo extends ContentInfo {

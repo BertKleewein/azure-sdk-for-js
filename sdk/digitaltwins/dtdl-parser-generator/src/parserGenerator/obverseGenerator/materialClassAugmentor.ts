@@ -109,6 +109,10 @@ export class MaterialClassAugmentor {
         )
         .line("return true;");
       method2.body.line("return false;");
+      obverseClass
+        .importObject("ParsedObjectPropertyInfo")
+        .importObject("ElementPropertyConstraint", "./type")
+        .importObject("AggregateContext");
     }
   }
 

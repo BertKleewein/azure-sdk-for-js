@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { SchemaFieldInfo } from "./schemaFieldInfo";
+import { TypeChecker } from "./type";
 import { SchemaInfo } from "./schemaInfo";
 export interface CommandPayloadInfo extends SchemaFieldInfo {
   entityKind: "commandpayload" | "commandrequest" | "commandresponse";

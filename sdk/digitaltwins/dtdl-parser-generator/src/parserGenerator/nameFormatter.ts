@@ -37,6 +37,16 @@ export class NameFormatter {
       "Impl"
     );
   }
+  public static formatNameAsStatic(name: string): string {
+    // Example: format name "array" as interface "ArrayInfoStatic"
+    return (
+      CLASS_PREFIX +
+      name.substring(VARIANT_INDEX, VARIANT_INDEX + 1).toUpperCase() +
+      name.substring(SUBSTRING_INDEX) +
+      CLASS_SUFFIX +
+      "Static"
+    );
+  }
   public static formatNameAsParameter(name: string): string {
     return (
       name.substring(VARIANT_INDEX, VARIANT_INDEX + 1).toLowerCase() +

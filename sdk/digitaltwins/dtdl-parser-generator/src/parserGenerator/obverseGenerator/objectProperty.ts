@@ -18,6 +18,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   private _interfaceName?: string;
   private _implementationName?: string;
   private _versionedClassName: { [dtdlVersion: number]: string };
+  private _versionedStaticClassName: { [dtdlVersion: number]: string };
   private _valueConstraintsField: string;
   private _instancePropertiesField: string;
   private _allowedVersionsField: string;
@@ -38,6 +39,7 @@ export abstract class ObjectProperty extends MaterialProperty {
         ? NameFormatter.formatNameAsImplementation(propertyToken._.class)
         : undefined;
     this._versionedClassName = {};
+    this._versionedStaticClassName = {};
     for (const keyDtdlVersion in propertyToken) {
       if (keyDtdlVersion === "_") {
         // skip underscore
@@ -47,6 +49,8 @@ export abstract class ObjectProperty extends MaterialProperty {
       if (versionedClassName !== undefined) {
         this._versionedClassName[keyDtdlVersion] =
           NameFormatter.formatNameAsImplementation(versionedClassName);
+        this._versionedStaticClassName[keyDtdlVersion] =
+          NameFormatter.formatNameAsStatic(versionedClassName);
       }
     }
     this._valueConstraintsField = `${propertyName}ValueConstraints`;
@@ -66,8 +70,12 @@ export abstract class ObjectProperty extends MaterialProperty {
     return this._implementationName;
   }
 
-  protected get versionedClassName(): { [dtdlVersion: number]: string | undefined } {
+  protected get versionedClassName(): { [dtdlVersion: number]: string } {
     return this._versionedClassName;
+  }
+
+  protected get versionedStaticClassName(): { [dtdlVersion: number]: string } {
+    return this._versionedStaticClassName;
   }
 
   protected get valueConstraintsField(): string {
@@ -195,8 +203,9 @@ export abstract class ObjectProperty extends MaterialProperty {
         obverseClass.importObject(this.versionedClassName[dtdlVersion] as string);
       }
       switchScope.line(
-        `${valueCountAssignment}${this.versionedClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`
       );
+      obverseClass.importObject(this.versionedStaticClassName[dtdlVersion]);
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope
           .if(`${valueCountVar} < ${propertyVersionDigest.minCount}`)

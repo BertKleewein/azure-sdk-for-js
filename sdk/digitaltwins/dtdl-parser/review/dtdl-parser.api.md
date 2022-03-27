@@ -101,8 +101,10 @@ export interface DurationInfo extends TemporalSchemaInfo {
     entityKind: "duration";
 }
 
+// Warning: (ae-forgotten-export) The symbol "TypeChecker" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-export interface EntityInfo {
+export interface EntityInfo extends TypeChecker {
     // (undocumented)
     childOf: string | undefined;
     // (undocumented)
@@ -193,11 +195,6 @@ export interface FloatInfo extends NumericSchemaInfo {
 }
 
 // @public (undocumented)
-export type GetModelsFunctionType = (dtmis: string | string[], options?: unknown) => Promise<{
-    [dtmi: string]: unknown;
-}>;
-
-// @public (undocumented)
 export interface IntegerInfo extends NumericSchemaInfo {
     // (undocumented)
     entityKind: "integer";
@@ -275,8 +272,10 @@ export type ModelDict = {
 
 // @public (undocumented)
 export interface ModelParser {
+    // Warning: (ae-forgotten-export) The symbol "DtmiResolver" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    getModels?: GetModelsFunctionType;
+    getModels?: DtmiResolver;
     // (undocumented)
     getSupplementalTypeCollection(): SupplementalTypeCollection;
     // (undocumented)

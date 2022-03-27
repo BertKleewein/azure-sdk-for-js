@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
+import { TypeChecker } from "./type";
 export interface TemporalSchemaInfo extends PrimitiveSchemaInfo {
   entityKind: "date" | "datetime" | "duration" | "time";
 }

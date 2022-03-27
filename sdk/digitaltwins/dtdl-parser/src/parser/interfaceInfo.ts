@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { EntityInfo } from "./entityInfo";
+import { TypeChecker } from "./type";
 import { ContentInfo } from "./contentInfo";
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
 export interface InterfaceInfo extends EntityInfo {

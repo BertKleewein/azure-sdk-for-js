@@ -6,7 +6,7 @@ import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
 import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ParsingError } from "./parsingError";
-import { ModelParserImpl } from "./modelParserImpl";
+import { ModelParserStatic } from "./modelParserStatic";
 import { ParsingException } from "../parsingException";
 
 export class StandardElements {
@@ -70,7 +70,7 @@ export class StandardElements {
     parsingErrors: ParsingError[]
   ): void {
     for (const modelElement of resource) {
-      ModelParserImpl._parseObject(
+      ModelParserStatic.parseObject(
         this._standardModel,
         objectPropertyInfoList,
         [],

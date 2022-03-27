@@ -42,7 +42,8 @@ export class LangStringLiteralProperty extends LiteralProperty {
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
-    if (!obverseInterface.extends) {
+    // see comment in internalProperty.ts:addMembers
+    if (!obverseInterface.extends || obverseInterface.extends == "TypeChecker") {
       obverseInterface.importObject("LanguageStringType", "./type");
     }
   }

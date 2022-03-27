@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { NamedEntityInfo } from "./namedEntityInfo";
+import { TypeChecker } from "./type";
 export interface ContentInfo extends NamedEntityInfo {
   entityKind: "command" | "component" | "property" | "relationship" | "telemetry";
 }

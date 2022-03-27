@@ -7,7 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { DtmiResolver } from "./type";
-import { ElementPropertyConstraint } from "./type/elementPropertyConstraint";
+import { ElementPropertyConstraint } from "./type";
 import { ModelParsingOption } from "./enum";
 import { ParsingError } from "./parsingError";
 import { createParsingError } from "./parsingErrorImpl";
@@ -15,7 +15,6 @@ import { ResolutionError } from "./resolutionError";
 import { JsonSyntaxError } from "./jsonSyntaxError";
 import { ParsingException } from "./parsingException";
 import { AggregateContext } from "./aggregateContext";
-import { EntityInfoImpl } from "./entityInfoImpl";
 import { Model } from "./model";
 import { ModelDict } from "./modelDict";
 import { ModelParser } from "./modelParser";
@@ -24,6 +23,8 @@ import { PartitionTypeCollection } from "./partitionTypeCollection";
 import { StandardElements } from "./standardElements";
 import { RootableTypeCollection } from "./rootableTypeCollection";
 import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
+import { ModelParserStatic } from "./modelParserStatic";
+import { TypeChecker } from "./type";
 /**
  * Class for parsing the DTDL langauge.
  **/
@@ -32,34 +33,6 @@ export class ModelParserImpl implements ModelParser {
     // codegen-outline-begin constructor
     this.options = ModelParsingOption.None;
     // codegen-outline-end
-  }
-
-  public static _parseObject(
-    model: Model,
-    objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    elementPropertyConstraints: ElementPropertyConstraint[],
-    aggregateContext: AggregateContext,
-    parsingErrors: ParsingError[],
-    object: any
-  ) {
-    EntityInfoImpl.parseObject(
-      model,
-      objectPropertyInfoList,
-      elementPropertyConstraints,
-      [],
-      aggregateContext,
-      parsingErrors,
-      object,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      true,
-      true,
-      false,
-      new Set()
-    );
   }
 
   // codegen-outline-begin fields
@@ -71,13 +44,9 @@ export class ModelParserImpl implements ModelParser {
   getModels?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
-  static supplementalTypeCollection: SupplementalTypeCollectionImpl = new SupplementalTypeCollectionImpl();
 
   getSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
-    return ModelParserImpl.retrieveSupplementalTypeCollection();
-  }
-  static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
-    return this.supplementalTypeCollection;
+    return ModelParserStatic.retrieveSupplementalTypeCollection();
   }
 
   async parse(jsonTexts: string[]): Promise<ModelDict> {
@@ -110,7 +79,7 @@ export class ModelParserImpl implements ModelParser {
       if (
         elementPropertyConstraint.valueConstraint.requiredTypes !== undefined &&
         !elementPropertyConstraint.valueConstraint.requiredTypes.some((t) =>
-          (typeChecker as EntityInfoImpl)?.doesHaveType(t)
+          (typeChecker as TypeChecker)?.doesHaveType(t)
         )
       ) {
         parsingErrors.push(
@@ -351,15 +320,6 @@ export class ModelParserImpl implements ModelParser {
         throw new ParsingException(parsingErrors);
       }
     }
-
-    ModelParserImpl._parseObject(
-      model,
-      objectPropertyInfoList,
-      elementPropertyConstraints,
-      aggregateContext,
-      parsingErrors,
-      obj
-    );
   }
   // codegen-outline-end
 }

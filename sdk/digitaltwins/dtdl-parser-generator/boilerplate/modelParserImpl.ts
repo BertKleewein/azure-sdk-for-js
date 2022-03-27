@@ -5,7 +5,7 @@
 /* eslint-disable sort-imports */
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import { ElementPropertyConstraint, DtmiResolver } from "./type";
+import { ElementPropertyConstraint, DtmiResolver, TypeChecker } from "./type";
 import { ModelParsingOption } from "../enum";
 import { AggregateContext } from "./aggregateContext";
 import { JsonSyntaxError } from "./jsonSyntaxError";
@@ -21,7 +21,7 @@ import { createParsingError } from "./parsingErrorImpl";
 // TODO File needs to be generated and line needs to be un-commented before parsing or maaking package
 import { ParsedObjectPropertyInfo } from "./type/parsedObjectPropertyInfo";
 import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
-type EntityInfoImpl = { [prop: string]: any }; // faking for now since the EntityInfoImpl class is not defined
+import { ModelParserStatic } from "./modelParserStatic";
 export class ModelParserImpl {
   // codegen-outline-begin fields
   static graphKeyword = "@graph";
@@ -38,14 +38,9 @@ export class ModelParserImpl {
   getModels?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
-  static supplementalTypeCollection: SupplementalTypeCollectionImpl =
-    new SupplementalTypeCollectionImpl();
 
   getSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
-    return ModelParserImpl.retrieveSupplementalTypeCollection();
-  }
-  static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
-    return this.supplementalTypeCollection;
+    return ModelParserStatic.retrieveSupplementalTypeCollection();
   }
 
   async parse(jsonTexts: string[]): Promise<ModelDict> {
@@ -78,7 +73,7 @@ export class ModelParserImpl {
       if (
         elementPropertyConstraint.valueConstraint.requiredTypes !== undefined &&
         !elementPropertyConstraint.valueConstraint.requiredTypes.some((t) =>
-          (typeChecker as EntityInfoImpl)?.doesHaveType(t)
+          (typeChecker as TypeChecker)?.doesHaveType(t)
         )
       ) {
         parsingErrors.push(
@@ -319,28 +314,6 @@ export class ModelParserImpl {
         throw new ParsingException(parsingErrors);
       }
     }
-
-    ModelParserImpl._parseObject(
-      model,
-      objectPropertyInfoList,
-      elementPropertyConstraints,
-      aggregateContext,
-      parsingErrors,
-      obj
-    );
   }
   // codegen-outline-end
-
-  static _parseObject(
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _model: Model,
-    _objectPropertyInfoList: ParsedObjectPropertyInfo[],
-    _elementPropertyConstraints: ElementPropertyConstraint[],
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _aggregateContext: AggregateContext,
-    _parsingErrors: ParsingError[],
-    _obj: { [prop: string]: string }
-  ): void {
-    throw new Error("_parseObject is not implemented.");
-  }
 }

@@ -60,6 +60,8 @@ export class MaterialClassGenerator implements TypeGenerator {
   private _typeName: string;
   // The name of the implementation associated with the obverse class eg 'ArrayInfoImpl'.
   private _typeImplName: string;
+  // The name of the implementation associated with the obverse static method class eg 'ArrayInfoStatic'.
+  private _typeStaticName: string;
   // The name of the parent interface eg 'EntityInfo'.
   private _parentTypeName: string | undefined;
   // The name of the parent implementation eg 'EntityInfoImpl'.
@@ -107,6 +109,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     this._rawTypeName = rawTypeName;
     this._typeName = NameFormatter.formatNameAsInterface(rawTypeName);
     this._typeImplName = NameFormatter.formatNameAsImplementation(rawTypeName);
+    this._typeStaticName = NameFormatter.formatNameAsStatic(rawTypeName);
     this._parentTypeName =
       materialClassDigest.parentClass === null
         ? undefined
@@ -251,11 +254,12 @@ export class MaterialClassGenerator implements TypeGenerator {
     const obverseInterface = parserLibrary.interface({
       name: this._typeName,
       exports: true,
-      thingToExtend: this._parentTypeName,
+      thingToExtend: this._parentTypeName || "TypeChecker",
     });
     if (this._parentTypeName !== undefined) {
       obverseInterface.importObject(this._parentTypeName);
     }
+    obverseInterface.importObject("TypeChecker", "./type");
 
     const inheritanceNames: TsInheritanceType[] = [];
     inheritanceNames.push({
@@ -270,10 +274,25 @@ export class MaterialClassGenerator implements TypeGenerator {
       inheritance: inheritanceNames,
     });
 
-    obverseClass.importObject("TypeChecker", "./type");
-    obverseClass.importObject(this._typeName);
-    obverseClass.importObject(this._typeKindEnum);
-    obverseClass.importObject(this._baseKindEnum);
+    obverseClass
+      .importObject("TypeChecker", "./type")
+      .importObject(this._typeName)
+      .importObject(this._typeKindEnum)
+      .importObject(this._baseKindEnum)
+      .importObject(this._typeStaticName)
+      .importObject("Reference, referenceInit", "../common/reference");
+
+    const staticClass = parserLibrary.class({
+      name: this._typeStaticName,
+      exports: true,
+    });
+
+    staticClass
+      .importObject("SupplementalTypeInfoImpl") // TODO: remove this once parsing is fully moved
+      .importObject(this._typeImplName)
+      .importObject(this._typeName)
+      .importObject(this._typeKindEnum)
+      .importObject(this._baseKindEnum);
 
     const internalPropNames: string[] = [];
     if (this._properties) {
@@ -320,6 +339,7 @@ export class MaterialClassGenerator implements TypeGenerator {
       this._materialClassDigest.dtdlVersions,
       obverseClass,
       obverseInterface,
+      staticClass,
       this._rawTypeName,
       this._typeName,
       this._baseKindEnum,
@@ -353,8 +373,8 @@ export class MaterialClassGenerator implements TypeGenerator {
     this._generateVersionlessTypes(obverseClass);
     this.generateApplyTransformationMethods(obverseClass);
     this.generateCheckRestrictionsMethods(obverseClass, !this._isAbstract); // isAbstract is the opposite of isAugmentable in C#.
-    this._generateConcreteKinds(obverseClass);
-    this._generateBadTypeFormatStrings(obverseClass);
+    this._generateStaticConcreteKinds(staticClass);
+    this._generateStaticBadTypeFormatStrings(staticClass);
 
     this._generateTrySetObjectPropertyMethod(obverseClass);
 
@@ -397,6 +417,7 @@ export class MaterialClassGenerator implements TypeGenerator {
         }
       }
     }
+    obverseClass.importObject("Model").importObject("ParsingError");
 
     for (const dtdlVersion of this._materialClassDigest.dtdlVersions) {
       const versionSpecificClassMethod = obverseClass.method({
@@ -521,46 +542,46 @@ export class MaterialClassGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private _generateConcreteKinds(obverseClass: TsClass): void {
-    obverseClass.field({
+  private _generateStaticConcreteKinds(staticClass: TsClass): void {
+    staticClass.field({
       name: "_concreteKinds",
       access: TsAccess.Protected,
       isStatic: true,
       type: `{[x: number]: ${this._typeKindEnum}[]}`,
     });
-    obverseClass.staticCtor.body.line("this._concreteKinds = {};");
+    staticClass.staticCtor.body.line("this._concreteKinds = {};");
     for (const version of this._materialClassDigest.dtdlVersions) {
-      obverseClass.staticCtor.body.line(`this._concreteKinds[${version}] = [];`);
+      staticClass.staticCtor.body.line(`this._concreteKinds[${version}] = [];`);
       if (Object.prototype.hasOwnProperty.call(this._concreteSubclassesMap, version)) {
         const subclasses = this._concreteSubclassesMap[version];
         for (const subclass of subclasses) {
-          subclass.addEnumValue(obverseClass.staticCtor.body, `this._concreteKinds[${version}]`);
+          subclass.addEnumValue(staticClass.staticCtor.body, `this._concreteKinds[${version}]`);
         }
       }
     }
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private _generateBadTypeFormatStrings(obverseClass: TsClass): void {
-    obverseClass.field({
+  private _generateStaticBadTypeFormatStrings(staticClass: TsClass): void {
+    staticClass.field({
       name: "_badTypeActionFormat",
       access: TsAccess.Protected,
       isStatic: true,
       type: `{[x: number]: string}`,
     });
-    obverseClass.field({
+    staticClass.field({
       name: "_badTypeCauseFormat",
       access: TsAccess.Protected,
       isStatic: true,
       type: `{[x: number]: string}`,
     });
-    obverseClass.staticCtor.body.line("this._badTypeActionFormat = {};");
-    obverseClass.staticCtor.body.line("this._badTypeCauseFormat = {};");
+    staticClass.staticCtor.body.line("this._badTypeActionFormat = {};");
+    staticClass.staticCtor.body.line("this._badTypeCauseFormat = {};");
     Object.entries(this._materialClassDigest.badTypeActionFormat).forEach(([key, value]) => {
-      obverseClass.staticCtor.body.line(`this._badTypeActionFormat[${key}] = \`${value}\``);
+      staticClass.staticCtor.body.line(`this._badTypeActionFormat[${key}] = \`${value}\``);
     });
     Object.entries(this._materialClassDigest.badTypeCauseFormat).forEach(([k, v]) => {
-      obverseClass.staticCtor.body.line(`this._badTypeCauseFormat[${k}] = \`${v}\``);
+      staticClass.staticCtor.body.line(`this._badTypeCauseFormat[${k}] = \`${v}\``);
     });
   }
 }

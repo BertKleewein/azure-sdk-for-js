@@ -56,6 +56,9 @@ export class DescendantControlMaxCount implements DescendantControl {
       return;
     }
 
+    obverseClass.importObject("ParsingError");
+    obverseClass.importObject("createParsingError", "./parsingErrorImpl");
+
     if (classIsBase) {
       const baseClassMethod: TsFunction = obverseClass.method({
         name: this._methodName,

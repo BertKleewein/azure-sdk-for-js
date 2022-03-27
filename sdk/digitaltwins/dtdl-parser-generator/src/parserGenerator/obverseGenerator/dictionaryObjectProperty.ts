@@ -110,8 +110,9 @@ export class DictionaryObjectProperty extends ObjectProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `${valueCountAssignment}${this.versionedClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`
       );
+      obverseClass.importObject(this.versionedStaticClassName[dtdlVersion]);
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope
           .if(`${valueCountVar} < ${propertyVersionDigest.minCount}`)

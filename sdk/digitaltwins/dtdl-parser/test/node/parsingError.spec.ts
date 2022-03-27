@@ -5,7 +5,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { createParsingError } from "../../src/parser/parsingError";
+import { createParsingError } from "../../src/parser/parsingErrorImpl";
 import { expect } from "chai";
 
 describe("Test ParsingError", function() {

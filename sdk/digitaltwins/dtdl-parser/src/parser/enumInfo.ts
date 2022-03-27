@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { TypeChecker } from "./type";
 import { EnumValueInfo } from "./enumValueInfo";
 import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
 export interface EnumInfo extends ComplexSchemaInfo {

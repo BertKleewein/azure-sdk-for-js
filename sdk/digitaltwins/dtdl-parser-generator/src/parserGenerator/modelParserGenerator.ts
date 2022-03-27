@@ -8,9 +8,11 @@ import { TypeGenerator } from "./typeGenerator";
 
 export class ModelParserGenerator implements TypeGenerator {
   private readonly _baseClassName: string;
+  private readonly _baseStaticClassName: string;
 
   constructor(baseName: string) {
     this._baseClassName = NameFormatter.formatNameAsImplementation(baseName);
+    this._baseStaticClassName = NameFormatter.formatNameAsStatic(baseName);
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -64,7 +66,7 @@ export class ModelParserGenerator implements TypeGenerator {
     parserClass.docString.line(`Class for parsing the DTDL langauge.`);
     parserClass
       .importObject("DtmiResolver", "./type")
-      .importObject("ElementPropertyConstraint", "./type/elementPropertyConstraint")
+      .importObject("ElementPropertyConstraint", "./type")
       .importObject("ModelParsingOption", "./enum")
       .importObject("ParsingError")
       .importObject("createParsingError", "./parsingErrorImpl")
@@ -72,7 +74,6 @@ export class ModelParserGenerator implements TypeGenerator {
       .importObject("JsonSyntaxError")
       .importObject("ParsingException")
       .importObject("AggregateContext")
-      .importObject(this._baseClassName)
       .importObject("Model")
       .importObject("ModelDict")
       .importObject("ModelParser")
@@ -80,14 +81,30 @@ export class ModelParserGenerator implements TypeGenerator {
       .importObject("PartitionTypeCollection")
       .importObject("StandardElements")
       .importObject("RootableTypeCollection")
-      .importObject("SupplementalTypeCollectionImpl");
+      .importObject("SupplementalTypeCollectionImpl")
+      .importObject("ModelParserStatic")
+      .importObject("TypeChecker", "./type");
     parserClass.inline("./boilerplate/modelParserImpl.ts", "fields");
     parserClass.ctor.body.inline("./boilerplate/modelParserImpl.ts", "constructor");
     parserClass.inline("./boilerplate/modelParserImpl.ts", "methods");
-    const parseObjectMethod = parserClass.method({
-      name: "_parseObject",
+
+    const staticClass = parserLibrary.class({
+      name: "ModelParserStatic",
+      exports: true,
+    });
+    staticClass
+      .importObject(this._baseStaticClassName)
+      .importObject("Model")
+      .importObject("ParsedObjectPropertyInfo")
+      .importObject("ElementPropertyConstraint", "./type")
+      .importObject("ParsingError")
+      .importObject("AggregateContext")
+      .importObject("SupplementalTypeCollectionImpl");
+
+    const parseObjectMethod = staticClass.method({
+      name: "parseObject",
       isStatic: true,
-      access: TsAccess.Public, // TODO: I had to change this, but I'm not happy with the change.
+      access: TsAccess.Public,
     });
     parseObjectMethod
       .parameter({ name: "model", type: "Model" })
@@ -97,7 +114,7 @@ export class ModelParserGenerator implements TypeGenerator {
       .parameter({ name: "parsingErrors", type: "ParsingError[]" })
       .parameter({ name: "object", type: "any" });
 
-    parseObjectMethod.body.line(`${this._baseClassName}.parseObject(
+    parseObjectMethod.body.line(`${this._baseStaticClassName}.parseObject(
       model,
       objectPropertyInfoList,
       elementPropertyConstraints,
@@ -115,5 +132,7 @@ export class ModelParserGenerator implements TypeGenerator {
       false,
       new Set(),
     )`);
+
+    staticClass.inline("./boilerplate/modelParserStatic.ts", "methods");
   }
 }

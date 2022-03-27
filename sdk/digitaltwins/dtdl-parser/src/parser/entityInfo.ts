@@ -6,9 +6,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
+import { TypeChecker } from "./type";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
-export interface EntityInfo {
+export interface EntityInfo extends TypeChecker {
   dtdlVersion: number;
   id: string;
   childOf: string | undefined;

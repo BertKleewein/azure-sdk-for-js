@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { ContentInfo } from "./contentInfo";
+import { TypeChecker } from "./type";
 import { CommandTypeInfo } from "./commandTypeInfo";
 import { CommandPayloadInfo } from "./commandPayloadInfo";
 export interface CommandInfo extends ContentInfo {

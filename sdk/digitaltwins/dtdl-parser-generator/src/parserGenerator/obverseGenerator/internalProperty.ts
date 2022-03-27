@@ -133,7 +133,16 @@ export class InternalProperty extends MaterialProperty {
     obverseInterface: TsInterface,
     _classIsAugmentable: boolean
   ): void {
-    if (!obverseInterface.extends && this.propertyName !== "entityKind") {
+    // TODO: Not sure if this logic makes sense. A "base interface" is something that doesn't
+    // inherit from some other (non-TypeChecker) interface. The base interface is the only interface
+    // that has properties with name "entityKind". Other interfaces presumably inherit this property from
+    // some base. I assume that "entityKind" means "only exists on a base interface" in some way,
+    // but I'm not sure how.
+    let isBaseInterface = false;
+    if (!obverseInterface.extends || obverseInterface.extends == "TypeChecker") {
+      isBaseInterface = true;
+    }
+    if (isBaseInterface && this.propertyName !== "entityKind") {
       obverseInterface.field({ name: this.propertyName, type: this.propertyType });
     }
     if (this.propertyName === "entityKind") {

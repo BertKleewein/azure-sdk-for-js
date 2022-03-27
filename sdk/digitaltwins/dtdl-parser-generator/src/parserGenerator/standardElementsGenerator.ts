@@ -26,7 +26,7 @@ export class StandardElementsGenerator implements TypeGenerator {
     const standardElementsClass = parserLibrary.class({ name: "StandardElements", exports: true });
     standardElementsClass.importObject("ParsedObjectPropertyInfo");
     standardElementsClass.importObject("Model");
-    standardElementsClass.importObject("ModelParserImpl");
+    standardElementsClass.importObject("ModelParserStatic");
     standardElementsClass.importObject("AggregateContext");
     standardElementsClass.importObject("InDTMI", "./internalDtmi");
     standardElementsClass.importObject("ParsingError");

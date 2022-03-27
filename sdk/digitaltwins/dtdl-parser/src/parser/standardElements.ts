@@ -8,7 +8,7 @@
 
 import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { Model } from "./model";
-import { ModelParserImpl } from "./modelParserImpl";
+import { ModelParserStatic } from "./modelParserStatic";
 import { AggregateContext } from "./aggregateContext";
 import { InDTMI } from "./internalDtmi";
 import { ParsingError } from "./parsingError";
@@ -4259,7 +4259,7 @@ export class StandardElements {
     parsingErrors: ParsingError[]
   ): void {
     for (const modelElement of resource) {
-      ModelParserImpl._parseObject(
+      ModelParserStatic.parseObject(
         this._standardModel,
         objectPropertyInfoList,
         [],

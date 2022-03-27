@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { TemporalSchemaInfo } from "./temporalSchemaInfo";
+import { TypeChecker } from "./type";
 export interface DateInfo extends TemporalSchemaInfo {
   entityKind: "date";
 }

@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { TypeChecker } from "./type";
 import { FieldInfo } from "./fieldInfo";
 export interface ObjectInfo extends ComplexSchemaInfo {
   entityKind: "object";

@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { NumericSchemaInfo } from "./numericSchemaInfo";
+import { TypeChecker } from "./type";
 export interface DoubleInfo extends NumericSchemaInfo {
   entityKind: "double";
 }

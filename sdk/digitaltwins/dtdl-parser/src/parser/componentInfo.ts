@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { ContentInfo } from "./contentInfo";
+import { TypeChecker } from "./type";
 import { InterfaceInfo } from "./interfaceInfo";
 export interface ComponentInfo extends ContentInfo {
   entityKind: "component";

@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { EntityInfo } from "./entityInfo";
+import { TypeChecker } from "./type";
 export interface LatentTypeInfo extends EntityInfo {
   entityKind: "latenttype";
 }

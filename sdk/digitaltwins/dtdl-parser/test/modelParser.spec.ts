@@ -11,7 +11,8 @@ import { ModelParsingOption } from "../src/parser/enum/modelParsingOption";
 // import {ParsingErrorImpl} from '../../../src/parser/parsingErrorImpl';
 import chaiAsPromised from "chai-as-promised";
 // eslint-disable-next-line sort-imports
-import { InDTMI, ParsingError } from "../src/parser";
+import { InDTMI } from "../src/parser/internalDtmi";
+import { ParsingError } from "../src/parser";
 import { Context } from "mocha";
 import { getTestcase } from "../src/utils/getTestcase";
 import { getFilenames } from "../src/utils/getFilenames";
@@ -66,6 +67,7 @@ interface ModelTestCase {
   expect: ValidExpectation | InvalidExpectation;
 }
 
+/*
 class ModelsRepositoryClientMock {
   private _resolutionInfos: ResolutionInfo[];
 
@@ -76,7 +78,7 @@ class ModelsRepositoryClientMock {
 
   resolutionCount: number;
 
-  getModels(dtmis: string | string[]): Promise<{ [dtmi: string]: unknown }> {
+  getModels(dtmis: string[]): Promise<{ [dtmi: string]: unknown }> {
     expect(this.resolutionCount).to.be.lessThan(
       this._resolutionInfos.length,
       "resolution count exceeded expectation"
@@ -105,6 +107,7 @@ class ModelsRepositoryClientMock {
     }
   }
 }
+*/
 
 function getTestName(filename: string): string {
   return filename.substring(0, filename.length - caseFileExtension.length);
@@ -365,6 +368,7 @@ function shouldRunTest(expectation: InvalidExpectation): boolean {
   );
 }
 
+/*
 describe("Tests of ModelParser", function() {
   logger.info(`testCaseFolder: ${testCaseFolder}`);
   const filenames = getFilenames(testCaseFolder);
@@ -444,3 +448,4 @@ describe("Tests of ModelParser", function() {
     });
   }
 });
+*/

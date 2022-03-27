@@ -36,7 +36,6 @@ export {
   EnumValueInfo,
   FieldInfo,
   FloatInfo,
-  GetModelsFunctionType,
   IntegerInfo,
   InterfaceInfo,
   LongInfo,
