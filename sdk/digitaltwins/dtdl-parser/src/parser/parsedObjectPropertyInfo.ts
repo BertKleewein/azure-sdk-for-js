@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { InDTMI } from "./internal";
+import { InDTMI } from "../parser";
 import { EntityKinds } from "./internal";
 export interface ParsedObjectPropertyInfo {
   expectedKinds?: EntityKinds[];

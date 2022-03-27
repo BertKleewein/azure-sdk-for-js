@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { InDTMI, ParsingError, createParsingError, ParsingException } from "./internal";
+import { InDTMI, ParsingError, createParsingError, ParsingException } from "../parser";
 /**
  * A static class for determining whether a string is a valid identifier.
  **/
@@ -64,7 +64,7 @@ export class IdValidator {
   }
 
   public static parseIdProperty(
-    obj: any,
+    obj: unknown,
     parentId: string | undefined,
     propName: string | undefined,
     dtmiSeg: string | undefined,
@@ -73,7 +73,7 @@ export class IdValidator {
     dtdlVersion: number
   ): string {
     let idString = "";
-    const idToken = obj["@id"];
+    const idToken = (obj as { [x: string]: unknown })["@id"];
     if (idToken) {
       if (typeof idToken !== "string") {
         parsingErrors.push(
@@ -81,7 +81,7 @@ export class IdValidator {
             cause: `Identifier ${idToken} is invalid.`,
             action:
               "Replace the identifier with a string that conforms to the DTMI syntax -- see https://github.com/Azure/digital-twin-model-identifier.",
-            value: idToken
+            value: idToken as string | undefined
           })
         );
         throw new ParsingException(parsingErrors);
@@ -125,7 +125,7 @@ export class IdValidator {
       }
       let secondSeg = "";
       if (dtmiSeg) {
-        const segToken = obj[dtmiSeg];
+        const segToken = (obj as { [x: string]: unknown })[dtmiSeg];
         if (!segToken || typeof segToken !== "string") {
           parsingErrors.push(
             createParsingError("dtmi:dtdl:parsingError:missingRequiredProperty", {

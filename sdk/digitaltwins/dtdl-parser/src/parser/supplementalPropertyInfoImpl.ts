@@ -7,7 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { SupplementalPropertyInfo } from "./internal";
-import { ValueConstraint } from "./internal";
+import { ValueConstraint } from "../parser";
 import { AggregateContext } from "./internal";
 /**
  * Class that provides information about a property that can be applied to a DTDL element that has a supplemental type.
@@ -31,6 +31,7 @@ export class SupplementalPropertyInfoImpl implements SupplementalPropertyInfo {
     this.isOptional = isOptional;
     this.dictionaryKey = dictionaryKey;
     this.instanceProperty = instanceProperty;
+    this.valueConstraint = valueConstraint;
 
     if (type.includes("dtmi:")) {
       this.valueConstraint = {

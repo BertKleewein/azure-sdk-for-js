@@ -6,21 +6,21 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { PropertyConstraint } from "./internal";
+import { PropertyConstraint } from "../parser";
 import { SupplementalPropertyInfoImpl, SupplementalTypeInfo } from "./internal";
-import { ElementPropertyConstraint } from "./internal";
-import { InDTMI } from "./internal";
-import { ParsingError, createParsingError } from "./internal";
-import { PropertyInstanceBinder } from "./internal";
-import { PropertyValueConstrainer } from "./internal";
-import { ValueConstraint } from "./internal";
-import { ValueParser } from "./internal";
+import { ElementPropertyConstraint } from "../parser";
+import { InDTMI } from "../parser";
+import { ParsingError, createParsingError } from "../parser";
+import { PropertyInstanceBinder } from "../parser";
+import { PropertyValueConstrainer } from "../parser";
+import { ValueConstraint } from "../parser";
+import { ValueParser } from "../parser";
 import { AggregateContext } from "./internal";
 import { ParsedObjectPropertyInfo } from "./internal";
 import { EntityKinds } from "./internal";
 import { Model } from "./internal";
 import { ExtensionKind } from "./internal";
-import { URL } from "../utils/url";
+import { URL } from "url";
 /**
  * Class that provides information about a type is not materialized as a TS class.
  **/
@@ -81,15 +81,15 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
     );
   }
 
-  addCotypeVersion(version: number) {
+  addCotypeVersion(version: number): void {
     this._allowedCotypeVersions.push(version);
   }
 
   /**
    * Attach any constraints to properties that are not properties of this supplemental type.
-   * @param {PropertyValueConstrainer} propertyValueConstrainer - A PropertyValueConstrainer to call back to add each constraint.
+   * @param propertyValueConstrainer - A PropertyValueConstrainer to call back to add each constraint.
    */
-  attachConstraints(propertyValueConstrainer: PropertyValueConstrainer) {
+  attachConstraints(propertyValueConstrainer: PropertyValueConstrainer): void {
     for (let i = 0; i < this._propertyConstraints.length; i++) {
       const propertyConstraint = this._propertyConstraints[i];
       propertyValueConstrainer.addConstraint(
@@ -107,9 +107,9 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
 
   /**
    * Bind properties that are instance of another property.
-   * @param {PropertyInstanceBinder} propertyInstanceBinder - A PropertyInstanceBinder to call back to add each instance binding.
+   * @param propertyInstanceBinder - A PropertyInstanceBinder to call back to add each instance binding.
    */
-  bindInstanceProperties(propertyInstanceBinder: PropertyInstanceBinder) {
+  bindInstanceProperties(propertyInstanceBinder: PropertyInstanceBinder): void {
     // foreach key value pair in this.properties
     for (const [key, value] of Object.entries(this.properties)) {
       propertyInstanceBinder.addInstanceProperty(value.instanceProperty || "", key);
@@ -133,18 +133,19 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
    * @param propName - The name of the property by which the parent refers to this element, used for auto ID generation.
    * @param propToken - The property token to parse.
    * @param properties - A collection of properties to update with the property information.
-   * @return True if the property name is recognized.
    */
   tryParseProperty(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     aggregateContext: AggregateContext,
     parsingErrors: ParsingError[],
     parentId: string,
     propName: string,
-    propToken: any, // originally jtoken
-    properties: { [x: string]: any }
+    propToken: unknown, // originally jtoken
+    properties: { [x: string]: unknown }
   ): boolean {
     const propertyInfo: SupplementalPropertyInfoImpl = this.properties[propName];
     if (propertyInfo) {
@@ -267,7 +268,7 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
   checkForRequiredProperties(
     parsingErrors: ParsingError[],
     parentId: string,
-    properties: { [x: string]: any }
+    properties: { [x: string]: unknown }
   ): void {
     for (const [key, value] of Object.entries(this.properties)) {
       if (!value.isOptional && !Object.keys(properties).includes(key)) {
@@ -293,9 +294,9 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
    */
   trySetObjectProperty(
     propertyName: string,
-    value: any,
+    value: unknown,
     key: string | undefined,
-    properties: { [x: string]: any }
+    properties: { [x: string]: unknown }
   ): boolean {
     if (
       this.parentSupplementalType !== undefined &&
@@ -326,7 +327,9 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
       }
 
       if (key !== undefined) {
-        properties[propertyName][key] = value;
+        (properties[propertyName as keyof typeof properties] as { [x: string]: unknown })[
+          key
+        ] = value;
       }
     } else if (propertyInfo.isPlural) {
       if (
@@ -336,7 +339,7 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
         properties[propertyName] = [];
       }
 
-      (properties[propertyName] as Array<any>).push(value);
+      (properties[propertyName] as Array<unknown>).push(value);
     } else {
       properties[propertyName] = value;
     }
@@ -364,7 +367,7 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
     minCount?: number,
     dictionaryKey?: string,
     instanceProperty?: string
-  ) {
+  ): void {
     this.properties[propertyName] = new SupplementalPropertyInfoImpl(
       propertyTypeUri,
       isPlural,
@@ -379,9 +382,9 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
   /**
    * Adds a type constraint to this supplemental type.
    * @param propertyName - Name of the property whose type to constrain.
-   * @param valueConstraint A ValueConstraint for values of this property.
+   * @param valueConstraint - A ValueConstraint for values of this property.
    */
-  addConstraint(propertyName: string, valueConstraint: ValueConstraint) {
+  addConstraint(propertyName: string, valueConstraint: ValueConstraint): void {
     const newPropertyConstraint: PropertyConstraint = {
       PropertyName: propertyName,
       ValueConstraint: valueConstraint
@@ -394,7 +397,7 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
     elementPropertyConstraints: ElementPropertyConstraint[],
     aggregateContext: AggregateContext,
     parsingErrors: ParsingError[],
-    token: any,
+    token: unknown,
     parentId: string,
     propName: string,
     valueConstraint?: ValueConstraint
@@ -443,7 +446,7 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
         valueCount++;
       }
     } else if (Array.isArray(token)) {
-      token.forEach((elementToken: any) => {
+      token.forEach((elementToken: unknown) => {
         valueCount += this._parseToken(
           objectPropertyInfoList,
           elementPropertyConstraints,
@@ -464,7 +467,7 @@ export class SupplementalTypeInfoImpl implements SupplementalTypeInfo {
             "Replace the value of property '{property}, with a valid DTMI or a term defined by DTDL -- see https://github.com/Azure/opendigitaltwins-dtdl/tree/master/DTDL.",
           primaryId: parentId,
           property: propName,
-          value: token
+          value: token as string | undefined
         })
       );
       valueCount++;

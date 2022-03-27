@@ -30,7 +30,11 @@ import { ExtensibleMaterialClass } from "./obverseGenerator/extensibleMaterialCl
 import { SupplementalPropertyInfoGenerator } from "./supplementalPropertyInfoGenerator";
 
 export class CodeGenerator {
-  public static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): void {
+  public static async execute(
+    inputDigest: string,
+    outputDirectory: string,
+    _dtdlVersion: string
+  ): Promise<void> {
     fs.readFile(inputDigest, (err: Error | null, rawMetamodelDigest: Buffer) => {
       if (err) throw err;
       const parsedMetamodelDigest = JSON.parse(rawMetamodelDigest.toString()) as MetamodelDigest;

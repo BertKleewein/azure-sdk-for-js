@@ -98,7 +98,7 @@ export enum ModelParsingOption {
 // @public (undocumented)
 export class ParserCodeGenerator {
     // (undocumented)
-    static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): void;
+    static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): Promise<void>;
 }
 
 // @public (undocumented)
@@ -138,7 +138,7 @@ export class TsClass extends TsDeclaration {
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)
-    getter({ name, returnType, access }: {
+    getter({ name, returnType, access, }: {
         name: string;
         returnType?: string;
         access?: TsAccess;
@@ -152,7 +152,7 @@ export class TsClass extends TsDeclaration {
     // (undocumented)
     inline(filepath: string, identifier: string): void;
     // (undocumented)
-    method({ name, returnType, abstract, access, isStatic }: {
+    method({ name, returnType, abstract, access, isStatic, }: {
         name: string;
         returnType?: string;
         abstract?: boolean;
@@ -160,7 +160,7 @@ export class TsClass extends TsDeclaration {
         isStatic?: boolean;
     }): TsFunction;
     // (undocumented)
-    setter({ name, returnType, access }: {
+    setter({ name, returnType, access, }: {
         name: string;
         returnType?: string;
         access?: TsAccess;
@@ -345,7 +345,7 @@ export class TsForEach extends TsScope {
 
 // @public (undocumented)
 export class TsFunction implements TsStatement {
-    constructor({ name, returnType, functionType, abstract, access, exports, isStatic }: TsFunctionParams);
+    constructor({ name, returnType, functionType, abstract, access, exports, isStatic, }: TsFunctionParams);
     // (undocumented)
     get access(): TsAccess | undefined;
     // (undocumented)
@@ -590,7 +590,7 @@ export class TsScope implements TsStatement {
     // (undocumented)
     forEach(object: string, cbParams: string): TsForEach;
     // (undocumented)
-    function({ name, returnType, functionType, abstract, access, isStatic }: TsFunctionParams): TsFunction;
+    function({ name, returnType, functionType, abstract, access, isStatic, }: TsFunctionParams): TsFunction;
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)

@@ -8,7 +8,7 @@
 
 import { ContentInfo } from "./internal";
 import { PropertyInfo } from "./internal";
-import { InDTMI } from "./internal";
+import { InDTMI } from "../parser/internalDtmi";
 export interface RelationshipInfo extends ContentInfo {
   entityKind: "relationship";
   maxMultiplicity?: number | undefined;

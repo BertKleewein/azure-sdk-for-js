@@ -12,8 +12,8 @@ import {
   SupplementalTypeCollection
 } from "./internal";
 import { ExtensionKind } from "./internal";
-import { InDTMI } from "./internal";
-import { ValueConstraint } from "./internal";
+import { InDTMI } from "../parser";
+import { ValueConstraint } from "../parser";
 /**
  * A collection of DTDL types that are not materialized as TS Classes
  **/

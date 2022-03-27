@@ -6,21 +6,21 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TypeChecker } from "./internal";
+import { TypeChecker } from "../parser/type/typeChecker";
 import { SchemaInfo } from "./internal";
 import { SchemaKinds } from "./internal";
 import { EntityKinds } from "./internal";
-import { LanguageStringType } from "./internal";
+import { LanguageStringType } from "../parser/type/langstringType";
 import { SupplementalTypeInfo } from "./internal";
 import { SupplementalTypeInfoImpl } from "./internal";
 import { IdValidator } from "./internal";
-import { ParsingError, createParsingError } from "./internal";
+import { ParsingError, createParsingError } from "../parser/parsingError";
 import { AggregateContext } from "./internal";
-import { InDTMI } from "./internal";
+import { InDTMI } from "../parser/internalDtmi";
 import { Reference, referenceInit } from "../common/reference";
 import { Model } from "./internal";
 import { ParsedObjectPropertyInfo } from "./internal";
-import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "./internal";
+import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "../parser";
 import { ModelParserImpl } from "./internal";
 import { ArrayInfoImpl } from "./internal";
 import { BooleanInfoImpl } from "./internal";
@@ -36,7 +36,7 @@ import { MapInfoImpl } from "./internal";
 import { ObjectInfoImpl } from "./internal";
 import { StringInfoImpl } from "./internal";
 import { TimeInfoImpl } from "./internal";
-import { MaterialTypeNameCollection } from "./internal";
+import { MaterialTypeNameCollection } from "././internal";
 import { ExtensionKind } from "./internal";
 import { EntityInfo } from "./internal";
 export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
@@ -136,7 +136,7 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Array, Enum, Map, or Object, nor is it a standard value for this property.`;
   }
 
-  addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  private addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
     throw new Error("Attempt to add type to non augmentable type SchemaInfo");
   }
 
@@ -1096,27 +1096,6 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
         );
         valueCount++;
       }
-    } else if (Array.isArray(token)) {
-      for (const elementToken of token) {
-        valueCount += this.parseToken(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          valueConstraints,
-          aggregateContext,
-          parsingErrors,
-          elementToken,
-          parentId,
-          definedIn,
-          propName,
-          dtmiSeg,
-          keyProp,
-          idRequired,
-          typeRequired,
-          allowIdReferenceSyntax,
-          allowedVersions
-        );
-      }
     } else if (typeof token === "object") {
       this.parseObject(
         model,
@@ -1201,23 +1180,23 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
     }
   }
 
-  validateInstance(instanceText: string): boolean {
+  public validateInstance(instanceText: string): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  validateInstanceElement(instanceElt: any): boolean {
+  public validateInstanceElement(instanceElt: unknown): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  validateInstanceInternal(instanceElt: any, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  validateInstanceV2(instanceElt: any, instanceName: string | undefined): boolean {
+  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  validateInstanceV3(instanceElt: any, instanceName: string | undefined): boolean {
+  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 

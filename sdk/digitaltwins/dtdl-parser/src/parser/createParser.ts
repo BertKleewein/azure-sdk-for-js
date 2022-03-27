@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ModelParsingOption } from "./internal";
+import { ModelParsingOption } from "../parser";
 import { ModelParser } from "./internal";
 import { ModelParserImpl } from "./internal";
 /**

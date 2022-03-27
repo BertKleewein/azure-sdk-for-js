@@ -6,14 +6,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-export type GetModelsFunctionType = (
-  dtmis: string | string[],
-  options?: unknown
-) => Promise<{ [dtmi: string]: unknown }>;
-
-import { SupplementalTypeCollection, ModelDict, ModelParsingOption } from "./internal";
+import { DtmiResolver, ModelParsingOption } from "../parser";
+import { SupplementalTypeCollection, ModelDict } from "./internal";
 export interface ModelParser {
-  getModels?: GetModelsFunctionType;
+  dtmiResolver?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
   parse(jsonTexts: string[]): Promise<ModelDict>;

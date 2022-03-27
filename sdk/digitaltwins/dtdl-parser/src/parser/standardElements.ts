@@ -7,7 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { ParsedObjectPropertyInfo, Model, ModelParserImpl, AggregateContext } from "./internal";
-import { InDTMI, ParsingError, ParsingException } from "./internal";
+import { InDTMI, ParsingError, ParsingException } from "../parser/internal";
 type EntityInfo = any;
 /**
  * A collection of values of standard elements from the DTDL metamodel.
@@ -4200,7 +4200,7 @@ export class StandardElements {
   // codegen-outline-end
 
   // codegen-outline-begin methods
-  static initialize() {
+  static initialize(): void {
     this._standardModel = new Model();
     this._elementReferences = {};
 
@@ -4227,7 +4227,8 @@ export class StandardElements {
     this._standardModel.setObjectProperties(objectPropertyInfoList, parsingErrors);
   }
 
-  public static tryAddElementToModel(model: Model, elementId: string) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  public static tryAddElementToModel(model: Model, elementId: string): boolean {
     if (this._standardModel.dict[elementId] === undefined) {
       return false;
     }
@@ -4248,6 +4249,7 @@ export class StandardElements {
   static parseResourceIntoStandardModel(
     resource: any[],
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     aggregateContext: AggregateContext,
     parsingErrors: ParsingError[]
   ): void {

@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ParsingError, createParsingError, InDTMI } from "./internal";
+import { ParsingError, createParsingError, InDTMI } from "../parser";
 import {
   ParsedObjectPropertyInfo,
   ReferenceInfoImpl,
@@ -82,7 +82,7 @@ export class Model {
 
   // codegen-outline-begin method-block
 
-  hasElementWithId(elementId: string) {
+  hasElementWithId(elementId: string): boolean {
     return Object.prototype.hasOwnProperty.call(this.dict, elementId);
   }
 
@@ -94,7 +94,7 @@ export class Model {
   setObjectProperties(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     parsingErrors: ParsingError[]
-  ) {
+  ): void {
     for (const objectPropertyInfo of objectPropertyInfoList) {
       if (!(this.dict[objectPropertyInfo.referencedElementId] as EntityInfoImpl)?.isPartition) {
         // TODO: will this ever be undefined?

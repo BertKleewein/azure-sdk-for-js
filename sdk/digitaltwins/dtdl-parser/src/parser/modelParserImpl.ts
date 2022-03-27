@@ -7,6 +7,7 @@
 /* eslint-disable sort-imports */
 
 import {
+  DtmiResolver,
   ElementPropertyConstraint,
   ModelParsingOption,
   ParsingError,
@@ -14,14 +15,13 @@ import {
   ResolutionError,
   ParsingException,
   JsonSyntaxError
-} from "./internal";
+} from "../parser";
 import {
   AggregateContext,
   EntityInfoImpl,
   Model,
   ModelDict,
   ModelParser,
-  GetModelsFunctionType,
   ParsedObjectPropertyInfo,
   PartitionTypeCollection,
   StandardElements,
@@ -38,7 +38,7 @@ export class ModelParserImpl implements ModelParser {
     // codegen-outline-end
   }
 
-  static _parseObject(
+  private static _parseObject(
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
@@ -72,7 +72,7 @@ export class ModelParserImpl implements ModelParser {
   // codegen-outline-end
 
   // codegen-outline-begin methods
-  getModels?: GetModelsFunctionType;
+  dtmiResolver?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
   static supplementalTypeCollection: SupplementalTypeCollectionImpl = new SupplementalTypeCollectionImpl();
@@ -169,7 +169,7 @@ export class ModelParserImpl implements ModelParser {
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     parsingErrors: ParsingError[]
-  ) {
+  ): Promise<void> {
     this._parseTextsIntoModel(
       jsonTexts,
       model,
@@ -177,9 +177,8 @@ export class ModelParserImpl implements ModelParser {
       elementPropertyConstraints,
       parsingErrors
     );
-
+    // eslint-disable-next-line no-constant-condition
     while (true) {
-      // eslint-disable-line no-constant-condition
       const undefinedIdentifierSet = new Set<string>();
 
       for (const objectPropertyInfo of objectPropertyInfoList) {
@@ -197,23 +196,18 @@ export class ModelParserImpl implements ModelParser {
         return;
       }
 
-      if (this.getModels === undefined) {
+      if (this.dtmiResolver === undefined) {
         throw new ResolutionError(
-          "No getModels provided to resolve requisite reference(s): " +
+          "No DtmiResolver provided to resolve requisite reference(s): " +
             undefinedIdentifiers.join(" "),
           undefinedIdentifiers
         );
       }
 
-      const dependencyMapping = await this.getModels(undefinedIdentifiers, {
-        dependencyResolution: "enabled"
-      });
-
-      const additionalJsonTexts =
-        dependencyMapping && Object.values(dependencyMapping).map((value) => JSON.stringify(value));
+      const additionalJsonTexts = await this.dtmiResolver(undefinedIdentifiers);
       if (additionalJsonTexts === null) {
         throw new ResolutionError(
-          "getModels refused to resolve requisite references to element(s): " +
+          "DtmiResolver refused to resolve requisite references to element(s): " +
             undefinedIdentifiers.join(" "),
           undefinedIdentifiers
         );
@@ -237,7 +231,7 @@ export class ModelParserImpl implements ModelParser {
       const stillUnresolvedIdentifiers = Array.from(stillUnresolvedIdentifierSet.values());
       if (stillUnresolvedIdentifiers.length > 0) {
         throw new ResolutionError(
-          "getModels failed to resolve requisite references to element(s): " +
+          "DtmiResolver failed to resolve requisite references to element(s): " +
             stillUnresolvedIdentifiers.join(" "),
           stillUnresolvedIdentifiers
         );
@@ -251,7 +245,7 @@ export class ModelParserImpl implements ModelParser {
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     parsingErrors: ParsingError[]
-  ) {
+  ): void {
     jsonTexts.forEach((jsonText: string, index: number) => {
       let documentToken: any;
       try {
@@ -281,7 +275,7 @@ export class ModelParserImpl implements ModelParser {
     parsingErrors: ParsingError[],
     token: any,
     dtdlVersion: number
-  ) {
+  ): void {
     if (Array.isArray(token)) {
       for (const subToken of token) {
         this._parseToken(

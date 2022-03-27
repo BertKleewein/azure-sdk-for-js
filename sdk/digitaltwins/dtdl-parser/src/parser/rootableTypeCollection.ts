@@ -34,7 +34,7 @@ export class RootableTypeCollection {
   }
 
   // codegen-outline-begin methods
-  public static get rootableTypeDescriptions() {
+  public static get rootableTypeDescriptions(): { [dtdlVersion: number]: string } {
     return this._rootableTypeDescriptions;
   }
 

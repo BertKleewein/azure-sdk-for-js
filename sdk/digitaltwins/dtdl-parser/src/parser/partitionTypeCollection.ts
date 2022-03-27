@@ -23,7 +23,7 @@ export class PartitionTypeCollection {
   }
 
   // codegen-outline-begin methods
-  public static get partitionTypeDescription() {
+  public static get partitionTypeDescription(): string {
     return this._partitionTypeDescription;
   }
 

@@ -6,29 +6,29 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TypeChecker } from "./internal";
+import { TypeChecker } from "../parser/type/typeChecker";
 import { FieldInfo } from "./internal";
 import { FieldKinds } from "./internal";
 import { EntityKinds } from "./internal";
-import { LanguageStringType } from "./internal";
+import { LanguageStringType } from "../parser/type/langstringType";
 import { SchemaInfoImpl } from "./internal";
 import { SchemaInfo } from "./internal";
 import { EntityInfoImpl } from "./internal";
 import { SupplementalTypeInfo } from "./internal";
 import { SupplementalTypeInfoImpl } from "./internal";
 import { IdValidator } from "./internal";
-import { ParsingError, createParsingError } from "./internal";
+import { ParsingError, createParsingError } from "../parser/parsingError";
 import { AggregateContext } from "./internal";
-import { InDTMI } from "./internal";
+import { InDTMI } from "../parser/internalDtmi";
 import { Reference, referenceInit } from "../common/reference";
 import { Model } from "./internal";
 import { ParsedObjectPropertyInfo } from "./internal";
-import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "./internal";
+import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "../parser";
 import { ModelParserImpl } from "./internal";
-import { MaterialTypeNameCollection } from "./internal";
+import { MaterialTypeNameCollection } from "././internal";
 import { ExtensionKind } from "./internal";
 import { EntityInfo } from "./internal";
-import { TraversalStatus } from "./internal";
+import { TraversalStatus } from "../parser";
 export class FieldInfoImpl implements FieldInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -119,7 +119,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Field.`;
   }
 
-  addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  private addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
     this.supplementalTypeIds.push(dtmi);
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);
@@ -129,7 +129,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     (supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);
   }
 
-  tryParseSupplementalProperty(
+  private tryParseSupplementalProperty(
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
@@ -1209,27 +1209,6 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
         );
         valueCount++;
       }
-    } else if (Array.isArray(token)) {
-      for (const elementToken of token) {
-        valueCount += this.parseToken(
-          model,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          valueConstraints,
-          aggregateContext,
-          parsingErrors,
-          elementToken,
-          parentId,
-          definedIn,
-          propName,
-          dtmiSeg,
-          keyProp,
-          idRequired,
-          typeRequired,
-          allowIdReferenceSyntax,
-          allowedVersions
-        );
-      }
     } else if (typeof token === "object") {
       this.parseObject(
         model,
@@ -1314,16 +1293,16 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     }
   }
 
-  validateInstance(instanceText: string): boolean {
+  public validateInstance(instanceText: string): boolean {
     const instanceElt = JSON.parse(instanceText);
     return this.validateInstanceElement(instanceElt);
   }
 
-  validateInstanceElement(instanceElt: any): boolean {
+  public validateInstanceElement(instanceElt: unknown): boolean {
     return this.validateInstanceInternal(instanceElt, undefined);
   }
 
-  validateInstanceInternal(instanceElt: any, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
     switch (this.dtdlVersion) {
       case 2: {
         return this.validateInstanceV2(instanceElt, instanceName);
@@ -1337,7 +1316,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     return false;
   }
 
-  validateInstanceV2(instanceElt: any, instanceName: string | undefined): boolean {
+  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
     if (!(this.schema as SchemaInfoImpl)?.validateInstanceInternal(instanceElt, instanceName)) {
       return false;
     }
@@ -1349,7 +1328,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     return true;
   }
 
-  validateInstanceV3(instanceElt: any, instanceName: string | undefined): boolean {
+  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
     if (!(this.schema as SchemaInfoImpl)?.validateInstanceInternal(instanceElt, instanceName)) {
       return false;
     }

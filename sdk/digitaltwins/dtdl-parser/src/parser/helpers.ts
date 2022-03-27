@@ -7,7 +7,7 @@
 /* eslint-disable sort-imports */
 
 import { EntityInfo } from "./internal";
-import { LanguageStringType } from "./internal";
+import { LanguageStringType } from "../parser";
 /**
  * A static class that holds various helper functions.
  **/
@@ -48,7 +48,7 @@ export class Helpers {
     return true;
   }
 
-  static areDictioanriesIdEqual(
+  static areDictionariesIdEqual(
     dict1: { [name: string]: EntityInfo },
     dict2: { [name: string]: EntityInfo }
   ): boolean {
@@ -102,11 +102,11 @@ export class Helpers {
     return true;
   }
 
-  static getDataTypeString(datatype: any): string {
+  static getDataTypeString(_datatype: unknown): string {
     throw new Error("getDataTypeString is unnecessary in Typescript.");
   }
 
-  static getJsonTextFromToken(token: any): string {
+  static getJsonTextFromToken(_token: unknown): string {
     throw new Error("getJsonTextFromToken is unnecessary in Typescript.");
   }
   // codegen-outline-end

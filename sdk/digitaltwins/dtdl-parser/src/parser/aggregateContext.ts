@@ -14,7 +14,7 @@ import {
   createParsingError,
   ParsingException,
   VersionedContext
-} from "./internal";
+} from "../parser";
 import { IdValidator } from "./internal";
 type TermDict = { [term: string]: InDTMI };
 type PrefixDict = { [prefix: string]: string };
@@ -44,7 +44,7 @@ export class AggregateContext {
     ] = AggregateContext._getAffiliate3ContextHistory();
   }
 
-  static _getDtdlContextHistory(): ContextHistory {
+  private static _getDtdlContextHistory(): ContextHistory {
     const versionedContexts: VersionedContext[] = [];
     const context2_0 = new VersionedContext(2, 0);
     context2_0.addDefinition("Array", new InDTMI("dtmi:dtdl:class:Array;2"));
@@ -1168,7 +1168,7 @@ export class AggregateContext {
     return new ContextHistory(versionedContexts);
   }
 
-  static _getAffiliate0ContextHistory(): ContextHistory {
+  private static _getAffiliate0ContextHistory(): ContextHistory {
     const versionedContexts: VersionedContext[] = [];
     const context2_0 = new VersionedContext(2, 0);
     context2_0.addDefinition("State", new InDTMI("dtmi:iotcentral:class:State;2"));
@@ -1203,7 +1203,7 @@ export class AggregateContext {
     return new ContextHistory(versionedContexts);
   }
 
-  static _getAffiliate1ContextHistory(): ContextHistory {
+  private static _getAffiliate1ContextHistory(): ContextHistory {
     const versionedContexts: VersionedContext[] = [];
     const context1_0 = new VersionedContext(1, 0);
     context1_0.addDefinition("Layer", new InDTMI("dtmi:dtdl:extension:layering:v1:Layer"));
@@ -1211,7 +1211,7 @@ export class AggregateContext {
     return new ContextHistory(versionedContexts);
   }
 
-  static _getAffiliate2ContextHistory(): ContextHistory {
+  private static _getAffiliate2ContextHistory(): ContextHistory {
     const versionedContexts: VersionedContext[] = [];
     const context1_0 = new VersionedContext(1, 0);
     context1_0.addDefinition(
@@ -1226,7 +1226,7 @@ export class AggregateContext {
     return new ContextHistory(versionedContexts);
   }
 
-  static _getAffiliate3ContextHistory(): ContextHistory {
+  private static _getAffiliate3ContextHistory(): ContextHistory {
     const versionedContexts: VersionedContext[] = [];
     const context1_0 = new VersionedContext(1, 0);
     context1_0.addDefinition(
@@ -1276,7 +1276,7 @@ export class AggregateContext {
     this._localPrefixDefinitions = {};
   }
 
-  get dtdlVersion() {
+  get dtdlVersion(): number {
     return this._activeDtdlContext === undefined ? 0 : this._activeDtdlContext.majorVersion;
   }
 
