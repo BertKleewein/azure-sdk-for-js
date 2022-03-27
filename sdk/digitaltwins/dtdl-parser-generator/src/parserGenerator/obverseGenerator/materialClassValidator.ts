@@ -199,7 +199,9 @@ export class MaterialClassValidator {
         "element"
       );
       if (elementConditionDigest.jsonType === "object") {
-        const forObjectScope = method.body.for("const [key, value] of Object.entries(instanceElt)");
+        const forObjectScope = method.body.for(
+          "const [key, value] of Object.entries(instanceElt as object)"
+        );
         this.addValidationChecks(
           dtdlVersion,
           obverseClass,
@@ -276,7 +278,7 @@ export class MaterialClassValidator {
       );
     }
     if (instanceConditionDigest.hasValue !== undefined) {
-      obverseClass.import(`import {LiteralValidator} from '../parser/literalValidator';`);
+      obverseClass.importObject("LiteralValidator");
       scope
         .if(`!LiteralValidator.hasValue(${eltVar}, this.${instanceConditionDigest.hasValue})`)
         .line("return false");

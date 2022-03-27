@@ -21,17 +21,21 @@ export class AggregateContextGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const contextClass = parserLibrary.class({ name: "AggregateContext", exports: true });
-    contextClass.import(
-      `import {ContextHistory, InDTMI, ParsingError, createParsingError, ParsingException, VersionedContext} from '../parser';`
-    );
-    contextClass.import(`import {IdValidator} from './internal'`);
+    contextClass
+      .importObject("ContextHistory")
+      .importObject("InDTMI", "./internalDtmi")
+      .importObject("ParsingError")
+      .importObject("createParsingError", "./parsingErrorImpl")
+      .importObject("ParsingException")
+      .importObject("VersionedContext")
+      .importObject("IdValidator");
     contextClass.header.line("/* eslint-disable camelcase */");
     contextClass.docString.line(
       "Class for parsing and storing information from JSON-LD context blocks."
@@ -60,12 +64,12 @@ export class AggregateContextGenerator implements TypeGenerator {
         isStatic: true,
         value: "{}",
       });
-    contextClass.inline("./src/parserPartial/aggregateContext.ts", "fields");
+    contextClass.inline("./boilerplate/aggregateContext.ts", "fields");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateInlineMethods(contextClass: TsClass): void {
-    contextClass.inline("./src/parserPartial/aggregateContext.ts", "methods");
+    contextClass.inline("./boilerplate/aggregateContext.ts", "methods");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

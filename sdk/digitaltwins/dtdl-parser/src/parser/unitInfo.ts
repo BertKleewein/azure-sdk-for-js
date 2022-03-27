@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { EntityInfo } from "./internal";
+import { EntityInfo } from "./entityInfo";
 export interface UnitInfo extends EntityInfo {
   entityKind: "unit";
   symbol?: string;

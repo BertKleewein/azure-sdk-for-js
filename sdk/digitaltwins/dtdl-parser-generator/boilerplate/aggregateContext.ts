@@ -5,14 +5,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingError, createParsingError } from "../parser";
-import {
-  ContextHistory,
-  IdValidator,
-  InDTMI,
-  ParsingException,
-  VersionedContext,
-} from "../parser/internal";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { ContextHistory } from "./contextHistory";
+import { IdValidator } from "./idValidator";
+import { InDTMI } from "./internalDtmi";
+import { ParsingException } from "./parsingException";
+import { VersionedContext } from "./versionedContext";
 
 type TermDict = { [term: string]: InDTMI };
 type PrefixDict = { [prefix: string]: string };

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { InDTMI } from "./internal";
+import { InDTMI } from "./internalDtmi";
 
 /* eslint-disable no-unused-vars */
 enum Expansion {

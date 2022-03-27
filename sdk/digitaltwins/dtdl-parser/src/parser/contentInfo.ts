@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { NamedEntityInfo } from "./internal";
+import { NamedEntityInfo } from "./namedEntityInfo";
 export interface ContentInfo extends NamedEntityInfo {
   entityKind: "command" | "component" | "property" | "relationship" | "telemetry";
 }

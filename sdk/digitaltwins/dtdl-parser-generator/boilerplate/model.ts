@@ -6,7 +6,9 @@
 // All methods are currently dummies; they should call corresponding methods on the EntityInfo objects in the dictionary
 
 // codegen-outline-begin topoffile
-import { ParsedObjectPropertyInfo, ParsingError, createParsingError } from "../parser/internal";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
 // codegen-outline-end
 
 // type EntityInfo = { [prop: string]: any }; // faking for now since the EntityInfo class is not defined

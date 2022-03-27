@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingError, ParsingException, createParsingError } from "../parser/internal";
+import { ParsingError } from "./parsingError";
+import { ParsingException } from "./parsingException";
+import { createParsingError } from "./parsingErrorImpl";
 
 // TODO Definition should be codegenned from metamodel digest
 // TODO Create result formatter for all the primaryId:p

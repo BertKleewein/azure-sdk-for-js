@@ -89,7 +89,7 @@ export abstract class IdentifierProperty extends MaterialProperty {
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
-    obverseInterface.import(`import {InDTMI} from '../parser/internalDtmi';`);
+    obverseInterface.importObject("InDTMI", "./internalDtmi");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

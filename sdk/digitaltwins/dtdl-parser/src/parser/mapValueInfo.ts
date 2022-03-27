@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { SchemaFieldInfo } from "./internal";
-import { SchemaInfo } from "./internal";
+import { SchemaFieldInfo } from "./schemaFieldInfo";
+import { SchemaInfo } from "./schemaInfo";
 export interface MapValueInfo extends SchemaFieldInfo {
   entityKind: "mapvalue";
 }

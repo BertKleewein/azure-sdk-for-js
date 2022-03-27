@@ -39,63 +39,6 @@ export class DependencyGraph {
 }
 
 // @public (undocumented)
-export class ModelParserImpl {
-    constructor();
-    // Warning: (ae-forgotten-export) The symbol "DtmiResolver" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    dtmiResolver?: DtmiResolver;
-    // (undocumented)
-    getSupplementalTypeCollection(): SupplementalTypeCollectionImpl;
-    // (undocumented)
-    static graphKeyword: string;
-    // (undocumented)
-    static idKeyword: string;
-    // (undocumented)
-    maxDtdlVersion?: number;
-    // (undocumented)
-    options: ModelParsingOption;
-    // Warning: (ae-forgotten-export) The symbol "ModelDict" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    parse(jsonTexts: string[]): Promise<ModelDict>;
-    // Warning: (ae-forgotten-export) The symbol "Model" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ParsedObjectPropertyInfo" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ElementPropertyConstraint" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "AggregateContext" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ParsingError" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    static _parseObject(_model: Model, _objectPropertyInfoList: ParsedObjectPropertyInfo[], _elementPropertyConstraints: ElementPropertyConstraint[], _aggregateContext: AggregateContext, _parsingErrors: ParsingError[], _obj: {
-        [prop: string]: string;
-    }): void;
-    // (undocumented)
-    static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl;
-    // Warning: (ae-forgotten-export) The symbol "SupplementalTypeCollectionImpl" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    static supplementalTypeCollection: SupplementalTypeCollectionImpl;
-}
-
-// @public (undocumented)
-export enum ModelParsingOption {
-    // (undocumented)
-    MandateTopLevelPartition = 4,
-    // (undocumented)
-    None = 0,
-    // (undocumented)
-    ParseAllowsIdReferenceSyntax = 16,
-    // (undocumented)
-    PermitAnyTopLevelElement = 8,
-    // (undocumented)
-    RejectNonDtmiContexts = 2,
-    // (undocumented)
-    RejectUndefinedExtensions = 1,
-    // (undocumented)
-    ResolveAllowsIdReferenceSyntax = 32
-}
-
-// @public (undocumented)
 export class ParserCodeGenerator {
     // (undocumented)
     static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): Promise<void>;
@@ -207,6 +150,8 @@ export class TsDeclaration {
     get header(): TsMultiLine;
     // (undocumented)
     import(text: string): TsDeclaration;
+    // (undocumented)
+    importObject(objectName: string, location?: string): TsDeclaration;
     // (undocumented)
     name: string;
     // (undocumented)
@@ -361,6 +306,8 @@ export class TsFunction implements TsStatement {
     // (undocumented)
     import(text: string): this;
     // (undocumented)
+    importObject(objectName: string, location?: string): this;
+    // (undocumented)
     get isAbstract(): boolean | undefined;
     // (undocumented)
     get isStatic(): boolean | undefined;
@@ -420,31 +367,30 @@ export class TsIf extends TsScope {
 }
 
 // @public (undocumented)
-export class TsImport {
+export class TsImport implements TsStatement {
     constructor();
     // (undocumented)
     addTsImport(text: string): void;
     // (undocumented)
+    addTsImportObject(objectName: string, location?: string): void;
+    // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
 }
 
 // @public (undocumented)
-export class TsImportGeneric {
+export class TsImportGeneric implements TsStatement {
     constructor(text: string);
     // (undocumented)
-    generateCode(codeWriter: CodeWriter): void;
-}
-
-// @public (undocumented)
-export class TsImportObjectES6 {
-    constructor(location: string, objectName?: string);
+    equals(other: TsStatement): boolean;
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
 }
 
 // @public (undocumented)
-export class TsImportStatementES6 {
-    constructor(location: string, importStatement: string);
+export class TsImportObject implements TsStatement {
+    constructor(objectName: string, location?: string);
+    // (undocumented)
+    equals(other: TsStatement): boolean;
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
 }
@@ -502,17 +448,11 @@ export class TsLibrary {
     // (undocumented)
     function(input: TsFunctionParams): TsFunction;
     // (undocumented)
-    generateFiles(generateInternal?: boolean): string[];
-    // (undocumented)
-    generateIndexForGenerated(): string;
-    // (undocumented)
-    generateInternalFile(): string;
+    generateFiles(): string[];
     // (undocumented)
     interface(input: TsInterfaceParams): TsInterface;
     // (undocumented)
     libraryHeader(text: string): TsMultiLine;
-    // (undocumented)
-    sortedDependencies(): string[];
     // (undocumented)
     typeAlias(input: TsTypeAliasParams): TsTypeAlias;
 }
@@ -571,13 +511,6 @@ export interface TsParameterParams {
     optional?: boolean;
     // (undocumented)
     type?: string;
-}
-
-// @public (undocumented)
-export class TsRequireCommonJS {
-    constructor(location: string, importName: string);
-    // (undocumented)
-    generateCode(codeWriter: CodeWriter): void;
 }
 
 // @public (undocumented)

@@ -6,9 +6,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ComplexSchemaInfo } from "./internal";
-import { MapKeyInfo } from "./internal";
-import { MapValueInfo } from "./internal";
+import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { MapKeyInfo } from "./mapKeyInfo";
+import { MapValueInfo } from "./mapValueInfo";
 export interface MapInfo extends ComplexSchemaInfo {
   entityKind: "map";
   mapKey?: MapKeyInfo;

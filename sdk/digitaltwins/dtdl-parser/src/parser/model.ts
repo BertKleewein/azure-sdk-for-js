@@ -6,15 +6,15 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ParsingError, createParsingError, InDTMI } from "../parser";
-import {
-  ParsedObjectPropertyInfo,
-  ReferenceInfoImpl,
-  ModelDict,
-  SupplementalTypeInfo,
-  EntityKinds,
-  EntityInfoImpl
-} from "./internal";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { InDTMI } from "./internalDtmi";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ReferenceInfoImpl } from "./referenceInfoImpl";
+import { ModelDict } from "./modelDict";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { EntityKinds } from "./entityKinds";
+import { EntityInfoImpl } from "./entityInfoImpl";
 /**
  * A DTDL model.
  **/

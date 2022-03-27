@@ -4,5 +4,5 @@
 import { TsLibrary } from "../codeGenerator/tsLibrary";
 
 export interface TypeGenerator {
-  generateType(parserLibrary: TsLibrary): void;
+  generateType(parserLibrary: TsLibrary): Promise<void>;
 }

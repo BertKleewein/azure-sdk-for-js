@@ -32,7 +32,7 @@ export class ModelGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -50,10 +50,15 @@ export class ModelGenerator implements TypeGenerator {
     modelClass.docString.line("A DTDL model.");
     // TODO: Should be replaced with inline of topoffile from model.ts
     modelClass
-      .import(`import {ParsingError, createParsingError, InDTMI} from '../parser';`)
-      .import(
-        `import {ParsedObjectPropertyInfo, ${referenceClassName}, ModelDict, SupplementalTypeInfo, ${this._baseEnumName}, ${this._baseClassImplName}} from './internal';`
-      );
+      .importObject("ParsingError")
+      .importObject("createParsingError", "./parsingErrorImpl")
+      .importObject("InDTMI", "./internalDtmi")
+      .importObject("ParsedObjectPropertyInfo")
+      .importObject(referenceClassName)
+      .importObject("ModelDict")
+      .importObject("SupplementalTypeInfo")
+      .importObject(this._baseEnumName)
+      .importObject(this._baseClassImplName);
 
     modelClass.field({ name: "dict", type: "ModelDict" });
 
@@ -69,7 +74,7 @@ export class ModelGenerator implements TypeGenerator {
     this._generateApplyTransformations(modelClass);
 
     // Inline Partial Class methods
-    modelClass.inline("./src/parserPartial/model.ts", "method-block");
+    modelClass.inline("./boilerplate/model.ts", "method-block");
   }
 
   // TODO: This is going to be necessary if PartitionRestrictions are necessary.
@@ -94,7 +99,7 @@ export class ModelGenerator implements TypeGenerator {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateModelConstructor(modelClass: TsClass): void {
     const constructor = modelClass.ctor;
-    constructor.body.inline("./src/parserPartial/model.ts", "constructor");
+    constructor.body.inline("./boilerplate/model.ts", "constructor");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

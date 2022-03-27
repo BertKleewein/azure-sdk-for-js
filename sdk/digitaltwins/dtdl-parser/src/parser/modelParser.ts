@@ -6,10 +6,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { DtmiResolver, ModelParsingOption } from "../parser";
-import { SupplementalTypeCollection, ModelDict } from "./internal";
+import { DtmiResolver } from "./type";
+import { ModelParsingOption } from "./enum";
+import { SupplementalTypeCollection } from "./supplementalTypeCollection";
+import { ModelDict } from "./modelDict";
 export interface ModelParser {
-  dtmiResolver?: DtmiResolver;
+  getModels?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
   parse(jsonTexts: string[]): Promise<ModelDict>;

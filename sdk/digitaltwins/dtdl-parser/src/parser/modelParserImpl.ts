@@ -6,28 +6,24 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import {
-  DtmiResolver,
-  ElementPropertyConstraint,
-  ModelParsingOption,
-  ParsingError,
-  createParsingError,
-  ResolutionError,
-  ParsingException,
-  JsonSyntaxError
-} from "../parser";
-import {
-  AggregateContext,
-  EntityInfoImpl,
-  Model,
-  ModelDict,
-  ModelParser,
-  ParsedObjectPropertyInfo,
-  PartitionTypeCollection,
-  StandardElements,
-  RootableTypeCollection
-} from "./internal";
-import { SupplementalTypeCollectionImpl } from "./internal";
+import { DtmiResolver } from "./type";
+import { ElementPropertyConstraint } from "./type/elementPropertyConstraint";
+import { ModelParsingOption } from "./enum";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { ResolutionError } from "./resolutionError";
+import { JsonSyntaxError } from "./jsonSyntaxError";
+import { ParsingException } from "./parsingException";
+import { AggregateContext } from "./aggregateContext";
+import { EntityInfoImpl } from "./entityInfoImpl";
+import { Model } from "./model";
+import { ModelDict } from "./modelDict";
+import { ModelParser } from "./modelParser";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { PartitionTypeCollection } from "./partitionTypeCollection";
+import { StandardElements } from "./standardElements";
+import { RootableTypeCollection } from "./rootableTypeCollection";
+import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
 /**
  * Class for parsing the DTDL langauge.
  **/
@@ -38,7 +34,7 @@ export class ModelParserImpl implements ModelParser {
     // codegen-outline-end
   }
 
-  private static _parseObject(
+  public static _parseObject(
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
@@ -72,7 +68,7 @@ export class ModelParserImpl implements ModelParser {
   // codegen-outline-end
 
   // codegen-outline-begin methods
-  dtmiResolver?: DtmiResolver;
+  getModels?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
   static supplementalTypeCollection: SupplementalTypeCollectionImpl = new SupplementalTypeCollectionImpl();
@@ -196,7 +192,7 @@ export class ModelParserImpl implements ModelParser {
         return;
       }
 
-      if (this.dtmiResolver === undefined) {
+      if (this.getModels === undefined) {
         throw new ResolutionError(
           "No DtmiResolver provided to resolve requisite reference(s): " +
             undefinedIdentifiers.join(" "),
@@ -204,7 +200,7 @@ export class ModelParserImpl implements ModelParser {
         );
       }
 
-      const additionalJsonTexts = await this.dtmiResolver(undefinedIdentifiers);
+      const additionalJsonTexts = await this.getModels(undefinedIdentifiers);
       if (additionalJsonTexts === null) {
         throw new ResolutionError(
           "DtmiResolver refused to resolve requisite references to element(s): " +

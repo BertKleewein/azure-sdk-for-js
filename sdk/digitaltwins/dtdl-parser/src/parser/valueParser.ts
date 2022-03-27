@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingError, createParsingError } from "./internal";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
 
 export class ValueParser {
   public static parseSingularStringToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     maxLength: number | undefined,
     pattern: RegExp | undefined,
     parsingErrors: ParsingError[]
@@ -79,7 +80,7 @@ export class ValueParser {
   public static parseSingularIntegerToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     minInclusive: number | undefined,
     maxInclusive: number | undefined,
     parsingErrors: ParsingError[]
@@ -171,7 +172,7 @@ export class ValueParser {
   public static parseSingularBooleanToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): boolean {
     if (token === undefined) {
@@ -220,7 +221,7 @@ export class ValueParser {
   public static parseLangStringToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     defaultLang: string,
     maxLength: number | undefined,
     pattern: RegExp | undefined,
@@ -251,7 +252,7 @@ export class ValueParser {
       dict = ValueParser._getDictionaryFromLanguageMap(
         elementId,
         propertyName,
-        token,
+        token as { [index: string]: unknown },
         parsingErrors
       );
     } else {
@@ -305,10 +306,10 @@ export class ValueParser {
   public static parseSingularLiteralToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
-  ): { value: any; typeFragment: string } {
-    let value: any;
+  ): { value: unknown; typeFragment: string } {
+    let value: unknown;
     let typeFragment: string = "";
 
     if (token === undefined) {
@@ -390,7 +391,7 @@ export class ValueParser {
   public static parseSingularIdentifierToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     maxLength: number | undefined,
     pattern: RegExp | undefined,
     parsingErrors: ParsingError[]
@@ -498,7 +499,7 @@ export class ValueParser {
   private static _getStringFromToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): string | undefined {
     if (typeof token === "object") {
@@ -515,7 +516,7 @@ export class ValueParser {
         return undefined;
       }
 
-      const valToken = token["@value"];
+      const valToken = token ? token["@value" as keyof typeof token] : null;
       if (typeof valToken !== "string") {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:stringValueNotString", {
@@ -555,7 +556,7 @@ export class ValueParser {
   private static _getIntegerFromToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): number | undefined {
     if (typeof token === "object") {
@@ -572,7 +573,7 @@ export class ValueParser {
         return undefined;
       }
 
-      const valToken = token["@value"];
+      const valToken = token ? token["@value" as keyof typeof token] : null;
       if (typeof valToken !== "number" || !Number.isInteger(valToken)) {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:integerValueNotInteger", {
@@ -594,11 +595,11 @@ export class ValueParser {
     if (typeof token !== "number" || !Number.isInteger(token)) {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:integerNotInteger", {
-          cause: `{primaryId:p} property '${propertyName}' has value ${token.toString()}, which is not a JSON integer.`,
+          cause: `{primaryId:p} property '${propertyName}' has value ${(token as any).toString()}, which is not a JSON integer.`,
           action: `Change the value of '${propertyName}' to a JSON integer.`,
           primaryId: elementId,
           property: propertyName,
-          value: token.toString()
+          value: (token as any).toString()
         })
       );
       return undefined;
@@ -610,7 +611,7 @@ export class ValueParser {
   private static _getBooleanFromToken(
     elementId: string,
     propertyName: string,
-    token: any,
+    token: unknown,
     parsingErrors: ParsingError[]
   ): boolean {
     if (typeof token === "object") {
@@ -627,7 +628,7 @@ export class ValueParser {
         return false;
       }
 
-      const valToken = token["@value"];
+      const valToken = token ? token["@value" as keyof typeof token] : null;
       if (typeof valToken !== "boolean") {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:booleanValueNotBoolean", {
@@ -649,11 +650,11 @@ export class ValueParser {
     if (typeof token !== "boolean") {
       parsingErrors.push(
         createParsingError("dtmi:dtdl:parsingError:booleanNotBoolean", {
-          cause: `{primaryId:p} property '${propertyName}' has value ${token.toString()}, which is not a JSON boolean.`,
+          cause: `{primaryId:p} property '${propertyName}' has value ${(token as any).toString()}, which is not a JSON boolean.`,
           action: `Change the value of '${propertyName}' to one of the JSON boolean values true or false.`,
           primaryId: elementId,
           property: propertyName,
-          value: token.toString()
+          value: (token as any).toString()
         })
       );
       return false;
@@ -665,7 +666,7 @@ export class ValueParser {
   private static _getDictionaryFromLanguageTaggedStringArray(
     elementId: string,
     propertyName: string,
-    array: any[],
+    array: unknown[],
     parsingErrors: ParsingError[]
   ): { [index: string]: string } {
     const dict: { [index: string]: string } = {};
@@ -674,11 +675,11 @@ export class ValueParser {
       if (typeof element !== "object") {
         parsingErrors.push(
           createParsingError("dtmi:dtdl:parsingError:langStringElementNotObject", {
-            cause: `{primaryId:p} property '${propertyName}' array has element '${element.toString()}', which is not a JSON object.`,
+            cause: `{primaryId:p} property '${propertyName}' array has element '${(element as any).toString()}', which is not a JSON object.`,
             action: `Change all elements in '${propertyName}' array to JSON objects.`,
             primaryId: elementId,
             property: propertyName,
-            value: element.toString()
+            value: (element as any).toString()
           })
         );
       } else {
@@ -697,7 +698,7 @@ export class ValueParser {
             })
           );
         } else {
-          const codeToken = element["@language"];
+          const codeToken = element as { [x: string]: unknown }["@language"];
           if (typeof codeToken !== "string") {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:langStringElementCodeNotString", {
@@ -751,21 +752,21 @@ export class ValueParser {
             })
           );
         } else {
-          const valueToken = element["@value"];
-          if (typeof valueToken !== "string") {
+          const valToken = element ? element["@value" as keyof typeof element] : null;
+          if (typeof valToken !== "string") {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:langStringElementValueNotString", {
                 cause: `{primaryId:p} property '${propertyName}' array has element with '@value' value '${JSON.stringify(
-                  valueToken
+                  valToken
                 )}', which is not a JSON string.`,
                 action: `Change the value of '${propertyName}' array element property '@value' to a JSON string.`,
                 primaryId: elementId,
                 property: propertyName,
-                value: JSON.stringify(valueToken)
+                value: JSON.stringify(valToken)
               })
             );
           } else {
-            langValue = valueToken;
+            langValue = valToken;
           }
         }
 
@@ -781,7 +782,7 @@ export class ValueParser {
   private static _getDictionaryFromLanguageMap(
     elementId: string,
     propertyName: string,
-    obj: { [index: string]: any },
+    obj: { [index: string]: unknown },
     parsingErrors: ParsingError[]
   ): { [index: string]: string } {
     const dict: { [index: string]: string } = {};
@@ -821,7 +822,7 @@ export class ValueParser {
       }
 
       if (assignOk) {
-        dict[langCode] = langValue;
+        dict[langCode] = langValue as string;
       }
     }
 

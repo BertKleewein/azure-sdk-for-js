@@ -29,86 +29,140 @@ import { DescendantControlFactory } from "./obverseGenerator/descendantControlFa
 import { ExtensibleMaterialClass } from "./obverseGenerator/extensibleMaterialClass";
 import { SupplementalPropertyInfoGenerator } from "./supplementalPropertyInfoGenerator";
 
-export class CodeGenerator {
+const destinationDirectories = ["enum", "type"];
+
+const filesToCopyDirectly = [
+  "contextHistory.ts",
+  "dtmi.ts",
+  "enum/index.ts",
+  "enum/modelParsingOption.ts",
+  "enum/traversalStatus.ts",
+  "index.ts",
+  "internalDtmi.ts",
+  "jsonSyntaxError.ts",
+  "literalValidator.ts",
+  "parsingError.ts",
+  "parsingErrorImpl.ts",
+  "parsingException.ts",
+  "resolutionError.ts",
+  "resultFormatter.ts",
+  "valueParser.ts",
+  "versionedContext.ts",
+  "type/dtmiResolver.ts",
+  "type/elementPropertyConstraint.ts",
+  "type/index.ts",
+  "type/languageStringType.ts",
+  "type/propertyConstraint.ts",
+  "type/propertyInstanceBinder.ts",
+  "type/propertyValueConstrainer.ts",
+  "type/supplementalInfoTypeParams.ts",
+  "type/typeChecker.ts",
+  "type/valueConstraint.ts",
+];
+
+export class ParserCodeGenerator {
   public static async execute(
     inputDigest: string,
     outputDirectory: string,
     _dtdlVersion: string
   ): Promise<void> {
-    fs.readFile(inputDigest, (err: Error | null, rawMetamodelDigest: Buffer) => {
-      if (err) throw err;
-      const parsedMetamodelDigest = JSON.parse(rawMetamodelDigest.toString()) as MetamodelDigest;
-      const baseClassName = parsedMetamodelDigest.baseClass;
-      if (!baseClassName) throw new Error("Cannot find base class name");
+    for (const directoryName of destinationDirectories) {
+      const fullPath = `${outputDirectory}/${directoryName}`;
+      try {
+        await fs.promises.access(fullPath);
+      } catch (e) {
+        await fs.promises.mkdir(fullPath);
+      }
+    }
 
-      const materialClassesObject = parsedMetamodelDigest.materialClasses;
-      const parserLib = new TsLibrary(outputDirectory);
+    for (const filename of filesToCopyDirectly) {
+      try {
+        const src = `./boilerplate/${filename}`;
+        const dest = `${outputDirectory}/${filename}`;
+        console.log(`copying ${src} to ${dest}`);
+        const contents = await fs.promises.readFile(src);
+        await fs.promises.writeFile(dest, contents);
+      } catch (e) {
+        console.log(`${filename} error: ${e}`);
+        throw e;
+      }
+    }
 
-      const typeGenerators: TypeGenerator[] = [];
-      typeGenerators.push(
-        new AggregateContextGenerator(
-          parsedMetamodelDigest.contexts,
-          parsedMetamodelDigest.dtdlVersionsAllowingLocalTerms,
-          parsedMetamodelDigest.affiliateContextsImplicitDtdlVersions
-        )
-      );
-      typeGenerators.push(new HelpersGenerator(baseClassName));
-      typeGenerators.push(
-        new StandardElementsGenerator(baseClassName, parsedMetamodelDigest.elements)
-      );
-      typeGenerators.push(new ParsedObjectPropertyInfoGenerator(parsedMetamodelDigest.baseClass));
-      // partitionRestrictions is something approved for DTDL v3, and only one partition restriction restriction exists.
-      typeGenerators.push(
-        new ModelGenerator(
-          baseClassName,
-          parsedMetamodelDigest.partitionClasses,
-          parsedMetamodelDigest.partitionRestrictions
-        )
-      );
-      typeGenerators.push(new ModelParserGenerator(baseClassName));
-      // This is a type definition specific to the Node.js structure of model parser
-      typeGenerators.push(new ModelDictGenerator(baseClassName));
-      typeGenerators.push(new SupplementalTypeInfoGenerator(baseClassName));
-      typeGenerators.push(new SupplementalPropertyInfoGenerator());
-      // This is ModelPartitionCollectionGenerator
-      typeGenerators.push(
-        new PartitionTypeCollectionGenerator(parsedMetamodelDigest.partitionClasses)
-      );
-      typeGenerators.push(
-        new RootableTypeCollectionGenerator(parsedMetamodelDigest["rootableClasses"])
-      );
-      typeGenerators.push(
-        new IdValidatorGenerator(
-          parsedMetamodelDigest["identifierDefinition"],
-          parsedMetamodelDigest["identifierReference"]
-        )
-      );
-      typeGenerators.push(
-        new MaterialTypeNameCollectionGenerator(
-          Object.keys(parsedMetamodelDigest["materialClasses"]),
-          Object.values(parsedMetamodelDigest["contexts"])
-        )
-      );
-      typeGenerators.push(new BaseKindEnumGenerator(baseClassName, materialClassesObject));
-      typeGenerators.push(new ExtensionKindEnumGenerator(parsedMetamodelDigest["extensionKinds"]));
-      typeGenerators.push(
-        new SupplementalTypeCollectionGenerator(
-          parsedMetamodelDigest["supplementalTypes"],
-          parsedMetamodelDigest["contexts"],
-          parsedMetamodelDigest["extensibleMaterialClasses"],
-          baseClassName
-        )
-      );
+    const rawMetamodelDigest = await fs.promises.readFile(inputDigest);
 
-      typeGenerators.push(...this._generateMaterialClasses(parsedMetamodelDigest));
+    const parsedMetamodelDigest = JSON.parse(rawMetamodelDigest.toString()) as MetamodelDigest;
+    const baseClassName = parsedMetamodelDigest.baseClass;
+    if (!baseClassName) throw new Error("Cannot find base class name");
 
-      typeGenerators.forEach((typeGen) => {
-        typeGen.generateType(parserLib);
-      });
-      parserLib.generateFiles(true);
+    const materialClassesObject = parsedMetamodelDigest.materialClasses;
+    const parserLib = new TsLibrary(outputDirectory);
 
-      return true;
-    });
+    const typeGenerators: TypeGenerator[] = [];
+    typeGenerators.push(
+      new AggregateContextGenerator(
+        parsedMetamodelDigest.contexts,
+        parsedMetamodelDigest.dtdlVersionsAllowingLocalTerms,
+        parsedMetamodelDigest.affiliateContextsImplicitDtdlVersions
+      )
+    );
+    typeGenerators.push(new HelpersGenerator(baseClassName));
+    typeGenerators.push(
+      new StandardElementsGenerator(baseClassName, parsedMetamodelDigest.elements)
+    );
+    typeGenerators.push(new ParsedObjectPropertyInfoGenerator(parsedMetamodelDigest.baseClass));
+    // partitionRestrictions is something approved for DTDL v3, and only one partition restriction restriction exists.
+    typeGenerators.push(
+      new ModelGenerator(
+        baseClassName,
+        parsedMetamodelDigest.partitionClasses,
+        parsedMetamodelDigest.partitionRestrictions
+      )
+    );
+    typeGenerators.push(new ModelParserGenerator(baseClassName));
+    // This is a type definition specific to the Node.js structure of model parser
+    typeGenerators.push(new ModelDictGenerator(baseClassName));
+    typeGenerators.push(new SupplementalTypeInfoGenerator(baseClassName));
+    typeGenerators.push(new SupplementalPropertyInfoGenerator());
+    // This is ModelPartitionCollectionGenerator
+    typeGenerators.push(
+      new PartitionTypeCollectionGenerator(parsedMetamodelDigest.partitionClasses)
+    );
+    typeGenerators.push(
+      new RootableTypeCollectionGenerator(parsedMetamodelDigest["rootableClasses"])
+    );
+    typeGenerators.push(
+      new IdValidatorGenerator(
+        parsedMetamodelDigest["identifierDefinition"],
+        parsedMetamodelDigest["identifierReference"]
+      )
+    );
+    typeGenerators.push(
+      new MaterialTypeNameCollectionGenerator(
+        Object.keys(parsedMetamodelDigest["materialClasses"]),
+        Object.values(parsedMetamodelDigest["contexts"])
+      )
+    );
+    typeGenerators.push(new BaseKindEnumGenerator(baseClassName, materialClassesObject));
+    typeGenerators.push(new ExtensionKindEnumGenerator(parsedMetamodelDigest["extensionKinds"]));
+    typeGenerators.push(
+      new SupplementalTypeCollectionGenerator(
+        parsedMetamodelDigest["supplementalTypes"],
+        parsedMetamodelDigest["contexts"],
+        parsedMetamodelDigest["extensibleMaterialClasses"],
+        baseClassName
+      )
+    );
+
+    typeGenerators.push(...this._generateMaterialClasses(parsedMetamodelDigest));
+
+    for (const typeGen of typeGenerators) {
+      await typeGen.generateType(parserLib);
+    }
+
+    const files = parserLib.generateFiles();
+    for (const file of files) {
+      console.log(`Generated ${file}`);
+    }
   }
 
   private static _generateMaterialClasses(metamodelDigest: MetamodelDigest): TypeGenerator[] {
@@ -156,7 +210,7 @@ export class CodeGenerator {
       new MaterialClassGenerator({
         rawTypeName: "Reference",
         rawBaseType: metamodelDigest.baseClass,
-        materialClassDigest: CodeGenerator._createEmptyDigest(),
+        materialClassDigest: ParserCodeGenerator._createEmptyDigest(),
         contexts: metamodelDigest.contexts,
         identifierDefinitions: metamodelDigest.identifierDefinition,
         descendantControls: descendantControls,

@@ -11,7 +11,7 @@ export class RootableTypeCollectionGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -65,6 +65,6 @@ export class RootableTypeCollectionGenerator implements TypeGenerator {
       );
     }
     constructor.body.line("};");
-    collectionClass.inline("./src/parserPartial/rootableTypeCollection.ts", "methods");
+    collectionClass.inline("./boilerplate/rootableTypeCollection.ts", "methods");
   }
 }

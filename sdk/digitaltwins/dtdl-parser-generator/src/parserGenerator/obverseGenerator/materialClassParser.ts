@@ -142,16 +142,18 @@ export class MaterialClassParser {
     _classIsAbstract: boolean
   ): void {
     const typeNameImpl = typeName + "Impl";
-    obverseClass.import(`import {IdValidator} from './internal';`);
-    obverseClass.import(`import {ParsingError, createParsingError} from '../parser/parsingError';`);
-    obverseClass.import(`import {AggregateContext} from './internal';`);
-    obverseClass.import(`import {InDTMI} from '../parser/internalDtmi';`);
-    obverseClass.import(`import {Reference, referenceInit} from '../common/reference';`);
-    obverseClass.import(`import {Model} from './internal';`);
-    obverseClass.import(`import {ParsedObjectPropertyInfo} from './internal'`);
-    obverseClass.import(
-      `import {ElementPropertyConstraint, ValueParser, ValueConstraint} from '../parser';`
-    );
+    obverseClass
+      .importObject("IdValidator")
+      .importObject("ParsingError")
+      .importObject("createParsingError", "./parsingErrorImpl")
+      .importObject("AggregateContext")
+      .importObject("InDTMI", "./internalDtmi")
+      .importObject("Reference, referenceInit", "../common/reference")
+      .importObject("Model")
+      .importObject("ParsedObjectPropertyInfo")
+      .importObject("ElementPropertyConstraint", "./type/elementPropertyConstraint")
+      .importObject("ValueParser")
+      .importObject("ValueConstraint", "./type/valueConstraint");
 
     const parseObjMethod = obverseClass
       .method({ name: "parseObject", returnType: "any", abstract: false, isStatic: true })
@@ -397,7 +399,7 @@ export class MaterialClassParser {
 
     parseTypeArrayMethod.body.line(`elementInfo.ref.undefinedTypes = undefinedTypes;`);
 
-    tsClass.import(`import {ModelParserImpl} from './internal';`);
+    tsClass.importObject("ModelParserImpl");
     parseTypeArrayMethod.body
       .for(`const supplementalTypeId of supplementalTypeIds`)
       .line(
@@ -493,7 +495,7 @@ export class MaterialClassParser {
 
     concreteSubclasses.forEach((subclass) => {
       if (tsClass.name !== subclass.className) {
-        tsClass.import(`import {${subclass.className}} from './internal';`);
+        tsClass.importObject(subclass.className);
       }
       subclass.addCaseToParseTypeStringSwitch(
         tryParseTypeStringMethod.body,
@@ -506,7 +508,7 @@ export class MaterialClassParser {
 
     tryParseTypeStringMethod.body.line(`}`);
 
-    tsClass.import(`import {MaterialTypeNameCollection} from '././internal';`);
+    tsClass.importObject("MaterialTypeNameCollection");
     tryParseTypeStringMethod.body
       .if("MaterialTypeNameCollection.isMaterialType(typestring)")
       .line("parsingErrors.push(createParsingError(")
@@ -550,7 +552,7 @@ export class MaterialClassParser {
       .line(`}));`)
       .line("return false;");
 
-    tsClass.import(`import {ModelParserImpl} from './internal';`);
+    tsClass.importObject("ModelParserImpl");
     const supplementalTypeIdDefinedIfScopeOuter = tryParseTypeStringMethod.body
       .if("supplementalTypeId !== undefined")
       .line(
@@ -574,7 +576,7 @@ export class MaterialClassParser {
       const switchOnExtensionKind = supplementalTypeIdDefinedIfScopeOuter.scope(
         "switch ((supplementalTypeInfo as SupplementalTypeInfoImpl)?.extensionKind)"
       );
-      tsClass.import(`import {ExtensionKind} from './internal';`);
+      tsClass.importObject("ExtensionKind");
       extensibleMaterialClasses.forEach((extensibleMaterialClass) => {
         extensibleMaterialClass.addCaseToParseTypeStringSwitch(
           tsClass,
@@ -718,6 +720,7 @@ export class MaterialClassParser {
       )
       .line("valueCount++;");
 
+    // TODO: why was this commented out?  It seems to be missing from teh generated code.
     // const _isArrayElseIfScope = typeTokenIfScope
     //   .elseIf("Array.isArray(token)")
     //   .for("const elementToken of token")

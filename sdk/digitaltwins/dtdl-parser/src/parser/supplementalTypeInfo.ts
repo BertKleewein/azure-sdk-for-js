@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { SupplementalPropertyInfo } from "./internal";
+import { SupplementalPropertyInfo } from "./supplementalPropertyInfo";
 /**
  * Interface that provides information about a type is not materialized as a material class.
  **/

@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { InDTMI } from "../parser";
-import { EntityKinds } from "./internal";
+import { InDTMI } from "./internalDtmi";
+import { EntityKinds } from "./entityKinds";
 export interface ParsedObjectPropertyInfo {
   expectedKinds?: EntityKinds[];
   // codegen-outline-begin fields

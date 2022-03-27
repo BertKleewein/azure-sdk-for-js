@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ComplexSchemaInfo } from "./internal";
-import { SchemaInfo } from "./internal";
+import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { SchemaInfo } from "./schemaInfo";
 export interface ArrayInfo extends ComplexSchemaInfo {
   entityKind: "array";
   elementSchema?: SchemaInfo;

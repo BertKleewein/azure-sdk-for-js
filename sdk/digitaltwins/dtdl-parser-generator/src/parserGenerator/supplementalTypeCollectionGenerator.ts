@@ -59,7 +59,7 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -73,7 +73,7 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
       name: "supplementalTypes",
       type: "Map<string, SupplementalTypeInfo>",
     });
-    collectionInterface.import(`import {SupplementalTypeInfo} from './internal';`);
+    collectionInterface.importObject("SupplementalTypeInfo");
 
     const collectionClass = parserLibrary.class({
       name: "SupplementalTypeCollectionImpl",
@@ -82,14 +82,15 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
     collectionClass.docString.line(
       "A collection of DTDL types that are not materialized as TS Classes"
     );
-    collectionClass.import(
-      `import {SupplementalTypeInfo, SupplementalTypeInfoImpl, SupplementalTypeCollection} from './internal';`
-    );
-    collectionClass.import(`import {ExtensionKind} from './internal';`);
-    collectionClass.import(`import {InDTMI} from '../parser';`);
-    collectionClass.import(`import {ValueConstraint} from '../parser';`);
+    collectionClass
+      .importObject("SupplementalTypeInfo")
+      .importObject("SupplementalTypeInfoImpl")
+      .importObject("SupplementalTypeCollection")
+      .importObject("ExtensionKind")
+      .importObject("InDTMI", "./internalDtmi")
+      .importObject("ValueConstraint", "./type");
 
-    collectionClass.inline("./src/parserPartial/supplementalTypeCollectionImpl.ts", "methods");
+    collectionClass.inline("./boilerplate/supplementalTypeCollectionImpl.ts", "methods");
 
     collectionClass.field({
       name: "supplementalTypes",

@@ -18,7 +18,7 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -50,7 +50,7 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
       `Array.from(this._partitionTypeStrings.values()).map((s) => \`'\${s}'\`).join(' or ')`
     );
 
-    collectionClass.inline("./src/parserPartial/partitionTypeCollection.ts", "methods");
+    collectionClass.inline("./boilerplate/partitionTypeCollection.ts", "methods");
     // TODO: Potentially replace this with a 'Static Constructor' option that initializes after class.
     collectionClass.suffixCode.line("PartitionTypeCollection.initialize();");
   }

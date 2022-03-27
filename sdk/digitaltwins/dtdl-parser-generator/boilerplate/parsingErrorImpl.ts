@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingError, ParsingErrorParams } from "./internal";
-import { ResultFormatter } from "./internal";
+import { ParsingError, ParsingErrorParams } from "./parsingError";
+import { ResultFormatter } from "./resultFormatter";
 
 export class ParsingErrorImpl implements ParsingError {
   primaryId: string = "";
@@ -49,4 +49,11 @@ export class ParsingErrorImpl implements ParsingError {
 
     this.validationId = validationId;
   }
+}
+
+export function createParsingError(
+  validationId: string,
+  errorParams: ParsingErrorParams
+): ParsingError {
+  return new ParsingErrorImpl(validationId, errorParams);
 }

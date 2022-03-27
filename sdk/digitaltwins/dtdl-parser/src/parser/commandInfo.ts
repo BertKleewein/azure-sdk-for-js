@@ -6,9 +6,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ContentInfo } from "./internal";
-import { CommandTypeInfo } from "./internal";
-import { CommandPayloadInfo } from "./internal";
+import { ContentInfo } from "./contentInfo";
+import { CommandTypeInfo } from "./commandTypeInfo";
+import { CommandPayloadInfo } from "./commandPayloadInfo";
 export interface CommandInfo extends ContentInfo {
   entityKind: "command";
   commandType?: CommandTypeInfo;

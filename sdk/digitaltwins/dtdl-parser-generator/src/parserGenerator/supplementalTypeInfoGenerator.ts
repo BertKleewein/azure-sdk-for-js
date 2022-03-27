@@ -19,7 +19,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -29,7 +29,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       name: "SupplementalTypeInfo",
       exports: true,
     });
-    infoInterface.import(`import {SupplementalPropertyInfo} from './internal'`);
+    infoInterface.importObject("SupplementalPropertyInfo");
     infoInterface.docString.line(
       "Interface that provides information about a type is not materialized as a material class."
     );
@@ -45,23 +45,24 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       exports: true,
       inheritance: [{ name: "SupplementalTypeInfo", type: TsDeclarationType.Interface }],
     });
-    infoClass.import(`import {PropertyConstraint} from '../parser';`);
-    infoClass.import(
-      `import {SupplementalPropertyInfoImpl, SupplementalTypeInfo} from './internal'`
-    );
-    infoClass.import(`import {ElementPropertyConstraint} from '../parser'`);
-    infoClass.import(`import {InDTMI} from '../parser'`);
-    infoClass.import(`import {ParsingError, createParsingError} from '../parser';`);
-    infoClass.import(`import {PropertyInstanceBinder} from '../parser'`);
-    infoClass.import(`import {PropertyValueConstrainer} from '../parser'`);
-    infoClass.import(`import {ValueConstraint} from '../parser'`);
-    infoClass.import(`import {ValueParser} from '../parser'`);
-    infoClass.import(`import {AggregateContext} from './internal'`);
-    infoClass.import(`import {ParsedObjectPropertyInfo} from './internal'`);
-    infoClass.import(`import {${this._baseEnumName}} from './internal';`);
-    infoClass.import(`import {Model} from './internal';`);
-    infoClass.import(`import {ExtensionKind} from './internal';`);
-    infoClass.import('import {URL} from "url";');
+    infoClass
+      .importObject("PropertyConstraint", "./type")
+      .importObject("SupplementalPropertyInfoImpl")
+      .importObject("SupplementalTypeInfo")
+      .importObject("ElementPropertyConstraint", "./type")
+      .importObject("InDTMI", "./internalDtmi")
+      .importObject("ParsingError")
+      .importObject("createParsingError", "./parsingErrorImpl")
+      .importObject("PropertyInstanceBinder", "./type")
+      .importObject("PropertyValueConstrainer", "./type")
+      .importObject("ValueConstraint", "./type")
+      .importObject("ValueParser")
+      .importObject("AggregateContext")
+      .importObject("ParsedObjectPropertyInfo")
+      .importObject(this._baseEnumName as string)
+      .importObject("Model")
+      .importObject("ExtensionKind")
+      .importObject("URL", "url");
 
     infoClass.docString.line(
       "Class that provides information about a type is not materialized as a TS class."
@@ -73,7 +74,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       readonly: true,
     });
     infoClass.field({ name: "extensionKind", type: "ExtensionKind", readonly: true });
-    infoClass.inline("./src/parserPartial/supplementalTypeInfoImpl.ts", "fields");
+    infoClass.inline("./boilerplate/supplementalTypeInfoImpl.ts", "fields");
     infoClass.ctor
       .parameter({ name: "extensionKind", type: "ExtensionKind" })
       .parameter({ name: "contextId", type: "string" })
@@ -84,7 +85,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     infoClass.ctor.body
       .line("this.extensionKind = extensionKind;")
       .line("this.allowedCotypeKinds = [];")
-      .inline("./src/parserPartial/supplementalTypeInfoImpl.ts", "constructor");
+      .inline("./boilerplate/supplementalTypeInfoImpl.ts", "constructor");
 
     const addCotypeMethod = infoClass
       .method({
@@ -94,6 +95,6 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       .parameter({ name: "cotypeKind", type: `${this._baseEnumName}` });
     addCotypeMethod.body.line(`this.allowedCotypeKinds.push(cotypeKind);`);
 
-    infoClass.inline("./src/parserPartial/supplementalTypeInfoImpl.ts", "block1");
+    infoClass.inline("./boilerplate/supplementalTypeInfoImpl.ts", "block1");
   }
 }

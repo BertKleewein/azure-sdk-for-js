@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ComplexSchemaInfo } from "./internal";
-import { FieldInfo } from "./internal";
+import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { FieldInfo } from "./fieldInfo";
 export interface ObjectInfo extends ComplexSchemaInfo {
   entityKind: "object";
   fields?: FieldInfo[];

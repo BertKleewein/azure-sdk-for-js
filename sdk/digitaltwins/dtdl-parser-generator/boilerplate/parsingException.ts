@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingError } from "./internal";
+import { ParsingError } from "./parsingError";
 
 // To be thowable this needs to extend error
 export class ParsingException extends Error {

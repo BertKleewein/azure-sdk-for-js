@@ -6,20 +6,22 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { PropertyConstraint } from "../parser";
-import { SupplementalPropertyInfoImpl, SupplementalTypeInfo } from "./internal";
-import { ElementPropertyConstraint } from "../parser";
-import { InDTMI } from "../parser";
-import { ParsingError, createParsingError } from "../parser";
-import { PropertyInstanceBinder } from "../parser";
-import { PropertyValueConstrainer } from "../parser";
-import { ValueConstraint } from "../parser";
-import { ValueParser } from "../parser";
-import { AggregateContext } from "./internal";
-import { ParsedObjectPropertyInfo } from "./internal";
-import { EntityKinds } from "./internal";
-import { Model } from "./internal";
-import { ExtensionKind } from "./internal";
+import { PropertyConstraint } from "./type";
+import { SupplementalPropertyInfoImpl } from "./supplementalPropertyInfoImpl";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { ElementPropertyConstraint } from "./type";
+import { InDTMI } from "./internalDtmi";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { PropertyInstanceBinder } from "./type";
+import { PropertyValueConstrainer } from "./type";
+import { ValueConstraint } from "./type";
+import { ValueParser } from "./valueParser";
+import { AggregateContext } from "./aggregateContext";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { EntityKinds } from "./entityKinds";
+import { Model } from "./model";
+import { ExtensionKind } from "./extensionKind";
 import { URL } from "url";
 /**
  * Class that provides information about a type is not materialized as a TS class.

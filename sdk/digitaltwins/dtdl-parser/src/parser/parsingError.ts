@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingErrorImpl } from "./parsingErrorImpl";
-
 export interface ParsingError {
   primaryId: string;
   secondaryId: string;
@@ -20,11 +18,4 @@ export interface ParsingErrorParams {
   secondaryId?: string;
   property?: string;
   value?: string;
-}
-
-export function createParsingError(
-  validationId: string,
-  errorParams: ParsingErrorParams
-): ParsingError {
-  return new ParsingErrorImpl(validationId, errorParams);
 }

@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ValueConstraint } from "../parser";
+import { ValueConstraint } from "./type";
 /**
  * Interface that provides information about a property that can be applied to a DTDL element that has a supplemental type.
  **/

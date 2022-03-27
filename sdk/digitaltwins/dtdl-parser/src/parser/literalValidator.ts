@@ -3,7 +3,7 @@
 
 export class LiteralValidator {
   // TODO Seems a bit strict by JD. Please check why tests are not failing.
-  public static hasValue(element: any, value: any): boolean {
+  public static hasValue(_element: unknown, _value: unknown): boolean {
     return false;
   }
 }

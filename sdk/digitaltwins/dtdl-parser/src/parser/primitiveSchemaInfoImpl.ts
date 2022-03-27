@@ -6,35 +6,38 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TypeChecker } from "../parser/type/typeChecker";
-import { PrimitiveSchemaInfo } from "./internal";
-import { PrimitiveSchemaKinds } from "./internal";
-import { EntityKinds } from "./internal";
-import { LanguageStringType } from "../parser/type/langstringType";
-import { SupplementalTypeInfo } from "./internal";
-import { SupplementalTypeInfoImpl } from "./internal";
-import { IdValidator } from "./internal";
-import { ParsingError, createParsingError } from "../parser/parsingError";
-import { AggregateContext } from "./internal";
-import { InDTMI } from "../parser/internalDtmi";
+import { TypeChecker } from "./type";
+import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
+import { PrimitiveSchemaKinds } from "./primitiveSchemaKinds";
+import { EntityKinds } from "./entityKinds";
+import { LanguageStringType } from "./type";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
+import { IdValidator } from "./idValidator";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { AggregateContext } from "./aggregateContext";
+import { InDTMI } from "./internalDtmi";
 import { Reference, referenceInit } from "../common/reference";
-import { Model } from "./internal";
-import { ParsedObjectPropertyInfo } from "./internal";
-import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "../parser";
-import { ModelParserImpl } from "./internal";
-import { BooleanInfoImpl } from "./internal";
-import { DateInfoImpl } from "./internal";
-import { DateTimeInfoImpl } from "./internal";
-import { DoubleInfoImpl } from "./internal";
-import { DurationInfoImpl } from "./internal";
-import { FloatInfoImpl } from "./internal";
-import { IntegerInfoImpl } from "./internal";
-import { LongInfoImpl } from "./internal";
-import { StringInfoImpl } from "./internal";
-import { TimeInfoImpl } from "./internal";
-import { MaterialTypeNameCollection } from "././internal";
-import { ExtensionKind } from "./internal";
-import { EntityInfo } from "./internal";
+import { Model } from "./model";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ElementPropertyConstraint } from "./type/elementPropertyConstraint";
+import { ValueParser } from "./valueParser";
+import { ValueConstraint } from "./type/valueConstraint";
+import { ModelParserImpl } from "./modelParserImpl";
+import { BooleanInfoImpl } from "./booleanInfoImpl";
+import { DateInfoImpl } from "./dateInfoImpl";
+import { DateTimeInfoImpl } from "./dateTimeInfoImpl";
+import { DoubleInfoImpl } from "./doubleInfoImpl";
+import { DurationInfoImpl } from "./durationInfoImpl";
+import { FloatInfoImpl } from "./floatInfoImpl";
+import { IntegerInfoImpl } from "./integerInfoImpl";
+import { LongInfoImpl } from "./longInfoImpl";
+import { StringInfoImpl } from "./stringInfoImpl";
+import { TimeInfoImpl } from "./timeInfoImpl";
+import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
+import { ExtensionKind } from "./extensionKind";
+import { EntityInfo } from "./entityInfo";
 export abstract class PrimitiveSchemaInfoImpl implements PrimitiveSchemaInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -125,7 +128,7 @@ export abstract class PrimitiveSchemaInfoImpl implements PrimitiveSchemaInfo, Ty
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that is not a standard value for this property.`;
   }
 
-  private addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
     throw new Error("Attempt to add type to non augmentable type PrimitiveSchemaInfo");
   }
 

@@ -5,8 +5,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { AggregateContext } from "../parser/internal";
-import { ValueConstraint } from "../parser/internal";
+import { AggregateContext } from "../aggregateContext";
+import { ValueConstraint } from "../type";
 
 /**
  * SupplementalPropertyInfo provides information about a property that

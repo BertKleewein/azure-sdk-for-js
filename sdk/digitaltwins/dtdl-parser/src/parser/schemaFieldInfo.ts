@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { NamedEntityInfo } from "./internal";
-import { SchemaInfo } from "./internal";
+import { NamedEntityInfo } from "./namedEntityInfo";
+import { SchemaInfo } from "./schemaInfo";
 export interface SchemaFieldInfo extends NamedEntityInfo {
   entityKind: "commandpayload" | "field" | "mapvalue" | "commandrequest" | "commandresponse";
   schema?: SchemaInfo;

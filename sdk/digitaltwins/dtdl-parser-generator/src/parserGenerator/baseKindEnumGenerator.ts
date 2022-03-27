@@ -21,7 +21,7 @@ export class BaseKindEnumGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     Object.entries(this._materialClassesObject).forEach(([key, materialClassDigest]) => {
       const typeKindValues = TypeKindValuesHelper.generateConcreteTypesKindValues(
         this._rawBaseType,

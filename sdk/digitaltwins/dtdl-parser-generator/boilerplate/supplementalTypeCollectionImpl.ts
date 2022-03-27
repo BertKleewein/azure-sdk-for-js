@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 /* eslint-disable valid-jsdoc */
 
-import { SupplementalTypeInfoImpl } from "../parser/internal";
+import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 
 export class SupplementalTypeCollectionImpl {
   supplementalTypes: Map<string, SupplementalTypeInfoImpl> = new Map();

@@ -1,27 +1,23 @@
-// Copyright (c) Microsoft Corporation.
+// copyright (c) microsoft corporation.
 // Licensed under the MIT license.
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-
-import {
-  AggregateContext,
-  ElementPropertyConstraint,
-  JsonSyntaxError,
-  Model,
-  ModelDict,
-  ModelParsingOption,
-  ParsingError,
-  ParsingException,
-  PartitionTypeCollection,
-  ResolutionError,
-  RootableTypeCollection,
-  StandardElements,
-  createParsingError,
-  DtmiResolver,
-} from "../parser/internal";
+import { ElementPropertyConstraint, DtmiResolver } from "./type";
+import { ModelParsingOption } from "../enum";
+import { AggregateContext } from "./aggregateContext";
+import { JsonSyntaxError } from "./jsonSyntaxError";
+import { Model } from "./model";
+import { ModelDict } from "./modelDict";
+import { ParsingError } from "./parsingError";
+import { ParsingException } from "./parsingException";
+import { PartitionTypeCollection } from "./partitionTypeCollection";
+import { ResolutionError } from "./resolutionError";
+import { RootableTypeCollection } from "./rootableTypeCollection";
+import { StandardElements } from "./standardElement";
+import { createParsingError } from "./parsingErrorImpl";
 // TODO File needs to be generated and line needs to be un-commented before parsing or maaking package
 import { ParsedObjectPropertyInfo } from "./type/parsedObjectPropertyInfo";
 import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
@@ -39,7 +35,7 @@ export class ModelParserImpl {
   }
 
   // codegen-outline-begin methods
-  dtmiResolver?: DtmiResolver;
+  getModels?: DtmiResolver;
   options: ModelParsingOption;
   maxDtdlVersion?: number;
   static supplementalTypeCollection: SupplementalTypeCollectionImpl =
@@ -164,7 +160,7 @@ export class ModelParserImpl {
         return;
       }
 
-      if (this.dtmiResolver === undefined) {
+      if (this.getModels === undefined) {
         throw new ResolutionError(
           "No DtmiResolver provided to resolve requisite reference(s): " +
             undefinedIdentifiers.join(" "),
@@ -172,7 +168,7 @@ export class ModelParserImpl {
         );
       }
 
-      const additionalJsonTexts = await this.dtmiResolver(undefinedIdentifiers);
+      const additionalJsonTexts = await this.getModels(undefinedIdentifiers);
       if (additionalJsonTexts === null) {
         throw new ResolutionError(
           "DtmiResolver refused to resolve requisite references to element(s): " +

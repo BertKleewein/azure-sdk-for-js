@@ -6,7 +6,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { InDTMI, ParsingError, createParsingError, ParsingException } from "../parser";
+import { InDTMI } from "./internalDtmi";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { ParsingException } from "./parsingException";
 /**
  * A static class for determining whether a string is a valid identifier.
  **/

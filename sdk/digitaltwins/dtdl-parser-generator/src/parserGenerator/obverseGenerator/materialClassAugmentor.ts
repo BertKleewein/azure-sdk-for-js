@@ -30,10 +30,10 @@ export class MaterialClassAugmentor {
     classIsBase: boolean,
     anyObjectProperties: boolean
   ): void {
-    obverseClass.import(`import {SupplementalTypeInfo} from './internal';`);
-    obverseClass.import(`import {SupplementalTypeInfoImpl} from './internal';`);
+    obverseClass.importObject("SupplementalTypeInfo");
+    obverseClass.importObject("SupplementalTypeInfoImpl");
     if (classIsBase) {
-      obverseInterface.import(`import {SupplementalTypeInfo} from './internal';`);
+      obverseInterface.importObject("SupplementalTypeInfo");
     }
     const method = obverseClass
       .method({
@@ -41,7 +41,7 @@ export class MaterialClassAugmentor {
         returnType: `void`,
         abstract: false,
         isStatic: false,
-        access: TsAccess.Private,
+        access: TsAccess.Public,
       })
       .parameter({ name: "dtmi", type: "string" })
       .parameter({ name: "supplementalType", type: "SupplementalTypeInfo|undefined" });

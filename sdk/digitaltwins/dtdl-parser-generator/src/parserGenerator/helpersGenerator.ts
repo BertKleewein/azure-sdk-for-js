@@ -15,7 +15,7 @@ export class HelpersGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -23,14 +23,14 @@ export class HelpersGenerator implements TypeGenerator {
   generateCode(parserLibrary: TsLibrary): void {
     const helpersClass = parserLibrary.class({ name: "Helpers", exports: true });
     helpersClass.docString.line("A static class that holds various helper functions.");
-    helpersClass.import(`import {${this._baseClassName}} from './internal';`);
-    helpersClass.import(`import {LanguageStringType} from '../parser';`);
+    helpersClass.importObject(this._baseClassName);
+    helpersClass.importObject("LanguageStringType", "./type");
     this._generateAreListsIdEqualMethod(helpersClass);
     this._generateAreListsIdOrLiteralEqualMethod(helpersClass);
     this._generateAreDictionariesIdEqualMethod(helpersClass);
     this._generateAreDictionariesIdOrLiteralEqualMethod(helpersClass);
 
-    helpersClass.inline("./src/parserPartial/helpers.ts", "methods");
+    helpersClass.inline("./boilerplate/helpers.ts", "methods");
   }
 
   private _generateAreListsIdEqualMethod(helpersClass: TsClass): void {

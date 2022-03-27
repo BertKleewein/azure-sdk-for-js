@@ -71,7 +71,7 @@ export class DescendantControlMaxCount implements DescendantControl {
         description: `A list of ParsingErrors to which any parsing errors are added.`,
       });
     } else if (!classIsAbstract) {
-      obverseClass.import(`import {TraversalStatus} from '../parser';`);
+      obverseClass.importObject("TraversalStatus", "./enum");
       const statusFieldName: string = `_countOf${this._coreName}Status`;
       obverseClass.field({
         name: statusFieldName,

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ValueConstraint } from "../internal";
+import { ValueConstraint } from "./valueConstraint";
 
 export interface ElementPropertyConstraint {
   parentId: string;

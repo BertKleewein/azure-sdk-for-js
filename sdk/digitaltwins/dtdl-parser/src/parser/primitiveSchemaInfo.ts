@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { SchemaInfo } from "./internal";
+import { SchemaInfo } from "./schemaInfo";
 export interface PrimitiveSchemaInfo extends SchemaInfo {
   entityKind:
     | "boolean"

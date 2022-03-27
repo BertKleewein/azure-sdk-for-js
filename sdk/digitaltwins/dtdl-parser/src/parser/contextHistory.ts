@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { VersionedContext } from "./internal";
+import { VersionedContext } from "./versionedContext";
 
 export class ContextHistory {
   private _versionedContexts: VersionedContext[];
   private _availableVersions: string;
 
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   constructor(versionedContexts: VersionedContext[]) {
     this._versionedContexts = versionedContexts;
     this._availableVersions = versionedContexts
@@ -16,7 +17,7 @@ export class ContextHistory {
       .join(", ");
   }
 
-  get availableVersions() {
+  get availableVersions(): string {
     return this._availableVersions;
   }
 

@@ -6,5 +6,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { EntityInfo } from "./internal";
+import { EntityInfo } from "./entityInfo";
 export type ModelDict = { [id: string]: EntityInfo | undefined };

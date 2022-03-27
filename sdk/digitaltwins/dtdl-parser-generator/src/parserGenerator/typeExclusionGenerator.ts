@@ -12,7 +12,7 @@ export class TypeExclusionGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(_parserLibrary: TsLibrary): void {
+  public async generateType(_parserLibrary: TsLibrary): Promise<void> {
     throw new Error("Not Implemented!");
   }
 }

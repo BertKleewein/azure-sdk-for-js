@@ -35,6 +35,8 @@ export class TsLibrary {
   private _libraryHeader?: TsMultiLine;
   private _dependencyGraph: DependencyGraph;
 
+  // TODO: can we remove DependencyGraph?
+
   constructor(outputDir: string) {
     this._outputDirectory = outputDir;
 
@@ -97,41 +99,10 @@ export class TsLibrary {
     return tsInterface;
   }
 
-  sortedDependencies(): string[] {
-    return this._dependencyGraph.topologicalSort();
-  }
-
-  generateInternalFile(): string {
-    // generate internal.ts file
-    const internalFilePath = this._outputDirectory + DIR_SEP + "internal" + FILE_EXTENSION;
-    const codeWriter = new CodeWriter(internalFilePath);
-    codeWriter.writeLine(COPYRIGHT_TEXT);
-    codeWriter.break();
-    this.sortedDependencies().forEach((typeName) => {
-      const fileName = pascalToCamel(typeName);
-      codeWriter.writeLine(`export * from './${fileName}';`);
-    });
-
-    return internalFilePath;
-  }
-
-  generateIndexForGenerated(): string {
-    const indexFilePath = this._outputDirectory + DIR_SEP + "index.ts";
-    const codeWriterIndex = new CodeWriter(indexFilePath);
-    codeWriterIndex.writeLine(COPYRIGHT_TEXT);
-    codeWriterIndex.break();
-    codeWriterIndex.writeLine(`export * from './internal';`);
-    return indexFilePath;
-  }
-
-  generateFiles(generateInternal?: boolean): string[] {
+  generateFiles(): string[] {
     const filePaths: string[] = [];
     if (!fs.existsSync(this._outputDirectory)) {
       fs.mkdirSync(this._outputDirectory);
-    }
-    if (generateInternal) {
-      filePaths.push(this.generateInternalFile());
-      filePaths.push(this.generateIndexForGenerated());
     }
     this._tsDataStructures.forEach((type) => {
       const typeName = type.name;

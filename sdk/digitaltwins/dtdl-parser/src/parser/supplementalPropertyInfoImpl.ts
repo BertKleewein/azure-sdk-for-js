@@ -6,9 +6,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { SupplementalPropertyInfo } from "./internal";
-import { ValueConstraint } from "../parser";
-import { AggregateContext } from "./internal";
+import { SupplementalPropertyInfo } from "./supplementalPropertyInfo";
+import { ValueConstraint } from "./type";
+import { AggregateContext } from "./aggregateContext";
 /**
  * Class that provides information about a property that can be applied to a DTDL element that has a supplemental type.
  **/

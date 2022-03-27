@@ -8,7 +8,7 @@ import { TypeGenerator } from "./typeGenerator";
 
 export class SupplementalPropertyInfoGenerator implements TypeGenerator {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -18,7 +18,7 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
       name: "SupplementalPropertyInfo",
       exports: true,
     });
-    infoInterface.import(`import {ValueConstraint} from '../parser';`);
+    infoInterface.importObject("ValueConstraint", "./type");
     infoInterface.docString.line(
       "Interface that provides information about a property that can be applied to a DTDL element that has a supplemental type."
     );
@@ -36,15 +36,15 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
       exports: true,
       inheritance: [{ name: "SupplementalPropertyInfo", type: TsDeclarationType.Interface }],
     });
-    infoClass.import(`import {SupplementalPropertyInfo} from './internal';`);
-    infoClass.import(`import {ValueConstraint} from '../parser'`);
-    infoClass.import(`import {AggregateContext} from './internal'`);
+    infoClass.importObject("SupplementalPropertyInfo");
+    infoClass.importObject("ValueConstraint", "./type");
+    infoClass.importObject("AggregateContext");
 
     infoClass.docString.line(
       "Class that provides information about a property that can be applied to a DTDL element that has a supplemental type."
     );
 
-    infoClass.inline("./src/parserPartial/supplementalPropertyInfoImpl.ts", "fields");
+    infoClass.inline("./boilerplate/supplementalPropertyInfoImpl.ts", "fields");
     infoClass.ctor
       .parameter({ name: "type", type: "string" })
       .parameter({ name: "isPlural", type: "boolean" })
@@ -54,9 +54,6 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
       .parameter({ name: "dictionaryKey", type: "string", optional: true })
       .parameter({ name: "instanceProperty", type: "string", optional: true })
       .parameter({ name: "valueConstraint", type: "ValueConstraint", optional: true });
-    infoClass.ctor.body.inline(
-      "./src/parserPartial/supplementalPropertyInfoImpl.ts",
-      "constructor"
-    );
+    infoClass.ctor.body.inline("./boilerplate/supplementalPropertyInfoImpl.ts", "constructor");
   }
 }

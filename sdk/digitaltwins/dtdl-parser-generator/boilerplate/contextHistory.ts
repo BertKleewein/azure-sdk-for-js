@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { VersionedContext } from "./internal";
+import { VersionedContext } from "./versionedContext";
 
 export class ContextHistory {
   private _versionedContexts: VersionedContext[];

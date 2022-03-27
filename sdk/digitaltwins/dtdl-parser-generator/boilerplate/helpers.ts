@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 /* eslint-disable valid-jsdoc */
 
-import { LanguageStringType } from "../parser/type/langstringType";
+import { LanguageStringType } from "../type/langstringType";
 
 export class Helpers {
   // codegen-outline-begin methods

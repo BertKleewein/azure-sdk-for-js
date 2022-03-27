@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { NumericSchemaInfo } from "./internal";
+import { NumericSchemaInfo } from "./numericSchemaInfo";
 export interface FloatInfo extends NumericSchemaInfo {
   entityKind: "float";
 }

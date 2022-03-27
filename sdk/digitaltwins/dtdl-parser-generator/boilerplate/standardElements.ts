@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import {
-  AggregateContext,
-  InDTMI,
-  Model,
-  ParsedObjectPropertyInfo,
-  ParsingError,
-} from "../parser/internal";
+import { AggregateContext } from "./aggregateContext";
+import { InDTMI } from "./internalDtmi";
+import { Model } from "./model";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ParsingError } from "./parsingError";
 import { ModelParserImpl } from "./modelParserImpl";
-import { ParsingException } from "../parser/parsingException";
+import { ParsingException } from "../parsingException";
 
 export class StandardElements {
   // codegen-outline-begin fields

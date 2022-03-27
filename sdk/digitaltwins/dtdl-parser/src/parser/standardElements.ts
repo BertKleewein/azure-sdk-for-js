@@ -6,8 +6,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ParsedObjectPropertyInfo, Model, ModelParserImpl, AggregateContext } from "./internal";
-import { InDTMI, ParsingError, ParsingException } from "../parser/internal";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { Model } from "./model";
+import { ModelParserImpl } from "./modelParserImpl";
+import { AggregateContext } from "./aggregateContext";
+import { InDTMI } from "./internalDtmi";
+import { ParsingError } from "./parsingError";
+import { ParsingException } from "./parsingException";
 type EntityInfo = any;
 /**
  * A collection of values of standard elements from the DTDL metamodel.

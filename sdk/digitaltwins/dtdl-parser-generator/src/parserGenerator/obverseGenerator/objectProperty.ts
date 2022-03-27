@@ -156,7 +156,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     if (obverseInterface.name !== this.interfaceName) {
-      obverseInterface.import(`import {${this.interfaceName}} from './internal';`);
+      obverseInterface.importObject(this.interfaceName as string);
     }
   }
 
@@ -192,7 +192,7 @@ export abstract class ObjectProperty extends MaterialProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       if (obverseClass.name !== this.versionedClassName[dtdlVersion]) {
-        obverseClass.import(`import {${this.versionedClassName[dtdlVersion]}} from './internal';`);
+        obverseClass.importObject(this.versionedClassName[dtdlVersion] as string);
       }
       switchScope.line(
         `${valueCountAssignment}${this.versionedClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, this.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, this._${this.allowedVersionsField}V${dtdlVersion});`

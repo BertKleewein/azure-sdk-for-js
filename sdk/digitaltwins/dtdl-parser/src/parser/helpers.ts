@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { EntityInfo } from "./internal";
-import { LanguageStringType } from "../parser";
+import { EntityInfo } from "./entityInfo";
+import { LanguageStringType } from "./type";
 /**
  * A static class that holds various helper functions.
  **/

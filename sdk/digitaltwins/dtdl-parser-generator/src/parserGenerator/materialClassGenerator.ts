@@ -242,7 +242,7 @@ export class MaterialClassGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this._addMaterialClass(parserLibrary);
   }
 
@@ -254,7 +254,7 @@ export class MaterialClassGenerator implements TypeGenerator {
       thingToExtend: this._parentTypeName,
     });
     if (this._parentTypeName !== undefined) {
-      obverseInterface.import(`import {${this._parentTypeName}} from './internal';`);
+      obverseInterface.importObject(this._parentTypeName);
     }
 
     const inheritanceNames: TsInheritanceType[] = [];
@@ -270,10 +270,10 @@ export class MaterialClassGenerator implements TypeGenerator {
       inheritance: inheritanceNames,
     });
 
-    obverseClass.import(`import {TypeChecker} from '../parser/type/typeChecker';`);
-    obverseClass.import(`import {${this._typeName}} from './internal';`);
-    obverseClass.import(`import {${this._typeKindEnum}} from './internal';`);
-    obverseClass.import(`import {${this._baseKindEnum}} from './internal';`);
+    obverseClass.importObject("TypeChecker", "./type");
+    obverseClass.importObject(this._typeName);
+    obverseClass.importObject(this._typeKindEnum);
+    obverseClass.importObject(this._baseKindEnum);
 
     const internalPropNames: string[] = [];
     if (this._properties) {
@@ -488,7 +488,7 @@ export class MaterialClassGenerator implements TypeGenerator {
 
     this._properties.forEach((prop) => {
       if (this._typeName !== this._baseTypeName) {
-        obverseClass.import(`import {${this._baseTypeName}} from './internal';`);
+        obverseClass.importObject(this._baseTypeName);
       }
       prop.addCaseToTrySetObjectPropertySwitch(trySetObjectPropertyMethod.body, "value", "key");
     });

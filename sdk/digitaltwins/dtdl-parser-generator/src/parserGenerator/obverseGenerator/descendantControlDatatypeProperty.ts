@@ -142,7 +142,7 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
         this._propertyNames.includes(materialProperty.propertyName)
       ) {
         const varName: { ref: string } = { ref: "item" };
-        obverseClass.import(`import {Helpers} from './internal';`);
+        obverseClass.importObject("Helpers");
         materialProperty
           .iterate(ifNonMatch, varName)
           .if(`typeof(${varName.ref}) !== datatype`)

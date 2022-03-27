@@ -14,7 +14,7 @@ export class ParsedObjectPropertyInfoGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -24,13 +24,13 @@ export class ParsedObjectPropertyInfoGenerator implements TypeGenerator {
       name: "ParsedObjectPropertyInfo",
       exports: true,
     });
-    parsedObjectInterface.import(`import {InDTMI} from '../parser';`);
-    parsedObjectInterface.import(`import {${this._baseKindEnum}} from './internal'`);
+    parsedObjectInterface.importObject("InDTMI", "./internalDtmi");
+    parsedObjectInterface.importObject(this._baseKindEnum);
     parsedObjectInterface.field({
       name: "expectedKinds",
       type: `${this._baseKindEnum}[]`,
       optional: true,
     });
-    parsedObjectInterface.inline("./src/parserPartial/type/parsedObjectPropertyInfo.ts", "fields");
+    parsedObjectInterface.inline("./boilerplate/type/parsedObjectPropertyInfo.ts", "fields");
   }
 }

@@ -6,55 +6,58 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TypeChecker } from "../parser/type/typeChecker";
-import { EntityInfo } from "./internal";
-import { EntityKinds } from "./internal";
-import { LanguageStringType } from "../parser/type/langstringType";
-import { SupplementalTypeInfo } from "./internal";
-import { SupplementalTypeInfoImpl } from "./internal";
-import { IdValidator } from "./internal";
-import { ParsingError, createParsingError } from "../parser/parsingError";
-import { AggregateContext } from "./internal";
-import { InDTMI } from "../parser/internalDtmi";
+import { TypeChecker } from "./type";
+import { EntityInfo } from "./entityInfo";
+import { EntityKinds } from "./entityKinds";
+import { LanguageStringType } from "./type";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
+import { IdValidator } from "./idValidator";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { AggregateContext } from "./aggregateContext";
+import { InDTMI } from "./internalDtmi";
 import { Reference, referenceInit } from "../common/reference";
-import { Model } from "./internal";
-import { ParsedObjectPropertyInfo } from "./internal";
-import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "../parser";
-import { ModelParserImpl } from "./internal";
-import { ArrayInfoImpl } from "./internal";
-import { BooleanInfoImpl } from "./internal";
-import { CommandInfoImpl } from "./internal";
-import { CommandPayloadInfoImpl } from "./internal";
-import { CommandTypeInfoImpl } from "./internal";
-import { ComponentInfoImpl } from "./internal";
-import { DateInfoImpl } from "./internal";
-import { DateTimeInfoImpl } from "./internal";
-import { DoubleInfoImpl } from "./internal";
-import { DurationInfoImpl } from "./internal";
-import { EnumInfoImpl } from "./internal";
-import { EnumValueInfoImpl } from "./internal";
-import { FieldInfoImpl } from "./internal";
-import { FloatInfoImpl } from "./internal";
-import { IntegerInfoImpl } from "./internal";
-import { InterfaceInfoImpl } from "./internal";
-import { LongInfoImpl } from "./internal";
-import { MapInfoImpl } from "./internal";
-import { MapKeyInfoImpl } from "./internal";
-import { MapValueInfoImpl } from "./internal";
-import { ObjectInfoImpl } from "./internal";
-import { PropertyInfoImpl } from "./internal";
-import { RelationshipInfoImpl } from "./internal";
-import { StringInfoImpl } from "./internal";
-import { TelemetryInfoImpl } from "./internal";
-import { TimeInfoImpl } from "./internal";
-import { MaterialTypeNameCollection } from "././internal";
-import { ExtensionKind } from "./internal";
-import { UnitInfoImpl } from "./internal";
-import { UnitAttributeInfoImpl } from "./internal";
-import { CommandRequestInfoImpl } from "./internal";
-import { CommandResponseInfoImpl } from "./internal";
-import { LatentTypeInfoImpl } from "./internal";
-import { NamedLatentTypeInfoImpl } from "./internal";
+import { Model } from "./model";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ElementPropertyConstraint } from "./type/elementPropertyConstraint";
+import { ValueParser } from "./valueParser";
+import { ValueConstraint } from "./type/valueConstraint";
+import { ModelParserImpl } from "./modelParserImpl";
+import { ArrayInfoImpl } from "./arrayInfoImpl";
+import { BooleanInfoImpl } from "./booleanInfoImpl";
+import { CommandInfoImpl } from "./commandInfoImpl";
+import { CommandPayloadInfoImpl } from "./commandPayloadInfoImpl";
+import { CommandTypeInfoImpl } from "./commandTypeInfoImpl";
+import { ComponentInfoImpl } from "./componentInfoImpl";
+import { DateInfoImpl } from "./dateInfoImpl";
+import { DateTimeInfoImpl } from "./dateTimeInfoImpl";
+import { DoubleInfoImpl } from "./doubleInfoImpl";
+import { DurationInfoImpl } from "./durationInfoImpl";
+import { EnumInfoImpl } from "./enumInfoImpl";
+import { EnumValueInfoImpl } from "./enumValueInfoImpl";
+import { FieldInfoImpl } from "./fieldInfoImpl";
+import { FloatInfoImpl } from "./floatInfoImpl";
+import { IntegerInfoImpl } from "./integerInfoImpl";
+import { InterfaceInfoImpl } from "./interfaceInfoImpl";
+import { LongInfoImpl } from "./longInfoImpl";
+import { MapInfoImpl } from "./mapInfoImpl";
+import { MapKeyInfoImpl } from "./mapKeyInfoImpl";
+import { MapValueInfoImpl } from "./mapValueInfoImpl";
+import { ObjectInfoImpl } from "./objectInfoImpl";
+import { PropertyInfoImpl } from "./propertyInfoImpl";
+import { RelationshipInfoImpl } from "./relationshipInfoImpl";
+import { StringInfoImpl } from "./stringInfoImpl";
+import { TelemetryInfoImpl } from "./telemetryInfoImpl";
+import { TimeInfoImpl } from "./timeInfoImpl";
+import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
+import { ExtensionKind } from "./extensionKind";
+import { UnitInfoImpl } from "./unitInfoImpl";
+import { UnitAttributeInfoImpl } from "./unitAttributeInfoImpl";
+import { CommandRequestInfoImpl } from "./commandRequestInfoImpl";
+import { CommandResponseInfoImpl } from "./commandResponseInfoImpl";
+import { LatentTypeInfoImpl } from "./latentTypeInfoImpl";
+import { NamedLatentTypeInfoImpl } from "./namedLatentTypeInfoImpl";
 export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -175,7 +178,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     this._badTypeCauseFormat[3] = `Top-level element{secondaryId:e} does not have @type of Array, Command, CommandRequest, CommandResponse, Component, Enum, EnumValue, Field, Interface, Map, MapKey, MapValue, Object, Property, Relationship, or Telemetry.`;
   }
 
-  private addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
     throw new Error("Attempt to add type to non augmentable type EntityInfo");
   }
 

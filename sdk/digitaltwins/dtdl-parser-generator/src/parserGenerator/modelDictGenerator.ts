@@ -14,7 +14,7 @@ export class ModelDictGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -25,6 +25,6 @@ export class ModelDictGenerator implements TypeGenerator {
       typeToBeAliased: `{[id: string]: ${this._baseClassName}|undefined}`,
       exports: true,
     });
-    modelDictType.import(`import {${this._baseClassName}} from './internal';`);
+    modelDictType.importObject(this._baseClassName);
   }
 }

@@ -7,15 +7,13 @@
 /* eslint-disable sort-imports */
 
 /* eslint-disable camelcase */
-import {
-  ContextHistory,
-  InDTMI,
-  ParsingError,
-  createParsingError,
-  ParsingException,
-  VersionedContext
-} from "../parser";
-import { IdValidator } from "./internal";
+import { ContextHistory } from "./contextHistory";
+import { InDTMI } from "./internalDtmi";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { ParsingException } from "./parsingException";
+import { VersionedContext } from "./versionedContext";
+import { IdValidator } from "./idValidator";
 type TermDict = { [term: string]: InDTMI };
 type PrefixDict = { [prefix: string]: string };
 /**

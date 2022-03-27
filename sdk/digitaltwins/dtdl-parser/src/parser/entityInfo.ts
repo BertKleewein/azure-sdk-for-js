@@ -6,8 +6,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { LanguageStringType } from "../parser/type/langstringType";
-import { SupplementalTypeInfo } from "./internal";
+import { LanguageStringType } from "./type";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 export interface EntityInfo {
   dtdlVersion: number;
   id: string;

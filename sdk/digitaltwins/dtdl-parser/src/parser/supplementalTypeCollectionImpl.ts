@@ -6,14 +6,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import {
-  SupplementalTypeInfo,
-  SupplementalTypeInfoImpl,
-  SupplementalTypeCollection
-} from "./internal";
-import { ExtensionKind } from "./internal";
-import { InDTMI } from "../parser";
-import { ValueConstraint } from "../parser";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
+import { SupplementalTypeCollection } from "./supplementalTypeCollection";
+import { ExtensionKind } from "./extensionKind";
+import { InDTMI } from "./internalDtmi";
+import { ValueConstraint } from "./type";
 /**
  * A collection of DTDL types that are not materialized as TS Classes
  **/

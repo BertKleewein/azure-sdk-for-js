@@ -6,23 +6,24 @@
 // Licensed under the MIT license.
 /* eslint-disable valid-jsdoc */
 
+import { AggregateContext } from "./aggregateContext";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { SupplementalPropertyInfoImpl } from "./supplementalPropertyInfoImpl";
 import {
-  AggregateContext,
   ElementPropertyConstraint,
-  ParsedObjectPropertyInfo,
   PropertyInstanceBinder,
   PropertyValueConstrainer,
-  SupplementalTypeInfo,
-  SupplementalPropertyInfoImpl,
   ValueConstraint,
-} from "../parser/internal";
-import { InDTMI } from "../parser/internalDtmi";
+} from "./type";
+import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
-import { PropertyConstraint } from "../parser/type/propertyConstraint";
-import { SupplementalTypeInfoParams } from "../parser/type/supplementalInfoTypeParams";
-import { ValueParser } from "../parser/valueParser";
+import { PropertyConstraint } from "./type/propertyConstraint";
+import { SupplementalTypeInfoParams } from "./type/supplementalInfoTypeParams";
+import { ValueParser } from "../valueParser";
 import { URL } from "url";
-import { ParsingError, createParsingError } from "../parser/internal";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
 
 /**
  * Provides information about a type that is not materialized as a TS Class.

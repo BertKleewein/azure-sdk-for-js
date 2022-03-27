@@ -18,7 +18,7 @@ export class IdValidatorGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -28,10 +28,12 @@ export class IdValidatorGenerator implements TypeGenerator {
     restrictionsClass.docString.line(
       `A static class for determining whether a string is a valid identifier.`
     );
-    restrictionsClass.import(
-      `import {InDTMI, ParsingError, createParsingError, ParsingException} from '../parser';`
-    );
-    restrictionsClass.inline("./src/parserPartial/idValidator.ts", "constants");
+    restrictionsClass
+      .importObject("InDTMI", "./internalDtmi")
+      .importObject("ParsingError")
+      .importObject("createParsingError", "./parsingErrorImpl")
+      .importObject("ParsingException");
+    restrictionsClass.inline("./boilerplate/idValidator.ts", "constants");
 
     const staticConstructor = restrictionsClass.staticCtor;
 
@@ -90,6 +92,6 @@ export class IdValidatorGenerator implements TypeGenerator {
       }
     }
 
-    restrictionsClass.inline("./src/parserPartial/idValidator.ts", "methods");
+    restrictionsClass.inline("./boilerplate/idValidator.ts", "methods");
   }
 }

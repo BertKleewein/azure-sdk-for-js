@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { ParsingError, createParsingError } from "./internal";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
 
 export class ValueParser {
   public static parseSingularStringToken(

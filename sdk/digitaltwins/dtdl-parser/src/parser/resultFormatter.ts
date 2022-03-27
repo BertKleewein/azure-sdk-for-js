@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { InDTMI } from "./internal";
-import { logger } from "../utils/logger";
+import { InDTMI } from "./internalDtmi";
 
 /* eslint-disable no-unused-vars */
 enum Expansion {
@@ -24,7 +23,7 @@ export class ResultFormatter {
     this._formattedResult = formatString;
   }
 
-  public install(key: string, value: string) {
+  public install(key: string, value: string): void {
     const undecoratedKey = "{" + key + "}";
     if (this._formatString.includes(undecoratedKey)) {
       this._formattedResult = this._formattedResult.replace(undecoratedKey, value);
@@ -51,7 +50,7 @@ export class ResultFormatter {
 
   private _expandValue(value: string, expansionType: ExpansionType): string {
     if (typeof value !== "string") {
-      logger.info("VALUE NOT STRING");
+      console.log("VALUE NOT STRING");
     }
     if (value.startsWith("_:")) {
       return this._getBasicExpansion(value, expansionType, "");

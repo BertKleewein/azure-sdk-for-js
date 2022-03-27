@@ -6,31 +6,34 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TypeChecker } from "../parser/type/typeChecker";
-import { EnumInfo } from "./internal";
-import { EnumKinds } from "./internal";
-import { EntityKinds } from "./internal";
-import { LanguageStringType } from "../parser/type/langstringType";
-import { EnumValueInfoImpl } from "./internal";
-import { EnumValueInfo } from "./internal";
-import { PrimitiveSchemaInfoImpl } from "./internal";
-import { PrimitiveSchemaInfo } from "./internal";
-import { EntityInfoImpl } from "./internal";
-import { SupplementalTypeInfo } from "./internal";
-import { SupplementalTypeInfoImpl } from "./internal";
-import { IdValidator } from "./internal";
-import { ParsingError, createParsingError } from "../parser/parsingError";
-import { AggregateContext } from "./internal";
-import { InDTMI } from "../parser/internalDtmi";
+import { TypeChecker } from "./type";
+import { EnumInfo } from "./enumInfo";
+import { EnumKinds } from "./enumKinds";
+import { EntityKinds } from "./entityKinds";
+import { LanguageStringType } from "./type";
+import { EnumValueInfoImpl } from "./enumValueInfoImpl";
+import { EnumValueInfo } from "./enumValueInfo";
+import { PrimitiveSchemaInfoImpl } from "./primitiveSchemaInfoImpl";
+import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
+import { EntityInfoImpl } from "./entityInfoImpl";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
+import { IdValidator } from "./idValidator";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { AggregateContext } from "./aggregateContext";
+import { InDTMI } from "./internalDtmi";
 import { Reference, referenceInit } from "../common/reference";
-import { Model } from "./internal";
-import { ParsedObjectPropertyInfo } from "./internal";
-import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "../parser";
-import { ModelParserImpl } from "./internal";
-import { MaterialTypeNameCollection } from "././internal";
-import { ExtensionKind } from "./internal";
-import { EntityInfo } from "./internal";
-import { TraversalStatus } from "../parser";
+import { Model } from "./model";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ElementPropertyConstraint } from "./type/elementPropertyConstraint";
+import { ValueParser } from "./valueParser";
+import { ValueConstraint } from "./type/valueConstraint";
+import { ModelParserImpl } from "./modelParserImpl";
+import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
+import { ExtensionKind } from "./extensionKind";
+import { EntityInfo } from "./entityInfo";
+import { TraversalStatus } from "./enum";
 export class EnumInfoImpl implements EnumInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -124,7 +127,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Enum.`;
   }
 
-  private addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
     this.supplementalTypeIds.push(dtmi);
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);

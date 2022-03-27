@@ -65,9 +65,9 @@ export class SingularObjectProperty extends ObjectProperty {
     // if (obverseClass.name !== this.interfaceName) {
     //   obverseClass.import(`import {${this.interfaceName}} from './internal';`);
     // }
-    obverseClass.import(`import {${this.implementationName}} from './internal';`);
-    obverseClass.import(`import {${this.interfaceName}} from './internal';`);
-    obverseClass.import(`import {${this.baseImplementation}} from './internal';`);
+    obverseClass.importObject(this.implementationName as string);
+    obverseClass.importObject(this.interfaceName as string);
+    obverseClass.importObject(this.baseImplementation);
   }
 
   public addMembers(

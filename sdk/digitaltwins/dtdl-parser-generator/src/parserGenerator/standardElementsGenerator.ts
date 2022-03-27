@@ -17,27 +17,28 @@ export class StandardElementsGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(parserLibrary: TsLibrary): void {
     const standardElementsClass = parserLibrary.class({ name: "StandardElements", exports: true });
-    standardElementsClass.import(
-      `import {ParsedObjectPropertyInfo, Model, ModelParserImpl, AggregateContext} from './internal';`
-    );
-    standardElementsClass.import(
-      `import {InDTMI, ParsingError, ParsingException} from '../parser/internal';`
-    );
+    standardElementsClass.importObject("ParsedObjectPropertyInfo");
+    standardElementsClass.importObject("Model");
+    standardElementsClass.importObject("ModelParserImpl");
+    standardElementsClass.importObject("AggregateContext");
+    standardElementsClass.importObject("InDTMI", "./internalDtmi");
+    standardElementsClass.importObject("ParsingError");
+    standardElementsClass.importObject("ParsingException");
     standardElementsClass.prefixCode.line("type EntityInfo = any;");
     standardElementsClass.docString.line(
       "A collection of values of standard elements from the DTDL metamodel."
     );
-    standardElementsClass.inline("./src/parserPartial/standardElements.ts", "fields");
+    standardElementsClass.inline("./boilerplate/standardElements.ts", "fields");
     this._generateGetElementMethod(standardElementsClass);
     this._generateGetDigestElementsMethod(standardElementsClass);
-    standardElementsClass.inline("./src/parserPartial/standardElements.ts", "methods");
+    standardElementsClass.inline("./boilerplate/standardElements.ts", "methods");
     standardElementsClass.suffixCode.line("StandardElements.initialize();");
   }
 

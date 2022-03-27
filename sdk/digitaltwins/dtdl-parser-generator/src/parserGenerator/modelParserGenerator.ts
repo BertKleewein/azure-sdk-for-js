@@ -14,7 +14,7 @@ export class ModelParserGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  generateType(parserLibrary: TsLibrary): void {
+  public async generateType(parserLibrary: TsLibrary): Promise<void> {
     this.generateCode(parserLibrary);
   }
 
@@ -26,9 +26,10 @@ export class ModelParserGenerator implements TypeGenerator {
       returnType: "ModelParser",
     });
     functionCreateParser.summary(`Function for creation of the model parser.`);
-    functionCreateParser.import(`import {ModelParsingOption} from '../parser';`);
-    functionCreateParser.import(`import {ModelParser} from './internal';`);
-    functionCreateParser.import(`import {ModelParserImpl} from './internal';`);
+    functionCreateParser
+      .importObject("ModelParsingOption", "./enum")
+      .importObject("ModelParser")
+      .importObject("ModelParserImpl");
     functionCreateParser.parameter({ name: "parsingOptions", type: "ModelParsingOption" });
 
     functionCreateParser.body
@@ -38,7 +39,7 @@ export class ModelParserGenerator implements TypeGenerator {
 
     const interfaceName = "ModelParser";
     const modelParserInterface = parserLibrary.interface({ name: interfaceName, exports: true });
-    modelParserInterface.field({ name: "dtmiResolver?", type: "DtmiResolver" });
+    modelParserInterface.field({ name: "getModels?", type: "DtmiResolver" });
     modelParserInterface.field({ name: "options", type: "ModelParsingOption" });
     modelParserInterface.field({ name: "maxDtdlVersion?", type: "number" });
     modelParserInterface
@@ -48,10 +49,11 @@ export class ModelParserGenerator implements TypeGenerator {
       name: "getSupplementalTypeCollection",
       returnType: "SupplementalTypeCollection",
     });
-    modelParserInterface.import(`import {DtmiResolver, ModelParsingOption} from '../parser';`);
-    modelParserInterface.import(
-      `import {SupplementalTypeCollection, ModelDict} from './internal';`
-    );
+    modelParserInterface
+      .importObject("DtmiResolver", "./type")
+      .importObject("ModelParsingOption", "./enum")
+      .importObject("SupplementalTypeCollection")
+      .importObject("ModelDict");
 
     const inheritance = { name: interfaceName, type: TsDeclarationType.Interface };
     const parserClass = parserLibrary.class({
@@ -60,20 +62,32 @@ export class ModelParserGenerator implements TypeGenerator {
       inheritance: [inheritance],
     });
     parserClass.docString.line(`Class for parsing the DTDL langauge.`);
-    parserClass.import(
-      `import {DtmiResolver, ElementPropertyConstraint, ModelParsingOption, ParsingError, createParsingError, ResolutionError, ParsingException, JsonSyntaxError} from '../parser';`
-    );
-    parserClass.import(
-      `import {AggregateContext, ${this._baseClassName}, Model, ModelDict, ModelParser, ParsedObjectPropertyInfo, PartitionTypeCollection, StandardElements, RootableTypeCollection} from './internal';`
-    );
-    parserClass.import(`import {SupplementalTypeCollectionImpl} from './internal';`);
-    parserClass.inline("./src/parserPartial/modelParserImpl.ts", "fields");
-    parserClass.ctor.body.inline("./src/parserPartial/modelParserImpl.ts", "constructor");
-    parserClass.inline("./src/parserPartial/modelParserImpl.ts", "methods");
+    parserClass
+      .importObject("DtmiResolver", "./type")
+      .importObject("ElementPropertyConstraint", "./type/elementPropertyConstraint")
+      .importObject("ModelParsingOption", "./enum")
+      .importObject("ParsingError")
+      .importObject("createParsingError", "./parsingErrorImpl")
+      .importObject("ResolutionError")
+      .importObject("JsonSyntaxError")
+      .importObject("ParsingException")
+      .importObject("AggregateContext")
+      .importObject(this._baseClassName)
+      .importObject("Model")
+      .importObject("ModelDict")
+      .importObject("ModelParser")
+      .importObject("ParsedObjectPropertyInfo")
+      .importObject("PartitionTypeCollection")
+      .importObject("StandardElements")
+      .importObject("RootableTypeCollection")
+      .importObject("SupplementalTypeCollectionImpl");
+    parserClass.inline("./boilerplate/modelParserImpl.ts", "fields");
+    parserClass.ctor.body.inline("./boilerplate/modelParserImpl.ts", "constructor");
+    parserClass.inline("./boilerplate/modelParserImpl.ts", "methods");
     const parseObjectMethod = parserClass.method({
       name: "_parseObject",
       isStatic: true,
-      access: TsAccess.Private,
+      access: TsAccess.Public, // TODO: I had to change this, but I'm not happy with the change.
     });
     parseObjectMethod
       .parameter({ name: "model", type: "Model" })

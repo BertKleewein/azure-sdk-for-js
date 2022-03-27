@@ -6,9 +6,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ComplexSchemaInfo } from "./internal";
-import { EnumValueInfo } from "./internal";
-import { PrimitiveSchemaInfo } from "./internal";
+import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { EnumValueInfo } from "./enumValueInfo";
+import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
 export interface EnumInfo extends ComplexSchemaInfo {
   entityKind: "enum";
   enumValues?: EnumValueInfo[];

@@ -6,9 +6,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { ModelParsingOption } from "../parser";
-import { ModelParser } from "./internal";
-import { ModelParserImpl } from "./internal";
+import { ModelParsingOption } from "./enum";
+import { ModelParser } from "./modelParser";
+import { ModelParserImpl } from "./modelParserImpl";
 /**
  * Function for creation of the model parser.
  **/

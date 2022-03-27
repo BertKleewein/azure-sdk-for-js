@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { InDTMI } from "./internal";
+import { InDTMI } from "./internalDtmi";
 
 type TermDict = { [term: string]: InDTMI };
 type ReverseTermDict = { [dtmiValue: string]: string };
@@ -19,15 +19,16 @@ export class VersionedContext {
     this._minorVersion = minorVersion;
   }
 
-  get majorVersion() {
+  get majorVersion(): number {
     return this._majorVersion;
   }
 
-  get minorVersion() {
+  get minorVersion(): number {
     return this._minorVersion;
   }
 
-  public addDefinition(term: string, dtmi: InDTMI) {
+  // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+  public addDefinition(term: string, dtmi: InDTMI): void {
     this._termDict[term] = dtmi;
     this._reverseTermDict[dtmi.value] = term;
   }

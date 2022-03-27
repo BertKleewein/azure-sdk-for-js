@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { InDTMI } from "./internal";
+import { InDTMI } from "./internalDtmi";
 
 type TermDict = { [term: string]: InDTMI };
 type ReverseTermDict = { [dtmiValue: string]: string };

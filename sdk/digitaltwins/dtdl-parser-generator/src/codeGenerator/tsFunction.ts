@@ -110,6 +110,14 @@ export class TsFunction implements TsStatement {
     return this;
   }
 
+  importObject(objectName: string, location?: string): this {
+    if (this._importStatements === undefined) {
+      this._importStatements = new TsImport();
+    }
+    this._importStatements.addTsImportObject(objectName, location);
+    return this;
+  }
+
   summary(text: string): this {
     if (this._summaryLines === undefined) {
       this._summaryLines = new TsMultiLineDocString();

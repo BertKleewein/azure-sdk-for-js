@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TemporalSchemaInfo } from "./internal";
+import { TemporalSchemaInfo } from "./temporalSchemaInfo";
 export interface DateInfo extends TemporalSchemaInfo {
   entityKind: "date";
 }

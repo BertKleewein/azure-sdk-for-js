@@ -37,13 +37,13 @@ export class LangStringLiteralProperty extends LiteralProperty {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
     ctorScope.line(`this.${this.propertyName} = {};`);
-    obverseClass.import(`import {LanguageStringType} from '../parser/type/langstringType';`);
+    obverseClass.importObject("LanguageStringType", "./type");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     if (!obverseInterface.extends) {
-      obverseInterface.import(`import {LanguageStringType} from '../parser/type/langstringType';`);
+      obverseInterface.importObject("LanguageStringType", "./type");
     }
   }
 

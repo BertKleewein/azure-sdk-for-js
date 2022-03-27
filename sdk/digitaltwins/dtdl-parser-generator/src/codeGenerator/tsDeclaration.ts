@@ -63,6 +63,14 @@ export class TsDeclaration {
     return this;
   }
 
+  importObject(objectName: string, location?: string): TsDeclaration {
+    if (this._importStatements === undefined) {
+      this._importStatements = new TsImport();
+    }
+    this._importStatements.addTsImportObject(objectName, location);
+    return this;
+  }
+
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   generateCode(codeWriter: CodeWriter): void {
     if (this._declarationHeader !== undefined) {

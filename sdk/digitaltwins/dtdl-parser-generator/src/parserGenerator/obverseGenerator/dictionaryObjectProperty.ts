@@ -50,7 +50,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
   public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
     if (!this.inherited) {
       if (obverseClass.name !== this.interfaceName) {
-        obverseClass.import(`import {${this.interfaceName}} from './internal';`);
+        obverseClass.importObject(this.interfaceName as string);
       }
       ctorScope.line(`this.${this.propertyName} = {};`);
     }
@@ -89,7 +89,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
       this.propertyDigest[dtdlVersion].allowed
     ) {
-      obverseClass.import(`import {${this.versionedClassName[dtdlVersion]}} from './internal';`);
+      obverseClass.importObject(this.versionedClassName[dtdlVersion] as string);
 
       const propertyVersionDigest = this.propertyDigest[dtdlVersion];
       const valueCountAssignment = this.hasCountRestriction(dtdlVersion)

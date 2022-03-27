@@ -6,28 +6,31 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { TypeChecker } from "../parser/type/typeChecker";
-import { EnumValueInfo } from "./internal";
-import { EnumValueKinds } from "./internal";
-import { EntityKinds } from "./internal";
-import { LanguageStringType } from "../parser/type/langstringType";
-import { SupplementalTypeInfo } from "./internal";
-import { SupplementalTypeInfoImpl } from "./internal";
-import { IdValidator } from "./internal";
-import { ParsingError, createParsingError } from "../parser/parsingError";
-import { AggregateContext } from "./internal";
-import { InDTMI } from "../parser/internalDtmi";
+import { TypeChecker } from "./type";
+import { EnumValueInfo } from "./enumValueInfo";
+import { EnumValueKinds } from "./enumValueKinds";
+import { EntityKinds } from "./entityKinds";
+import { LanguageStringType } from "./type";
+import { SupplementalTypeInfo } from "./supplementalTypeInfo";
+import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
+import { IdValidator } from "./idValidator";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
+import { AggregateContext } from "./aggregateContext";
+import { InDTMI } from "./internalDtmi";
 import { Reference, referenceInit } from "../common/reference";
-import { Model } from "./internal";
-import { ParsedObjectPropertyInfo } from "./internal";
-import { ElementPropertyConstraint, ValueParser, ValueConstraint } from "../parser";
-import { ModelParserImpl } from "./internal";
-import { MaterialTypeNameCollection } from "././internal";
-import { ExtensionKind } from "./internal";
-import { LiteralValidator } from "../parser/literalValidator";
-import { EntityInfo } from "./internal";
-import { Helpers } from "./internal";
-import { TraversalStatus } from "../parser";
+import { Model } from "./model";
+import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
+import { ElementPropertyConstraint } from "./type/elementPropertyConstraint";
+import { ValueParser } from "./valueParser";
+import { ValueConstraint } from "./type/valueConstraint";
+import { ModelParserImpl } from "./modelParserImpl";
+import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
+import { ExtensionKind } from "./extensionKind";
+import { LiteralValidator } from "./literalValidator";
+import { EntityInfo } from "./entityInfo";
+import { Helpers } from "./helpers";
+import { TraversalStatus } from "./enum";
 export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -115,7 +118,7 @@ export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of EnumValue.`;
   }
 
-  private addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
     this.supplementalTypeIds.push(dtmi);
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);

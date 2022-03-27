@@ -35,7 +35,7 @@ export class ExtensibleMaterialClass {
     switchOnExtensionKind.line(`case ExtensionKind.${this._kindValue}:`);
     if (extensibleMaterialSubtypes.includes(this._typeName)) {
       if (obverseClass.name !== this._className) {
-        obverseClass.import(`import {${this._className}} from './internal';`);
+        obverseClass.importObject(this._className);
       }
       switchOnExtensionKind
         .line(

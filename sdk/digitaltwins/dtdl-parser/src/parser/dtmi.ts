@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { InDTMI, ParsingError, createParsingError } from "./internal";
+import { InDTMI } from "./internalDtmi";
+import { ParsingError } from "./parsingError";
+import { createParsingError } from "./parsingErrorImpl";
 
 export class DTMI extends InDTMI {
   constructor(value: string) {

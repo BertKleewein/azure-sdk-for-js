@@ -45,16 +45,16 @@ export class PluralObjectProperty extends ObjectProperty {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public generateConstructorCode(obverseClass: TsClass, ctorScope: TsScope): void {
     if (obverseClass.name !== this.implementationName) {
-      obverseClass.import(`import {${this.implementationName}} from './internal';`);
+      obverseClass.importObject(this.implementationName as string);
     }
-    obverseClass.import(`import {${this.interfaceName}} from './internal';`);
+    obverseClass.importObject(this.interfaceName as string);
     ctorScope.line(`this.${this.propertyName} = [];`);
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     if (obverseInterface.name !== this.interfaceName) {
-      obverseInterface.import(`import {${this.interfaceName}} from './internal';`);
+      obverseInterface.importObject(this.interfaceName as string);
     }
   }
 
