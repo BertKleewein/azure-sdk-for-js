@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { CommandResponseInfo } from "./commandResponseInfo";
 import { CommandResponseKinds } from "./commandResponseKinds";
 import { EntityKinds } from "./entityKinds";
-import { CommandResponseInfoStatic } from "./commandResponseInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
@@ -29,7 +28,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker {
-  public staticObject: any = CommandResponseInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -45,6 +43,7 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
   public _schemaValueConstraints: ValueConstraint[] = [];
   private _schemaInstanceProperties: string[] = [];
   public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -68,7 +67,8 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: CommandResponseKinds
+    entityKind: CommandResponseKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -80,6 +80,7 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { UnitInfo } from "./unitInfo";
 import { UnitKinds } from "./unitKinds";
 import { EntityKinds } from "./entityKinds";
-import { UnitInfoStatic } from "./unitInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class UnitInfoImpl implements UnitInfo, TypeChecker {
-  public staticObject: any = UnitInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -36,6 +34,7 @@ export class UnitInfoImpl implements UnitInfo, TypeChecker {
   public displayName?: LanguageStringType;
   public languageVersion?: number;
   public symbol?: string;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -59,7 +58,8 @@ export class UnitInfoImpl implements UnitInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: UnitKinds
+    entityKind: UnitKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -71,6 +71,7 @@ export class UnitInfoImpl implements UnitInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

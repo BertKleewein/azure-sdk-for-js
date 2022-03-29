@@ -232,7 +232,7 @@ export class EnumInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -247,7 +247,7 @@ export class EnumInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -457,7 +457,14 @@ export class EnumInfoStatic {
     switch (typestring) {
       case "Enum":
       case "dtmi:dtdl:class:Enum;2":
-        elementInfo.ref = new EnumInfoImpl(2, elementId, parentId, definedIn, "enum");
+        elementInfo.ref = new EnumInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "enum",
+          EnumInfoStatic
+        );
         materialKinds.push("enum");
         return true;
     }
@@ -774,7 +781,14 @@ export class EnumInfoStatic {
     switch (typestring) {
       case "Enum":
       case "dtmi:dtdl:class:Enum;3":
-        elementInfo.ref = new EnumInfoImpl(3, elementId, parentId, definedIn, "enum");
+        elementInfo.ref = new EnumInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "enum",
+          EnumInfoStatic
+        );
         materialKinds.push("enum");
         return true;
     }

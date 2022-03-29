@@ -29,7 +29,9 @@ import { ExtensionKind } from "./extensionKind";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
 import { SchemaInfoStatic } from "./schemaInfoStatic";
 import { CommandRequestInfoImpl } from "./commandRequestInfoImpl";
+import { CommandRequestInfoStatic } from "./commandRequestInfoStatic";
 import { CommandResponseInfoImpl } from "./commandResponseInfoImpl";
+import { CommandResponseInfoStatic } from "./commandResponseInfoStatic";
 export class CommandPayloadInfoStatic {
   protected static _concreteKinds: { [x: number]: CommandPayloadKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
@@ -233,7 +235,7 @@ export class CommandPayloadInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -248,7 +250,7 @@ export class CommandPayloadInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -466,7 +468,8 @@ export class CommandPayloadInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandpayload"
+          "commandpayload",
+          CommandPayloadInfoStatic
         );
         materialKinds.push("commandpayload");
         return true;
@@ -771,7 +774,8 @@ export class CommandPayloadInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandrequest"
+          "commandrequest",
+          CommandRequestInfoStatic
         );
         materialKinds.push("commandrequest");
         return true;
@@ -782,7 +786,8 @@ export class CommandPayloadInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandresponse"
+          "commandresponse",
+          CommandResponseInfoStatic
         );
         materialKinds.push("commandresponse");
         return true;

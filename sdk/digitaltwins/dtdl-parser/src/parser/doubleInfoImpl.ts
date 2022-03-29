@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { DoubleInfo } from "./doubleInfo";
 import { DoubleKinds } from "./doubleKinds";
 import { EntityKinds } from "./entityKinds";
-import { DoubleInfoStatic } from "./doubleInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class DoubleInfoImpl implements DoubleInfo, TypeChecker {
-  public staticObject: any = DoubleInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -35,6 +33,7 @@ export class DoubleInfoImpl implements DoubleInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -58,7 +57,8 @@ export class DoubleInfoImpl implements DoubleInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: DoubleKinds
+    entityKind: DoubleKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -70,6 +70,7 @@ export class DoubleInfoImpl implements DoubleInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

@@ -24,10 +24,15 @@ import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { CommandInfoImpl } from "./commandInfoImpl";
+import { CommandInfoStatic } from "./commandInfoStatic";
 import { ComponentInfoImpl } from "./componentInfoImpl";
+import { ComponentInfoStatic } from "./componentInfoStatic";
 import { PropertyInfoImpl } from "./propertyInfoImpl";
+import { PropertyInfoStatic } from "./propertyInfoStatic";
 import { RelationshipInfoImpl } from "./relationshipInfoImpl";
+import { RelationshipInfoStatic } from "./relationshipInfoStatic";
 import { TelemetryInfoImpl } from "./telemetryInfoImpl";
+import { TelemetryInfoStatic } from "./telemetryInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
@@ -205,7 +210,7 @@ export class ContentInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -220,7 +225,7 @@ export class ContentInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -430,17 +435,38 @@ export class ContentInfoStatic {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;2":
-        elementInfo.ref = new CommandInfoImpl(2, elementId, parentId, definedIn, "command");
+        elementInfo.ref = new CommandInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "command",
+          CommandInfoStatic
+        );
         materialKinds.push("command");
         return true;
       case "Component":
       case "dtmi:dtdl:class:Component;2":
-        elementInfo.ref = new ComponentInfoImpl(2, elementId, parentId, definedIn, "component");
+        elementInfo.ref = new ComponentInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "component",
+          ComponentInfoStatic
+        );
         materialKinds.push("component");
         return true;
       case "Property":
       case "dtmi:dtdl:class:Property;2":
-        elementInfo.ref = new PropertyInfoImpl(2, elementId, parentId, definedIn, "property");
+        elementInfo.ref = new PropertyInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "property",
+          PropertyInfoStatic
+        );
         materialKinds.push("property");
         return true;
       case "Relationship":
@@ -450,13 +476,21 @@ export class ContentInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "relationship"
+          "relationship",
+          RelationshipInfoStatic
         );
         materialKinds.push("relationship");
         return true;
       case "Telemetry":
       case "dtmi:dtdl:class:Telemetry;2":
-        elementInfo.ref = new TelemetryInfoImpl(2, elementId, parentId, definedIn, "telemetry");
+        elementInfo.ref = new TelemetryInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "telemetry",
+          TelemetryInfoStatic
+        );
         materialKinds.push("telemetry");
         return true;
     }
@@ -682,17 +716,38 @@ export class ContentInfoStatic {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;3":
-        elementInfo.ref = new CommandInfoImpl(3, elementId, parentId, definedIn, "command");
+        elementInfo.ref = new CommandInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "command",
+          CommandInfoStatic
+        );
         materialKinds.push("command");
         return true;
       case "Component":
       case "dtmi:dtdl:class:Component;3":
-        elementInfo.ref = new ComponentInfoImpl(3, elementId, parentId, definedIn, "component");
+        elementInfo.ref = new ComponentInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "component",
+          ComponentInfoStatic
+        );
         materialKinds.push("component");
         return true;
       case "Property":
       case "dtmi:dtdl:class:Property;3":
-        elementInfo.ref = new PropertyInfoImpl(3, elementId, parentId, definedIn, "property");
+        elementInfo.ref = new PropertyInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "property",
+          PropertyInfoStatic
+        );
         materialKinds.push("property");
         return true;
       case "Relationship":
@@ -702,13 +757,21 @@ export class ContentInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "relationship"
+          "relationship",
+          RelationshipInfoStatic
         );
         materialKinds.push("relationship");
         return true;
       case "Telemetry":
       case "dtmi:dtdl:class:Telemetry;3":
-        elementInfo.ref = new TelemetryInfoImpl(3, elementId, parentId, definedIn, "telemetry");
+        elementInfo.ref = new TelemetryInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "telemetry",
+          TelemetryInfoStatic
+        );
         materialKinds.push("telemetry");
         return true;
     }

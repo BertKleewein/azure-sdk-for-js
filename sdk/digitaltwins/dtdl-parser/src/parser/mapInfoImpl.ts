@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { MapInfo } from "./mapInfo";
 import { MapKinds } from "./mapKinds";
 import { EntityKinds } from "./entityKinds";
-import { MapInfoStatic } from "./mapInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { MapKeyInfoImpl } from "./mapKeyInfoImpl";
@@ -31,7 +30,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class MapInfoImpl implements MapInfo, TypeChecker {
-  public staticObject: any = MapInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -51,6 +49,7 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
   private _mapValueInstanceProperties: string[] = [];
   public _mapValueAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _mapValueAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -74,7 +73,8 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: MapKinds
+    entityKind: MapKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -86,6 +86,7 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

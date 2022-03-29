@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { NamedEntityInfo } from "./namedEntityInfo";
 import { NamedEntityKinds } from "./namedEntityKinds";
 import { EntityKinds } from "./entityKinds";
-import { NamedEntityInfoStatic } from "./namedEntityInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -21,7 +20,6 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecker {
-  public staticObject: any = NamedEntityInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -34,6 +32,7 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
   public name?: string;
   public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -53,7 +52,8 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: NamedEntityKinds
+    entityKind: NamedEntityKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -65,6 +65,7 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

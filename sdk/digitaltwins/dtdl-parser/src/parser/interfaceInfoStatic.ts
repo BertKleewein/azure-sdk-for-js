@@ -232,7 +232,7 @@ export class InterfaceInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -247,7 +247,7 @@ export class InterfaceInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -470,7 +470,14 @@ export class InterfaceInfoStatic {
           );
         }
 
-        elementInfo.ref = new InterfaceInfoImpl(2, elementId, parentId, definedIn, "interface");
+        elementInfo.ref = new InterfaceInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "interface",
+          InterfaceInfoStatic
+        );
         materialKinds.push("interface");
         return true;
     }
@@ -786,7 +793,14 @@ export class InterfaceInfoStatic {
           );
         }
 
-        elementInfo.ref = new InterfaceInfoImpl(3, elementId, parentId, definedIn, "interface");
+        elementInfo.ref = new InterfaceInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "interface",
+          InterfaceInfoStatic
+        );
         materialKinds.push("interface");
         return true;
     }

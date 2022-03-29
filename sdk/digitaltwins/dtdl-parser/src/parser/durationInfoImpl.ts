@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { DurationInfo } from "./durationInfo";
 import { DurationKinds } from "./durationKinds";
 import { EntityKinds } from "./entityKinds";
-import { DurationInfoStatic } from "./durationInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class DurationInfoImpl implements DurationInfo, TypeChecker {
-  public staticObject: any = DurationInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -35,6 +33,7 @@ export class DurationInfoImpl implements DurationInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -60,7 +59,8 @@ export class DurationInfoImpl implements DurationInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: DurationKinds
+    entityKind: DurationKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -72,6 +72,7 @@ export class DurationInfoImpl implements DurationInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

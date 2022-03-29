@@ -236,7 +236,7 @@ export class CommandInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -251,7 +251,7 @@ export class CommandInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -461,7 +461,14 @@ export class CommandInfoStatic {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;2":
-        elementInfo.ref = new CommandInfoImpl(2, elementId, parentId, definedIn, "command");
+        elementInfo.ref = new CommandInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "command",
+          CommandInfoStatic
+        );
         materialKinds.push("command");
         return true;
     }
@@ -800,7 +807,14 @@ export class CommandInfoStatic {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;3":
-        elementInfo.ref = new CommandInfoImpl(3, elementId, parentId, definedIn, "command");
+        elementInfo.ref = new CommandInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "command",
+          CommandInfoStatic
+        );
         materialKinds.push("command");
         return true;
     }

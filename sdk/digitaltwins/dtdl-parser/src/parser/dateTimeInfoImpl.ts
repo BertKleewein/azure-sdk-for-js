@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { DateTimeInfo } from "./dateTimeInfo";
 import { DateTimeKinds } from "./dateTimeKinds";
 import { EntityKinds } from "./entityKinds";
-import { DateTimeInfoStatic } from "./dateTimeInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
-  public staticObject: any = DateTimeInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -35,6 +33,7 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -60,7 +59,8 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: DateTimeKinds
+    entityKind: DateTimeKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -72,6 +72,7 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

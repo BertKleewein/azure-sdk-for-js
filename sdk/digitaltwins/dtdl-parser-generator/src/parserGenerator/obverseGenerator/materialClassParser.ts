@@ -293,7 +293,7 @@ export class MaterialClassParser {
       const switchCase = switchScope.scope(`case ${dtdlVersion}:`);
       switchCase
         .line(
-          `elementInfo.staticObject.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
+          `elementInfo.staticObjectClass.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
         )
         .line(`break;`);
     }
@@ -500,6 +500,7 @@ export class MaterialClassParser {
     concreteSubclasses.forEach((subclass) => {
       if (staticClass.name !== subclass.className) {
         staticClass.importObject(subclass.className);
+        staticClass.importObject(subclass.staticClassName);
       }
       subclass.addCaseToParseTypeStringSwitch(
         tryParseTypeStringMethod.body,

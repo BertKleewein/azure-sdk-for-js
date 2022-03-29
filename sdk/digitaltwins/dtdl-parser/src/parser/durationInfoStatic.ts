@@ -228,7 +228,7 @@ export class DurationInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class DurationInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class DurationInfoStatic {
     switch (typestring) {
       case "Duration":
       case "dtmi:dtdl:class:Duration;2":
-        elementInfo.ref = new DurationInfoImpl(2, elementId, parentId, definedIn, "duration");
+        elementInfo.ref = new DurationInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "duration",
+          DurationInfoStatic
+        );
         materialKinds.push("duration");
         return true;
     }
@@ -670,7 +677,14 @@ export class DurationInfoStatic {
     switch (typestring) {
       case "Duration":
       case "dtmi:dtdl:class:Duration;3":
-        elementInfo.ref = new DurationInfoImpl(3, elementId, parentId, definedIn, "duration");
+        elementInfo.ref = new DurationInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "duration",
+          DurationInfoStatic
+        );
         materialKinds.push("duration");
         return true;
     }

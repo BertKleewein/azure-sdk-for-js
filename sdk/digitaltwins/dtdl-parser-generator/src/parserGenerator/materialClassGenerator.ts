@@ -279,16 +279,7 @@ export class MaterialClassGenerator implements TypeGenerator {
       .importObject(this._typeName)
       .importObject(this._typeKindEnum)
       .importObject(this._baseKindEnum)
-      .importObject(this._typeStaticName)
       .importObject("Reference, referenceInit", "../common/reference");
-
-    obverseClass.field({
-      name: "staticObject",
-      access: TsAccess.Public,
-      isStatic: false,
-      type: "any",
-      value: this._typeStaticName,
-    });
 
     const staticClass = parserLibrary.class({
       name: this._typeStaticName,
@@ -330,6 +321,17 @@ export class MaterialClassGenerator implements TypeGenerator {
       this._isAbstract,
       this._parentTypeName === undefined
     );
+
+    obverseClass.field({
+      name: "staticObjectClass",
+      access: TsAccess.Public,
+      isStatic: false,
+      type: "any",
+    });
+
+    obverseClass.ctor.parameter({ name: "staticObjectClass", type: "any" });
+    ctorScope.line(`this.staticObjectClass = staticObjectClass`);
+
     MaterialClassPartitioner.generateConstructorCode(ctorScope, this._isPartition);
     MaterialClassParser.generateConstructorCode(ctorScope, this._parentTypeName === undefined);
     const anyObjectProperties = this._properties.some(

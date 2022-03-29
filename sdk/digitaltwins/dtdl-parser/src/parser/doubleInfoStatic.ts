@@ -228,7 +228,7 @@ export class DoubleInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class DoubleInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class DoubleInfoStatic {
     switch (typestring) {
       case "Double":
       case "dtmi:dtdl:class:Double;2":
-        elementInfo.ref = new DoubleInfoImpl(2, elementId, parentId, definedIn, "double");
+        elementInfo.ref = new DoubleInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "double",
+          DoubleInfoStatic
+        );
         materialKinds.push("double");
         return true;
     }
@@ -670,7 +677,14 @@ export class DoubleInfoStatic {
     switch (typestring) {
       case "Double":
       case "dtmi:dtdl:class:Double;3":
-        elementInfo.ref = new DoubleInfoImpl(3, elementId, parentId, definedIn, "double");
+        elementInfo.ref = new DoubleInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "double",
+          DoubleInfoStatic
+        );
         materialKinds.push("double");
         return true;
     }

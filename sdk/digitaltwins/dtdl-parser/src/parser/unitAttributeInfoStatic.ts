@@ -226,7 +226,7 @@ export class UnitAttributeInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -241,7 +241,7 @@ export class UnitAttributeInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -528,7 +528,8 @@ export class UnitAttributeInfoStatic {
             elementId,
             parentId,
             definedIn,
-            "unitattribute"
+            "unitattribute",
+            UnitAttributeInfoStatic
           );
           (elementInfo.ref as UnitAttributeInfoImpl).addType(
             supplementalTypeId.value,
@@ -790,7 +791,8 @@ export class UnitAttributeInfoStatic {
             elementId,
             parentId,
             definedIn,
-            "unitattribute"
+            "unitattribute",
+            UnitAttributeInfoStatic
           );
           (elementInfo.ref as UnitAttributeInfoImpl).addType(
             supplementalTypeId.value,

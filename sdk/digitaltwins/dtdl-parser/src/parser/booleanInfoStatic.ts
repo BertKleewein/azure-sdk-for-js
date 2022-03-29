@@ -228,7 +228,7 @@ export class BooleanInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class BooleanInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class BooleanInfoStatic {
     switch (typestring) {
       case "Boolean":
       case "dtmi:dtdl:class:Boolean;2":
-        elementInfo.ref = new BooleanInfoImpl(2, elementId, parentId, definedIn, "boolean");
+        elementInfo.ref = new BooleanInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "boolean",
+          BooleanInfoStatic
+        );
         materialKinds.push("boolean");
         return true;
     }
@@ -670,7 +677,14 @@ export class BooleanInfoStatic {
     switch (typestring) {
       case "Boolean":
       case "dtmi:dtdl:class:Boolean;3":
-        elementInfo.ref = new BooleanInfoImpl(3, elementId, parentId, definedIn, "boolean");
+        elementInfo.ref = new BooleanInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "boolean",
+          BooleanInfoStatic
+        );
         materialKinds.push("boolean");
         return true;
     }

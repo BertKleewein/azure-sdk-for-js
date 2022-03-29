@@ -230,7 +230,7 @@ export class ArrayInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class ArrayInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -455,7 +455,14 @@ export class ArrayInfoStatic {
     switch (typestring) {
       case "Array":
       case "dtmi:dtdl:class:Array;2":
-        elementInfo.ref = new ArrayInfoImpl(2, elementId, parentId, definedIn, "array");
+        elementInfo.ref = new ArrayInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "array",
+          ArrayInfoStatic
+        );
         materialKinds.push("array");
         return true;
     }
@@ -729,7 +736,14 @@ export class ArrayInfoStatic {
     switch (typestring) {
       case "Array":
       case "dtmi:dtdl:class:Array;3":
-        elementInfo.ref = new ArrayInfoImpl(3, elementId, parentId, definedIn, "array");
+        elementInfo.ref = new ArrayInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "array",
+          ArrayInfoStatic
+        );
         materialKinds.push("array");
         return true;
     }

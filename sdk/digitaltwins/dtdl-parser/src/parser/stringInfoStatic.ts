@@ -228,7 +228,7 @@ export class StringInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class StringInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class StringInfoStatic {
     switch (typestring) {
       case "String":
       case "dtmi:dtdl:class:String;2":
-        elementInfo.ref = new StringInfoImpl(2, elementId, parentId, definedIn, "string");
+        elementInfo.ref = new StringInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "string",
+          StringInfoStatic
+        );
         materialKinds.push("string");
         return true;
     }
@@ -670,7 +677,14 @@ export class StringInfoStatic {
     switch (typestring) {
       case "String":
       case "dtmi:dtdl:class:String;3":
-        elementInfo.ref = new StringInfoImpl(3, elementId, parentId, definedIn, "string");
+        elementInfo.ref = new StringInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "string",
+          StringInfoStatic
+        );
         materialKinds.push("string");
         return true;
     }

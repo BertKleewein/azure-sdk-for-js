@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { ObjectInfo } from "./objectInfo";
 import { ObjectKinds } from "./objectKinds";
 import { EntityKinds } from "./entityKinds";
-import { ObjectInfoStatic } from "./objectInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { FieldInfoImpl } from "./fieldInfoImpl";
@@ -28,7 +27,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
-  public staticObject: any = ObjectInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -43,6 +41,7 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
   public _fieldsAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _fieldsAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -66,7 +65,8 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ObjectKinds
+    entityKind: ObjectKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -79,6 +79,7 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

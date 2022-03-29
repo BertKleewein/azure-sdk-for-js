@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { ReferenceInfo } from "./referenceInfo";
 import { ReferenceKinds } from "./referenceKinds";
 import { EntityKinds } from "./entityKinds";
-import { ReferenceInfoStatic } from "./referenceInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
@@ -24,12 +23,12 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
-  public staticObject: any = ReferenceInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
   public definedIn: string | undefined;
   public entityKind: ReferenceKinds;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -53,7 +52,8 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ReferenceKinds
+    entityKind: ReferenceKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -63,6 +63,7 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

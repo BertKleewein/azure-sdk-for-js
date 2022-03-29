@@ -230,7 +230,7 @@ export class MapKeyInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class MapKeyInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -455,7 +455,14 @@ export class MapKeyInfoStatic {
     switch (typestring) {
       case "MapKey":
       case "dtmi:dtdl:class:MapKey;2":
-        elementInfo.ref = new MapKeyInfoImpl(2, elementId, parentId, definedIn, "mapkey");
+        elementInfo.ref = new MapKeyInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "mapkey",
+          MapKeyInfoStatic
+        );
         materialKinds.push("mapkey");
         return true;
     }
@@ -754,7 +761,14 @@ export class MapKeyInfoStatic {
     switch (typestring) {
       case "MapKey":
       case "dtmi:dtdl:class:MapKey;3":
-        elementInfo.ref = new MapKeyInfoImpl(3, elementId, parentId, definedIn, "mapkey");
+        elementInfo.ref = new MapKeyInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "mapkey",
+          MapKeyInfoStatic
+        );
         materialKinds.push("mapkey");
         return true;
     }

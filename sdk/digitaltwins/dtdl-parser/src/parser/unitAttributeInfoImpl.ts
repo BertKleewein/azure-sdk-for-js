@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { UnitAttributeInfo } from "./unitAttributeInfo";
 import { UnitAttributeKinds } from "./unitAttributeKinds";
 import { EntityKinds } from "./entityKinds";
-import { UnitAttributeInfoStatic } from "./unitAttributeInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
-  public staticObject: any = UnitAttributeInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -38,6 +36,7 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
   public name?: string;
   public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -61,7 +60,8 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: UnitAttributeKinds
+    entityKind: UnitAttributeKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -73,6 +73,7 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

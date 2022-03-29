@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { TemporalSchemaInfo } from "./temporalSchemaInfo";
 import { TemporalSchemaKinds } from "./temporalSchemaKinds";
 import { EntityKinds } from "./entityKinds";
-import { TemporalSchemaInfoStatic } from "./temporalSchemaInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -21,7 +20,6 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class TemporalSchemaInfoImpl implements TemporalSchemaInfo, TypeChecker {
-  public staticObject: any = TemporalSchemaInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -31,6 +29,7 @@ export abstract class TemporalSchemaInfoImpl implements TemporalSchemaInfo, Type
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -50,7 +49,8 @@ export abstract class TemporalSchemaInfoImpl implements TemporalSchemaInfo, Type
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: TemporalSchemaKinds
+    entityKind: TemporalSchemaKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -62,6 +62,7 @@ export abstract class TemporalSchemaInfoImpl implements TemporalSchemaInfo, Type
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

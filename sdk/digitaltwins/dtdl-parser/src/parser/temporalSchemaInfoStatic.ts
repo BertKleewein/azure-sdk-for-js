@@ -24,9 +24,13 @@ import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { DateInfoImpl } from "./dateInfoImpl";
+import { DateInfoStatic } from "./dateInfoStatic";
 import { DateTimeInfoImpl } from "./dateTimeInfoImpl";
+import { DateTimeInfoStatic } from "./dateTimeInfoStatic";
 import { DurationInfoImpl } from "./durationInfoImpl";
+import { DurationInfoStatic } from "./durationInfoStatic";
 import { TimeInfoImpl } from "./timeInfoImpl";
+import { TimeInfoStatic } from "./timeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
@@ -202,7 +206,7 @@ export class TemporalSchemaInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -217,7 +221,7 @@ export class TemporalSchemaInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -430,22 +434,50 @@ export class TemporalSchemaInfoStatic {
     switch (typestring) {
       case "Date":
       case "dtmi:dtdl:class:Date;2":
-        elementInfo.ref = new DateInfoImpl(2, elementId, parentId, definedIn, "date");
+        elementInfo.ref = new DateInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "date",
+          DateInfoStatic
+        );
         materialKinds.push("date");
         return true;
       case "DateTime":
       case "dtmi:dtdl:class:DateTime;2":
-        elementInfo.ref = new DateTimeInfoImpl(2, elementId, parentId, definedIn, "datetime");
+        elementInfo.ref = new DateTimeInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "datetime",
+          DateTimeInfoStatic
+        );
         materialKinds.push("datetime");
         return true;
       case "Duration":
       case "dtmi:dtdl:class:Duration;2":
-        elementInfo.ref = new DurationInfoImpl(2, elementId, parentId, definedIn, "duration");
+        elementInfo.ref = new DurationInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "duration",
+          DurationInfoStatic
+        );
         materialKinds.push("duration");
         return true;
       case "Time":
       case "dtmi:dtdl:class:Time;2":
-        elementInfo.ref = new TimeInfoImpl(2, elementId, parentId, definedIn, "time");
+        elementInfo.ref = new TimeInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "time",
+          TimeInfoStatic
+        );
         materialKinds.push("time");
         return true;
     }
@@ -647,22 +679,50 @@ export class TemporalSchemaInfoStatic {
     switch (typestring) {
       case "Date":
       case "dtmi:dtdl:class:Date;3":
-        elementInfo.ref = new DateInfoImpl(3, elementId, parentId, definedIn, "date");
+        elementInfo.ref = new DateInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "date",
+          DateInfoStatic
+        );
         materialKinds.push("date");
         return true;
       case "DateTime":
       case "dtmi:dtdl:class:DateTime;3":
-        elementInfo.ref = new DateTimeInfoImpl(3, elementId, parentId, definedIn, "datetime");
+        elementInfo.ref = new DateTimeInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "datetime",
+          DateTimeInfoStatic
+        );
         materialKinds.push("datetime");
         return true;
       case "Duration":
       case "dtmi:dtdl:class:Duration;3":
-        elementInfo.ref = new DurationInfoImpl(3, elementId, parentId, definedIn, "duration");
+        elementInfo.ref = new DurationInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "duration",
+          DurationInfoStatic
+        );
         materialKinds.push("duration");
         return true;
       case "Time":
       case "dtmi:dtdl:class:Time;3":
-        elementInfo.ref = new TimeInfoImpl(3, elementId, parentId, definedIn, "time");
+        elementInfo.ref = new TimeInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "time",
+          TimeInfoStatic
+        );
         materialKinds.push("time");
         return true;
     }

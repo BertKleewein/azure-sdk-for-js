@@ -226,7 +226,7 @@ export class UnitInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -241,7 +241,7 @@ export class UnitInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -508,7 +508,14 @@ export class UnitInfoStatic {
 
       switch ((supplementalTypeInfo as SupplementalTypeInfoImpl)?.extensionKind) {
         case ExtensionKind.UNIT:
-          elementInfo.ref = new UnitInfoImpl(2, elementId, parentId, definedIn, "unit");
+          elementInfo.ref = new UnitInfoImpl(
+            2,
+            elementId,
+            parentId,
+            definedIn,
+            "unit",
+            UnitInfoStatic
+          );
           (elementInfo.ref as UnitInfoImpl).addType(supplementalTypeId.value, supplementalTypeInfo);
           materialKinds.push("unit");
           return true;
@@ -748,7 +755,14 @@ export class UnitInfoStatic {
           );
           break;
         case ExtensionKind.UNIT:
-          elementInfo.ref = new UnitInfoImpl(3, elementId, parentId, definedIn, "unit");
+          elementInfo.ref = new UnitInfoImpl(
+            3,
+            elementId,
+            parentId,
+            definedIn,
+            "unit",
+            UnitInfoStatic
+          );
           (elementInfo.ref as UnitInfoImpl).addType(supplementalTypeId.value, supplementalTypeInfo);
           materialKinds.push("unit");
           return true;

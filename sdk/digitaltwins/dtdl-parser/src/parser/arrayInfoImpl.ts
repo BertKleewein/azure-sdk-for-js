@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { ArrayInfo } from "./arrayInfo";
 import { ArrayKinds } from "./arrayKinds";
 import { EntityKinds } from "./entityKinds";
-import { ArrayInfoStatic } from "./arrayInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
@@ -29,7 +28,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class ArrayInfoImpl implements ArrayInfo, TypeChecker {
-  public staticObject: any = ArrayInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -44,6 +42,7 @@ export class ArrayInfoImpl implements ArrayInfo, TypeChecker {
   public _elementSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _elementSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -67,7 +66,8 @@ export class ArrayInfoImpl implements ArrayInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ArrayKinds
+    entityKind: ArrayKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -79,6 +79,7 @@ export class ArrayInfoImpl implements ArrayInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

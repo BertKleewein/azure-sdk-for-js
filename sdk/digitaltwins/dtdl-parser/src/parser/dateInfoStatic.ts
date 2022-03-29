@@ -228,7 +228,7 @@ export class DateInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class DateInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class DateInfoStatic {
     switch (typestring) {
       case "Date":
       case "dtmi:dtdl:class:Date;2":
-        elementInfo.ref = new DateInfoImpl(2, elementId, parentId, definedIn, "date");
+        elementInfo.ref = new DateInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "date",
+          DateInfoStatic
+        );
         materialKinds.push("date");
         return true;
     }
@@ -670,7 +677,14 @@ export class DateInfoStatic {
     switch (typestring) {
       case "Date":
       case "dtmi:dtdl:class:Date;3":
-        elementInfo.ref = new DateInfoImpl(3, elementId, parentId, definedIn, "date");
+        elementInfo.ref = new DateInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "date",
+          DateInfoStatic
+        );
         materialKinds.push("date");
         return true;
     }

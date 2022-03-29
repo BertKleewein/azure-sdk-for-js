@@ -14,6 +14,7 @@ export class ConcreteSubclass {
   private _dtdlVersion: number;
   private _rawSubTypeName: string;
   private _subClassTypeName: string;
+  private _subClassStaticTypeName: string;
   private _kindValue: string;
   private _subClassUri: string;
   private _maxLength?: number;
@@ -29,6 +30,7 @@ export class ConcreteSubclass {
     this._dtdlVersion = dtdlVersion;
     this._rawSubTypeName = rawSubTypeName;
     this._subClassTypeName = NameFormatter.formatNameAsImplementation(rawSubTypeName);
+    this._subClassStaticTypeName = NameFormatter.formatNameAsStatic(rawSubTypeName);
     this._kindValue = NameFormatter.formatNameAsKindString(rawSubTypeName);
     this._subClassUri =
       dtdlContexts[ParserGeneratorValues.getDtdlContextIdString(dtdlVersion)][rawSubTypeName];
@@ -56,6 +58,10 @@ export class ConcreteSubclass {
 
   get className(): string {
     return this._subClassTypeName;
+  }
+
+  get staticClassName(): string {
+    return this._subClassStaticTypeName;
   }
 
   get rawSubTypeName(): string {
@@ -112,7 +118,7 @@ export class ConcreteSubclass {
     }
     methodScope
       .line(
-        `${elementInfoStr} = new ${this.className}(${this._dtdlVersion}, ${elementIdStr}, ${parentIdStr}, ${definedInStr},'${this._kindValue}');`
+        `${elementInfoStr} = new ${this.className}(${this._dtdlVersion}, ${elementIdStr}, ${parentIdStr}, ${definedInStr},'${this._kindValue}', ${this.staticClassName});`
       )
       // .line(`materialKinds.push(${this._kindValue});`)
       // TODO Should enum value be always lower case

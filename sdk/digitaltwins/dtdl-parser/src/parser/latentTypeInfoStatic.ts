@@ -223,7 +223,7 @@ export class LatentTypeInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -468,7 +468,14 @@ export class LatentTypeInfoStatic {
 
       switch ((supplementalTypeInfo as SupplementalTypeInfoImpl)?.extensionKind) {
         case ExtensionKind.LATENTTYPE:
-          elementInfo.ref = new LatentTypeInfoImpl(3, elementId, parentId, definedIn, "latenttype");
+          elementInfo.ref = new LatentTypeInfoImpl(
+            3,
+            elementId,
+            parentId,
+            definedIn,
+            "latenttype",
+            LatentTypeInfoStatic
+          );
           (elementInfo.ref as LatentTypeInfoImpl).addType(
             supplementalTypeId.value,
             supplementalTypeInfo

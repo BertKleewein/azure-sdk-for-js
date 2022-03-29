@@ -223,7 +223,7 @@ export class NamedLatentTypeInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -488,7 +488,8 @@ export class NamedLatentTypeInfoStatic {
             elementId,
             parentId,
             definedIn,
-            "namedlatenttype"
+            "namedlatenttype",
+            NamedLatentTypeInfoStatic
           );
           (elementInfo.ref as NamedLatentTypeInfoImpl).addType(
             supplementalTypeId.value,

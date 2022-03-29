@@ -230,7 +230,7 @@ export class PropertyInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class PropertyInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -455,7 +455,14 @@ export class PropertyInfoStatic {
     switch (typestring) {
       case "Property":
       case "dtmi:dtdl:class:Property;2":
-        elementInfo.ref = new PropertyInfoImpl(2, elementId, parentId, definedIn, "property");
+        elementInfo.ref = new PropertyInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "property",
+          PropertyInfoStatic
+        );
         materialKinds.push("property");
         return true;
     }
@@ -764,7 +771,14 @@ export class PropertyInfoStatic {
     switch (typestring) {
       case "Property":
       case "dtmi:dtdl:class:Property;3":
-        elementInfo.ref = new PropertyInfoImpl(3, elementId, parentId, definedIn, "property");
+        elementInfo.ref = new PropertyInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "property",
+          PropertyInfoStatic
+        );
         materialKinds.push("property");
         return true;
     }

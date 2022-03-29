@@ -228,7 +228,7 @@ export class IntegerInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class IntegerInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class IntegerInfoStatic {
     switch (typestring) {
       case "Integer":
       case "dtmi:dtdl:class:Integer;2":
-        elementInfo.ref = new IntegerInfoImpl(2, elementId, parentId, definedIn, "integer");
+        elementInfo.ref = new IntegerInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "integer",
+          IntegerInfoStatic
+        );
         materialKinds.push("integer");
         return true;
     }
@@ -670,7 +677,14 @@ export class IntegerInfoStatic {
     switch (typestring) {
       case "Integer":
       case "dtmi:dtdl:class:Integer;3":
-        elementInfo.ref = new IntegerInfoImpl(3, elementId, parentId, definedIn, "integer");
+        elementInfo.ref = new IntegerInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "integer",
+          IntegerInfoStatic
+        );
         materialKinds.push("integer");
         return true;
     }

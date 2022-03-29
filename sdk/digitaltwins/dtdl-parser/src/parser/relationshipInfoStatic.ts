@@ -230,7 +230,7 @@ export class RelationshipInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class RelationshipInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -463,7 +463,8 @@ export class RelationshipInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "relationship"
+          "relationship",
+          RelationshipInfoStatic
         );
         materialKinds.push("relationship");
         return true;
@@ -788,7 +789,8 @@ export class RelationshipInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "relationship"
+          "relationship",
+          RelationshipInfoStatic
         );
         materialKinds.push("relationship");
         return true;

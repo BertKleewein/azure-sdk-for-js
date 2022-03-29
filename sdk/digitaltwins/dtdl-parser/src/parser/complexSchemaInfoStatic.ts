@@ -24,9 +24,13 @@ import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { ArrayInfoImpl } from "./arrayInfoImpl";
+import { ArrayInfoStatic } from "./arrayInfoStatic";
 import { EnumInfoImpl } from "./enumInfoImpl";
+import { EnumInfoStatic } from "./enumInfoStatic";
 import { MapInfoImpl } from "./mapInfoImpl";
+import { MapInfoStatic } from "./mapInfoStatic";
 import { ObjectInfoImpl } from "./objectInfoImpl";
+import { ObjectInfoStatic } from "./objectInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
@@ -202,7 +206,7 @@ export class ComplexSchemaInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -217,7 +221,7 @@ export class ComplexSchemaInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -430,22 +434,43 @@ export class ComplexSchemaInfoStatic {
     switch (typestring) {
       case "Array":
       case "dtmi:dtdl:class:Array;2":
-        elementInfo.ref = new ArrayInfoImpl(2, elementId, parentId, definedIn, "array");
+        elementInfo.ref = new ArrayInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "array",
+          ArrayInfoStatic
+        );
         materialKinds.push("array");
         return true;
       case "Enum":
       case "dtmi:dtdl:class:Enum;2":
-        elementInfo.ref = new EnumInfoImpl(2, elementId, parentId, definedIn, "enum");
+        elementInfo.ref = new EnumInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "enum",
+          EnumInfoStatic
+        );
         materialKinds.push("enum");
         return true;
       case "Map":
       case "dtmi:dtdl:class:Map;2":
-        elementInfo.ref = new MapInfoImpl(2, elementId, parentId, definedIn, "map");
+        elementInfo.ref = new MapInfoImpl(2, elementId, parentId, definedIn, "map", MapInfoStatic);
         materialKinds.push("map");
         return true;
       case "Object":
       case "dtmi:dtdl:class:Object;2":
-        elementInfo.ref = new ObjectInfoImpl(2, elementId, parentId, definedIn, "object");
+        elementInfo.ref = new ObjectInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "object",
+          ObjectInfoStatic
+        );
         materialKinds.push("object");
         return true;
     }
@@ -647,22 +672,43 @@ export class ComplexSchemaInfoStatic {
     switch (typestring) {
       case "Array":
       case "dtmi:dtdl:class:Array;3":
-        elementInfo.ref = new ArrayInfoImpl(3, elementId, parentId, definedIn, "array");
+        elementInfo.ref = new ArrayInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "array",
+          ArrayInfoStatic
+        );
         materialKinds.push("array");
         return true;
       case "Enum":
       case "dtmi:dtdl:class:Enum;3":
-        elementInfo.ref = new EnumInfoImpl(3, elementId, parentId, definedIn, "enum");
+        elementInfo.ref = new EnumInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "enum",
+          EnumInfoStatic
+        );
         materialKinds.push("enum");
         return true;
       case "Map":
       case "dtmi:dtdl:class:Map;3":
-        elementInfo.ref = new MapInfoImpl(3, elementId, parentId, definedIn, "map");
+        elementInfo.ref = new MapInfoImpl(3, elementId, parentId, definedIn, "map", MapInfoStatic);
         materialKinds.push("map");
         return true;
       case "Object":
       case "dtmi:dtdl:class:Object;3":
-        elementInfo.ref = new ObjectInfoImpl(3, elementId, parentId, definedIn, "object");
+        elementInfo.ref = new ObjectInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "object",
+          ObjectInfoStatic
+        );
         materialKinds.push("object");
         return true;
     }

@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { CommandInfo } from "./commandInfo";
 import { CommandKinds } from "./commandKinds";
 import { EntityKinds } from "./entityKinds";
-import { CommandInfoStatic } from "./commandInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { CommandTypeInfoImpl } from "./commandTypeInfoImpl";
 import { CommandTypeInfo } from "./commandTypeInfo";
@@ -31,7 +30,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class CommandInfoImpl implements CommandInfo, TypeChecker {
-  public staticObject: any = CommandInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -59,6 +57,7 @@ export class CommandInfoImpl implements CommandInfo, TypeChecker {
   private _responseInstanceProperties: string[] = [];
   public _responseAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _responseAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -82,7 +81,8 @@ export class CommandInfoImpl implements CommandInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: CommandKinds
+    entityKind: CommandKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -94,6 +94,7 @@ export class CommandInfoImpl implements CommandInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

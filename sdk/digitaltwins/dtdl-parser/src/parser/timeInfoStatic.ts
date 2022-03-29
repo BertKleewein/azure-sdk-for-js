@@ -228,7 +228,7 @@ export class TimeInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class TimeInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class TimeInfoStatic {
     switch (typestring) {
       case "Time":
       case "dtmi:dtdl:class:Time;2":
-        elementInfo.ref = new TimeInfoImpl(2, elementId, parentId, definedIn, "time");
+        elementInfo.ref = new TimeInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "time",
+          TimeInfoStatic
+        );
         materialKinds.push("time");
         return true;
     }
@@ -670,7 +677,14 @@ export class TimeInfoStatic {
     switch (typestring) {
       case "Time":
       case "dtmi:dtdl:class:Time;3":
-        elementInfo.ref = new TimeInfoImpl(3, elementId, parentId, definedIn, "time");
+        elementInfo.ref = new TimeInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "time",
+          TimeInfoStatic
+        );
         materialKinds.push("time");
         return true;
     }

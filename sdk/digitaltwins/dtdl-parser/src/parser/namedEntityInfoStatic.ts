@@ -24,22 +24,36 @@ import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { CommandInfoImpl } from "./commandInfoImpl";
+import { CommandInfoStatic } from "./commandInfoStatic";
 import { CommandPayloadInfoImpl } from "./commandPayloadInfoImpl";
+import { CommandPayloadInfoStatic } from "./commandPayloadInfoStatic";
 import { ComponentInfoImpl } from "./componentInfoImpl";
+import { ComponentInfoStatic } from "./componentInfoStatic";
 import { EnumValueInfoImpl } from "./enumValueInfoImpl";
+import { EnumValueInfoStatic } from "./enumValueInfoStatic";
 import { FieldInfoImpl } from "./fieldInfoImpl";
+import { FieldInfoStatic } from "./fieldInfoStatic";
 import { MapKeyInfoImpl } from "./mapKeyInfoImpl";
+import { MapKeyInfoStatic } from "./mapKeyInfoStatic";
 import { MapValueInfoImpl } from "./mapValueInfoImpl";
+import { MapValueInfoStatic } from "./mapValueInfoStatic";
 import { PropertyInfoImpl } from "./propertyInfoImpl";
+import { PropertyInfoStatic } from "./propertyInfoStatic";
 import { RelationshipInfoImpl } from "./relationshipInfoImpl";
+import { RelationshipInfoStatic } from "./relationshipInfoStatic";
 import { TelemetryInfoImpl } from "./telemetryInfoImpl";
+import { TelemetryInfoStatic } from "./telemetryInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
 import { UnitAttributeInfoImpl } from "./unitAttributeInfoImpl";
+import { UnitAttributeInfoStatic } from "./unitAttributeInfoStatic";
 import { CommandRequestInfoImpl } from "./commandRequestInfoImpl";
+import { CommandRequestInfoStatic } from "./commandRequestInfoStatic";
 import { CommandResponseInfoImpl } from "./commandResponseInfoImpl";
+import { CommandResponseInfoStatic } from "./commandResponseInfoStatic";
 import { NamedLatentTypeInfoImpl } from "./namedLatentTypeInfoImpl";
+import { NamedLatentTypeInfoStatic } from "./namedLatentTypeInfoStatic";
 export class NamedEntityInfoStatic {
   protected static _concreteKinds: { [x: number]: NamedEntityKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
@@ -225,7 +239,7 @@ export class NamedEntityInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -240,7 +254,7 @@ export class NamedEntityInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +467,14 @@ export class NamedEntityInfoStatic {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;2":
-        elementInfo.ref = new CommandInfoImpl(2, elementId, parentId, definedIn, "command");
+        elementInfo.ref = new CommandInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "command",
+          CommandInfoStatic
+        );
         materialKinds.push("command");
         return true;
       case "CommandPayload":
@@ -463,38 +484,81 @@ export class NamedEntityInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandpayload"
+          "commandpayload",
+          CommandPayloadInfoStatic
         );
         materialKinds.push("commandpayload");
         return true;
       case "Component":
       case "dtmi:dtdl:class:Component;2":
-        elementInfo.ref = new ComponentInfoImpl(2, elementId, parentId, definedIn, "component");
+        elementInfo.ref = new ComponentInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "component",
+          ComponentInfoStatic
+        );
         materialKinds.push("component");
         return true;
       case "EnumValue":
       case "dtmi:dtdl:class:EnumValue;2":
-        elementInfo.ref = new EnumValueInfoImpl(2, elementId, parentId, definedIn, "enumvalue");
+        elementInfo.ref = new EnumValueInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "enumvalue",
+          EnumValueInfoStatic
+        );
         materialKinds.push("enumvalue");
         return true;
       case "Field":
       case "dtmi:dtdl:class:Field;2":
-        elementInfo.ref = new FieldInfoImpl(2, elementId, parentId, definedIn, "field");
+        elementInfo.ref = new FieldInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "field",
+          FieldInfoStatic
+        );
         materialKinds.push("field");
         return true;
       case "MapKey":
       case "dtmi:dtdl:class:MapKey;2":
-        elementInfo.ref = new MapKeyInfoImpl(2, elementId, parentId, definedIn, "mapkey");
+        elementInfo.ref = new MapKeyInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "mapkey",
+          MapKeyInfoStatic
+        );
         materialKinds.push("mapkey");
         return true;
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;2":
-        elementInfo.ref = new MapValueInfoImpl(2, elementId, parentId, definedIn, "mapvalue");
+        elementInfo.ref = new MapValueInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "mapvalue",
+          MapValueInfoStatic
+        );
         materialKinds.push("mapvalue");
         return true;
       case "Property":
       case "dtmi:dtdl:class:Property;2":
-        elementInfo.ref = new PropertyInfoImpl(2, elementId, parentId, definedIn, "property");
+        elementInfo.ref = new PropertyInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "property",
+          PropertyInfoStatic
+        );
         materialKinds.push("property");
         return true;
       case "Relationship":
@@ -504,13 +568,21 @@ export class NamedEntityInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "relationship"
+          "relationship",
+          RelationshipInfoStatic
         );
         materialKinds.push("relationship");
         return true;
       case "Telemetry":
       case "dtmi:dtdl:class:Telemetry;2":
-        elementInfo.ref = new TelemetryInfoImpl(2, elementId, parentId, definedIn, "telemetry");
+        elementInfo.ref = new TelemetryInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "telemetry",
+          TelemetryInfoStatic
+        );
         materialKinds.push("telemetry");
         return true;
     }
@@ -589,7 +661,8 @@ export class NamedEntityInfoStatic {
             elementId,
             parentId,
             definedIn,
-            "unitattribute"
+            "unitattribute",
+            UnitAttributeInfoStatic
           );
           (elementInfo.ref as UnitAttributeInfoImpl).addType(
             supplementalTypeId.value,
@@ -738,7 +811,14 @@ export class NamedEntityInfoStatic {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;3":
-        elementInfo.ref = new CommandInfoImpl(3, elementId, parentId, definedIn, "command");
+        elementInfo.ref = new CommandInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "command",
+          CommandInfoStatic
+        );
         materialKinds.push("command");
         return true;
       case "CommandRequest":
@@ -748,7 +828,8 @@ export class NamedEntityInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandrequest"
+          "commandrequest",
+          CommandRequestInfoStatic
         );
         materialKinds.push("commandrequest");
         return true;
@@ -759,38 +840,81 @@ export class NamedEntityInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandresponse"
+          "commandresponse",
+          CommandResponseInfoStatic
         );
         materialKinds.push("commandresponse");
         return true;
       case "Component":
       case "dtmi:dtdl:class:Component;3":
-        elementInfo.ref = new ComponentInfoImpl(3, elementId, parentId, definedIn, "component");
+        elementInfo.ref = new ComponentInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "component",
+          ComponentInfoStatic
+        );
         materialKinds.push("component");
         return true;
       case "EnumValue":
       case "dtmi:dtdl:class:EnumValue;3":
-        elementInfo.ref = new EnumValueInfoImpl(3, elementId, parentId, definedIn, "enumvalue");
+        elementInfo.ref = new EnumValueInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "enumvalue",
+          EnumValueInfoStatic
+        );
         materialKinds.push("enumvalue");
         return true;
       case "Field":
       case "dtmi:dtdl:class:Field;3":
-        elementInfo.ref = new FieldInfoImpl(3, elementId, parentId, definedIn, "field");
+        elementInfo.ref = new FieldInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "field",
+          FieldInfoStatic
+        );
         materialKinds.push("field");
         return true;
       case "MapKey":
       case "dtmi:dtdl:class:MapKey;3":
-        elementInfo.ref = new MapKeyInfoImpl(3, elementId, parentId, definedIn, "mapkey");
+        elementInfo.ref = new MapKeyInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "mapkey",
+          MapKeyInfoStatic
+        );
         materialKinds.push("mapkey");
         return true;
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;3":
-        elementInfo.ref = new MapValueInfoImpl(3, elementId, parentId, definedIn, "mapvalue");
+        elementInfo.ref = new MapValueInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "mapvalue",
+          MapValueInfoStatic
+        );
         materialKinds.push("mapvalue");
         return true;
       case "Property":
       case "dtmi:dtdl:class:Property;3":
-        elementInfo.ref = new PropertyInfoImpl(3, elementId, parentId, definedIn, "property");
+        elementInfo.ref = new PropertyInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "property",
+          PropertyInfoStatic
+        );
         materialKinds.push("property");
         return true;
       case "Relationship":
@@ -800,13 +924,21 @@ export class NamedEntityInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "relationship"
+          "relationship",
+          RelationshipInfoStatic
         );
         materialKinds.push("relationship");
         return true;
       case "Telemetry":
       case "dtmi:dtdl:class:Telemetry;3":
-        elementInfo.ref = new TelemetryInfoImpl(3, elementId, parentId, definedIn, "telemetry");
+        elementInfo.ref = new TelemetryInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "telemetry",
+          TelemetryInfoStatic
+        );
         materialKinds.push("telemetry");
         return true;
     }
@@ -885,7 +1017,8 @@ export class NamedEntityInfoStatic {
             elementId,
             parentId,
             definedIn,
-            "namedlatenttype"
+            "namedlatenttype",
+            NamedLatentTypeInfoStatic
           );
           (elementInfo.ref as NamedLatentTypeInfoImpl).addType(
             supplementalTypeId.value,
@@ -911,7 +1044,8 @@ export class NamedEntityInfoStatic {
             elementId,
             parentId,
             definedIn,
-            "unitattribute"
+            "unitattribute",
+            UnitAttributeInfoStatic
           );
           (elementInfo.ref as UnitAttributeInfoImpl).addType(
             supplementalTypeId.value,

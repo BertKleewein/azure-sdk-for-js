@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { ContentInfo } from "./contentInfo";
 import { ContentKinds } from "./contentKinds";
 import { EntityKinds } from "./entityKinds";
-import { ContentInfoStatic } from "./contentInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -21,7 +20,6 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class ContentInfoImpl implements ContentInfo, TypeChecker {
-  public staticObject: any = ContentInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -34,6 +32,7 @@ export abstract class ContentInfoImpl implements ContentInfo, TypeChecker {
   public name?: string;
   public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -53,7 +52,8 @@ export abstract class ContentInfoImpl implements ContentInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ContentKinds
+    entityKind: ContentKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -65,6 +65,7 @@ export abstract class ContentInfoImpl implements ContentInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

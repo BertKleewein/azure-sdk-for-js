@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { SchemaFieldInfo } from "./schemaFieldInfo";
 import { SchemaFieldKinds } from "./schemaFieldKinds";
 import { EntityKinds } from "./entityKinds";
-import { SchemaFieldInfoStatic } from "./schemaFieldInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
@@ -24,7 +23,6 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecker {
-  public staticObject: any = SchemaFieldInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -40,6 +38,7 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
   public schema?: SchemaInfo;
   public _schemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -59,7 +58,8 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: SchemaFieldKinds
+    entityKind: SchemaFieldKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -71,6 +71,7 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

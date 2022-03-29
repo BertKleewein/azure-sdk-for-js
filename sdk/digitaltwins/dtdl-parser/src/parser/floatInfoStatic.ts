@@ -228,7 +228,7 @@ export class FloatInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class FloatInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class FloatInfoStatic {
     switch (typestring) {
       case "Float":
       case "dtmi:dtdl:class:Float;2":
-        elementInfo.ref = new FloatInfoImpl(2, elementId, parentId, definedIn, "float");
+        elementInfo.ref = new FloatInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "float",
+          FloatInfoStatic
+        );
         materialKinds.push("float");
         return true;
     }
@@ -670,7 +677,14 @@ export class FloatInfoStatic {
     switch (typestring) {
       case "Float":
       case "dtmi:dtdl:class:Float;3":
-        elementInfo.ref = new FloatInfoImpl(3, elementId, parentId, definedIn, "float");
+        elementInfo.ref = new FloatInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "float",
+          FloatInfoStatic
+        );
         materialKinds.push("float");
         return true;
     }

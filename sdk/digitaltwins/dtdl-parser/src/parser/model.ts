@@ -15,6 +15,7 @@ import { ModelDict } from "./modelDict";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { EntityKinds } from "./entityKinds";
 import { EntityInfoImpl } from "./entityInfoImpl";
+import { ReferenceInfoStatic } from "./referenceInfoStatic";
 /**
  * A DTDL model.
  **/
@@ -54,7 +55,14 @@ export class Model {
   ): boolean {
     const obj = Object.keys(this.dict).includes(referencedElementId)
       ? this.dict[referencedElementId]
-      : new ReferenceInfoImpl(0, referencedElementId, undefined, undefined, "reference");
+      : new ReferenceInfoImpl(
+          0,
+          referencedElementId,
+          undefined,
+          undefined,
+          "reference",
+          ReferenceInfoStatic
+        );
     return (
       (this.dict[elementId] as EntityInfoImpl)?.trySetObjectProperty(propertyName, obj, key) ||
       false

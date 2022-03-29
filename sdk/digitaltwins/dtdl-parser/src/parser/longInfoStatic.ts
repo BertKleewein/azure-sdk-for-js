@@ -228,7 +228,7 @@ export class LongInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -243,7 +243,7 @@ export class LongInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -453,7 +453,14 @@ export class LongInfoStatic {
     switch (typestring) {
       case "Long":
       case "dtmi:dtdl:class:Long;2":
-        elementInfo.ref = new LongInfoImpl(2, elementId, parentId, definedIn, "long");
+        elementInfo.ref = new LongInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "long",
+          LongInfoStatic
+        );
         materialKinds.push("long");
         return true;
     }
@@ -670,7 +677,14 @@ export class LongInfoStatic {
     switch (typestring) {
       case "Long":
       case "dtmi:dtdl:class:Long;3":
-        elementInfo.ref = new LongInfoImpl(3, elementId, parentId, definedIn, "long");
+        elementInfo.ref = new LongInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "long",
+          LongInfoStatic
+        );
         materialKinds.push("long");
         return true;
     }

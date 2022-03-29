@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
 import { PrimitiveSchemaKinds } from "./primitiveSchemaKinds";
 import { EntityKinds } from "./entityKinds";
-import { PrimitiveSchemaInfoStatic } from "./primitiveSchemaInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -21,7 +20,6 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class PrimitiveSchemaInfoImpl implements PrimitiveSchemaInfo, TypeChecker {
-  public staticObject: any = PrimitiveSchemaInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -31,6 +29,7 @@ export abstract class PrimitiveSchemaInfoImpl implements PrimitiveSchemaInfo, Ty
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -50,7 +49,8 @@ export abstract class PrimitiveSchemaInfoImpl implements PrimitiveSchemaInfo, Ty
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: PrimitiveSchemaKinds
+    entityKind: PrimitiveSchemaKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -62,6 +62,7 @@ export abstract class PrimitiveSchemaInfoImpl implements PrimitiveSchemaInfo, Ty
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

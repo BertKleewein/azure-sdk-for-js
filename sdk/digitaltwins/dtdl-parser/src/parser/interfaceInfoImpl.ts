@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { InterfaceInfo } from "./interfaceInfo";
 import { InterfaceKinds } from "./interfaceKinds";
 import { EntityKinds } from "./entityKinds";
-import { InterfaceInfoStatic } from "./interfaceInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { ContentInfo } from "./contentInfo";
 import { LanguageStringType } from "./type";
@@ -30,7 +29,6 @@ import { ContentInfoImpl } from "./contentInfoImpl";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
-  public staticObject: any = InterfaceInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -55,6 +53,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   private _schemasInstanceProperties: string[] = [];
   public _schemasAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemasAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -80,7 +79,8 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: InterfaceKinds
+    entityKind: InterfaceKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -95,6 +95,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = true;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

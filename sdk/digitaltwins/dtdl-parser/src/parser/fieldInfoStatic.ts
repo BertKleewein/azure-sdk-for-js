@@ -230,7 +230,7 @@ export class FieldInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class FieldInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -455,7 +455,14 @@ export class FieldInfoStatic {
     switch (typestring) {
       case "Field":
       case "dtmi:dtdl:class:Field;2":
-        elementInfo.ref = new FieldInfoImpl(2, elementId, parentId, definedIn, "field");
+        elementInfo.ref = new FieldInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "field",
+          FieldInfoStatic
+        );
         materialKinds.push("field");
         return true;
     }
@@ -754,7 +761,14 @@ export class FieldInfoStatic {
     switch (typestring) {
       case "Field":
       case "dtmi:dtdl:class:Field;3":
-        elementInfo.ref = new FieldInfoImpl(3, elementId, parentId, definedIn, "field");
+        elementInfo.ref = new FieldInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "field",
+          FieldInfoStatic
+        );
         materialKinds.push("field");
         return true;
     }

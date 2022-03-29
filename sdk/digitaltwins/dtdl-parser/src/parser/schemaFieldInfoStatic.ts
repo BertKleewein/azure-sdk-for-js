@@ -24,15 +24,20 @@ import { ValueParser } from "./valueParser";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { CommandPayloadInfoImpl } from "./commandPayloadInfoImpl";
+import { CommandPayloadInfoStatic } from "./commandPayloadInfoStatic";
 import { FieldInfoImpl } from "./fieldInfoImpl";
+import { FieldInfoStatic } from "./fieldInfoStatic";
 import { MapValueInfoImpl } from "./mapValueInfoImpl";
+import { MapValueInfoStatic } from "./mapValueInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ModelParserStatic } from "./modelParserStatic";
 import { ExtensionKind } from "./extensionKind";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
 import { SchemaInfoStatic } from "./schemaInfoStatic";
 import { CommandRequestInfoImpl } from "./commandRequestInfoImpl";
+import { CommandRequestInfoStatic } from "./commandRequestInfoStatic";
 import { CommandResponseInfoImpl } from "./commandResponseInfoImpl";
+import { CommandResponseInfoStatic } from "./commandResponseInfoStatic";
 export class SchemaFieldInfoStatic {
   protected static _concreteKinds: { [x: number]: SchemaFieldKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
@@ -204,7 +209,7 @@ export class SchemaFieldInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -219,7 +224,7 @@ export class SchemaFieldInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -437,18 +442,33 @@ export class SchemaFieldInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandpayload"
+          "commandpayload",
+          CommandPayloadInfoStatic
         );
         materialKinds.push("commandpayload");
         return true;
       case "Field":
       case "dtmi:dtdl:class:Field;2":
-        elementInfo.ref = new FieldInfoImpl(2, elementId, parentId, definedIn, "field");
+        elementInfo.ref = new FieldInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "field",
+          FieldInfoStatic
+        );
         materialKinds.push("field");
         return true;
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;2":
-        elementInfo.ref = new MapValueInfoImpl(2, elementId, parentId, definedIn, "mapvalue");
+        elementInfo.ref = new MapValueInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "mapvalue",
+          MapValueInfoStatic
+        );
         materialKinds.push("mapvalue");
         return true;
     }
@@ -737,7 +757,8 @@ export class SchemaFieldInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandrequest"
+          "commandrequest",
+          CommandRequestInfoStatic
         );
         materialKinds.push("commandrequest");
         return true;
@@ -748,18 +769,33 @@ export class SchemaFieldInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandresponse"
+          "commandresponse",
+          CommandResponseInfoStatic
         );
         materialKinds.push("commandresponse");
         return true;
       case "Field":
       case "dtmi:dtdl:class:Field;3":
-        elementInfo.ref = new FieldInfoImpl(3, elementId, parentId, definedIn, "field");
+        elementInfo.ref = new FieldInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "field",
+          FieldInfoStatic
+        );
         materialKinds.push("field");
         return true;
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;3":
-        elementInfo.ref = new MapValueInfoImpl(3, elementId, parentId, definedIn, "mapvalue");
+        elementInfo.ref = new MapValueInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "mapvalue",
+          MapValueInfoStatic
+        );
         materialKinds.push("mapvalue");
         return true;
     }

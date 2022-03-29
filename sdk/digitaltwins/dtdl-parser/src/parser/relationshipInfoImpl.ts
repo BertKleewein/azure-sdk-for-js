@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { RelationshipInfo } from "./relationshipInfo";
 import { RelationshipKinds } from "./relationshipKinds";
 import { EntityKinds } from "./entityKinds";
-import { RelationshipInfoStatic } from "./relationshipInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { PropertyInfoImpl } from "./propertyInfoImpl";
@@ -28,7 +27,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
-  public staticObject: any = RelationshipInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -52,6 +50,7 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
   public targetPropertyRegexPatternV2: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$/;
   public targetPropertyRegexPatternV3: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\.[1-9][0-9]{0,5})?)?$/;
   public writable?: boolean;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -75,7 +74,8 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: RelationshipKinds
+    entityKind: RelationshipKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -89,6 +89,7 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

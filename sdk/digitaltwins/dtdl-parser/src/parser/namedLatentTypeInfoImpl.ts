@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { NamedLatentTypeInfo } from "./namedLatentTypeInfo";
 import { NamedLatentTypeKinds } from "./namedLatentTypeKinds";
 import { EntityKinds } from "./entityKinds";
-import { NamedLatentTypeInfoStatic } from "./namedLatentTypeInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker {
-  public staticObject: any = NamedLatentTypeInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -37,6 +35,7 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
   public languageVersion?: number;
   public name?: string;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -60,7 +59,8 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: NamedLatentTypeKinds
+    entityKind: NamedLatentTypeKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -72,6 +72,7 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

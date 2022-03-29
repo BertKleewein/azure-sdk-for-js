@@ -230,7 +230,7 @@ export class MapValueInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class MapValueInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -455,7 +455,14 @@ export class MapValueInfoStatic {
     switch (typestring) {
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;2":
-        elementInfo.ref = new MapValueInfoImpl(2, elementId, parentId, definedIn, "mapvalue");
+        elementInfo.ref = new MapValueInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "mapvalue",
+          MapValueInfoStatic
+        );
         materialKinds.push("mapvalue");
         return true;
     }
@@ -754,7 +761,14 @@ export class MapValueInfoStatic {
     switch (typestring) {
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;3":
-        elementInfo.ref = new MapValueInfoImpl(3, elementId, parentId, definedIn, "mapvalue");
+        elementInfo.ref = new MapValueInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "mapvalue",
+          MapValueInfoStatic
+        );
         materialKinds.push("mapvalue");
         return true;
     }

@@ -226,7 +226,7 @@ export class CommandResponseInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -422,7 +422,8 @@ export class CommandResponseInfoStatic {
           elementId,
           parentId,
           definedIn,
-          "commandresponse"
+          "commandresponse",
+          CommandResponseInfoStatic
         );
         materialKinds.push("commandresponse");
         return true;

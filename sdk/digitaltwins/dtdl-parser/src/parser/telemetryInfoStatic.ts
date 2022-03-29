@@ -230,7 +230,7 @@ export class TelemetryInfoStatic {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.staticObject.parsePropertiesV2(
+        elementInfo.staticObjectClass.parsePropertiesV2(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -245,7 +245,7 @@ export class TelemetryInfoStatic {
       }
 
       case 3: {
-        elementInfo.staticObject.parsePropertiesV3(
+        elementInfo.staticObjectClass.parsePropertiesV3(
           model,
           elementInfo,
           objectPropertyInfoList,
@@ -455,7 +455,14 @@ export class TelemetryInfoStatic {
     switch (typestring) {
       case "Telemetry":
       case "dtmi:dtdl:class:Telemetry;2":
-        elementInfo.ref = new TelemetryInfoImpl(2, elementId, parentId, definedIn, "telemetry");
+        elementInfo.ref = new TelemetryInfoImpl(
+          2,
+          elementId,
+          parentId,
+          definedIn,
+          "telemetry",
+          TelemetryInfoStatic
+        );
         materialKinds.push("telemetry");
         return true;
     }
@@ -754,7 +761,14 @@ export class TelemetryInfoStatic {
     switch (typestring) {
       case "Telemetry":
       case "dtmi:dtdl:class:Telemetry;3":
-        elementInfo.ref = new TelemetryInfoImpl(3, elementId, parentId, definedIn, "telemetry");
+        elementInfo.ref = new TelemetryInfoImpl(
+          3,
+          elementId,
+          parentId,
+          definedIn,
+          "telemetry",
+          TelemetryInfoStatic
+        );
         materialKinds.push("telemetry");
         return true;
     }

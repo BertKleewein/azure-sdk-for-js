@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { LatentTypeInfo } from "./latentTypeInfo";
 import { LatentTypeKinds } from "./latentTypeKinds";
 import { EntityKinds } from "./entityKinds";
-import { LatentTypeInfoStatic } from "./latentTypeInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
@@ -25,7 +24,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class LatentTypeInfoImpl implements LatentTypeInfo, TypeChecker {
-  public staticObject: any = LatentTypeInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -35,6 +33,7 @@ export class LatentTypeInfoImpl implements LatentTypeInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -58,7 +57,8 @@ export class LatentTypeInfoImpl implements LatentTypeInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: LatentTypeKinds
+    entityKind: LatentTypeKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -70,6 +70,7 @@ export class LatentTypeInfoImpl implements LatentTypeInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};

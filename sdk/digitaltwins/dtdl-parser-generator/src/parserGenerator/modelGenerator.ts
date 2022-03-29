@@ -45,6 +45,9 @@ export class ModelGenerator implements TypeGenerator {
     const referenceClassName = NameFormatter.formatNameAsImplementation(
       ParserGeneratorValues.referenceObverseName
     );
+    const referenceStaticClassName = NameFormatter.formatNameAsStatic(
+      ParserGeneratorValues.referenceObverseName
+    );
 
     const modelClass: TsClass = parserLibrary.class({ name: "Model", exports: true });
     modelClass.docString.line("A DTDL model.");
@@ -58,7 +61,8 @@ export class ModelGenerator implements TypeGenerator {
       .importObject("ModelDict")
       .importObject("SupplementalTypeInfo")
       .importObject(this._baseEnumName)
-      .importObject(this._baseClassImplName);
+      .importObject(this._baseClassImplName)
+      .importObject(referenceStaticClassName);
 
     modelClass.field({ name: "dict", type: "ModelDict" });
 
@@ -66,7 +70,11 @@ export class ModelGenerator implements TypeGenerator {
     this._generateIsPartitionMethod(modelClass);
     this._generateAddTypeMethod(modelClass);
     this._generateDoesPropertyDictContainKeyMethod(modelClass);
-    this._generateTrySetObjectPropertyMethod(modelClass, referenceClassName);
+    this._generateTrySetObjectPropertyMethod(
+      modelClass,
+      referenceClassName,
+      referenceStaticClassName
+    );
     this._generateIsKindInSetMethod(modelClass);
     this._generateGetKindStringMethod(modelClass);
 
@@ -164,7 +172,8 @@ export class ModelGenerator implements TypeGenerator {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateTrySetObjectPropertyMethod(
     modelClass: TsClass,
-    referenceClassName: string
+    referenceClassName: string,
+    referenceStaticClassName: string
   ): void {
     const trySetObjectPropertyMethod = modelClass.method({
       name: "trySetObjectProperty",
@@ -177,7 +186,7 @@ export class ModelGenerator implements TypeGenerator {
       .parameter({ name: "key", type: "string", optional: true });
     trySetObjectPropertyMethod.body
       .line(
-        `const obj = Object.keys(this.dict).includes(referencedElementId) ? this.dict[referencedElementId] : new ${referenceClassName}(0, referencedElementId, undefined, undefined, 'reference');`
+        `const obj = Object.keys(this.dict).includes(referencedElementId) ? this.dict[referencedElementId] : new ${referenceClassName}(0, referencedElementId, undefined, undefined, 'reference', ${referenceStaticClassName});`
       )
       .line(
         `return (this.dict[elementId] as ${this._baseClassImplName})?.trySetObjectProperty(propertyName, obj, key) || false;`

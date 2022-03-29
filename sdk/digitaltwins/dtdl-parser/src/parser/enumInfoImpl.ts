@@ -10,7 +10,6 @@ import { TypeChecker } from "./type";
 import { EnumInfo } from "./enumInfo";
 import { EnumKinds } from "./enumKinds";
 import { EntityKinds } from "./entityKinds";
-import { EnumInfoStatic } from "./enumInfoStatic";
 import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { EnumValueInfoImpl } from "./enumValueInfoImpl";
@@ -31,7 +30,6 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class EnumInfoImpl implements EnumInfo, TypeChecker {
-  public staticObject: any = EnumInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;
@@ -51,6 +49,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
   private _valueSchemaInstanceProperties: string[] = [];
   public _valueSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _valueSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3);
+  public staticObjectClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -74,7 +73,8 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: EnumKinds
+    entityKind: EnumKinds,
+    staticObjectClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -87,6 +87,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
+    this.staticObjectClass = staticObjectClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
