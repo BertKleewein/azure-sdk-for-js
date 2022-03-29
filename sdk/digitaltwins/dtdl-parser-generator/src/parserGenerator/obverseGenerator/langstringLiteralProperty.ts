@@ -57,8 +57,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string,
-    elementInfoStr: string
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -76,7 +75,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `${elementInfoStr}.${this.propertyName} = ValueParser.parseLangStringToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, '${defaultLangStr}', ${maxLenStr}, ${patternStr}, parsingErrors);`
+        `elementInfo.${this.propertyName} = ValueParser.parseLangStringToken(elementInfo.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, '${defaultLangStr}', ${maxLenStr}, ${patternStr}, parsingErrors);`
       );
 
       switchScope.line("continue;");

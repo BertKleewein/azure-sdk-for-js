@@ -24,7 +24,7 @@
     "execute:js-samples": "node ../../../common/scripts/run-samples.js samples/javascript/",
     "execute:samples": "dev-tool samples run samples-dev",
     "extract-api": "tsc -p . && api-extractor run --local",
-    "format": "prettier --write --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore \"src/**/*.ts\" \"test/**/*.ts\" \"samples-dev/**/*.ts\" \"*.{js,json}\"",
+    "format": "prettier --write --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore \"src/**/*.ts\" \"boilerplate/**/*.ts\" \"test/**/*.ts\" \"samples-dev/**/*.ts\" \"*.{js,json}\"",
     "generate": "npm run format && npm run build && node ./generate.js",
     "integration-test:browser": "dev-tool run test:browser",
     "integration-test:node": "dev-tool run test:node-ts-input -- --timeout 1200000 'test/**/*.spec.ts'",

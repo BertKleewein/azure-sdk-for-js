@@ -1,7 +1,6 @@
-
 // example.js
 const { ModelsRepositoryClient } = require("@azure/iot-modelsrepository");
-const { ModelParsingOption, createParser } = require("./dist")
+const { ModelParsingOption, createParser } = require("./dist");
 
 async function main() {
   const dtmi = "dtmi:com:example:TemperatureController;1";
@@ -18,7 +17,7 @@ async function main() {
 
   // Loop through the models and output the contents of each model
   for (const [key, value] of Object.entries(models)) {
-    console.log()
+    console.log();
     console.log(`model: ${key}`);
     const modelDict = await modelParser.parse([JSON.stringify(value)]);
 

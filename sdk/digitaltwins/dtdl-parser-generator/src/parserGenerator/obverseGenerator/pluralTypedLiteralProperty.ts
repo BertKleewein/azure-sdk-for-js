@@ -81,8 +81,7 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string,
-    _elementInfoStr: string
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&

@@ -141,13 +141,12 @@ export class MaterialClassAugmentor {
   public static addTryParseSupplementalProperty(
     staticClass: TsClass,
     scope: TsScope,
-    classIsAugmentable: boolean,
-    ElementInfoStr: string
+    classIsAugmentable: boolean
   ): void {
     if (classIsAugmentable) {
       scope
         .if(
-          `${staticClass.name}.tryParseSupplementalProperty(model, ${ElementInfoStr}, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, propKey, propValue)`
+          `${staticClass.name}.tryParseSupplementalProperty(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, propKey, propValue)`
         )
         .line("continue;");
     }

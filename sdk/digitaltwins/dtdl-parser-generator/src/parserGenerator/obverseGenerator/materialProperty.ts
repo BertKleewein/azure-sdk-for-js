@@ -172,8 +172,7 @@ export abstract class MaterialProperty {
     classIsAugmentable: boolean,
     classIsPartition: boolean,
     valueCountVar: string,
-    definedInVar: string,
-    elementInfoStr: string
+    definedInVar: string
   ): void;
 
   public abstract addCaseToTrySetObjectPropertySwitch(
@@ -229,11 +228,7 @@ export abstract class MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(
-    _dtdlVersion: number,
-    _scope: TsScope,
-    _elementInfoStr: string
-  ): void {
+  public addCheckForRequiredProperty(_dtdlVersion: number, _scope: TsScope): void {
     /* empty */
   }
 }

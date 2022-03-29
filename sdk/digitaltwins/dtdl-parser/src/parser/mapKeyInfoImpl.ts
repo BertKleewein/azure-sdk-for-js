@@ -29,6 +29,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class MapKeyInfoImpl implements MapKeyInfo, TypeChecker {
+  public staticObject: any = MapKeyInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

@@ -21,6 +21,7 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class ContentInfoImpl implements ContentInfo, TypeChecker {
+  public staticObject: any = ContentInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

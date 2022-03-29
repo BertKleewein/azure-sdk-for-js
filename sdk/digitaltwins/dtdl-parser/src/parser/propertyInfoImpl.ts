@@ -29,6 +29,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class PropertyInfoImpl implements PropertyInfo, TypeChecker {
+  public staticObject: any = PropertyInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

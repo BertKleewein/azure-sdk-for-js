@@ -25,6 +25,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
+  public staticObject: any = BooleanInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

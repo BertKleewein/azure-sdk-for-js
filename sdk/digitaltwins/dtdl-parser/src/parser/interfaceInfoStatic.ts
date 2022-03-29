@@ -224,17 +224,17 @@ export class InterfaceInfoStatic {
       propName,
       childAggregateContext,
       parsingErrors
-    );
+    ) as InterfaceInfoImpl;
     if (elementInfo === undefined) {
       return;
     }
 
-    (elementInfo as InterfaceInfoImpl).sourceObject = object;
+    elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        this.parsePropertiesV2(
+        elementInfo.staticObject.parsePropertiesV2(
           model,
-          elementInfo as InterfaceInfoImpl,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -247,9 +247,9 @@ export class InterfaceInfoStatic {
       }
 
       case 3: {
-        this.parsePropertiesV3(
+        elementInfo.staticObject.parsePropertiesV3(
           model,
-          elementInfo as InterfaceInfoImpl,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -1108,6 +1108,27 @@ export class InterfaceInfoStatic {
           allowedVersions
         );
         valueCount++;
+      }
+    } else if (Array.isArray(token)) {
+      for (const elementToken of token) {
+        valueCount += this.parseToken(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          valueConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementToken,
+          parentId,
+          definedIn,
+          propName,
+          dtmiSeg,
+          keyProp,
+          idRequired,
+          typeRequired,
+          allowIdReferenceSyntax,
+          allowedVersions
+        );
       }
     } else if (typeof token === "object") {
       this.parseObject(

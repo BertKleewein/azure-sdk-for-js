@@ -177,8 +177,7 @@ export abstract class ObjectProperty extends MaterialProperty {
     classIsAugmentable: boolean,
     classIsPartition: boolean,
     valueCountVar: string,
-    definedInVar: string,
-    elementInfoStr: string
+    definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -189,11 +188,11 @@ export abstract class ObjectProperty extends MaterialProperty {
         ? `${valueCountVar} = `
         : "";
       const valueConstraints = classIsAugmentable
-        ? `${elementInfoStr}._${this.valueConstraintsField}`
+        ? `elementInfo._${this.valueConstraintsField}`
         : "[]"; // send empty list
       const definedIn = classIsPartition
-        ? `${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`
-        : `${definedInVar} ?? ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`;
+        ? `elementInfo.${ParserGeneratorValues.IdentifierName}`
+        : `${definedInVar} ?? elementInfo.${ParserGeneratorValues.IdentifierName}`;
       const dtmiSegment = this.dtmiSegment !== undefined ? `'${this.dtmiSegment}'` : undefined;
 
       switchScope
@@ -204,7 +203,7 @@ export abstract class ObjectProperty extends MaterialProperty {
       }
       staticClass.importObject(this.versionedClassName[dtdlVersion] as string);
       switchScope.line(
-        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, ${elementInfoStr}._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
       );
       if (staticClass.name !== this.versionedClassName[dtdlVersion]) {
         staticClass.importObject(this.versionedStaticClassName[dtdlVersion]);
@@ -221,7 +220,7 @@ export abstract class ObjectProperty extends MaterialProperty {
           .line(
             `action: \`Add one or more '${this.propertyName}' to the object until the minimum count is satisfied.\`,`
           )
-          .line(`primaryId: ${elementInfoStr}.id,`)
+          .line(`primaryId: elementInfo.id,`)
           .line(`property: '${this.propertyName}',`)
           .line(`}));`);
       }
@@ -238,7 +237,7 @@ export abstract class ObjectProperty extends MaterialProperty {
           .line(
             `action: \`Remove one or more '${this.propertyName}' to the object until the maximum count is satisfied.\`,`
           )
-          .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
+          .line(`primaryId: elementInfo.${ParserGeneratorValues.IdentifierName},`)
           .line(`property: '${this.propertyName}',`)
           .line(`}));`);
       }
@@ -281,11 +280,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(
-    dtdlVersion: number,
-    scope: TsScope,
-    elementInfoStr: string
-  ): void {
+  public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -298,7 +293,7 @@ export abstract class ObjectProperty extends MaterialProperty {
         .line("{")
         .line(`cause: '{primaryId:p} property ${this.propertyName} is required but missing.',`)
         .line(`action: 'Add a ${this.propertyName} property to the object.',`)
-        .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
+        .line(`primaryId: elementInfo.${ParserGeneratorValues.IdentifierName},`)
         .line(`property: '${this.propertyName}'`)
         .line(`}));`);
     }

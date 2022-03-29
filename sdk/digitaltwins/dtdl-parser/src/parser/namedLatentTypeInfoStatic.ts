@@ -215,17 +215,17 @@ export class NamedLatentTypeInfoStatic {
       propName,
       childAggregateContext,
       parsingErrors
-    );
+    ) as NamedLatentTypeInfoImpl;
     if (elementInfo === undefined) {
       return;
     }
 
-    (elementInfo as NamedLatentTypeInfoImpl).sourceObject = object;
+    elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 3: {
-        this.parsePropertiesV3(
+        elementInfo.staticObject.parsePropertiesV3(
           model,
-          elementInfo as NamedLatentTypeInfoImpl,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -694,6 +694,27 @@ export class NamedLatentTypeInfoStatic {
           allowedVersions
         );
         valueCount++;
+      }
+    } else if (Array.isArray(token)) {
+      for (const elementToken of token) {
+        valueCount += this.parseToken(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          valueConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementToken,
+          parentId,
+          definedIn,
+          propName,
+          dtmiSeg,
+          keyProp,
+          idRequired,
+          typeRequired,
+          allowIdReferenceSyntax,
+          allowedVersions
+        );
       }
     } else if (typeof token === "object") {
       this.parseObject(

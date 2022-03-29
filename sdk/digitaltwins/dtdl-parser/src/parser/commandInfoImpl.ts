@@ -31,6 +31,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class CommandInfoImpl implements CommandInfo, TypeChecker {
+  public staticObject: any = CommandInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

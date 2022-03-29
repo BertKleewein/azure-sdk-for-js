@@ -209,12 +209,12 @@ export class ReferenceInfoStatic {
       propName,
       childAggregateContext,
       parsingErrors
-    );
+    ) as ReferenceInfoImpl;
     if (elementInfo === undefined) {
       return;
     }
 
-    (elementInfo as ReferenceInfoImpl).sourceObject = object;
+    elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
     }
 
@@ -385,6 +385,27 @@ export class ReferenceInfoStatic {
           allowedVersions
         );
         valueCount++;
+      }
+    } else if (Array.isArray(token)) {
+      for (const elementToken of token) {
+        valueCount += this.parseToken(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          valueConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementToken,
+          parentId,
+          definedIn,
+          propName,
+          dtmiSeg,
+          keyProp,
+          idRequired,
+          typeRequired,
+          allowIdReferenceSyntax,
+          allowedVersions
+        );
       }
     } else if (typeof token === "object") {
       this.parseObject(

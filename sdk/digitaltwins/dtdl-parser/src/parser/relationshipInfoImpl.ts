@@ -28,6 +28,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
+  public staticObject: any = RelationshipInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

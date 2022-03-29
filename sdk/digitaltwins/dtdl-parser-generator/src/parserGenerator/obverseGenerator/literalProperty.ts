@@ -50,11 +50,7 @@ export abstract class LiteralProperty extends MaterialProperty {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  public addCheckForRequiredProperty(
-    dtdlVersion: number,
-    scope: TsScope,
-    elementInfoStr: string
-  ): void {
+  public addCheckForRequiredProperty(dtdlVersion: number, scope: TsScope): void {
     if (
       !this.optional &&
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -67,7 +63,7 @@ export abstract class LiteralProperty extends MaterialProperty {
         .line("{")
         .line(`cause: '{primaryId:p} property ${this.propertyName} is required but missing.',`)
         .line(`action: 'Add a ${this.propertyName} property to the object.',`)
-        .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
+        .line(`primaryId: elementInfo.${ParserGeneratorValues.IdentifierName},`)
         .line(`property: '${this.propertyName}'`)
         .line(`}));`);
     }

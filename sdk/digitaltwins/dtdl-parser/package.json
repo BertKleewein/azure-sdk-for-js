@@ -66,6 +66,7 @@
   "prettier": "@azure/eslint-plugin-azure-sdk/prettier.json",
   "dependencies": {
     "@azure/core-util": "^1.0.0-beta.1",
+    "@azure/iot-modelsrepository": "^1.0.0-beta.2",
     "@azure/logger": "^1.0.0",
     "tslib": "^2.2.0"
   },

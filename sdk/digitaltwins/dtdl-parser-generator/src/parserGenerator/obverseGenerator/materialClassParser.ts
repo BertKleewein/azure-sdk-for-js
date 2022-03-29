@@ -281,19 +281,19 @@ export class MaterialClassParser {
 
     parseObjMethod.body
       .line(
-        `const elementInfo = this.parseTypeArray(typeTokenArr, elementId, parentId, definedIn, propName, childAggregateContext, parsingErrors);`
+        `const elementInfo = this.parseTypeArray(typeTokenArr, elementId, parentId, definedIn, propName, childAggregateContext, parsingErrors) as ${typeNameImpl};`
       )
       .if("elementInfo === undefined")
       .line(`return;`);
 
-    parseObjMethod.body.line(`(elementInfo as ${typeNameImpl}).sourceObject = object;`);
+    parseObjMethod.body.line(`elementInfo.sourceObject = object;`);
 
     const switchScope = parseObjMethod.body.scope("switch (childAggregateContext.dtdlVersion)");
     for (const dtdlVersion of dtdlVersions) {
       const switchCase = switchScope.scope(`case ${dtdlVersion}:`);
       switchCase
         .line(
-          `this.parsePropertiesV${dtdlVersion}(model, elementInfo as ${typeNameImpl}, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
+          `elementInfo.staticObject.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
         )
         .line(`break;`);
     }
@@ -668,17 +668,11 @@ export class MaterialClassParser {
         !classIsAbstract,
         classIsPartition,
         "valueCount",
-        "definedIn",
-        "elementInfo"
+        "definedIn"
       );
     });
 
-    MaterialClassAugmentor.addTryParseSupplementalProperty(
-      staticClass,
-      forScope,
-      !classIsAbstract,
-      "elementInfo"
-    );
+    MaterialClassAugmentor.addTryParseSupplementalProperty(staticClass, forScope, !classIsAbstract);
 
     forScope
       .if(`elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0`)
@@ -694,7 +688,7 @@ export class MaterialClassParser {
       .line(`}));`);
 
     materialProperties.forEach((property) => {
-      property.addCheckForRequiredProperty(dtdlVersion, parsePropertiesMethod.body, "elementInfo");
+      property.addCheckForRequiredProperty(dtdlVersion, parsePropertiesMethod.body);
     });
 
     MaterialClassAugmentor.addChecksForRequiredProperties(
@@ -740,13 +734,12 @@ export class MaterialClassParser {
       )
       .line("valueCount++;");
 
-    // TODO: why was this commented out?  It seems to be missing from teh generated code.
-    // const _isArrayElseIfScope = typeTokenIfScope
-    //   .elseIf("Array.isArray(token)")
-    //   .for("const elementToken of token")
-    //   .line(
-    //     "valueCount += this.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, valueConstraints, aggregateContext, parsingErrors, elementToken, parentId, definedIn, propName, dtmiSeg, keyProp, idRequired, typeRequired, allowIdReferenceSyntax, allowedVersions);"
-    //   );
+    const _isArrayElseIfScope = typeTokenIfScope
+      .elseIf("Array.isArray(token)")
+      .for("const elementToken of token")
+      .line(
+        "valueCount += this.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, valueConstraints, aggregateContext, parsingErrors, elementToken, parentId, definedIn, propName, dtmiSeg, keyProp, idRequired, typeRequired, allowIdReferenceSyntax, allowedVersions);"
+      );
 
     typeTokenIfScope
       .elseIf(`typeof token === 'object'`)

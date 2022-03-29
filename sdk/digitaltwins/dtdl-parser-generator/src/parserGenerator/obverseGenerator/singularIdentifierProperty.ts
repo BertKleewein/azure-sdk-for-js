@@ -56,8 +56,7 @@ export class SingularIdentifierProperty extends IdentifierProperty {
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string,
-    elementInfoStr: string
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -65,7 +64,7 @@ export class SingularIdentifierProperty extends IdentifierProperty {
     ) {
       const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       const patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `${elementInfoStr}.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
+        ? `elementInfo.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
         : undefined;
 
       switchScope
@@ -78,10 +77,10 @@ export class SingularIdentifierProperty extends IdentifierProperty {
       switchScope
         .line("// eslint-disable-next-line no-case-declarations")
         .line(
-          `const strInDtmiVal = ValueParser.parseSingularIdentifierToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
+          `const strInDtmiVal = ValueParser.parseSingularIdentifierToken(elementInfo.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
         )
         // TODO The value returned from the parse method is a simple string. Have to convert to InDTMI
-        .line(`${elementInfoStr}.${this.propertyName} = strInDtmiVal`);
+        .line(`elementInfo.${this.propertyName} = strInDtmiVal`);
       switchScope.line("continue;");
     }
   }

@@ -21,6 +21,7 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class NumericSchemaInfoImpl implements NumericSchemaInfo, TypeChecker {
+  public staticObject: any = NumericSchemaInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

@@ -60,8 +60,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string,
-    elementInfoStr: string
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -69,7 +68,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
     ) {
       const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       const patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `${elementInfoStr}.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
+        ? `elementInfo.${this.propertyName}PropertyRegexPatternV${dtdlVersion}`
         : undefined;
       const minInclusiveStr = this.propertyDigest[dtdlVersion].minInclusive?.toString();
       const maxInclusiveStr = this.propertyDigest[dtdlVersion].maxInclusive?.toString();
@@ -84,17 +83,17 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
       switch (this.datatype) {
         case "string":
           switchScope.line(
-            `${elementInfoStr}.${this.propertyName} = ValueParser.parseSingularStringToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
+            `elementInfo.${this.propertyName} = ValueParser.parseSingularStringToken(elementInfo.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${maxLenStr}, ${patternStr}, parsingErrors);`
           );
           break;
         case "integer":
           switchScope.line(
-            `${elementInfoStr}.${this.propertyName} = ValueParser.parseSingularIntegerToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${minInclusiveStr}, ${maxInclusiveStr}, parsingErrors);`
+            `elementInfo.${this.propertyName} = ValueParser.parseSingularIntegerToken(elementInfo.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, ${minInclusiveStr}, ${maxInclusiveStr}, parsingErrors);`
           );
           break;
         case "boolean":
           switchScope.line(
-            `${elementInfoStr}.${this.propertyName} = ValueParser.parseSingularBooleanToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, parsingErrors);`
+            `elementInfo.${this.propertyName} = ValueParser.parseSingularBooleanToken(elementInfo.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, parsingErrors);`
           );
           break;
         default:

@@ -81,8 +81,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
     classIsAugmentable: boolean,
     classIsPartition: boolean,
     valueCountVar: string,
-    definedInVar: string,
-    elementInfoStr: string
+    definedInVar: string
   ): void {
     // DIFFERENCE : this generator passes in '${this.keyProperty}' for the keyProp parameter, but the superclass passes in undefined.
     // Otherwise, the two methods are the same for child and super class.
@@ -97,11 +96,11 @@ export class DictionaryObjectProperty extends ObjectProperty {
         ? `${valueCountVar} = `
         : "";
       const valueConstraints = classIsAugmentable
-        ? `${elementInfoStr}._${this.valueConstraintsField}`
+        ? `elementInfo._${this.valueConstraintsField}`
         : "undefined";
       const definedIn = classIsPartition
-        ? `${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`
-        : `${definedInVar} ?? ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}`;
+        ? `elementInfo.${ParserGeneratorValues.IdentifierName}`
+        : `${definedInVar} ?? elementInfo.${ParserGeneratorValues.IdentifierName}`;
       const dtmiSegment = `${this.dtmiSegment}`;
 
       switchScope
@@ -111,7 +110,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, ${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, ${elementInfoStr}._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
       );
 
       staticClass.importObject(this.versionedStaticClassName[dtdlVersion]);
@@ -127,8 +126,8 @@ export class DictionaryObjectProperty extends ObjectProperty {
           .line(
             `action: \`Add one or more '${this.propertyName}' to the object until the minimum count is satisfied.\`,`
           )
-          .line(`primaryId: ${elementInfoStr}.id,`)
-          .line(`property: ${elementInfoStr}._${this.propertyName},`)
+          .line(`primaryId: elementInfo.id,`)
+          .line(`property: elementInfo._${this.propertyName},`)
           .line(`}));`);
       }
 
@@ -144,7 +143,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
           .line(
             `action: \`Remove one or more '${this.propertyName}' to the object until the maximum count is satisfied.\`,`
           )
-          .line(`primaryId: ${elementInfoStr}.${ParserGeneratorValues.IdentifierName},`)
+          .line(`primaryId: elementInfo.${ParserGeneratorValues.IdentifierName},`)
           .line(`property: '${this.propertyName}',`)
           .line(`}));`);
       }

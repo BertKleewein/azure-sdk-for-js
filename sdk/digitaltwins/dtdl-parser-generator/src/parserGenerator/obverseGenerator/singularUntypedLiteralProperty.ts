@@ -54,8 +54,7 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string,
-    elementInfoStr: string
+    _definedInVar: string
   ): void {
     if (
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
@@ -63,7 +62,7 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
     ) {
       // const _maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       // const _patternStr = this.propertyDigest[dtdlVersion].pattern
-      //   ? `${elementInfoStr}.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}`
+      //   ? `elementInfo.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}`
       //   : undefined;
       // const _defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
       // // TODO These may be used in the new values parser.
@@ -80,12 +79,10 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
       switchScope
         .line("// eslint-disable-next-line no-case-declarations")
         .line(
-          `const ${this.propertyName}ValueAndType = ValueParser.parseSingularLiteralToken(${elementInfoStr}.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, parsingErrors);`
+          `const ${this.propertyName}ValueAndType = ValueParser.parseSingularLiteralToken(elementInfo.${ParserGeneratorValues.IdentifierName}, '${this.propertyName}', propValue, parsingErrors);`
         )
-        .line(`${elementInfoStr}.${this.propertyName} = ${this.propertyName}ValueAndType.value`)
-        .line(
-          `${elementInfoStr}.${this.datatypeField} = ${this.propertyName}ValueAndType.typeFragment`
-        )
+        .line(`elementInfo.${this.propertyName} = ${this.propertyName}ValueAndType.value`)
+        .line(`elementInfo.${this.datatypeField} = ${this.propertyName}ValueAndType.typeFragment`)
         .line("continue;");
     }
   }

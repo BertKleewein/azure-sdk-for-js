@@ -29,6 +29,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class TelemetryInfoImpl implements TelemetryInfo, TypeChecker {
+  public staticObject: any = TelemetryInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

@@ -19,6 +19,7 @@ import { Model } from "./model";
 import { ParsingError } from "./parsingError";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
+  public staticObject: any = EntityInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

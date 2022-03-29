@@ -698,7 +698,7 @@ export class ValueParser {
             })
           );
         } else {
-          const codeToken = element as { [x: string]: unknown }["@language"];
+          const codeToken = (element as { [x: string]: unknown })["@language"];
           if (typeof codeToken !== "string") {
             parsingErrors.push(
               createParsingError("dtmi:dtdl:parsingError:langStringElementCodeNotString", {

@@ -25,6 +25,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
+  public staticObject: any = UnitAttributeInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

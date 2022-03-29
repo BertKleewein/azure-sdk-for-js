@@ -218,17 +218,17 @@ export class CommandResponseInfoStatic {
       propName,
       childAggregateContext,
       parsingErrors
-    );
+    ) as CommandResponseInfoImpl;
     if (elementInfo === undefined) {
       return;
     }
 
-    (elementInfo as CommandResponseInfoImpl).sourceObject = object;
+    elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 3: {
-        this.parsePropertiesV3(
+        elementInfo.staticObject.parsePropertiesV3(
           model,
-          elementInfo as CommandResponseInfoImpl,
+          elementInfo,
           objectPropertyInfoList,
           elementPropertyConstraints,
           childAggregateContext,
@@ -764,6 +764,27 @@ export class CommandResponseInfoStatic {
           allowedVersions
         );
         valueCount++;
+      }
+    } else if (Array.isArray(token)) {
+      for (const elementToken of token) {
+        valueCount += this.parseToken(
+          model,
+          objectPropertyInfoList,
+          elementPropertyConstraints,
+          valueConstraints,
+          aggregateContext,
+          parsingErrors,
+          elementToken,
+          parentId,
+          definedIn,
+          propName,
+          dtmiSeg,
+          keyProp,
+          idRequired,
+          typeRequired,
+          allowIdReferenceSyntax,
+          allowedVersions
+        );
       }
     } else if (typeof token === "object") {
       this.parseObject(

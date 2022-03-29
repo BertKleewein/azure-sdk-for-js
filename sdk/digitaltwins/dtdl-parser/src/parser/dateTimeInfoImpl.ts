@@ -25,6 +25,7 @@ import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
+  public staticObject: any = DateTimeInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

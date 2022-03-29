@@ -21,6 +21,7 @@ import { ParsingError } from "./parsingError";
 import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeChecker {
+  public staticObject: any = ComplexSchemaInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

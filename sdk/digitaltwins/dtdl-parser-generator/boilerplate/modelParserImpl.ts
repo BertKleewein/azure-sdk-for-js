@@ -1,10 +1,10 @@
-// copyright (c) microsoft corporation.
-// Licensed under the MIT license.
-
-/* eslint-disable no-unused-vars */
-/* eslint-disable sort-imports */
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+/* eslint-disable valid-jsdoc */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-empty */
+/* eslint-disable no-unused-vars */
+
 import { ElementPropertyConstraint, DtmiResolver, TypeChecker } from "./type";
 import { ModelParsingOption } from "../enum";
 import { AggregateContext } from "./aggregateContext";
@@ -153,16 +153,21 @@ export class ModelParserImpl {
 
       if (this.getModels === undefined) {
         throw new ResolutionError(
-          "No DtmiResolver provided to resolve requisite reference(s): " +
+          "No getModels provided to resolve requisite reference(s): " +
             undefinedIdentifiers.join(" "),
           undefinedIdentifiers
         );
       }
 
-      const additionalJsonTexts = await this.getModels(undefinedIdentifiers);
+      const dependencyMapping = await this.getModels(undefinedIdentifiers, {
+        dependencyResolution: "enabled",
+      });
+
+      const additionalJsonTexts =
+        dependencyMapping && Object.values(dependencyMapping).map((value) => JSON.stringify(value));
       if (additionalJsonTexts === null) {
         throw new ResolutionError(
-          "DtmiResolver refused to resolve requisite references to element(s): " +
+          "getModels refused to resolve requisite references to element(s): " +
             undefinedIdentifiers.join(" "),
           undefinedIdentifiers
         );
@@ -186,7 +191,7 @@ export class ModelParserImpl {
       const stillUnresolvedIdentifiers = Array.from(stillUnresolvedIdentifierSet.values());
       if (stillUnresolvedIdentifiers.length > 0) {
         throw new ResolutionError(
-          "DtmiResolver failed to resolve requisite references to element(s): " +
+          "getModels failed to resolve requisite references to element(s): " +
             stillUnresolvedIdentifiers.join(" "),
           stillUnresolvedIdentifiers
         );

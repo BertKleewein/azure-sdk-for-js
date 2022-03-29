@@ -30,6 +30,7 @@ import { ContentInfoImpl } from "./contentInfoImpl";
 import { createParsingError } from "./parsingErrorImpl";
 import { TraversalStatus } from "./enum";
 export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
+  public staticObject: any = InterfaceInfoStatic;
   public dtdlVersion: number;
   public id: string;
   public childOf: string | undefined;

@@ -282,6 +282,14 @@ export class MaterialClassGenerator implements TypeGenerator {
       .importObject(this._typeStaticName)
       .importObject("Reference, referenceInit", "../common/reference");
 
+    obverseClass.field({
+      name: "staticObject",
+      access: TsAccess.Public,
+      isStatic: false,
+      type: "any",
+      value: this._typeStaticName,
+    });
+
     const staticClass = parserLibrary.class({
       name: this._typeStaticName,
       exports: true,

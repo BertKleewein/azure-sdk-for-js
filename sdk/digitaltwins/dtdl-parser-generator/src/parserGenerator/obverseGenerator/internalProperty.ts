@@ -85,8 +85,7 @@ export class InternalProperty extends MaterialProperty {
     _classIsAugmentable: boolean,
     _classIsPartition: boolean,
     _valueCountVar: string,
-    _definedInVar: string,
-    elementInfoStr: string
+    _definedInVar: string
   ): void {
     /* empty */
   }
