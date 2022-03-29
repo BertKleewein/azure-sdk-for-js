@@ -315,6 +315,15 @@ export class ModelParserImpl {
         throw new ParsingException(parsingErrors);
       }
     }
+
+    ModelParserStatic.parseObject(
+      model,
+      objectPropertyInfoList,
+      elementPropertyConstraints,
+      aggregateContext,
+      parsingErrors,
+      obj
+    );
   }
   // codegen-outline-end
 }

@@ -321,6 +321,15 @@ export class ModelParserImpl implements ModelParser {
         throw new ParsingException(parsingErrors);
       }
     }
+
+    ModelParserStatic.parseObject(
+      model,
+      objectPropertyInfoList,
+      elementPropertyConstraints,
+      aggregateContext,
+      parsingErrors,
+      obj
+    );
   }
   // codegen-outline-end
 }
