@@ -65,6 +65,6 @@ export class RootableTypeCollectionGenerator implements TypeGenerator {
       );
     }
     constructor.body.line("};");
-    collectionClass.inline("./boilerplate/rootableTypeCollection.ts", "methods");
+    collectionClass.inline("./parser-src/parserPartial/rootableTypeCollection.ts", "methods");
   }
 }

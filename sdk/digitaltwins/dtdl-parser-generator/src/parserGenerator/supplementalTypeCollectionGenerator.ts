@@ -90,7 +90,10 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
       .importObject("InDTMI", "./internalDtmi")
       .importObject("ValueConstraint", "./type");
 
-    collectionClass.inline("./boilerplate/supplementalTypeCollectionImpl.ts", "methods");
+    collectionClass.inline(
+      "./parser-src/parserPartial/supplementalTypeCollectionImpl.ts",
+      "methods"
+    );
 
     collectionClass.field({
       name: "supplementalTypes",

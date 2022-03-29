@@ -50,7 +50,7 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
       `Array.from(this._partitionTypeStrings.values()).map((s) => \`'\${s}'\`).join(' or ')`
     );
 
-    collectionClass.inline("./boilerplate/partitionTypeCollection.ts", "methods");
+    collectionClass.inline("./parser-src/parserPartial/partitionTypeCollection.ts", "methods");
     // TODO: Potentially replace this with a 'Static Constructor' option that initializes after class.
     collectionClass.suffixCode.line("PartitionTypeCollection.initialize();");
   }

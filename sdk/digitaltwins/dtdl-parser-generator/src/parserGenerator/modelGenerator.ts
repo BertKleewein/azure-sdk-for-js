@@ -74,7 +74,7 @@ export class ModelGenerator implements TypeGenerator {
     this._generateApplyTransformations(modelClass);
 
     // Inline Partial Class methods
-    modelClass.inline("./boilerplate/model.ts", "method-block");
+    modelClass.inline("./parser-src/parserPartial/model.ts", "method-block");
   }
 
   // TODO: This is going to be necessary if PartitionRestrictions are necessary.
@@ -99,7 +99,7 @@ export class ModelGenerator implements TypeGenerator {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateModelConstructor(modelClass: TsClass): void {
     const constructor = modelClass.ctor;
-    constructor.body.inline("./boilerplate/model.ts", "constructor");
+    constructor.body.inline("./parser-src/parserPartial/model.ts", "constructor");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

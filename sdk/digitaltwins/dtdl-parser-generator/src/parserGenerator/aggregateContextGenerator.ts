@@ -64,12 +64,12 @@ export class AggregateContextGenerator implements TypeGenerator {
         isStatic: true,
         value: "{}",
       });
-    contextClass.inline("./boilerplate/aggregateContext.ts", "fields");
+    contextClass.inline("./parser-src/parserPartial/aggregateContext.ts", "fields");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   private _generateInlineMethods(contextClass: TsClass): void {
-    contextClass.inline("./boilerplate/aggregateContext.ts", "methods");
+    contextClass.inline("./parser-src/parserPartial/aggregateContext.ts", "methods");
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

@@ -78,7 +78,7 @@ export class ParserCodeGenerator {
 
     for (const filename of filesToCopyDirectly) {
       try {
-        const src = `./boilerplate/${filename}`;
+        const src = `./parser-src/parser/${filename}`;
         const dest = `${outputDirectory}/${filename}`;
         console.log(`copying ${src} to ${dest}`);
         const contents = await fs.promises.readFile(src);

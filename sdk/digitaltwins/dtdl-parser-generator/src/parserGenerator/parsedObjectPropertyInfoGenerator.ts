@@ -31,6 +31,9 @@ export class ParsedObjectPropertyInfoGenerator implements TypeGenerator {
       type: `${this._baseKindEnum}[]`,
       optional: true,
     });
-    parsedObjectInterface.inline("./boilerplate/type/parsedObjectPropertyInfo.ts", "fields");
+    parsedObjectInterface.inline(
+      "./parser-src/parserPartial/type/parsedObjectPropertyInfo.ts",
+      "fields"
+    );
   }
 }

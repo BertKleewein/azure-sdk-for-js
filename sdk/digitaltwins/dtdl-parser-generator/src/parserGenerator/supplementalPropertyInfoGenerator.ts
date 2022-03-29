@@ -44,7 +44,7 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
       "Class that provides information about a property that can be applied to a DTDL element that has a supplemental type."
     );
 
-    infoClass.inline("./boilerplate/supplementalPropertyInfoImpl.ts", "fields");
+    infoClass.inline("./parser-src/parserPartial/supplementalPropertyInfoImpl.ts", "fields");
     infoClass.ctor
       .parameter({ name: "type", type: "string" })
       .parameter({ name: "isPlural", type: "boolean" })
@@ -54,6 +54,9 @@ export class SupplementalPropertyInfoGenerator implements TypeGenerator {
       .parameter({ name: "dictionaryKey", type: "string", optional: true })
       .parameter({ name: "instanceProperty", type: "string", optional: true })
       .parameter({ name: "valueConstraint", type: "ValueConstraint", optional: true });
-    infoClass.ctor.body.inline("./boilerplate/supplementalPropertyInfoImpl.ts", "constructor");
+    infoClass.ctor.body.inline(
+      "./parser-src/parserPartial/supplementalPropertyInfoImpl.ts",
+      "constructor"
+    );
   }
 }

@@ -35,10 +35,10 @@ export class StandardElementsGenerator implements TypeGenerator {
     standardElementsClass.docString.line(
       "A collection of values of standard elements from the DTDL metamodel."
     );
-    standardElementsClass.inline("./boilerplate/standardElements.ts", "fields");
+    standardElementsClass.inline("./parser-src/parserPartial/standardElements.ts", "fields");
     this._generateGetElementMethod(standardElementsClass);
     this._generateGetDigestElementsMethod(standardElementsClass);
-    standardElementsClass.inline("./boilerplate/standardElements.ts", "methods");
+    standardElementsClass.inline("./parser-src/parserPartial/standardElements.ts", "methods");
     standardElementsClass.suffixCode.line("StandardElements.initialize();");
   }
 

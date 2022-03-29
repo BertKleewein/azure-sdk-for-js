@@ -33,7 +33,7 @@ export class IdValidatorGenerator implements TypeGenerator {
       .importObject("ParsingError")
       .importObject("createParsingError", "./parsingErrorImpl")
       .importObject("ParsingException");
-    restrictionsClass.inline("./boilerplate/idValidator.ts", "constants");
+    restrictionsClass.inline("./parser-src/parserPartial/idValidator.ts", "constants");
 
     const staticConstructor = restrictionsClass.staticCtor;
 
@@ -92,6 +92,6 @@ export class IdValidatorGenerator implements TypeGenerator {
       }
     }
 
-    restrictionsClass.inline("./boilerplate/idValidator.ts", "methods");
+    restrictionsClass.inline("./parser-src/parserPartial/idValidator.ts", "methods");
   }
 }

@@ -30,7 +30,7 @@ export class HelpersGenerator implements TypeGenerator {
     this._generateAreDictionariesIdEqualMethod(helpersClass);
     this._generateAreDictionariesIdOrLiteralEqualMethod(helpersClass);
 
-    helpersClass.inline("./boilerplate/helpers.ts", "methods");
+    helpersClass.inline("./parser-src/parserPartial/helpers.ts", "methods");
   }
 
   private _generateAreListsIdEqualMethod(helpersClass: TsClass): void {

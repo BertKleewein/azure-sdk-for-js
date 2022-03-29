@@ -80,9 +80,9 @@ export class ModelParserGenerator implements TypeGenerator {
       .importObject("SupplementalTypeCollectionImpl")
       .importObject("ModelParserStatic")
       .importObject("TypeChecker", "./type");
-    parserClass.inline("./boilerplate/modelParserImpl.ts", "fields");
-    parserClass.ctor.body.inline("./boilerplate/modelParserImpl.ts", "constructor");
-    parserClass.inline("./boilerplate/modelParserImpl.ts", "methods");
+    parserClass.inline("./parser-src/parserPartial/modelParserImpl.ts", "fields");
+    parserClass.ctor.body.inline("./parser-src/parserPartial/modelParserImpl.ts", "constructor");
+    parserClass.inline("./parser-src/parserPartial/modelParserImpl.ts", "methods");
 
     const staticClass = parserLibrary.class({
       name: "ModelParserStatic",

@@ -74,7 +74,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       readonly: true,
     });
     infoClass.field({ name: "extensionKind", type: "ExtensionKind", readonly: true });
-    infoClass.inline("./boilerplate/supplementalTypeInfoImpl.ts", "fields");
+    infoClass.inline("./parser-src/parserPartial/supplementalTypeInfoImpl.ts", "fields");
     infoClass.ctor
       .parameter({ name: "extensionKind", type: "ExtensionKind" })
       .parameter({ name: "contextId", type: "string" })
@@ -85,7 +85,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
     infoClass.ctor.body
       .line("this.extensionKind = extensionKind;")
       .line("this.allowedCotypeKinds = [];")
-      .inline("./boilerplate/supplementalTypeInfoImpl.ts", "constructor");
+      .inline("./parser-src/parserPartial/supplementalTypeInfoImpl.ts", "constructor");
 
     const addCotypeMethod = infoClass
       .method({
@@ -95,6 +95,6 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       .parameter({ name: "cotypeKind", type: `${this._baseEnumName}` });
     addCotypeMethod.body.line(`this.allowedCotypeKinds.push(cotypeKind);`);
 
-    infoClass.inline("./boilerplate/supplementalTypeInfoImpl.ts", "block1");
+    infoClass.inline("./parser-src/parserPartial/supplementalTypeInfoImpl.ts", "block1");
   }
 }
