@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsClass, TsFunction, TsIf, TsScope } from "../../codeGenerator";
+import { TsClass, TsFunction, TsIf, TsMethod, TsScope } from "../../codeGenerator";
 import { DescendantControl } from "./descendantControl";
 import { MaterialProperty } from "./materialProperty";
 import { NameFormatter } from "../nameFormatter";
@@ -56,7 +56,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
       return;
     }
 
-    const method: TsFunction = obverseClass.method({
+    const method: TsMethod = obverseClass.method({
       name: this._methodName,
       returnType: "boolean",
     });
@@ -78,10 +78,12 @@ export class DescendantControlMaxDepth implements DescendantControl {
       type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
       description: `An out parameter for the ID of the first element that exceeds the depth.`,
     }); // TODO: This is an out parameter... needs to be adjusted.
+    obverseClass.importObject("Reference", "../common/reference");
     method.parameter({
       name: "parsingErrors",
       type: "ParsingError[]",
       description: "A ParsingError list to which any parsing errors are added.",
+      mightBeUnused: true,
     });
 
     for (const materialProperty of materialProperties) {
@@ -138,6 +140,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
         ifTooDeepElementIsThis.line(`tooDeepElementId.ref = undefined;`);
 
         ifTooDeep.line(`return false;`);
+        iterationScope.importObject("createParsingError", "./parsingErrorImpl");
       }
     }
 
@@ -155,6 +158,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
       checkRestrictionsMethodBody.line(
         `const ${this._elementIdName}: Reference<${ParserGeneratorValues.IdentifierType}> = {ref: undefined};`
       );
+      checkRestrictionsMethodBody.importObject("Reference", "../common/reference");
       checkRestrictionsMethodBody
         .if(
           `!this.${this._methodName}(0, ${this._maxDepth}, ${this._elementIdName}, parsingErrors) && ${this._elementIdName} !== undefined`
@@ -175,6 +179,7 @@ export class DescendantControlMaxDepth implements DescendantControl {
         .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
         .line(`secondaryId: ${this._elementIdName}.ref?.value,`)
         .line(`}));`);
+      checkRestrictionsMethodBody.importObject("createParsingError", "./parsingErrorImpl");
     }
   }
 

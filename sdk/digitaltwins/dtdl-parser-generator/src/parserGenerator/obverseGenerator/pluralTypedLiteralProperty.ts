@@ -75,7 +75,7 @@ export class PluralTypedLiteralProperty extends TypedLiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _staticClass: TsClass,
+    _parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,

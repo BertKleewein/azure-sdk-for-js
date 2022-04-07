@@ -56,7 +56,6 @@ export class Helpers {
       return false;
     }
 
-    const dict1Keys = Object.keys(dict1);
     for (const [key, value] of Object.entries(dict1)) {
       if (dict2[key] === undefined || dict2[key].id !== value.id) {
         return false;

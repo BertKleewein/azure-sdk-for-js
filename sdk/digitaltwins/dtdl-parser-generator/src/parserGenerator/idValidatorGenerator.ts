@@ -29,7 +29,6 @@ export class IdValidatorGenerator implements TypeGenerator {
       `A static class for determining whether a string is a valid identifier.`
     );
     restrictionsClass
-      .importObject("InDTMI", "./internalDtmi")
       .importObject("ParsingError")
       .importObject("createParsingError", "./parsingErrorImpl")
       .importObject("ParsingException");
@@ -40,25 +39,25 @@ export class IdValidatorGenerator implements TypeGenerator {
     restrictionsClass.field({
       name: "idDefinitionMaxLengths",
       isStatic: true,
-      type: "Map<Number, Number>",
+      type: "Map<number, number>",
       value: "new Map()",
     });
     restrictionsClass.field({
       name: "idDefinitionRegexPatterns",
       isStatic: true,
-      type: "Map<Number, RegExp>",
+      type: "Map<number, RegExp>",
       value: "new Map()",
     });
     restrictionsClass.field({
       name: "idReferenceMaxLengths",
       isStatic: true,
-      type: "Map<Number, Number>",
+      type: "Map<number, number>",
       value: "new Map()",
     });
     restrictionsClass.field({
       name: "idReferenceRegexPatterns",
       isStatic: true,
-      type: "Map<Number, RegExp>",
+      type: "Map<number, RegExp>",
       value: "new Map()",
     });
 

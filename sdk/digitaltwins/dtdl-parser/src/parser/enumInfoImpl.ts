@@ -9,8 +9,6 @@
 import { TypeChecker } from "./type";
 import { EnumInfo } from "./enumInfo";
 import { EnumKinds } from "./enumKinds";
-import { EntityKinds } from "./entityKinds";
-import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { EnumValueInfoImpl } from "./enumValueInfoImpl";
 import { EnumValueInfo } from "./enumValueInfo";
@@ -19,15 +17,13 @@ import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
 import { EntityInfoImpl } from "./entityInfoImpl";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
-import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
-import { ElementPropertyConstraint } from "./type";
-import { AggregateContext } from "./aggregateContext";
 import { InDTMI } from "./internalDtmi";
 import { ValueConstraint } from "./type";
 import { Model } from "./model";
 import { ParsingError } from "./parsingError";
-import { EntityInfo } from "./entityInfo";
 import { createParsingError } from "./parsingErrorImpl";
+import { AggregateContext } from "./aggregateContext";
+import { Reference } from "../common/reference";
 import { TraversalStatus } from "./enum";
 export class EnumInfoImpl implements EnumInfo, TypeChecker {
   public dtdlVersion: number;
@@ -49,7 +45,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
   private _valueSchemaInstanceProperties: string[] = [];
   public _valueSchemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _valueSchemaAllowedVersionsV3: Set<number> = new Set<number>().add(3);
-  public staticObjectClass: any;
+  public parserClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -74,7 +70,8 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     childOf: string | undefined,
     definedIn: string | undefined,
     entityKind: EnumKinds,
-    staticObjectClass: any
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    parserClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -87,7 +84,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.staticObjectClass = staticObjectClass;
+    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -103,7 +100,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize() {
+  static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:ComplexSchema")
       .add("dtmi:dtdl:class:Entity")
@@ -111,7 +108,12 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
       .add("dtmi:dtdl:class:Schema");
   }
 
-  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    dtmi: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supplementalType: SupplementalTypeInfo | undefined
+  ): void {
     this.supplementalTypeIds.push(dtmi);
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);
@@ -166,23 +168,38 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     }
   }
 
-  doesPropertyDictContainKey(propertyName: string, key: string | undefined): boolean {
+  doesPropertyDictContainKey(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         return false;
     }
   }
 
-  public validateInstance(instanceText: string): boolean {
+  public validateInstance(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceText: string
+  ): boolean {
     const instanceElt = JSON.parse(instanceText);
     return this.validateInstanceElement(instanceElt);
   }
 
-  public validateInstanceElement(instanceElt: unknown): boolean {
+  public validateInstanceElement(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown
+  ): boolean {
     return this.validateInstanceInternal(instanceElt, undefined);
   }
 
-  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     switch (this.dtdlVersion) {
       case 2: {
         return this.validateInstanceV2(instanceElt, instanceName);
@@ -196,7 +213,12 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     return false;
   }
 
-  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     if (
       !(this.valueSchema as PrimitiveSchemaInfoImpl)?.validateInstanceInternal(
         instanceElt,
@@ -217,7 +239,12 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     return true;
   }
 
-  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     if (
       !(this.valueSchema as PrimitiveSchemaInfoImpl)?.validateInstanceInternal(
         instanceElt,
@@ -241,11 +268,20 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
   /**
    * Set partition information.
    **/
-  setPartitionInfo(partitionJsonText: string): void {
+  setPartitionInfo(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    partitionJsonText: string
+  ): void {
     throw new Error(`attempt to set partition info on non-partition type EnumInfoInfo`);
   }
 
-  applyTransformations(model: Model, parsingErrors: ParsingError[]): void {
+  applyTransformations(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this.dtdlVersion === 2) {
       this.applyTransformationsV2(model, parsingErrors);
     }
@@ -255,11 +291,27 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     }
   }
 
-  applyTransformationsV2(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  applyTransformationsV3(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictions(parsingErrors: ParsingError[]): void {
+  checkRestrictions(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this.dtdlVersion === 2) {
       this.checkRestrictionsV2(parsingErrors);
     }
@@ -269,7 +321,11 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     }
   }
 
-  checkRestrictionsV2(parsingErrors: ParsingError[]) {
+  checkRestrictionsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     const enumValuesNameSet = new Set<any>();
     if (this.enumValues !== undefined) {
       for (const item of this.enumValues || []) {
@@ -385,7 +441,11 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     }
   }
 
-  checkRestrictionsV3(parsingErrors: ParsingError[]) {
+  checkRestrictionsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     const enumValuesNameSet = new Set<any>();
     if (this.enumValues !== undefined) {
       for (const item of this.enumValues || []) {
@@ -501,7 +561,13 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     }
   }
 
-  trySetObjectProperty(propertyName: string, value: any, key: string | undefined): boolean {
+  trySetObjectProperty(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+    value: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       case "enumValues":
       case "dtmi:dtdl:property:enumValues;2":
@@ -543,6 +609,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): boolean {
     for (const item of this.enumValues || []) {
@@ -610,8 +677,10 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
   }
 
   checkDescendantEnumValueDataType(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ancestorId: InDTMI,
     datatype: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): void {
     if (this._checkedDescendantEnumValueDatatype !== datatype) {
@@ -639,6 +708,7 @@ export class EnumInfoImpl implements EnumInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): Set<string> | undefined {
     const closure: Set<string> = new Set<string>();

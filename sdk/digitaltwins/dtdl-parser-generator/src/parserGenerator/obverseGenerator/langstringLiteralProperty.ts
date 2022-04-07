@@ -43,7 +43,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
     // see comment in internalProperty.ts:addMembers
-    if (!obverseInterface.extends || obverseInterface.extends == "TypeChecker") {
+    if (!obverseInterface.extends || obverseInterface.extends === "TypeChecker") {
       obverseInterface.importObject("LanguageStringType", "./type");
     }
   }
@@ -51,7 +51,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
@@ -65,7 +65,7 @@ export class LangStringLiteralProperty extends LiteralProperty {
     ) {
       const maxLenStr = this.propertyDigest[dtdlVersion].maxLength?.toString();
       const patternStr = this.propertyDigest[dtdlVersion].pattern
-        ? `${staticClass.name}.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}()`
+        ? `${parserClass.name}.${this.propertyDigest}PropertyRegexPatternV${dtdlVersion}()`
         : undefined;
       const defaultLangStr = this.propertyDigest[dtdlVersion].defaultLanguage;
       switchScope

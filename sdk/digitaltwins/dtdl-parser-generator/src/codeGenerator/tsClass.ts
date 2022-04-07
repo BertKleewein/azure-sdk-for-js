@@ -11,9 +11,11 @@ import {
   TsField,
   TsFieldParams,
   TsFunction,
+  TsFunctionParams,
   TsFunctionType,
   TsInheritanceType,
   TsInline,
+  TsMethod,
   TsMultiLine,
 } from "./internal";
 
@@ -26,9 +28,9 @@ export class TsClass extends TsDeclaration {
   private _staticConstructor?: TsConstructor;
   inheritance?: TsInheritanceType[];
   fields: TsField[];
-  private _methods: TsFunction[];
-  private _getters: TsFunction[];
-  private _setters: TsFunction[];
+  private _methods: TsMethod[];
+  private _getters: TsMethod[];
+  private _setters: TsMethod[];
   private _inlines: TsInline[];
   private _suffixCode?: TsMultiLine;
 
@@ -47,6 +49,7 @@ export class TsClass extends TsDeclaration {
   get ctor(): TsConstructor {
     if (this._constructor === undefined) {
       const tsConstructor = new TsConstructor(false);
+      tsConstructor.libraryObject = this;
       this._constructor = tsConstructor;
     }
     return this._constructor;
@@ -55,14 +58,15 @@ export class TsClass extends TsDeclaration {
   get staticCtor(): TsConstructor {
     if (this._staticConstructor === undefined) {
       const tsConstructor = new TsConstructor(true);
+      tsConstructor.libraryObject = this;
       this._staticConstructor = tsConstructor;
     }
     return this._staticConstructor;
   }
 
-  importObject(objectName: string, location?: string): TsClass {
-    if (objectName != this.name) {
-      return super.importObject(objectName, location) as TsClass;
+  importObject(objectName: string, location?: string): this {
+    if (objectName !== this.name) {
+      return super.importObject(objectName, location) as this;
     } else {
       return this;
     }
@@ -74,31 +78,14 @@ export class TsClass extends TsDeclaration {
     return this;
   }
 
-  method({
-    name,
-    returnType,
-    abstract,
-    access,
-    isStatic,
-  }: {
-    name: string;
-    returnType?: string;
-    abstract?: boolean;
-    access?: TsAccess;
-    isStatic?: boolean;
-  }): TsFunction {
-    const tsMethod = new TsFunction({
-      name: name,
-      returnType: returnType,
-      functionType: TsFunctionType.Method,
-      abstract: abstract,
-      isStatic: isStatic,
-      access: access,
-    });
-    if (!abstract) {
+  method(tsFunctionParams: TsFunctionParams): TsMethod {
+    const tsMethod = new TsMethod({ ...tsFunctionParams, functionType: TsFunctionType.Method });
+    tsMethod.libraryObject = this;
+    if (!tsFunctionParams.abstract) {
       // eslint-disable-next-line no-unused-expressions
       tsMethod.body;
     }
+
     this._methods.push(tsMethod);
     return tsMethod;
   }
@@ -119,8 +106,8 @@ export class TsClass extends TsDeclaration {
     name: string;
     returnType?: string;
     access?: TsAccess;
-  }): TsFunction {
-    const tsGetter = new TsFunction({
+  }): TsMethod {
+    const tsGetter = new TsMethod({
       name: name,
       returnType: returnType,
       functionType: TsFunctionType.Getter,
@@ -138,8 +125,8 @@ export class TsClass extends TsDeclaration {
     name: string;
     returnType?: string;
     access?: TsAccess;
-  }): TsFunction {
-    const tsSetter = new TsFunction({
+  }): TsMethod {
+    const tsSetter = new TsMethod({
       name: name,
       returnType: returnType,
       functionType: TsFunctionType.Setter,

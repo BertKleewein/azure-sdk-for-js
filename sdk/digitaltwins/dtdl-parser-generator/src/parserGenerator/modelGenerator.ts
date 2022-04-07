@@ -45,7 +45,7 @@ export class ModelGenerator implements TypeGenerator {
     const referenceClassName = NameFormatter.formatNameAsImplementation(
       ParserGeneratorValues.referenceObverseName
     );
-    const referenceStaticClassName = NameFormatter.formatNameAsStatic(
+    const referenceParserClassName = NameFormatter.formatNameAsParser(
       ParserGeneratorValues.referenceObverseName
     );
 
@@ -55,14 +55,13 @@ export class ModelGenerator implements TypeGenerator {
     modelClass
       .importObject("ParsingError")
       .importObject("createParsingError", "./parsingErrorImpl")
-      .importObject("InDTMI", "./internalDtmi")
       .importObject("ParsedObjectPropertyInfo")
       .importObject(referenceClassName)
       .importObject("ModelDict")
       .importObject("SupplementalTypeInfo")
       .importObject(this._baseEnumName)
       .importObject(this._baseClassImplName)
-      .importObject(referenceStaticClassName);
+      .importObject(referenceParserClassName);
 
     modelClass.field({ name: "dict", type: "ModelDict" });
 
@@ -73,7 +72,7 @@ export class ModelGenerator implements TypeGenerator {
     this._generateTrySetObjectPropertyMethod(
       modelClass,
       referenceClassName,
-      referenceStaticClassName
+      referenceParserClassName
     );
     this._generateIsKindInSetMethod(modelClass);
     this._generateGetKindStringMethod(modelClass);
@@ -125,7 +124,7 @@ export class ModelGenerator implements TypeGenerator {
     // TODO: correct? originally: setPartitionInfoMethod.Param("JToken", "partitionJToken", "<c>JToken</c> containing the partition JSON.");
     addTypeMethod
       .parameter({ name: "elementId", type: "string" })
-      .parameter({ name: "supplementalTypeId", type: "any" })
+      .parameter({ name: "supplementalTypeId", type: "any", mightBeAny: true })
       .parameter({ name: "supplementalType", type: "SupplementalTypeInfo" });
     addTypeMethod.body.line(
       `(this.dict[elementId] as ${this._baseClassImplName})?.addType(supplementalTypeId, supplementalType);`
@@ -173,7 +172,7 @@ export class ModelGenerator implements TypeGenerator {
   private _generateTrySetObjectPropertyMethod(
     modelClass: TsClass,
     referenceClassName: string,
-    referenceStaticClassName: string
+    referenceParserClassName: string
   ): void {
     const trySetObjectPropertyMethod = modelClass.method({
       name: "trySetObjectProperty",
@@ -186,7 +185,7 @@ export class ModelGenerator implements TypeGenerator {
       .parameter({ name: "key", type: "string", optional: true });
     trySetObjectPropertyMethod.body
       .line(
-        `const obj = Object.keys(this.dict).includes(referencedElementId) ? this.dict[referencedElementId] : new ${referenceClassName}(0, referencedElementId, undefined, undefined, 'reference', ${referenceStaticClassName});`
+        `const obj = Object.keys(this.dict).includes(referencedElementId) ? this.dict[referencedElementId] : new ${referenceClassName}(0, referencedElementId, undefined, undefined, 'reference', ${referenceParserClassName});`
       )
       .line(
         `return (this.dict[elementId] as ${this._baseClassImplName})?.trySetObjectProperty(propertyName, obj, key) || false;`
@@ -230,8 +229,13 @@ export class ModelGenerator implements TypeGenerator {
     const checkRestrictionsMethod = modelClass.method({
       name: "checkRestrictions",
       returnType: "void",
+      mightBeEmpty: true,
     });
-    checkRestrictionsMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+    checkRestrictionsMethod.parameter({
+      name: "parsingErrors",
+      type: "ParsingError[]",
+      mightBeUnused: true,
+    });
     // eslint-disable-next-line no-unused-expressions
     checkRestrictionsMethod.body; // TODO: IMPLEMENT ALL OF THESE
     // .line(`throw new Error('Method not implemented.');`);
@@ -242,8 +246,13 @@ export class ModelGenerator implements TypeGenerator {
     const applyTransformationsMethod = modelClass.method({
       name: "applyTransformations",
       returnType: "void",
+      mightBeEmpty: true,
     });
-    applyTransformationsMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+    applyTransformationsMethod.parameter({
+      name: "parsingErrors",
+      type: "ParsingError[]",
+      mightBeUnused: true,
+    });
     // eslint-disable-next-line no-unused-expressions
     applyTransformationsMethod.body;
     // .line(`throw new Error('Method not implemented.');`);

@@ -166,7 +166,7 @@ export abstract class MaterialProperty {
   public abstract addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,

@@ -122,9 +122,14 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
     concreteClassMethod.parameter({
       name: "ancestorId",
       type: ParserGeneratorValues.IdentifierType,
+      shouldBeInterface: true,
     });
     concreteClassMethod.parameter({ name: "datatype", type: "string" });
-    concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+    concreteClassMethod.parameter({
+      name: "parsingErrors",
+      type: "ParsingError[]",
+      mightBeUnused: true,
+    });
 
     const ifNonMatch = concreteClassMethod.body.if(`this.${checkedFieldName} !== datatype`);
     ifNonMatch.line(`this.${checkedFieldName} = datatype;`);
@@ -142,7 +147,6 @@ export class DescendantControlDatatypeProperty implements DescendantControl {
         this._propertyNames.includes(materialProperty.propertyName)
       ) {
         const varName: { ref: string } = { ref: "item" };
-        obverseClass.importObject("Helpers");
         materialProperty
           .iterate(ifNonMatch, varName)
           .if(`typeof(${varName.ref}) !== datatype`)

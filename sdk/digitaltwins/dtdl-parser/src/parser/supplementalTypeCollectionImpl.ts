@@ -11,11 +11,10 @@ import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { SupplementalTypeCollection } from "./supplementalTypeCollection";
 import { ExtensionKind } from "./extensionKind";
 import { InDTMI } from "./internalDtmi";
-import { ValueConstraint } from "./type";
 /**
  * A collection of DTDL types that are not materialized as TS Classes
  **/
-export class SupplementalTypeCollectionImpl {
+export class SupplementalTypeCollectionImpl implements SupplementalTypeCollection {
   supplementalTypes: Map<string, SupplementalTypeInfo>;
 
   constructor() {

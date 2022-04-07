@@ -7,4 +7,7 @@ export interface TsParameterParams {
   description?: string;
   initializer?: string;
   optional?: boolean;
+  mightBeUnused?: boolean;
+  shouldBeInterface?: boolean;
+  mightBeAny?: boolean;
 }

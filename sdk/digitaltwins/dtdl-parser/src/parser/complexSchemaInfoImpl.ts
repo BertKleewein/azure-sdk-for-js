@@ -9,15 +9,12 @@
 import { TypeChecker } from "./type";
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
 import { ComplexSchemaKinds } from "./complexSchemaKinds";
-import { EntityKinds } from "./entityKinds";
-import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
-import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
 import { ParsingError } from "./parsingError";
-import { EntityInfo } from "./entityInfo";
+import { Reference } from "../common/reference";
 import { createParsingError } from "./parsingErrorImpl";
 export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeChecker {
   public dtdlVersion: number;
@@ -29,7 +26,7 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public staticObjectClass: any;
+  public parserClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -50,7 +47,8 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     childOf: string | undefined,
     definedIn: string | undefined,
     entityKind: ComplexSchemaKinds,
-    staticObjectClass: any
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    parserClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -62,7 +60,7 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.staticObjectClass = staticObjectClass;
+    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -73,14 +71,19 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize() {
+  static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:ComplexSchema")
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:Schema");
   }
 
-  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    dtmi: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supplementalType: SupplementalTypeInfo | undefined
+  ): void {
     throw new Error("Attempt to add type to non augmentable type ComplexSchemaInfo");
   }
 
@@ -88,45 +91,89 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     return ComplexSchemaInfoImpl._versionlessTypes.has(new InDTMI(typeId).versionless);
   }
 
-  doesPropertyDictContainKey(propertyName: string, key: string | undefined): boolean {
+  doesPropertyDictContainKey(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         return false;
     }
   }
 
-  public validateInstance(instanceText: string): boolean {
+  public validateInstance(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceText: string
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  public validateInstanceElement(instanceElt: unknown): boolean {
+  public validateInstanceElement(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
   /**
    * Set partition information.
    **/
-  setPartitionInfo(partitionJsonText: string): void {
+  setPartitionInfo(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    partitionJsonText: string
+  ): void {
     throw new Error(`attempt to set partition info on non-partition type ComplexSchemaInfoInfo`);
   }
 
-  applyTransformationsV2(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  applyTransformationsV3(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictionsV2(parsingErrors: ParsingError[]) {
+  checkRestrictionsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     const tooDeepElementSchemaOrSchemaElementId: Reference<InDTMI> = { ref: undefined };
     if (
       !this.checkDepthOfElementSchemaOrSchema(
@@ -148,7 +195,11 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     }
   }
 
-  checkRestrictionsV3(parsingErrors: ParsingError[]) {
+  checkRestrictionsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     const tooDeepElementSchemaOrSchemaElementId: Reference<InDTMI> = { ref: undefined };
     if (
       !this.checkDepthOfElementSchemaOrSchema(
@@ -170,7 +221,13 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     }
   }
 
-  trySetObjectProperty(propertyName: string, value: any, key: string | undefined): boolean {
+  trySetObjectProperty(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+    value: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         break;
@@ -185,6 +242,7 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): boolean {
     tooDeepElementId.ref = undefined;
@@ -204,8 +262,10 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
   }
 
   checkDescendantEnumValueDataType(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ancestorId: InDTMI,
     datatype: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): void {
     if (this._checkedDescendantEnumValueDatatype !== datatype) {
@@ -225,11 +285,15 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     return false;
   }
 
-  getCountOfExtendsNarrow(parsingErrors: ParsingError[]): number {
+  getCountOfExtendsNarrow(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): number {
     throw new Error("Can not execute on an abstract class");
   }
 
   getCountOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrow(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): number {
     throw new Error("Can not execute on an abstract class");

@@ -74,7 +74,7 @@ export class MaterialClassValidator {
           name: `${ParserGeneratorValues.ValidateInstanceMethodName}`,
           returnType: "boolean",
         })
-        .parameter({ name: "instanceText", type: "string" });
+        .parameter({ name: "instanceText", type: "string", mightBeUnused: true });
     }
     const method = obverseClass
       .method({
@@ -84,7 +84,7 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public,
       })
-      .parameter({ name: "instanceText", type: "string" });
+      .parameter({ name: "instanceText", type: "string", mightBeUnused: true });
     if (classIsAbstract) {
       // TODO FOR NEW Is this even correct? to throw error from abstract classes ? Will this be okay to do something like this on the other validate methods ?
       method.body.line(`throw new Error('cannot validate anything in an abstract class');`);
@@ -112,7 +112,7 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public,
       })
-      .parameter({ name: "instanceElt", type: "unknown" });
+      .parameter({ name: "instanceElt", type: "unknown", mightBeUnused: true });
     if (classIsBase) {
       method.body.line(`throw new Error(this.${kindProperty}?.toString());`); // TODO Only normal error is fine?
     } else if (!classIsAbstract && criteriaText !== undefined) {
@@ -142,8 +142,8 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public,
       })
-      .parameter({ name: "instanceElt", type: "unknown" })
-      .parameter({ name: "instanceName", type: "string|undefined" });
+      .parameter({ name: "instanceElt", type: "unknown", mightBeUnused: true })
+      .parameter({ name: "instanceName", type: "string|undefined", mightBeUnused: true });
     if (classIsBase) {
       method.body.line(`return false;`);
     } else if (!classIsAbstract && criteriaText !== undefined) {
@@ -180,8 +180,9 @@ export class MaterialClassValidator {
         isStatic: false,
         access: TsAccess.Public,
       })
-      .parameter({ name: "instanceElt", type: "unknown" })
-      .parameter({ name: "instanceName", type: "string|undefined" });
+      .parameter({ name: "instanceElt", type: "unknown", mightBeUnused: true })
+      .parameter({ name: "instanceName", type: "string|undefined", mightBeUnused: true });
+
     if (!classIsAbstract && instanceValidationDigest?.criteriaText !== undefined) {
       const elementConditionDigest = instanceValidationDigest[dtdlVersion]
         .element as InstanceConditionDigest;
@@ -199,6 +200,7 @@ export class MaterialClassValidator {
         "element"
       );
       if (elementConditionDigest.jsonType === "object") {
+        method.body.line("// eslint-disable-next-line @typescript-eslint/ban-types");
         const forObjectScope = method.body.for(
           "const [key, value] of Object.entries(instanceElt as object)"
         );

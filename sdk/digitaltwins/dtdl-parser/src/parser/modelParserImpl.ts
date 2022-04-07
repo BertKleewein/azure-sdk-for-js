@@ -22,7 +22,6 @@ import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { PartitionTypeCollection } from "./partitionTypeCollection";
 import { StandardElements } from "./standardElements";
 import { RootableTypeCollection } from "./rootableTypeCollection";
-import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
 import { ModelParserStatic } from "./modelParserStatic";
 import { TypeChecker } from "./type";
 /**

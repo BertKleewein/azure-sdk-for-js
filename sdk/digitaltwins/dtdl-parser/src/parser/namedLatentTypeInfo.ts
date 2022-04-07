@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { NamedEntityInfo } from "./namedEntityInfo";
-import { TypeChecker } from "./type";
 export interface NamedLatentTypeInfo extends NamedEntityInfo {
   entityKind: "namedlatenttype";
 }

@@ -9,14 +9,12 @@
 import { TypeChecker } from "./type";
 import { EntityInfo } from "./entityInfo";
 import { EntityKinds } from "./entityKinds";
-import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
-import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
 import { ParsingError } from "./parsingError";
-import { createParsingError } from "./parsingErrorImpl";
+import { Reference } from "../common/reference";
 export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -27,7 +25,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public staticObjectClass: any;
+  public parserClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -48,7 +46,8 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     childOf: string | undefined,
     definedIn: string | undefined,
     entityKind: EntityKinds,
-    staticObjectClass: any
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    parserClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -60,7 +59,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.staticObjectClass = staticObjectClass;
+    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -71,11 +70,16 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize() {
+  static initialize(): void {
     this._versionlessTypes = new Set<string>().add("dtmi:dtdl:class:Entity");
   }
 
-  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    dtmi: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supplementalType: SupplementalTypeInfo | undefined
+  ): void {
     throw new Error("Attempt to add type to non augmentable type EntityInfo");
   }
 
@@ -83,53 +87,117 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     return EntityInfoImpl._versionlessTypes.has(new InDTMI(typeId).versionless);
   }
 
-  doesPropertyDictContainKey(propertyName: string, key: string | undefined): boolean {
+  doesPropertyDictContainKey(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         return false;
     }
   }
 
-  public validateInstance(instanceText: string): boolean {
+  public validateInstance(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceText: string
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  public validateInstanceElement(instanceElt: unknown): boolean {
+  public validateInstanceElement(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown
+  ): boolean {
     throw new Error(this.entityKind?.toString());
   }
 
-  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     return false;
   }
 
-  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
-  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     throw new Error("cannot validate anything in an abstract class");
   }
 
   /**
    * Set partition information.
    **/
-  setPartitionInfo(partitionJsonText: string): void {
+  setPartitionInfo(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    partitionJsonText: string
+  ): void {
     throw new Error(`attempt to set partition info on non-partition type EntityInfoInfo`);
   }
 
-  applyTransformations(model: Model, parsingErrors: ParsingError[]): void {}
+  applyTransformations(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  applyTransformationsV2(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  applyTransformationsV3(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictions(parsingErrors: ParsingError[]): void {}
+  checkRestrictions(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictionsV2(parsingErrors: ParsingError[]) {}
+  checkRestrictionsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictionsV3(parsingErrors: ParsingError[]) {}
+  checkRestrictionsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  trySetObjectProperty(propertyName: string, value: any, key: string | undefined): boolean {
+  trySetObjectProperty(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+    value: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         break;
@@ -144,6 +212,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): boolean {
     tooDeepElementId.ref = undefined;
@@ -163,8 +232,10 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
   }
 
   checkDescendantEnumValueDataType(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ancestorId: InDTMI,
     datatype: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): void {
     if (this._checkedDescendantEnumValueDatatype !== datatype) {
@@ -194,12 +265,16 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
   /**
    * Get the count of all descendant extends properties.
    **/
-  abstract getCountOfExtendsNarrow(parsingErrors: ParsingError[]): number;
+  abstract getCountOfExtendsNarrow(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): number;
 
   /**
    * Get the count of all descendant contents or fields or enumValues or request or response or properties or schema or elementSchema or mapValue properties.
    **/
   abstract getCountOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrow(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): number;
 }

@@ -9,20 +9,15 @@
 import { TypeChecker } from "./type";
 import { BooleanInfo } from "./booleanInfo";
 import { BooleanKinds } from "./booleanKinds";
-import { EntityKinds } from "./entityKinds";
-import { Reference, referenceInit } from "../common/reference";
 import { LanguageStringType } from "./type";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
-import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
-import { ElementPropertyConstraint } from "./type";
-import { AggregateContext } from "./aggregateContext";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
 import { ParsingError } from "./parsingError";
-import { EntityInfo } from "./entityInfo";
-import { createParsingError } from "./parsingErrorImpl";
+import { Reference } from "../common/reference";
 import { TraversalStatus } from "./enum";
+import { createParsingError } from "./parsingErrorImpl";
 export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
   public dtdlVersion: number;
   public id: string;
@@ -33,7 +28,7 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public staticObjectClass: any;
+  public parserClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -58,7 +53,8 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     childOf: string | undefined,
     definedIn: string | undefined,
     entityKind: BooleanKinds,
-    staticObjectClass: any
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    parserClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -70,7 +66,7 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.staticObjectClass = staticObjectClass;
+    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -86,7 +82,7 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize() {
+  static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Boolean")
       .add("dtmi:dtdl:class:Entity")
@@ -94,7 +90,12 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
       .add("dtmi:dtdl:class:Schema");
   }
 
-  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    dtmi: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supplementalType: SupplementalTypeInfo | undefined
+  ): void {
     this.supplementalTypeIds.push(dtmi);
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);
@@ -108,23 +109,38 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     );
   }
 
-  doesPropertyDictContainKey(propertyName: string, key: string | undefined): boolean {
+  doesPropertyDictContainKey(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         return false;
     }
   }
 
-  public validateInstance(instanceText: string): boolean {
+  public validateInstance(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceText: string
+  ): boolean {
     const instanceElt = JSON.parse(instanceText);
     return this.validateInstanceElement(instanceElt);
   }
 
-  public validateInstanceElement(instanceElt: unknown): boolean {
+  public validateInstanceElement(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown
+  ): boolean {
     return this.validateInstanceInternal(instanceElt, undefined);
   }
 
-  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     switch (this.dtdlVersion) {
       case 2: {
         return this.validateInstanceV2(instanceElt, instanceName);
@@ -138,7 +154,12 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     return false;
   }
 
-  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     if (typeof instanceElt !== "boolean") {
       return false;
     }
@@ -150,7 +171,12 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     return true;
   }
 
-  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     if (typeof instanceElt !== "boolean") {
       return false;
     }
@@ -165,11 +191,20 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
   /**
    * Set partition information.
    **/
-  setPartitionInfo(partitionJsonText: string): void {
+  setPartitionInfo(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    partitionJsonText: string
+  ): void {
     throw new Error(`attempt to set partition info on non-partition type BooleanInfoInfo`);
   }
 
-  applyTransformations(model: Model, parsingErrors: ParsingError[]): void {
+  applyTransformations(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this.dtdlVersion === 2) {
       this.applyTransformationsV2(model, parsingErrors);
     }
@@ -179,11 +214,27 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     }
   }
 
-  applyTransformationsV2(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  applyTransformationsV3(model: Model, parsingErrors: ParsingError[]) {}
+  applyTransformationsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictions(parsingErrors: ParsingError[]): void {
+  checkRestrictions(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this.dtdlVersion === 2) {
       this.checkRestrictionsV2(parsingErrors);
     }
@@ -193,11 +244,25 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     }
   }
 
-  checkRestrictionsV2(parsingErrors: ParsingError[]) {}
+  checkRestrictionsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictionsV3(parsingErrors: ParsingError[]) {}
+  checkRestrictionsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  trySetObjectProperty(propertyName: string, value: any, key: string | undefined): boolean {
+  trySetObjectProperty(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+    value: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       default:
         break;
@@ -225,6 +290,7 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): boolean {
     tooDeepElementId.ref = undefined;
@@ -244,8 +310,10 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
   }
 
   checkDescendantEnumValueDataType(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ancestorId: InDTMI,
     datatype: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): void {
     if (this._checkedDescendantEnumValueDatatype !== datatype) {
@@ -257,6 +325,7 @@ export class BooleanInfoImpl implements BooleanInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): Set<string> | undefined {
     const closure: Set<string> = new Set<string>();

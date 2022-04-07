@@ -6,7 +6,7 @@ import { ParserGeneratorValues } from "./parserGeneratorValues";
 import { SupplementalType } from "./supplementalType";
 import { SupplementalTypeDigest } from "./metamodelDigest";
 import { SupplementalTypeExtension } from "./supplementalTypeExtension";
-import { TsLibrary } from "../codeGenerator";
+import { TsDeclarationType, TsInheritanceType, TsLibrary } from "../codeGenerator";
 import { TypeGenerator } from "./typeGenerator";
 
 export class SupplementalTypeCollectionGenerator implements TypeGenerator {
@@ -75,9 +75,16 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
     });
     collectionInterface.importObject("SupplementalTypeInfo");
 
+    const inheritanceNames: TsInheritanceType[] = [];
+    inheritanceNames.push({
+      name: ["SupplementalTypeCollection"],
+      type: TsDeclarationType.Interface,
+    });
+
     const collectionClass = parserLibrary.class({
       name: "SupplementalTypeCollectionImpl",
       exports: true,
+      inheritance: inheritanceNames,
     });
     collectionClass.docString.line(
       "A collection of DTDL types that are not materialized as TS Classes"
@@ -87,8 +94,7 @@ export class SupplementalTypeCollectionGenerator implements TypeGenerator {
       .importObject("SupplementalTypeInfoImpl")
       .importObject("SupplementalTypeCollection")
       .importObject("ExtensionKind")
-      .importObject("InDTMI", "./internalDtmi")
-      .importObject("ValueConstraint", "./type");
+      .importObject("InDTMI", "./internalDtmi");
 
     collectionClass.inline(
       "./parser-src/parserPartial/supplementalTypeCollectionImpl.ts",

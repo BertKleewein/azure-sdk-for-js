@@ -3,7 +3,6 @@
 
 import {
   CodeWriter,
-  DependencyGraph,
   TsClass,
   TsClassParams,
   TsEnum,
@@ -33,15 +32,11 @@ export class TsLibrary {
   private _outputDirectory: string;
   private _tsDataStructures: TsLibraryObject[];
   private _libraryHeader?: TsMultiLine;
-  private _dependencyGraph: DependencyGraph;
-
-  // TODO: can we remove DependencyGraph?
 
   constructor(outputDir: string) {
     this._outputDirectory = outputDir;
 
     this._tsDataStructures = [];
-    this._dependencyGraph = new DependencyGraph();
   }
 
   libraryHeader(text: string): TsMultiLine {
@@ -56,46 +51,30 @@ export class TsLibrary {
   class(input: TsClassParams): TsClass {
     const tsClass = new TsClass(input);
     this._tsDataStructures.push(tsClass);
-    this._dependencyGraph.addNode(tsClass.name);
-    if (tsClass.inheritance !== undefined) {
-      tsClass.inheritance.forEach((element) => {
-        if (Array.isArray(element.name)) {
-          element.name.forEach((elementName) => {
-            this._dependencyGraph.addDirectedEdge(tsClass.name, elementName);
-          });
-        } else {
-          this._dependencyGraph.addDirectedEdge(tsClass.name, element.name);
-        }
-      });
-    }
     return tsClass;
   }
 
   function(input: TsFunctionParams): TsFunction {
     const tsFunction = new TsFunction(input);
     this._tsDataStructures.push(tsFunction);
-    this._dependencyGraph.addNode(tsFunction.name);
     return tsFunction;
   }
 
   typeAlias(input: TsTypeAliasParams): TsTypeAlias {
     const tsTypeAlias = new TsTypeAlias(input);
     this._tsDataStructures.push(tsTypeAlias);
-    this._dependencyGraph.addNode(tsTypeAlias.name);
     return tsTypeAlias;
   }
 
   enum(input: TsEnumParams): TsEnum {
     const tsEnum = new TsEnum(input);
     this._tsDataStructures.push(tsEnum);
-    this._dependencyGraph.addNode(tsEnum.name);
     return tsEnum;
   }
 
   interface(input: TsInterfaceParams): TsInterface {
     const tsInterface = new TsInterface(input);
     this._tsDataStructures.push(tsInterface);
-    this._dependencyGraph.addNode(tsInterface.name);
     return tsInterface;
   }
 

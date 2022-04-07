@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { EntityInfo } from "./entityInfo";
-import { TypeChecker } from "./type";
 export interface UnitInfo extends EntityInfo {
   entityKind: "unit";
   symbol?: string;

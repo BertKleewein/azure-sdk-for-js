@@ -8,14 +8,13 @@
 
 import { ParsingError } from "./parsingError";
 import { createParsingError } from "./parsingErrorImpl";
-import { InDTMI } from "./internalDtmi";
 import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ReferenceInfoImpl } from "./referenceInfoImpl";
 import { ModelDict } from "./modelDict";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { EntityKinds } from "./entityKinds";
 import { EntityInfoImpl } from "./entityInfoImpl";
-import { ReferenceInfoStatic } from "./referenceInfoStatic";
+import { ReferenceInfoParser } from "./referenceInfoParser";
 /**
  * A DTDL model.
  **/
@@ -34,6 +33,7 @@ export class Model {
 
   addType(
     elementId: string,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     supplementalTypeId: any,
     supplementalType: SupplementalTypeInfo
   ): void {
@@ -61,7 +61,7 @@ export class Model {
           undefined,
           undefined,
           "reference",
-          ReferenceInfoStatic
+          ReferenceInfoParser
         );
     return (
       (this.dict[elementId] as EntityInfoImpl)?.trySetObjectProperty(propertyName, obj, key) ||
@@ -84,9 +84,17 @@ export class Model {
       : "";
   }
 
-  checkRestrictions(parsingErrors: ParsingError[]): void {}
+  checkRestrictions(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  applyTransformations(parsingErrors: ParsingError[]): void {}
+  applyTransformations(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
   // codegen-outline-begin method-block
 

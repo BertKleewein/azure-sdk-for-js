@@ -24,7 +24,6 @@ export class ParsedObjectPropertyInfoGenerator implements TypeGenerator {
       name: "ParsedObjectPropertyInfo",
       exports: true,
     });
-    parsedObjectInterface.importObject("InDTMI", "./internalDtmi");
     parsedObjectInterface.importObject(this._baseKindEnum);
     parsedObjectInterface.field({
       name: "expectedKinds",

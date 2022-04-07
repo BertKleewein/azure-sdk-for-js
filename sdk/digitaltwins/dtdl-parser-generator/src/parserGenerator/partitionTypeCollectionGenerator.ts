@@ -39,7 +39,11 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
       access: TsAccess.Private,
       isStatic: true,
     });
-    const constructor = collectionClass.method({ name: "initialize", isStatic: true });
+    const constructor = collectionClass.method({
+      name: "initialize",
+      isStatic: true,
+      returnType: "void",
+    });
     constructor.body.line(`this._partitionTypeStrings = new Set<string>()`);
 
     for (const typeName of this._partitionClasses) {

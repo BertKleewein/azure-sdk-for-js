@@ -127,6 +127,7 @@ export class SingularObjectProperty extends ObjectProperty {
         .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
         .line(`property: instanceProp,`)
         .line(`}));`);
+      checkRestrictionsMethodBody.importObject("createParsingError", "./parsingErrorImpl");
     }
   }
 }

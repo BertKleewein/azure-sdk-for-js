@@ -51,5 +51,7 @@ export class PropertyRestrictionRequiredValues implements PropertyRestriction {
         `value: AggregateContext.getTermOrUri(this.${this._propertyName}.${ParserGeneratorValues.IdentifierName}),`
       )
       .line(`}));`);
+    checkRestrictionsMethodBody.importObject("AggregateContext");
+    checkRestrictionsMethodBody.importObject("createParsingError", "./parsingErrorImpl");
   }
 }

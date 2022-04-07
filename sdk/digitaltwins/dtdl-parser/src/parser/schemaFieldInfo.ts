@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { NamedEntityInfo } from "./namedEntityInfo";
-import { TypeChecker } from "./type";
 import { SchemaInfo } from "./schemaInfo";
 export interface SchemaFieldInfo extends NamedEntityInfo {
   entityKind: "commandpayload" | "field" | "mapvalue" | "commandrequest" | "commandresponse";

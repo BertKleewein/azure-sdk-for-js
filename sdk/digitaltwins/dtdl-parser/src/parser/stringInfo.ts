@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { PrimitiveSchemaInfo } from "./primitiveSchemaInfo";
-import { TypeChecker } from "./type";
 export interface StringInfo extends PrimitiveSchemaInfo {
   entityKind: "string";
 }

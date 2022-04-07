@@ -57,5 +57,8 @@ export interface EntityInfo extends TypeChecker {
   supplementalTypes: SupplementalTypeInfo[];
   undefinedTypes: string[];
   undefinedProperties: { [name: string]: any };
-  validateInstance(instanceText: string): boolean;
+  validateInstance(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceText: string
+  ): boolean;
 }

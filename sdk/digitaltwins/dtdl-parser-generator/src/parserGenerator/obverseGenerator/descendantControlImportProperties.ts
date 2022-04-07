@@ -9,6 +9,7 @@ import {
   TsForEach,
   TsFunction,
   TsIf,
+  TsMethod,
   TsScope,
 } from "../../codeGenerator";
 import { DescendantControl } from "./descendantControl";
@@ -132,6 +133,7 @@ export class DescendantControlImportProperties implements DescendantControl {
           `const sources = this.${this._getTransitivePropertiesMethodName}(0, ${this._maxDepth}, tooDeepElementId, parsingErrors);`
         );
         applyTransformationsMethodBody.line("");
+        applyTransformationsMethodBody.importObject("Reference", "../common/reference");
 
         const ifSourcesNotNull: TsIf = applyTransformationsMethodBody.if(`sources !== undefined`);
 
@@ -169,6 +171,8 @@ export class DescendantControlImportProperties implements DescendantControl {
           .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
           .line(`secondaryId: tooDeepElementId.ref.value,`)
           .line(`}));`);
+
+        applyTransformationsMethodBody.importObject("createParsingError", "./parsingErrorImpl");
       }
     }
   }
@@ -186,7 +190,7 @@ export class DescendantControlImportProperties implements DescendantControl {
     }
 
     if (classIsBase) {
-      const baseClassMethod: TsFunction = obverseClass.method({
+      const baseClassMethod: TsMethod = obverseClass.method({
         name: this._getTransitivePropertiesMethodName,
         returnType: `Set<string> | undefined`,
         abstract: true,
@@ -202,13 +206,14 @@ export class DescendantControlImportProperties implements DescendantControl {
         type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
         description: "An out parameter for the ID of the first element that exceeds the depth.",
       });
+      obverseClass.importObject("Reference", "../common/reference");
       baseClassMethod.parameter({
         name: "parsingErrors",
         type: "ParsingError[]",
         description: "A ParsingError list to which any parsing errors are added.",
       });
     } else if (!classIsAbstract) {
-      const concreteClassMethod: TsFunction = obverseClass.method({
+      const concreteClassMethod: TsMethod = obverseClass.method({
         name: this._getTransitivePropertiesMethodName,
         returnType: "Set<string> | undefined",
       });
@@ -221,7 +226,12 @@ export class DescendantControlImportProperties implements DescendantControl {
         name: "tooDeepElementId",
         type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
       });
-      concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      obverseClass.importObject("Reference", "../common/reference");
+      concreteClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
 
       for (const materialProperty of materialProperties) {
         if (
@@ -269,7 +279,7 @@ export class DescendantControlImportProperties implements DescendantControl {
             );
           }
 
-          ifOthersNotUndefined.line("others.forEach((item) => closure.add(item));");
+          ifOthersNotUndefined.line("others.forEach((otherItem) => closure.add(otherItem));");
 
           const othersIsUndefined: TsElse = ifOthersNotUndefined.else();
 
@@ -324,17 +334,18 @@ export class DescendantControlImportProperties implements DescendantControl {
       (mp) => mp.propertyName === importProperty
     )[0];
 
-    const method: TsFunction = obverseClass.method({ name: methodName, returnType: "void" });
+    const method: TsMethod = obverseClass.method({ name: methodName, returnType: "void" });
     method.summary(
       `Copy the values of this object's ${NameFormatter.formatNameAsProperty(
         importProperty
-      )} property into ${paramName}\`.`
+      )} property into \`${paramName}\`.`
     );
 
     method.parameter({
       name: "ancestorId",
       type: `${ParserGeneratorValues.IdentifierType}`,
       description: `The identifier of the ancestor element whose obverse class invokes the method.`,
+      shouldBeInterface: true,
     });
     method.parameter({
       name: `importPropertyName`,

@@ -18,7 +18,10 @@ type EntityInfo = any;
  * A collection of values of standard elements from the DTDL metamodel.
  **/
 export class StandardElements {
-  static getElement(elementId: InDTMI): EntityInfo {
+  static getElement(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    elementId: InDTMI
+  ): EntityInfo {
     return this._standardModel.dict[elementId.value];
   }
 

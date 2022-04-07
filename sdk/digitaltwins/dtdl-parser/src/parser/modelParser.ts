@@ -8,7 +8,6 @@
 
 import { DtmiResolver } from "./type";
 import { ModelParsingOption } from "./enum";
-import { SupplementalTypeCollection } from "./supplementalTypeCollection";
 import { ModelDict } from "./modelDict";
 export interface ModelParser {
   getModels?: DtmiResolver;

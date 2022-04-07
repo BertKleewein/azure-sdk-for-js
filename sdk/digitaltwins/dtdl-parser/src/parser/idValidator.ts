@@ -6,7 +6,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { InDTMI } from "./internalDtmi";
 import { ParsingError } from "./parsingError";
 import { createParsingError } from "./parsingErrorImpl";
 import { ParsingException } from "./parsingException";
@@ -14,12 +13,12 @@ import { ParsingException } from "./parsingException";
  * A static class for determining whether a string is a valid identifier.
  **/
 export class IdValidator {
-  static idDefinitionMaxLengths: Map<Number, Number> = new Map();
-  static idDefinitionRegexPatterns: Map<Number, RegExp> = new Map();
-  static idReferenceMaxLengths: Map<Number, Number> = new Map();
-  static idReferenceRegexPatterns: Map<Number, RegExp> = new Map();
+  static idDefinitionMaxLengths: Map<number, number> = new Map();
+  static idDefinitionRegexPatterns: Map<number, RegExp> = new Map();
+  static idReferenceMaxLengths: Map<number, number> = new Map();
+  static idReferenceRegexPatterns: Map<number, RegExp> = new Map();
 
-  static initialize() {
+  static initialize(): void {
     IdValidator.idDefinitionMaxLengths.set(2, 2048);
     IdValidator.idDefinitionRegexPatterns.set(
       2,

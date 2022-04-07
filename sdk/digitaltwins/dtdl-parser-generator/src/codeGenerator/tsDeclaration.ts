@@ -6,23 +6,40 @@ import {
   TsDeclarationParams,
   TsDeclarationType,
   TsImport,
+  TsLibraryObject,
   TsMultiLine,
   TsMultiLineDocString,
 } from "./internal";
 
-export class TsDeclaration {
+export class TsDeclaration implements TsLibraryObject {
   name: string;
   protected _type: TsDeclarationType;
   protected _exports: boolean;
   private _declarationHeader?: TsMultiLine;
-  private _importStatements?: TsImport;
   private _docString?: TsMultiLineDocString;
   private _prefixCode?: TsMultiLine;
+  protected _importStatements?: TsImport;
 
   constructor({ name, type, exports = false }: TsDeclarationParams) {
     this.name = name;
     this._type = type;
     this._exports = exports;
+  }
+
+  import(text: string): this {
+    if (this._importStatements === undefined) {
+      this._importStatements = new TsImport();
+    }
+    this._importStatements.addTsImport(text);
+    return this;
+  }
+
+  importObject(objectName: string, location?: string): this {
+    if (this._importStatements === undefined) {
+      this._importStatements = new TsImport();
+    }
+    this._importStatements.addTsImportObject(objectName, location);
+    return this;
   }
 
   get header(): TsMultiLine {
@@ -53,22 +70,6 @@ export class TsDeclaration {
     } else {
       return this._docString;
     }
-  }
-
-  import(text: string): TsDeclaration {
-    if (this._importStatements === undefined) {
-      this._importStatements = new TsImport();
-    }
-    this._importStatements.addTsImport(text);
-    return this;
-  }
-
-  importObject(objectName: string, location?: string): TsDeclaration {
-    if (this._importStatements === undefined) {
-      this._importStatements = new TsImport();
-    }
-    this._importStatements.addTsImportObject(objectName, location);
-    return this;
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

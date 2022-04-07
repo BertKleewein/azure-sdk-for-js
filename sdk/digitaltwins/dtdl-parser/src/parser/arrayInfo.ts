@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
-import { TypeChecker } from "./type";
 import { SchemaInfo } from "./schemaInfo";
 export interface ArrayInfo extends ComplexSchemaInfo {
   entityKind: "array";

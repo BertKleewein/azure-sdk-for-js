@@ -9,24 +9,19 @@
 import { TypeChecker } from "./type";
 import { InterfaceInfo } from "./interfaceInfo";
 import { InterfaceKinds } from "./interfaceKinds";
-import { EntityKinds } from "./entityKinds";
-import { Reference, referenceInit } from "../common/reference";
 import { ContentInfo } from "./contentInfo";
 import { LanguageStringType } from "./type";
 import { ComplexSchemaInfoImpl } from "./complexSchemaInfoImpl";
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
-import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
-import { ElementPropertyConstraint } from "./type";
-import { AggregateContext } from "./aggregateContext";
 import { InDTMI } from "./internalDtmi";
 import { ValueConstraint } from "./type";
 import { Model } from "./model";
 import { ParsingError } from "./parsingError";
-import { EntityInfo } from "./entityInfo";
-import { ContentInfoImpl } from "./contentInfoImpl";
+import { Reference } from "../common/reference";
 import { createParsingError } from "./parsingErrorImpl";
+import { ContentInfoImpl } from "./contentInfoImpl";
 import { TraversalStatus } from "./enum";
 export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   public dtdlVersion: number;
@@ -53,7 +48,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   private _schemasInstanceProperties: string[] = [];
   public _schemasAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemasAllowedVersionsV3: Set<number> = new Set<number>().add(3);
-  public staticObjectClass: any;
+  public parserClass: any;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -80,7 +75,8 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     childOf: string | undefined,
     definedIn: string | undefined,
     entityKind: InterfaceKinds,
-    staticObjectClass: any
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    parserClass: any
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -95,7 +91,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.staticObjectClass = staticObjectClass;
+    this.parserClass = parserClass;
     this.isPartition = true;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -111,13 +107,18 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize() {
+  static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:Interface");
   }
 
-  public addType(dtmi: string, supplementalType: SupplementalTypeInfo | undefined): void {
+  public addType(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    dtmi: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    supplementalType: SupplementalTypeInfo | undefined
+  ): void {
     this.supplementalTypeIds.push(dtmi);
     if (supplementalType !== undefined) {
       this.supplementalTypes.push(supplementalType);
@@ -186,7 +187,11 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  doesPropertyDictContainKey(propertyName: string, key: string | undefined): boolean {
+  doesPropertyDictContainKey(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       case "contents":
         if (key !== undefined && Object.prototype.hasOwnProperty.call(this.contents, key)) {
@@ -200,31 +205,55 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  public validateInstance(instanceText: string): boolean {
+  public validateInstance(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceText: string
+  ): boolean {
     const instanceElt = JSON.parse(instanceText);
     return this.validateInstanceElement(instanceElt);
   }
 
-  public validateInstanceElement(instanceElt: unknown): boolean {
+  public validateInstanceElement(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown
+  ): boolean {
     return false;
   }
 
-  public validateInstanceInternal(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceInternal(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     return false;
   }
 
-  public validateInstanceV2(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     return false;
   }
 
-  public validateInstanceV3(instanceElt: unknown, instanceName: string | undefined): boolean {
+  public validateInstanceV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceElt: unknown,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    instanceName: string | undefined
+  ): boolean {
     return false;
   }
 
   /**
    * Set partition information.
    **/
-  setPartitionInfo(partitionJsonText: string): void {
+  setPartitionInfo(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    partitionJsonText: string
+  ): void {
     this.partitionJsonText = partitionJsonText;
   }
 
@@ -242,7 +271,13 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     return JSON.parse(this.partitionJsonText || "");
   }
 
-  applyTransformations(model: Model, parsingErrors: ParsingError[]): void {
+  applyTransformations(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this.dtdlVersion === 2) {
       this.applyTransformationsV2(model, parsingErrors);
     }
@@ -252,7 +287,13 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  applyTransformationsV2(model: Model, parsingErrors: ParsingError[]) {
+  applyTransformationsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this._originalContents === undefined) {
       this._originalContents = { ...this.contents };
     }
@@ -281,7 +322,13 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  applyTransformationsV3(model: Model, parsingErrors: ParsingError[]) {
+  applyTransformationsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @azure/azure-sdk/ts-use-interface-parameters
+    model: Model,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this._originalContents === undefined) {
       this._originalContents = { ...this.contents };
     }
@@ -310,7 +357,11 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  checkRestrictions(parsingErrors: ParsingError[]): void {
+  checkRestrictions(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     if (this.dtdlVersion === 2) {
       this.checkRestrictionsV2(parsingErrors);
     }
@@ -320,9 +371,17 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  checkRestrictionsV2(parsingErrors: ParsingError[]) {}
+  checkRestrictionsV2(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {}
 
-  checkRestrictionsV3(parsingErrors: ParsingError[]) {
+  checkRestrictionsV3(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    parsingErrors: ParsingError[]
+  ): void // eslint-disable-next-line @typescript-eslint/no-empty-function
+  {
     const numExtendsNarrowValues: number = this.getCountOfExtendsNarrow(parsingErrors);
     if (numExtendsNarrowValues > 1024) {
       parsingErrors.push(
@@ -351,7 +410,13 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     }
   }
 
-  trySetObjectProperty(propertyName: string, value: any, key: string | undefined): boolean {
+  trySetObjectProperty(
+    propertyName: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+    value: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key: string | undefined
+  ): boolean {
     switch (propertyName) {
       case "contents":
       case "dtmi:dtdl:property:contents;2":
@@ -406,6 +471,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): boolean {
     for (const item of Object.values(this.contents || {})) {
@@ -510,8 +576,10 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   }
 
   checkDescendantEnumValueDataType(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ancestorId: InDTMI,
     datatype: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): void {
     if (this._checkedDescendantEnumValueDatatype !== datatype) {
@@ -547,6 +615,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     depth: number,
     depthLimit: number,
     tooDeepElementId: Reference<InDTMI>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     parsingErrors: ParsingError[]
   ): Set<string> | undefined {
     if (this.extends !== undefined && this.extends.length !== 0) {
@@ -569,7 +638,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
       );
       if (others !== undefined) {
         closure.add((item as InterfaceInfoImpl).id);
-        others.forEach((item) => closure.add(item));
+        others.forEach((otherItem) => closure.add(otherItem));
       } else {
         if (tooDeepElementId.ref?.value === this.id) {
           parsingErrors.push(
@@ -591,9 +660,10 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   }
 
   /**
-   * Copy the values of this object's Contents property into contents`.
+   * Copy the values of this object's Contents property into `contents`.
    **/
   importContents(
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     ancestorId: InDTMI,
     importPropertyName: string,
     contents: { [value: string]: ContentInfo },

@@ -80,6 +80,7 @@ export class DescendantControlExcludeType implements DescendantControl {
       name: "elementId",
       type: `Reference<${ParserGeneratorValues.IdentifierType}>`,
     });
+    obverseClass.importObject("Reference", "../common/reference");
 
     concreteClassMethod.body
       .if(`this.${checkedForFieldName}`)
@@ -134,6 +135,7 @@ export class DescendantControlExcludeType implements DescendantControl {
       const elementIdName: string = `excluded${this._excludeType}ElementId`;
 
       // TODO: Validate that this generates the correct type of output, since in C# they use out variables.
+      checkRestrictionsMethodBody.importObject("Reference", "../common/reference");
       checkRestrictionsMethodBody.line(
         `const ${elementIdName}: Reference<${ParserGeneratorValues.IdentifierType}> = {ref: undefined};`
       );
@@ -152,6 +154,7 @@ export class DescendantControlExcludeType implements DescendantControl {
         .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
         .line(`secondaryId: ${elementIdName}.ref.value,`)
         .line(`}));`);
+      checkRestrictionsMethodBody.importObject("createParsingError", "./parsingErrorImpl");
     }
   }
 

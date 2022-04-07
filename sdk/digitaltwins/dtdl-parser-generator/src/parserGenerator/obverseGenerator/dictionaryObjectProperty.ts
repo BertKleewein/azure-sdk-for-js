@@ -75,7 +75,7 @@ export class DictionaryObjectProperty extends ObjectProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
@@ -89,8 +89,6 @@ export class DictionaryObjectProperty extends ObjectProperty {
       Object.prototype.hasOwnProperty.call(this.propertyDigest, dtdlVersion) &&
       this.propertyDigest[dtdlVersion].allowed
     ) {
-      staticClass.importObject(this.versionedClassName[dtdlVersion] as string);
-
       const propertyVersionDigest = this.propertyDigest[dtdlVersion];
       const valueCountAssignment = this.hasCountRestriction(dtdlVersion)
         ? `${valueCountVar} = `
@@ -110,10 +108,10 @@ export class DictionaryObjectProperty extends ObjectProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this.versionedParserName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
       );
 
-      staticClass.importObject(this.versionedStaticClassName[dtdlVersion]);
+      parserClass.importObject(this.versionedParserName[dtdlVersion]);
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope
           .if(`${valueCountVar} < ${propertyVersionDigest.minCount}`)

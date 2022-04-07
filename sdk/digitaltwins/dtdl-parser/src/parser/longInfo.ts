@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { NumericSchemaInfo } from "./numericSchemaInfo";
-import { TypeChecker } from "./type";
 export interface LongInfo extends NumericSchemaInfo {
   entityKind: "long";
 }

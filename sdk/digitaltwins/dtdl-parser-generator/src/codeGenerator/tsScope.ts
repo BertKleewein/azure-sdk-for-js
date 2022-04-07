@@ -9,6 +9,7 @@ import {
   TsFunctionParams,
   TsIf,
   TsInline,
+  TsLibraryObject,
   TsLine,
   TsMultiLine,
   TsStatement,
@@ -21,6 +22,7 @@ export class TsScope implements TsStatement {
   protected _suppressBreak: boolean;
   protected _statements: TsStatement[];
   protected _inlines: TsInline[];
+  public libraryObject?: TsLibraryObject;
 
   constructor(firstLine?: string, suppressBreak: boolean = false) {
     this._firstLine = firstLine;
@@ -28,6 +30,11 @@ export class TsScope implements TsStatement {
 
     this._statements = [];
     this._inlines = [];
+  }
+
+  importObject(objectName: string, location?: string): this {
+    (this.libraryObject as TsLibraryObject).importObject(objectName, location);
+    return this;
   }
 
   line(text: string): TsScope {
@@ -47,36 +54,42 @@ export class TsScope implements TsStatement {
 
   scope(firstLine: string): TsScope {
     const nestedScope = new TsScope(firstLine);
+    nestedScope.libraryObject = this.libraryObject;
     this._statements.push(nestedScope);
     return nestedScope;
   }
 
   while(whileText: string): TsScope {
     const tsWhile = new TsWhile(whileText);
+    tsWhile.libraryObject = this.libraryObject;
     this._statements.push(tsWhile);
     return tsWhile;
   }
 
   if(ifText: string): TsIf {
     const tsIf = new TsIf(ifText, this);
+    tsIf.libraryObject = this.libraryObject;
     this._statements.push(tsIf);
     return tsIf;
   }
 
   try(): TsTry {
     const tsTry = new TsTry(this);
+    tsTry.libraryObject = this.libraryObject;
     this._statements.push(tsTry);
     return tsTry;
   }
 
   for(text: string): TsFor {
     const tsFor = new TsFor(text);
+    tsFor.libraryObject = this.libraryObject;
     this._statements.push(tsFor);
     return tsFor;
   }
 
   forEach(object: string, cbParams: string): TsForEach {
     const tsForEach = new TsForEach(object, cbParams);
+    tsForEach.libraryObject = this.libraryObject;
     this._statements.push(tsForEach);
     return tsForEach;
   }
@@ -97,12 +110,17 @@ export class TsScope implements TsStatement {
       access: access,
       isStatic: isStatic,
     });
+    tsFunction.libraryObject = this.libraryObject;
     this._statements.push(tsFunction);
     return tsFunction;
   }
 
   statement(tsStatement: TsStatement): void {
     this._statements.push(tsStatement);
+  }
+
+  isEmpty(): boolean {
+    return this._inlines.length > 0 || this._statements.length > 0;
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters

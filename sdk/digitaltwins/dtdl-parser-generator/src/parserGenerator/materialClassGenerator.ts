@@ -61,7 +61,7 @@ export class MaterialClassGenerator implements TypeGenerator {
   // The name of the implementation associated with the obverse class eg 'ArrayInfoImpl'.
   private _typeImplName: string;
   // The name of the implementation associated with the obverse static method class eg 'ArrayInfoStatic'.
-  private _typeStaticName: string;
+  private _typeParserName: string;
   // The name of the parent interface eg 'EntityInfo'.
   private _parentTypeName: string | undefined;
   // The name of the parent implementation eg 'EntityInfoImpl'.
@@ -109,7 +109,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     this._rawTypeName = rawTypeName;
     this._typeName = NameFormatter.formatNameAsInterface(rawTypeName);
     this._typeImplName = NameFormatter.formatNameAsImplementation(rawTypeName);
-    this._typeStaticName = NameFormatter.formatNameAsStatic(rawTypeName);
+    this._typeParserName = NameFormatter.formatNameAsParser(rawTypeName);
     this._parentTypeName =
       materialClassDigest.parentClass === null
         ? undefined
@@ -256,10 +256,11 @@ export class MaterialClassGenerator implements TypeGenerator {
       exports: true,
       thingToExtend: this._parentTypeName || "TypeChecker",
     });
-    if (this._parentTypeName !== undefined) {
+    if (this._parentTypeName) {
       obverseInterface.importObject(this._parentTypeName);
+    } else {
+      obverseInterface.importObject("TypeChecker", "./type");
     }
-    obverseInterface.importObject("TypeChecker", "./type");
 
     const inheritanceNames: TsInheritanceType[] = [];
     inheritanceNames.push({
@@ -277,16 +278,14 @@ export class MaterialClassGenerator implements TypeGenerator {
     obverseClass
       .importObject("TypeChecker", "./type")
       .importObject(this._typeName)
-      .importObject(this._typeKindEnum)
-      .importObject(this._baseKindEnum)
-      .importObject("Reference, referenceInit", "../common/reference");
+      .importObject(this._typeKindEnum);
 
-    const staticClass = parserLibrary.class({
-      name: this._typeStaticName,
+    const parserClass = parserLibrary.class({
+      name: this._typeParserName,
       exports: true,
     });
 
-    staticClass
+    parserClass
       .importObject("SupplementalTypeInfoImpl") // TODO: remove this once parsing is fully moved
       .importObject(this._typeImplName)
       .importObject(this._typeName)
@@ -323,14 +322,14 @@ export class MaterialClassGenerator implements TypeGenerator {
     );
 
     obverseClass.field({
-      name: "staticObjectClass",
+      name: "parserClass",
       access: TsAccess.Public,
       isStatic: false,
       type: "any",
     });
 
-    obverseClass.ctor.parameter({ name: "staticObjectClass", type: "any" });
-    ctorScope.line(`this.staticObjectClass = staticObjectClass`);
+    obverseClass.ctor.parameter({ name: "parserClass", type: "any", mightBeAny: true });
+    ctorScope.line(`this.parserClass = parserClass`);
 
     MaterialClassPartitioner.generateConstructorCode(ctorScope, this._isPartition);
     MaterialClassParser.generateConstructorCode(ctorScope, this._parentTypeName === undefined);
@@ -340,7 +339,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     MaterialClassAugmentor.addMembers(
       obverseClass,
       obverseInterface,
-      staticClass,
+      parserClass,
       this._typeName,
       this._isAbstract,
       this._parentTypeName === undefined,
@@ -350,7 +349,7 @@ export class MaterialClassGenerator implements TypeGenerator {
       this._materialClassDigest.dtdlVersions,
       obverseClass,
       obverseInterface,
-      staticClass,
+      parserClass,
       this._rawTypeName,
       this._typeName,
       this._baseKindEnum,
@@ -384,8 +383,8 @@ export class MaterialClassGenerator implements TypeGenerator {
     this._generateVersionlessTypes(obverseClass);
     this.generateApplyTransformationMethods(obverseClass);
     this.generateCheckRestrictionsMethods(obverseClass, !this._isAbstract); // isAbstract is the opposite of isAugmentable in C#.
-    this._generateStaticConcreteKinds(staticClass);
-    this._generateStaticBadTypeFormatStrings(staticClass);
+    this._generateStaticConcreteKinds(parserClass);
+    this._generateStaticBadTypeFormatStrings(parserClass);
 
     this._generateTrySetObjectPropertyMethod(obverseClass);
 
@@ -408,16 +407,36 @@ export class MaterialClassGenerator implements TypeGenerator {
       const baseClassMethod = obverseClass.method({
         name: "applyTransformations",
         returnType: "void",
+        mightBeEmpty: true,
       });
-      baseClassMethod.parameter({ name: "model", type: "Model" });
-      baseClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      baseClassMethod.parameter({
+        name: "model",
+        type: "Model",
+        shouldBeInterface: true,
+        mightBeUnused: true,
+      });
+      baseClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
     } else if (!this._isAbstract) {
       const concreteClassMethod = obverseClass.method({
         name: "applyTransformations",
         returnType: "void",
+        mightBeEmpty: true,
       });
-      concreteClassMethod.parameter({ name: "model", type: "Model" });
-      concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      concreteClassMethod.parameter({
+        name: "model",
+        type: "Model",
+        shouldBeInterface: true,
+        mightBeUnused: true,
+      });
+      concreteClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
 
       if (this._materialClassDigest.dtdlVersions) {
         for (const dtdlVersion of this._materialClassDigest.dtdlVersions) {
@@ -433,9 +452,20 @@ export class MaterialClassGenerator implements TypeGenerator {
     for (const dtdlVersion of this._materialClassDigest.dtdlVersions) {
       const versionSpecificClassMethod = obverseClass.method({
         name: `applyTransformationsV${dtdlVersion}`,
+        returnType: "void",
+        mightBeEmpty: true,
       });
-      versionSpecificClassMethod.parameter({ name: "model", type: "Model" });
-      versionSpecificClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      versionSpecificClassMethod.parameter({
+        name: "model",
+        type: "Model",
+        shouldBeInterface: true,
+        mightBeUnused: true,
+      });
+      versionSpecificClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
 
       for (const descendantControl of this._descendantControls) {
         descendantControl.addTransformation(
@@ -454,16 +484,26 @@ export class MaterialClassGenerator implements TypeGenerator {
       const baseClassMethod = obverseClass.method({
         name: "checkRestrictions",
         returnType: "void",
+        mightBeEmpty: true,
       });
-      baseClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      baseClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
       // eslint-disable-next-line no-unused-expressions
       baseClassMethod.body;
     } else if (!this._isAbstract) {
       const concreteClassMethod = obverseClass.method({
         name: "checkRestrictions",
         returnType: "void",
+        mightBeEmpty: true,
       });
-      concreteClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      concreteClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
       // eslint-disable-next-line no-unused-expressions
       concreteClassMethod.body;
 
@@ -480,8 +520,14 @@ export class MaterialClassGenerator implements TypeGenerator {
     for (const dtdlVersion of this._materialClassDigest.dtdlVersions) {
       const versionSpecificClassMethod = obverseClass.method({
         name: `checkRestrictionsV${dtdlVersion}`,
+        returnType: "void",
+        mightBeEmpty: true,
       });
-      versionSpecificClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      versionSpecificClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
       // eslint-disable-next-line no-unused-expressions
       versionSpecificClassMethod.body;
 
@@ -513,15 +559,12 @@ export class MaterialClassGenerator implements TypeGenerator {
         isStatic: false,
       })
       .parameter({ name: "propertyName", type: "string" })
-      .parameter({ name: "value", type: "any" })
-      .parameter({ name: "key", type: "string|undefined" });
+      .parameter({ name: "value", type: "any", mightBeAny: true, mightBeUnused: true })
+      .parameter({ name: "key", type: "string|undefined", mightBeUnused: true });
 
     trySetObjectPropertyMethod.body.line("switch (propertyName) {");
 
     this._properties.forEach((prop) => {
-      if (this._typeName !== this._baseTypeName) {
-        obverseClass.importObject(this._baseTypeName);
-      }
       prop.addCaseToTrySetObjectPropertySwitch(
         obverseClass,
         trySetObjectPropertyMethod.body,
@@ -558,46 +601,46 @@ export class MaterialClassGenerator implements TypeGenerator {
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private _generateStaticConcreteKinds(staticClass: TsClass): void {
-    staticClass.field({
+  private _generateStaticConcreteKinds(parserClass: TsClass): void {
+    parserClass.field({
       name: "_concreteKinds",
       access: TsAccess.Protected,
       isStatic: true,
       type: `{[x: number]: ${this._typeKindEnum}[]}`,
     });
-    staticClass.staticCtor.body.line("this._concreteKinds = {};");
+    parserClass.staticCtor.body.line("this._concreteKinds = {};");
     for (const version of this._materialClassDigest.dtdlVersions) {
-      staticClass.staticCtor.body.line(`this._concreteKinds[${version}] = [];`);
+      parserClass.staticCtor.body.line(`this._concreteKinds[${version}] = [];`);
       if (Object.prototype.hasOwnProperty.call(this._concreteSubclassesMap, version)) {
         const subclasses = this._concreteSubclassesMap[version];
         for (const subclass of subclasses) {
-          subclass.addEnumValue(staticClass.staticCtor.body, `this._concreteKinds[${version}]`);
+          subclass.addEnumValue(parserClass.staticCtor.body, `this._concreteKinds[${version}]`);
         }
       }
     }
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-  private _generateStaticBadTypeFormatStrings(staticClass: TsClass): void {
-    staticClass.field({
+  private _generateStaticBadTypeFormatStrings(parserClass: TsClass): void {
+    parserClass.field({
       name: "_badTypeActionFormat",
       access: TsAccess.Protected,
       isStatic: true,
       type: `{[x: number]: string}`,
     });
-    staticClass.field({
+    parserClass.field({
       name: "_badTypeCauseFormat",
       access: TsAccess.Protected,
       isStatic: true,
       type: `{[x: number]: string}`,
     });
-    staticClass.staticCtor.body.line("this._badTypeActionFormat = {};");
-    staticClass.staticCtor.body.line("this._badTypeCauseFormat = {};");
+    parserClass.staticCtor.body.line("this._badTypeActionFormat = {};");
+    parserClass.staticCtor.body.line("this._badTypeCauseFormat = {};");
     Object.entries(this._materialClassDigest.badTypeActionFormat).forEach(([key, value]) => {
-      staticClass.staticCtor.body.line(`this._badTypeActionFormat[${key}] = \`${value}\``);
+      parserClass.staticCtor.body.line(`this._badTypeActionFormat[${key}] = \`${value}\``);
     });
     Object.entries(this._materialClassDigest.badTypeCauseFormat).forEach(([k, v]) => {
-      staticClass.staticCtor.body.line(`this._badTypeCauseFormat[${k}] = \`${v}\``);
+      parserClass.staticCtor.body.line(`this._badTypeCauseFormat[${k}] = \`${v}\``);
     });
   }
 }

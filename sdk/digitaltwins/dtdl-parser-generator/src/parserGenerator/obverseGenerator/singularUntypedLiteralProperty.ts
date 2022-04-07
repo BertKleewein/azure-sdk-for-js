@@ -48,7 +48,7 @@ export class SingularUntypedLiteralProperty extends UntypedLiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _staticClass: TsClass,
+    _parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,

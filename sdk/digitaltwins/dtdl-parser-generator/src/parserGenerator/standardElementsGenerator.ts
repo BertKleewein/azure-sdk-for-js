@@ -48,7 +48,11 @@ export class StandardElementsGenerator implements TypeGenerator {
       returnType: this._baseClassName,
       isStatic: true,
     });
-    method.parameter({ name: "elementId", type: ParserGeneratorValues.IdentifierType });
+    method.parameter({
+      name: "elementId",
+      type: ParserGeneratorValues.IdentifierType,
+      shouldBeInterface: true,
+    });
     method.body.line(`return this._standardModel.dict[elementId.value];`);
   }
 

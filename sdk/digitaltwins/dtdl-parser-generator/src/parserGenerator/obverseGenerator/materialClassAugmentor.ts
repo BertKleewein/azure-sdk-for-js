@@ -26,14 +26,13 @@ export class MaterialClassAugmentor {
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     typeName: string,
     classIsAbstract: boolean,
     classIsBase: boolean,
     anyObjectProperties: boolean
   ): void {
     obverseClass.importObject("SupplementalTypeInfo");
-    obverseClass.importObject("SupplementalTypeInfoImpl");
     if (classIsBase) {
       obverseInterface.importObject("SupplementalTypeInfo");
     }
@@ -45,8 +44,12 @@ export class MaterialClassAugmentor {
         isStatic: false,
         access: TsAccess.Public,
       })
-      .parameter({ name: "dtmi", type: "string" })
-      .parameter({ name: "supplementalType", type: "SupplementalTypeInfo|undefined" });
+      .parameter({ name: "dtmi", type: "string", mightBeUnused: true })
+      .parameter({
+        name: "supplementalType",
+        type: "SupplementalTypeInfo|undefined",
+        mightBeUnused: true,
+      });
     if (!classIsAbstract) {
       method.body.line("this.supplementalTypeIds.push(dtmi);");
       const ifScope = method.body.if(`supplementalType !== undefined`);
@@ -56,6 +59,7 @@ export class MaterialClassAugmentor {
         method.body.line(
           "(supplementalType as SupplementalTypeInfoImpl).bindInstanceProperties(this);"
         );
+        obverseClass.importObject("SupplementalTypeInfoImpl");
       }
     } else {
       method.body.line(
@@ -85,7 +89,7 @@ export class MaterialClassAugmentor {
     obverseClass.field({ name: fieldName, type: fieldType, access: TsAccess.Public });
 
     if (!classIsAbstract) {
-      const method2 = staticClass
+      const method2 = parserClass
         .method({
           name: "tryParseSupplementalProperty",
           returnType: "boolean",
@@ -93,14 +97,14 @@ export class MaterialClassAugmentor {
           isStatic: true,
           access: TsAccess.Public,
         })
-        .parameter({ name: "model", type: "Model" })
-        .parameter({ name: "elementInfo", type: obverseClass.name })
+        .parameter({ name: "model", type: "Model", shouldBeInterface: true })
+        .parameter({ name: "elementInfo", type: obverseClass.name, shouldBeInterface: true })
         .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
         .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
-        .parameter({ name: "aggregateContext", type: "AggregateContext" })
+        .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
         .parameter({ name: "parsingErrors", type: "ParsingError[]" })
         .parameter({ name: "propName", type: "string" })
-        .parameter({ name: "propToken", type: "any" });
+        .parameter({ name: "propToken", type: "any", mightBeAny: true });
       method2.body
         .line("const propDtmi = aggregateContext.createDtmi(propName);")
         .if("propDtmi === undefined")
@@ -112,10 +116,6 @@ export class MaterialClassAugmentor {
         )
         .line("return true;");
       method2.body.line("return false;");
-      obverseClass
-        .importObject("ParsedObjectPropertyInfo")
-        .importObject("ElementPropertyConstraint", "./type")
-        .importObject("AggregateContext");
     }
   }
 
@@ -134,19 +134,22 @@ export class MaterialClassAugmentor {
           `(supplementalType as SupplementalTypeInfoImpl).trySetObjectProperty(${propVar}, ${valueVar}, ${keyVar}, this.supplementalProperties)`
         )
         .line("return true;");
+      scope.importObject("SupplementalTypeInfoImpl");
     }
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public static addTryParseSupplementalProperty(
-    staticClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
+    parserClass: TsClass,
+    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     scope: TsScope,
     classIsAugmentable: boolean
   ): void {
     if (classIsAugmentable) {
       scope
         .if(
-          `${staticClass.name}.tryParseSupplementalProperty(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, propKey, propValue)`
+          `${parserClass.name}.tryParseSupplementalProperty(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, aggregateContext, parsingErrors, propKey, propValue)`
         )
         .line("continue;");
     }
@@ -167,6 +170,7 @@ export class MaterialClassAugmentor {
       returnLine.line(
         `|| this.supplementalTypes.some((st) => (st as SupplementalTypeInfoImpl).doesHaveType(typeId))`
       );
+      returnLine.importObject("SupplementalTypeInfoImpl");
     }
   }
 }

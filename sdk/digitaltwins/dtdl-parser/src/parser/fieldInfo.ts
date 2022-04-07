@@ -7,8 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { SchemaFieldInfo } from "./schemaFieldInfo";
-import { TypeChecker } from "./type";
-import { SchemaInfo } from "./schemaInfo";
 export interface FieldInfo extends SchemaFieldInfo {
   entityKind: "field";
 }

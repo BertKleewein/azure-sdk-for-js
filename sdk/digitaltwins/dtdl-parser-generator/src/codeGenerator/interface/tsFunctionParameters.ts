@@ -11,4 +11,5 @@ export interface TsFunctionParams {
   access?: TsAccess;
   exports?: boolean;
   isStatic?: boolean;
+  mightBeEmpty?: boolean;
 }

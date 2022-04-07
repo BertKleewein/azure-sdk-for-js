@@ -53,7 +53,7 @@ export class TsImportGeneric implements TsStatement {
 
   equals(other: TsStatement): boolean {
     if (other instanceof TsImportGeneric) {
-      return (other as TsImportGeneric)._statement == this._statement;
+      return (other as TsImportGeneric)._statement === this._statement;
     } else {
       return false;
     }
@@ -83,7 +83,7 @@ export class TsImportObject implements TsStatement {
   equals(other: TsStatement): boolean {
     if (other instanceof TsImportObject) {
       const otherObj = other as TsImportObject;
-      return otherObj._location == this._location && otherObj._objectName == this._objectName;
+      return otherObj._location === this._location && otherObj._objectName === this._objectName;
     } else {
       return false;
     }

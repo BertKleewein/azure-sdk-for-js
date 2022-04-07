@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsAccess, TsClass, TsFunction, TsIf, TsScope } from "../../codeGenerator";
+import { TsAccess, TsClass, TsFunction, TsIf, TsMethod, TsScope } from "../../codeGenerator";
 import { DescendantControl } from "./descendantControl";
 import { MaterialProperty } from "./materialProperty";
 import { NameFormatter } from "../nameFormatter";
@@ -57,10 +57,9 @@ export class DescendantControlMaxCount implements DescendantControl {
     }
 
     obverseClass.importObject("ParsingError");
-    obverseClass.importObject("createParsingError", "./parsingErrorImpl");
 
     if (classIsBase) {
-      const baseClassMethod: TsFunction = obverseClass.method({
+      const baseClassMethod: TsMethod = obverseClass.method({
         name: this._methodName,
         returnType: "number",
         abstract: true,
@@ -72,6 +71,7 @@ export class DescendantControlMaxCount implements DescendantControl {
         name: "parsingErrors",
         type: "ParsingError[]",
         description: `A list of ParsingErrors to which any parsing errors are added.`,
+        mightBeUnused: true,
       });
     } else if (!classIsAbstract) {
       obverseClass.importObject("TraversalStatus", "./enum");
@@ -91,7 +91,7 @@ export class DescendantControlMaxCount implements DescendantControl {
       });
       obverseClass.ctor.body.line(`this.${valueFieldName} = 0`);
 
-      const concreteClassMethod: TsFunction = obverseClass.method({
+      const concreteClassMethod: TsMethod = obverseClass.method({
         name: this._methodName,
         returnType: "number",
       });
@@ -114,6 +114,7 @@ export class DescendantControlMaxCount implements DescendantControl {
         )
         .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
         .line(`}));`);
+      concreteClassMethod.importObject("createParsingError", "./parsingErrorImpl");
 
       ifInProgress.line(`return 0;`);
 
@@ -141,11 +142,15 @@ export class DescendantControlMaxCount implements DescendantControl {
       concreteClassMethod.body.line(`this.${statusFieldName} = TraversalStatus.Complete;`);
       concreteClassMethod.body.line(`return this.${valueFieldName};`);
     } else {
-      const abstractClassMethod: TsFunction = obverseClass.method({
+      const abstractClassMethod: TsMethod = obverseClass.method({
         name: this._methodName,
         returnType: "number",
       });
-      abstractClassMethod.parameter({ name: "parsingErrors", type: "ParsingError[]" });
+      abstractClassMethod.parameter({
+        name: "parsingErrors",
+        type: "ParsingError[]",
+        mightBeUnused: true,
+      });
       abstractClassMethod.body.line(`throw new Error('Can not execute on an abstract class'); `);
     }
   }
@@ -171,6 +176,7 @@ export class DescendantControlMaxCount implements DescendantControl {
         )
         .line(`primaryId: this.${ParserGeneratorValues.IdentifierName},`)
         .line(`}));`);
+      checkRestrictionsMethodBody.importObject("createParsingError", "./parsingErrorImpl");
     }
   }
 

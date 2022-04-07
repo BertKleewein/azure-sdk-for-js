@@ -98,7 +98,6 @@ export class HelpersGenerator implements TypeGenerator {
       .parameter({ name: "dict2", type: `{[name:string]: ${this._baseClassName}}` });
 
     method.body.if("Object.keys(dict1).length !== Object.keys(dict2).length").line("return false;");
-    method.body.line("const dict1Keys = Object.keys(dict1)");
 
     method.body
       .for("const [key, value] of Object.entries(dict1)")

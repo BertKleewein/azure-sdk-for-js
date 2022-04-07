@@ -54,7 +54,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     _classIsAugmentable: boolean,
@@ -99,7 +99,7 @@ export class SingularTypedLiteralProperty extends TypedLiteralProperty {
         default:
           throw Error(`Parsing logic for ${this.datatype} not written yet.`);
       }
-      staticClass.importObject("ValueParser");
+      parserClass.importObject("ValueParser");
       switchScope.line("continue;");
     }
   }

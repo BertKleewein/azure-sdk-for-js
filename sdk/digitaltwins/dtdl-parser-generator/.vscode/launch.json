@@ -6,7 +6,6 @@
     "configurations": [
         {
             "type": "pwa-node",
-            "runtimeExecutable": "/home/bertk/.nvs/node/16.11.1/x64/bin/node",
             "sourceMaps": true,
             "request": "launch",
             "name": "Launch Program",

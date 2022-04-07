@@ -1,18 +1,23 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsFunction, TsFunctionType, TsParameterParams, TsScope } from "./internal";
+import { TsMethod, TsFunctionType, TsParameterParams, TsScope } from "./internal";
 
-export class TsConstructor extends TsFunction {
+export class TsConstructor extends TsMethod {
   constructor(isStatic: boolean) {
     if (isStatic) {
-      super({ name: "initialize", functionType: TsFunctionType.Method, isStatic: true });
+      super({
+        name: "initialize",
+        functionType: TsFunctionType.Method,
+        isStatic: true,
+        returnType: "void",
+      });
     } else {
       super({ name: "constructor", functionType: TsFunctionType.Method });
     }
   }
 
-  parameter(input: TsParameterParams): TsConstructor {
+  parameter(input: TsParameterParams): this {
     super.parameter(input);
     return this;
   }

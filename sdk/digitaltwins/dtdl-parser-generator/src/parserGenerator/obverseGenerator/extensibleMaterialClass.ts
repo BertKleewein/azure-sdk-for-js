@@ -12,7 +12,7 @@ export class ExtensibleMaterialClass {
   private _dtdlVersion: number;
   private _typeName: string;
   private _className: string;
-  private _staticClassName: string;
+  private _parserClassName: string;
   private _kindEnum: string;
   private _kindValue: string;
 
@@ -21,13 +21,13 @@ export class ExtensibleMaterialClass {
     this._typeName = typeName;
     this._kindEnum = kindEnum;
     this._className = NameFormatter.formatNameAsImplementation(typeName);
-    this._staticClassName = NameFormatter.formatNameAsStatic(typeName);
+    this._parserClassName = NameFormatter.formatNameAsParser(typeName);
     this._kindValue = NameFormatter.formatNameAsEnumValue(typeName);
   }
 
   public addCaseToParseTypeStringSwitch(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchOnExtensionKind: TsScope,
     extensibleMaterialSubtypes: string[],
@@ -36,9 +36,9 @@ export class ExtensibleMaterialClass {
   ): void {
     switchOnExtensionKind.line(`case ExtensionKind.${this._kindValue}:`);
     if (extensibleMaterialSubtypes.includes(this._typeName)) {
-      if (staticClass.name !== this._className) {
-        staticClass.importObject(this._className);
-        staticClass.importObject(this._staticClassName);
+      if (parserClass.name !== this._className) {
+        parserClass.importObject(this._className);
+        parserClass.importObject(this._parserClassName);
       }
       switchOnExtensionKind
         .line(
@@ -46,7 +46,7 @@ export class ExtensibleMaterialClass {
             this._dtdlVersion
           }, elementId, ${parentIdVar}, ${definedInVar}, '${NameFormatter.formatNameAsKindString(
             this._kindValue
-          )}', ${this._staticClassName});`
+          )}', ${this._parserClassName});`
         )
         .line(
           `(elementInfo.ref as ${this._className}).addType(supplementalTypeId.value, supplementalTypeInfo);`

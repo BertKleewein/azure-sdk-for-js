@@ -1,4 +1,4 @@
-// copyright (c) microsoft corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 /* eslint-disable no-unused-vars */
@@ -18,7 +18,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   private _interfaceName?: string;
   private _implementationName?: string;
   private _versionedClassName: { [dtdlVersion: number]: string };
-  private _versionedStaticClassName: { [dtdlVersion: number]: string };
+  private _versionedParserName: { [dtdlVersion: number]: string };
   private _valueConstraintsField: string;
   private _instancePropertiesField: string;
   private _allowedVersionsField: string;
@@ -39,7 +39,7 @@ export abstract class ObjectProperty extends MaterialProperty {
         ? NameFormatter.formatNameAsImplementation(propertyToken._.class)
         : undefined;
     this._versionedClassName = {};
-    this._versionedStaticClassName = {};
+    this._versionedParserName = {};
     for (const keyDtdlVersion in propertyToken) {
       if (keyDtdlVersion === "_") {
         // skip underscore
@@ -49,8 +49,8 @@ export abstract class ObjectProperty extends MaterialProperty {
       if (versionedClassName !== undefined) {
         this._versionedClassName[keyDtdlVersion] =
           NameFormatter.formatNameAsImplementation(versionedClassName);
-        this._versionedStaticClassName[keyDtdlVersion] =
-          NameFormatter.formatNameAsStatic(versionedClassName);
+        this._versionedParserName[keyDtdlVersion] =
+          NameFormatter.formatNameAsParser(versionedClassName);
       }
     }
     this._valueConstraintsField = `${propertyName}ValueConstraints`;
@@ -74,8 +74,8 @@ export abstract class ObjectProperty extends MaterialProperty {
     return this._versionedClassName;
   }
 
-  protected get versionedStaticClassName(): { [dtdlVersion: number]: string } {
-    return this._versionedStaticClassName;
+  protected get versionedParserName(): { [dtdlVersion: number]: string } {
+    return this._versionedParserName;
   }
 
   protected get valueConstraintsField(): string {
@@ -163,7 +163,7 @@ export abstract class ObjectProperty extends MaterialProperty {
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
   public addImports(obverseInterface: TsInterface): void {
-    if (obverseInterface.name !== this.interfaceName) {
+    if (!this.inherited && obverseInterface.name !== this.interfaceName) {
       obverseInterface.importObject(this.interfaceName as string);
     }
   }
@@ -171,7 +171,7 @@ export abstract class ObjectProperty extends MaterialProperty {
   public addCaseToParseSwitch(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     switchScope: TsScope,
     classIsAugmentable: boolean,
@@ -201,12 +201,11 @@ export abstract class ObjectProperty extends MaterialProperty {
       if (!this.optional) {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
-      staticClass.importObject(this.versionedClassName[dtdlVersion] as string);
       switchScope.line(
-        `${valueCountAssignment}${this.versionedStaticClassName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}${this._versionedParserName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', ${dtmiSegment}, undefined, ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
       );
-      if (staticClass.name !== this.versionedClassName[dtdlVersion]) {
-        staticClass.importObject(this.versionedStaticClassName[dtdlVersion]);
+      if (parserClass.name !== this.versionedClassName[dtdlVersion]) {
+        parserClass.importObject(this.versionedParserName[dtdlVersion]);
       }
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope

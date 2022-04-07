@@ -79,7 +79,7 @@ export class InternalProperty extends MaterialProperty {
   public addCaseToParseSwitch(
     _dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    _staticClass: TsClass,
+    _parserClass: TsClass,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     _switchScope: TsScope,
     _classIsAugmentable: boolean,
@@ -141,7 +141,7 @@ export class InternalProperty extends MaterialProperty {
     // some base. I assume that "entityKind" means "only exists on a base interface" in some way,
     // but I'm not sure how.
     let isBaseInterface = false;
-    if (!obverseInterface.extends || obverseInterface.extends == "TypeChecker") {
+    if (!obverseInterface.extends || obverseInterface.extends === "TypeChecker") {
       isBaseInterface = true;
     }
     if (isBaseInterface && this.propertyName !== "entityKind") {

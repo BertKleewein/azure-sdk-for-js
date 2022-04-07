@@ -12,7 +12,7 @@
 export class MaterialTypeNameCollection {
   static typeNames: Set<string>;
 
-  static initialize() {
+  static initialize(): void {
     MaterialTypeNameCollection.typeNames = new Set<string>();
     MaterialTypeNameCollection.typeNames.add("Array");
     MaterialTypeNameCollection.typeNames.add("dtmi:dtdl:class:Array;2");

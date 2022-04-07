@@ -37,14 +37,14 @@ export class NameFormatter {
       "Impl"
     );
   }
-  public static formatNameAsStatic(name: string): string {
-    // Example: format name "array" as interface "ArrayInfoStatic"
+  public static formatNameAsParser(name: string): string {
+    // Example: format name "array" as interface "ArrayInfoParser"
     return (
       CLASS_PREFIX +
       name.substring(VARIANT_INDEX, VARIANT_INDEX + 1).toUpperCase() +
       name.substring(SUBSTRING_INDEX) +
       CLASS_SUFFIX +
-      "Static"
+      "Parser"
     );
   }
   public static formatNameAsParameter(name: string): string {

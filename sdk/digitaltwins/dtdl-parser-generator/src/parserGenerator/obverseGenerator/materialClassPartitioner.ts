@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 /* eslint-disable sort-imports */
 
-import { TsAccess, TsClass, TsFunction, TsInterface, TsScope } from "../../codeGenerator";
+import { TsAccess, TsClass, TsFunction, TsMethod, TsInterface, TsScope } from "../../codeGenerator";
 import { NameFormatter } from "../nameFormatter";
 
 export class MaterialClassPartitioner {
@@ -22,7 +22,7 @@ export class MaterialClassPartitioner {
   ): void {
     obverseClass.field({ name: "isPartition", type: "boolean", access: TsAccess.Public });
 
-    const setPartitionInfoMethod: TsFunction = obverseClass.method({
+    const setPartitionInfoMethod: TsMethod = obverseClass.method({
       name: "setPartitionInfo",
       returnType: "void",
     });
@@ -31,6 +31,7 @@ export class MaterialClassPartitioner {
       name: "partitionJsonText",
       type: "string",
       description: "A string containing the partition JSON text",
+      mightBeUnused: true,
     });
     if (classIsPartition) {
       setPartitionInfoMethod.body.line(`this.partitionJsonText = partitionJsonText;`);
@@ -49,7 +50,7 @@ export class MaterialClassPartitioner {
         access: TsAccess.Private,
       });
 
-      const getJsonLdTextMethod: TsFunction = obverseClass.method({
+      const getJsonLdTextMethod: TsMethod = obverseClass.method({
         name: "getJsonLdText",
         returnType: "string",
       });
@@ -58,7 +59,7 @@ export class MaterialClassPartitioner {
       );
       getJsonLdTextMethod.body.line(`return this.partitionJsonText || '';`);
 
-      const getJsonLdMethod: TsFunction = obverseClass.method({
+      const getJsonLdMethod: TsMethod = obverseClass.method({
         name: "getJsonLd",
         returnType: "any",
       });

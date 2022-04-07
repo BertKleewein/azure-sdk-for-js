@@ -16,10 +16,13 @@ export * from "./enum/tsAccess";
 export * from "./enum/tsFunctionType";
 export * from "./enum/tsDeclarationType";
 
-export * from "./dependencyGraph";
+export * from "./tsLintSuppressor";
 export * from "./codeWriter";
 export * from "./tsScope";
+export * from "./tsFunctionBase";
 export * from "./tsFunction";
+export * from "./tsMethod";
+export * from "./tsLibraryObject";
 export * from "./tsDeclaration";
 export * from "./tsClass";
 export * from "./tsConstructor";

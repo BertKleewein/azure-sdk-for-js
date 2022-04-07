@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { NamedEntityInfo } from "./namedEntityInfo";
-import { TypeChecker } from "./type";
 import { StringInfo } from "./stringInfo";
 export interface MapKeyInfo extends NamedEntityInfo {
   entityKind: "mapkey";

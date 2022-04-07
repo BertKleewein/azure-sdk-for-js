@@ -7,7 +7,6 @@
 /* eslint-disable sort-imports */
 
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
-import { TypeChecker } from "./type";
 import { MapKeyInfo } from "./mapKeyInfo";
 import { MapValueInfo } from "./mapValueInfo";
 export interface MapInfo extends ComplexSchemaInfo {

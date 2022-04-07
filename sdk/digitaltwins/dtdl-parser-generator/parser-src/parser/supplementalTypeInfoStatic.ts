@@ -1,4 +1,4 @@
-// copyright (c) microsoft corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 /* eslint-disable no-unused-vars */

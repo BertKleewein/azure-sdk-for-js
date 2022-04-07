@@ -20,25 +20,6 @@ export class CodeWriter {
 }
 
 // @public (undocumented)
-export class DependencyGraph {
-    constructor();
-    // (undocumented)
-    addDirectedEdge(start: string, end: string): void;
-    // (undocumented)
-    addNode(name: string): void;
-    // (undocumented)
-    edges: {
-        [key: string]: string[];
-    };
-    // (undocumented)
-    nodes: string[];
-    // (undocumented)
-    topologicalSort(): Array<string>;
-    // (undocumented)
-    _topologicalSortHelper(node: string, explored: Set<string>, s: Array<string>): void;
-}
-
-// @public (undocumented)
 export class ParserCodeGenerator {
     // (undocumented)
     static execute(inputDigest: string, outputDirectory: string, _dtdlVersion: string): Promise<void>;
@@ -85,31 +66,25 @@ export class TsClass extends TsDeclaration {
         name: string;
         returnType?: string;
         access?: TsAccess;
-    }): TsFunction;
+    }): TsMethod;
     // (undocumented)
     hasField(fieldName: string): boolean;
     // (undocumented)
     hasMethod(methodName: string): boolean;
     // (undocumented)
-    importObject(objectName: string, location?: string): TsClass;
+    importObject(objectName: string, location?: string): this;
     // (undocumented)
     inheritance?: TsInheritanceType[];
     // (undocumented)
     inline(filepath: string, identifier: string): void;
     // (undocumented)
-    method({ name, returnType, abstract, access, isStatic, }: {
-        name: string;
-        returnType?: string;
-        abstract?: boolean;
-        access?: TsAccess;
-        isStatic?: boolean;
-    }): TsFunction;
+    method(tsFunctionParams: TsFunctionParams): TsMethod;
     // (undocumented)
     setter({ name, returnType, access, }: {
         name: string;
         returnType?: string;
         access?: TsAccess;
-    }): TsFunction;
+    }): TsMethod;
     // (undocumented)
     get staticCtor(): TsConstructor;
     // (undocumented)
@@ -131,16 +106,16 @@ export interface TsClassParams {
 }
 
 // @public (undocumented)
-export class TsConstructor extends TsFunction {
+export class TsConstructor extends TsMethod {
     constructor(isStatic: boolean);
     // (undocumented)
-    parameter(input: TsParameterParams): TsConstructor;
+    parameter(input: TsParameterParams): this;
     // (undocumented)
     super(inputs: string[]): TsScope;
 }
 
 // @public (undocumented)
-export class TsDeclaration {
+export class TsDeclaration implements TsLibraryObject {
     constructor({ name, type, exports }: TsDeclarationParams);
     // (undocumented)
     get docString(): TsMultiLineDocString;
@@ -151,9 +126,11 @@ export class TsDeclaration {
     // (undocumented)
     get header(): TsMultiLine;
     // (undocumented)
-    import(text: string): TsDeclaration;
+    import(text: string): this;
     // (undocumented)
-    importObject(objectName: string, location?: string): TsDeclaration;
+    importObject(objectName: string, location?: string): this;
+    // (undocumented)
+    protected _importStatements?: TsImport;
     // (undocumented)
     name: string;
     // (undocumented)
@@ -291,8 +268,21 @@ export class TsForEach extends TsScope {
 }
 
 // @public (undocumented)
-export class TsFunction implements TsStatement {
-    constructor({ name, returnType, functionType, abstract, access, exports, isStatic, }: TsFunctionParams);
+export class TsFunction extends TsFunctionBase {
+    constructor(tsFunctionParams: TsFunctionParams);
+    // (undocumented)
+    generateCode(codeWriter: CodeWriter): void;
+    // (undocumented)
+    import(text: string): this;
+    // (undocumented)
+    importObject(objectName: string, location?: string): this;
+    // (undocumented)
+    protected _importStatements?: TsImport;
+}
+
+// @public (undocumented)
+export class TsFunctionBase implements TsStatement {
+    constructor({ name, returnType, functionType, abstract, access, exports, isStatic, mightBeEmpty, }: TsFunctionParams);
     // (undocumented)
     get access(): TsAccess | undefined;
     // (undocumented)
@@ -306,17 +296,15 @@ export class TsFunction implements TsStatement {
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)
-    import(text: string): this;
-    // (undocumented)
-    importObject(objectName: string, location?: string): this;
-    // (undocumented)
     get isAbstract(): boolean | undefined;
     // (undocumented)
     get isStatic(): boolean | undefined;
     // (undocumented)
+    libraryObject?: TsLibraryObject;
+    // (undocumented)
     get name(): string;
     // (undocumented)
-    parameter({ name, type, description, initializer, optional }: TsParameterParams): TsFunction;
+    parameter(tsParameterParams: TsParameterParams): this;
     // (undocumented)
     get parameters(): TsParameter[];
     // (undocumented)
@@ -339,6 +327,8 @@ export interface TsFunctionParams {
     functionType?: TsFunctionType;
     // (undocumented)
     isStatic?: boolean;
+    // (undocumented)
+    mightBeEmpty?: boolean;
     // (undocumented)
     name: string;
     // (undocumented)
@@ -460,12 +450,38 @@ export class TsLibrary {
 }
 
 // @public (undocumented)
+export interface TsLibraryObject {
+    // (undocumented)
+    import(text: string): this;
+    // (undocumented)
+    importObject(objectName: string, location?: string): this;
+}
+
+// @public (undocumented)
 export class TsLine implements TsStatement {
     constructor(text: string);
     // (undocumented)
     generateCode(codeWriter: CodeWriter): void;
     // (undocumented)
     get text(): string;
+}
+
+// @public (undocumented)
+export class TsLintSuppressor {
+    // (undocumented)
+    explicitModuleBoundaryTypes(): void;
+    // (undocumented)
+    noUnusedVars(): void;
+    // (undocumented)
+    toString(): string;
+    // (undocumented)
+    useInterfaceParameters(): void;
+}
+
+// @public (undocumented)
+export class TsMethod extends TsFunctionBase {
+    // (undocumented)
+    importObject(objectName: string, location?: string): this;
 }
 
 // @public (undocumented)
@@ -488,7 +504,7 @@ export class TsMultiLineDocString extends TsMultiLine {
 
 // @public (undocumented)
 export class TsParameter {
-    constructor({ name, type, description, initializer, optional }: TsParameterParams);
+    constructor({ name, type, description, initializer, optional, mightBeUnused, shouldBeInterface, mightBeAny, }: TsParameterParams);
     // (undocumented)
     get description(): string | undefined;
     // (undocumented)
@@ -508,9 +524,15 @@ export interface TsParameterParams {
     // (undocumented)
     initializer?: string;
     // (undocumented)
+    mightBeAny?: boolean;
+    // (undocumented)
+    mightBeUnused?: boolean;
+    // (undocumented)
     name: string;
     // (undocumented)
     optional?: boolean;
+    // (undocumented)
+    shouldBeInterface?: boolean;
     // (undocumented)
     type?: string;
 }
@@ -531,9 +553,15 @@ export class TsScope implements TsStatement {
     // (undocumented)
     if(ifText: string): TsIf;
     // (undocumented)
+    importObject(objectName: string, location?: string): this;
+    // (undocumented)
     inline(filepath: string, identifier: string): void;
     // (undocumented)
     protected _inlines: TsInline[];
+    // (undocumented)
+    isEmpty(): boolean;
+    // (undocumented)
+    libraryObject?: TsLibraryObject;
     // (undocumented)
     line(text: string): TsScope;
     // (undocumented)

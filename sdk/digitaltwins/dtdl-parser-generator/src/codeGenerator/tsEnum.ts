@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { CodeWriter, TsEnumParams } from "./internal";
+import { CodeWriter, TsEnumParams, TsLibraryObject } from "./internal";
 
 export class TsEnum {
   name: string;

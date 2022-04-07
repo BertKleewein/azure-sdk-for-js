@@ -54,5 +54,6 @@ export class PropertyRestrictionUniqueProperties implements PropertyRestriction 
       .line(`value: '${this._uniquePropertyName}',`)
       .line(`}));`);
     iterationScope.line(`${this._hashSetName}.add(${varName}.${this._uniquePropertyName})`);
+    iterationScope.importObject("createParsingError", "./parsingErrorImpl");
   }
 }

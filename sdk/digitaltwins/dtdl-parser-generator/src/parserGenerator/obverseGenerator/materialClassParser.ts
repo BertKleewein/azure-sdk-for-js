@@ -35,7 +35,7 @@ export class MaterialClassParser {
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     obverseInterface: TsInterface,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     rawTypeName: string,
     typeName: string,
     kindEnum: string,
@@ -56,7 +56,7 @@ export class MaterialClassParser {
     this._generateAddInstancePropertyMethod(obverseClass, classIsAbstract, properties);
     this._generateStaticParseObjectMethod(
       dtdlVersions,
-      staticClass,
+      parserClass,
       rawTypeName,
       typeName,
       classIsBase,
@@ -64,7 +64,7 @@ export class MaterialClassParser {
     );
     this._generateStaticParseTypeArrayMethod(
       dtdlVersions,
-      staticClass,
+      parserClass,
       typeName,
       kindEnum,
       kindProperty,
@@ -75,7 +75,7 @@ export class MaterialClassParser {
     for (const dtdlVersion of dtdlVersions) {
       this._generateStaticTryParseTypeStringMethod(
         dtdlVersion,
-        staticClass,
+        parserClass,
         typeName,
         kindEnum,
         dtdlVersionToConcreteSubclasses[dtdlVersion],
@@ -84,7 +84,7 @@ export class MaterialClassParser {
       );
       this._generateStaticParsePropertiesMethod(
         dtdlVersion,
-        staticClass,
+        parserClass,
         typeName,
         classIsBase,
         classIsAbstract,
@@ -93,8 +93,8 @@ export class MaterialClassParser {
       );
     }
 
-    this._generateStaticParseTokenMethod(staticClass, typeName, classIsBase, classIsAbstract);
-    this._generateStaticParseIdStringMethod(staticClass, typeName, classIsBase, classIsAbstract);
+    this._generateStaticParseTokenMethod(parserClass, typeName, classIsBase, classIsAbstract);
+    this._generateStaticParseIdStringMethod(parserClass, typeName, classIsBase, classIsAbstract);
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -138,14 +138,14 @@ export class MaterialClassParser {
   private static _generateStaticParseObjectMethod(
     dtdlVersions: number[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     rawTypeName: string,
     typeName: string,
     _classIsBase: boolean,
     _classIsAbstract: boolean
   ): void {
     const typeNameImpl = typeName + "Impl";
-    staticClass
+    parserClass
       .importObject("IdValidator")
       .importObject("ParsingError")
       .importObject("createParsingError", "./parsingErrorImpl")
@@ -155,26 +155,25 @@ export class MaterialClassParser {
       .importObject("Model")
       .importObject("ParsedObjectPropertyInfo")
       .importObject("ElementPropertyConstraint", "./type")
-      .importObject("ValueParser")
       .importObject("ValueConstraint", "./type/valueConstraint");
 
-    const parseObjMethod = staticClass
+    const parseObjMethod = parserClass
       .method({ name: "parseObject", returnType: "any", abstract: false, isStatic: true })
-      .parameter({ name: "model", type: "Model" })
+      .parameter({ name: "model", type: "Model", shouldBeInterface: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
       .parameter({ name: "valueConstraints", type: "ValueConstraint[]" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
       .parameter({ name: "parsingErrors", type: "ParsingError[]" })
       .parameter({ name: "object", type: "{[index: string]: any}" })
       .parameter({ name: "parentId", type: "string|undefined" })
-      .parameter({ name: "definedIn", type: "string|undefined" })
+      .parameter({ name: "definedIn", type: "string|undefined", mightBeUnused: true })
       .parameter({ name: "propName", type: "string|undefined" })
       .parameter({ name: "dtmiSeg", type: "string|undefined" })
       .parameter({ name: "keyProp", type: "string|undefined" })
       .parameter({ name: "idRequired", type: "boolean" })
       .parameter({ name: "typeRequired", type: "boolean" })
-      .parameter({ name: "allowIdReferenceSyntax", type: "boolean" })
+      .parameter({ name: "allowIdReferenceSyntax", type: "boolean", mightBeUnused: true })
       .parameter({ name: "allowedVersions", type: "Set<number>" });
 
     parseObjMethod.body
@@ -293,7 +292,7 @@ export class MaterialClassParser {
       const switchCase = switchScope.scope(`case ${dtdlVersion}:`);
       switchCase
         .line(
-          `elementInfo.staticObjectClass.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
+          `elementInfo.parserClass.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
         )
         .line(`break;`);
     }
@@ -315,14 +314,14 @@ export class MaterialClassParser {
   private static _generateStaticParseTypeArrayMethod(
     dtdlVersions: number[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     typeName: string,
     kindEnum: string,
     _kindProperty: string,
     _classIsBase: boolean
   ): void {
     const typeNameImpl = typeName + "Impl";
-    const parseTypeArrayMethod = staticClass
+    const parseTypeArrayMethod = parserClass
       .method({
         name: "parseTypeArray",
         returnType: `${typeName}|undefined`,
@@ -332,14 +331,14 @@ export class MaterialClassParser {
       .parameter({ name: "tokenArr", type: "any[]" })
       .parameter({ name: "elementId", type: "string" })
       .parameter({ name: "parentId", type: "string|undefined" })
-      .parameter({ name: "definedIn", type: "string|undefined" })
+      .parameter({ name: "definedIn", type: "string|undefined", mightBeUnused: true })
       .parameter({ name: "propName", type: "string|undefined" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
       .parameter({ name: "parsingErrors", type: "ParsingError[]" });
 
     parseTypeArrayMethod.body
       .line(`const materialKinds : ${kindEnum}[] = [];`)
-      .line(`const elementInfo : Reference<${typeName}> = referenceInit();`)
+      .line(`const elementInfo : Reference<${typeName}> = referenceInit<${typeName}>();`)
       .line(`let anyFailures = false;`)
       .line(`const supplementalTypeIds : string[] = [];`)
       .line(`const undefinedTypes : string[] = [];`);
@@ -402,7 +401,7 @@ export class MaterialClassParser {
 
     parseTypeArrayMethod.body.line(`elementInfo.ref.undefinedTypes = undefinedTypes;`);
 
-    staticClass.importObject("SupplementalTypeInfoStatic");
+    parserClass.importObject("SupplementalTypeInfoStatic");
     parseTypeArrayMethod.body
       .for(`const supplementalTypeId of supplementalTypeIds`)
       .line(
@@ -456,7 +455,7 @@ export class MaterialClassParser {
     });
     method
       .parameter({ name: "propertyName", type: "string" })
-      .parameter({ name: "key", type: "string | undefined" });
+      .parameter({ name: "key", type: "string | undefined", mightBeUnused: true });
     const switchScope = method.body.line(`switch (propertyName) {`);
 
     properties.forEach((prop) => {
@@ -472,7 +471,7 @@ export class MaterialClassParser {
   private static _generateStaticTryParseTypeStringMethod(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     typeName: string,
     kindEnum: string,
     concreteSubclasses: ConcreteSubclass[],
@@ -480,27 +479,27 @@ export class MaterialClassParser {
     extensibleMaterialSubtypes: string[]
   ): void {
     const methodName = "tryParseTypeStringV" + dtdlVersion;
-    const tryParseTypeStringMethod = staticClass
+    const tryParseTypeStringMethod = parserClass
       .method({ name: methodName, returnType: "boolean", abstract: false, isStatic: true })
       .parameter({ name: "typestring", type: "string" })
       .parameter({ name: "elementId", type: "string" })
       .parameter({ name: "parentId", type: "string|undefined" })
-      .parameter({ name: "definedIn", type: "string|undefined" })
+      .parameter({ name: "definedIn", type: "string|undefined", mightBeUnused: true })
       .parameter({ name: "propName", type: "string|undefined" })
       .parameter({ name: "materialKinds", type: `${kindEnum}[]` })
       .parameter({ name: "supplementalTypeIds", type: `string[]` })
       .parameter({ name: "elementInfo", type: `Reference<${typeName}>` })
       .parameter({ name: "undefinedTypes", type: "string[]" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
       .parameter({ name: "parsingErrors", type: "ParsingError[]" });
 
     tryParseTypeStringMethod.body.line(`switch (typestring) {`);
 
     // TODO; are concrete classes static?
     concreteSubclasses.forEach((subclass) => {
-      if (staticClass.name !== subclass.className) {
-        staticClass.importObject(subclass.className);
-        staticClass.importObject(subclass.staticClassName);
+      if (parserClass.name !== subclass.className) {
+        parserClass.importObject(subclass.className);
+        parserClass.importObject(subclass.parserClassName);
       }
       subclass.addCaseToParseTypeStringSwitch(
         tryParseTypeStringMethod.body,
@@ -513,7 +512,7 @@ export class MaterialClassParser {
 
     tryParseTypeStringMethod.body.line(`}`);
 
-    staticClass.importObject("MaterialTypeNameCollection");
+    parserClass.importObject("MaterialTypeNameCollection");
     tryParseTypeStringMethod.body
       .if("MaterialTypeNameCollection.isMaterialType(typestring)")
       .line("parsingErrors.push(createParsingError(")
@@ -538,7 +537,7 @@ export class MaterialClassParser {
       .line("undefinedTypes = [];");
     supplementalTypeIdDefinedIfScope.line("undefinedTypes.push(typestring);").line("return true");
 
-    staticClass.importObject("SupplementalTypeInfoStatic");
+    parserClass.importObject("SupplementalTypeInfoStatic");
     tryParseTypeStringMethod.body
       .line(
         "const mapOfInDTMIToSupplementalTypeInfo = SupplementalTypeInfoStatic.retrieveSupplementalTypeCollection().supplementalTypes;"
@@ -558,7 +557,6 @@ export class MaterialClassParser {
       .line(`}));`)
       .line("return false;");
 
-    staticClass.importObject("ModelParserStatic");
     const supplementalTypeIdDefinedIfScopeOuter = tryParseTypeStringMethod.body
       .if("supplementalTypeId !== undefined")
       .line(
@@ -582,10 +580,10 @@ export class MaterialClassParser {
       const switchOnExtensionKind = supplementalTypeIdDefinedIfScopeOuter.scope(
         "switch ((supplementalTypeInfo as SupplementalTypeInfoImpl)?.extensionKind)"
       );
-      staticClass.importObject("ExtensionKind");
+      parserClass.importObject("ExtensionKind");
       extensibleMaterialClasses.forEach((extensibleMaterialClass) => {
         extensibleMaterialClass.addCaseToParseTypeStringSwitch(
-          staticClass,
+          parserClass,
           switchOnExtensionKind,
           extensibleMaterialSubtypes,
           "parentId",
@@ -603,7 +601,7 @@ export class MaterialClassParser {
   private static _generateStaticParsePropertiesMethod(
     dtdlVersion: number,
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     typeName: string,
     _classIsBase: boolean,
     classIsAbstract: boolean,
@@ -614,19 +612,19 @@ export class MaterialClassParser {
     // obverseClass.import(`import {ParserGeneratorValues} from '../src/parserGenerator/parserGeneratorValues';`);
     const methodName = "parsePropertiesV" + dtdlVersion;
     const typeNameImpl = typeName + "Impl";
-    const parsePropertiesMethod = staticClass
+    const parsePropertiesMethod = parserClass
       .method({ name: methodName, returnType: "void", abstract: false, isStatic: true })
-      .parameter({ name: "model", type: "Model" })
-      .parameter({ name: "elementInfo", type: typeNameImpl })
+      .parameter({ name: "model", type: "Model", shouldBeInterface: true })
+      .parameter({ name: "elementInfo", type: typeNameImpl, shouldBeInterface: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
       .parameter({ name: "parsingErrors", type: "ParsingError[]" })
       .parameter({ name: "object", type: "{[index: string]: any}" })
-      .parameter({ name: "definedIn", type: "string|undefined" })
-      .parameter({ name: "allowIdReferenceSyntax", type: "boolean" });
+      .parameter({ name: "definedIn", type: "string|undefined", mightBeUnused: true })
+      .parameter({ name: "allowIdReferenceSyntax", type: "boolean", mightBeUnused: true });
 
-    staticClass
+    parserClass
       .importObject("Model")
       .importObject("ParsedObjectPropertyInfo")
       .importObject("ElementPropertyConstraint", "./type")
@@ -664,7 +662,7 @@ export class MaterialClassParser {
     materialProperties.forEach((property) => {
       property.addCaseToParseSwitch(
         dtdlVersion,
-        staticClass,
+        parserClass,
         switchScope,
         !classIsAbstract,
         classIsPartition,
@@ -673,7 +671,7 @@ export class MaterialClassParser {
       );
     });
 
-    MaterialClassAugmentor.addTryParseSupplementalProperty(staticClass, forScope, !classIsAbstract);
+    MaterialClassAugmentor.addTryParseSupplementalProperty(parserClass, forScope, !classIsAbstract);
 
     forScope
       .if(`elementInfo.undefinedTypes !== undefined && elementInfo.undefinedTypes.length > 0`)
@@ -700,29 +698,29 @@ export class MaterialClassParser {
 
   private static _generateStaticParseTokenMethod(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,
     _classIsAbstract: boolean
   ): void {
     const methodName = "parseToken";
-    const parseTokenMethod = staticClass
+    const parseTokenMethod = parserClass
       .method({ name: methodName, returnType: "number", abstract: false, isStatic: true })
-      .parameter({ name: "model", type: "Model" })
+      .parameter({ name: "model", type: "Model", shouldBeInterface: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
       .parameter({ name: "valueConstraints", type: "ValueConstraint[]" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
       .parameter({ name: "parsingErrors", type: "ParsingError[]" })
-      .parameter({ name: "token", type: "any" })
+      .parameter({ name: "token", type: "any", mightBeAny: true })
       .parameter({ name: "parentId", type: "string|undefined" })
-      .parameter({ name: "definedIn", type: "string|undefined" })
+      .parameter({ name: "definedIn", type: "string|undefined", mightBeUnused: true })
       .parameter({ name: "propName", type: "string|undefined" })
       .parameter({ name: "dtmiSeg", type: "string|undefined" })
       .parameter({ name: "keyProp", type: "string|undefined" })
       .parameter({ name: "idRequired", type: "boolean" })
       .parameter({ name: "typeRequired", type: "boolean" })
-      .parameter({ name: "allowIdReferenceSyntax", type: "boolean" })
+      .parameter({ name: "allowIdReferenceSyntax", type: "boolean", mightBeUnused: true })
       .parameter({ name: "allowedVersions", type: "Set<number>" }); // TODO Set ??
 
     parseTokenMethod.body.line("let valueCount = 0;");
@@ -735,7 +733,7 @@ export class MaterialClassParser {
       )
       .line("valueCount++;");
 
-    const _isArrayElseIfScope = typeTokenIfScope
+    typeTokenIfScope
       .elseIf("Array.isArray(token)")
       .for("const elementToken of token")
       .line(
@@ -826,17 +824,17 @@ export class MaterialClassParser {
 
   private static _generateStaticParseIdStringMethod(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    staticClass: TsClass,
+    parserClass: TsClass,
     _typeName: string,
     _classIsBase: boolean,
     _classIsAbstract: boolean
   ): void {
-    const method = staticClass
+    const method = parserClass
       .method({ name: "parseIdString", returnType: "void", abstract: false, isStatic: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
       .parameter({ name: "valueConstraints", type: "ValueConstraint[]" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
       .parameter({ name: "parsingErrors", type: "ParsingError[]" })
       .parameter({ name: "idString", type: "string" })
       .parameter({ name: "parentId", type: "string" })

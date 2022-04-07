@@ -8,11 +8,11 @@ import { TypeGenerator } from "./typeGenerator";
 
 export class ModelParserGenerator implements TypeGenerator {
   private readonly _baseClassName: string;
-  private readonly _baseStaticClassName: string;
+  private readonly _baseClassParserName: string;
 
   constructor(baseName: string) {
     this._baseClassName = NameFormatter.formatNameAsImplementation(baseName);
-    this._baseStaticClassName = NameFormatter.formatNameAsStatic(baseName);
+    this._baseClassParserName = NameFormatter.formatNameAsParser(baseName);
   }
 
   // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -50,7 +50,6 @@ export class ModelParserGenerator implements TypeGenerator {
     modelParserInterface
       .importObject("DtmiResolver", "./type")
       .importObject("ModelParsingOption", "./enum")
-      .importObject("SupplementalTypeCollection")
       .importObject("ModelDict");
 
     const inheritance = { name: interfaceName, type: TsDeclarationType.Interface };
@@ -77,7 +76,6 @@ export class ModelParserGenerator implements TypeGenerator {
       .importObject("PartitionTypeCollection")
       .importObject("StandardElements")
       .importObject("RootableTypeCollection")
-      .importObject("SupplementalTypeCollectionImpl")
       .importObject("ModelParserStatic")
       .importObject("TypeChecker", "./type");
     parserClass.inline("./parser-src/parserPartial/modelParserImpl.ts", "fields");
@@ -89,7 +87,7 @@ export class ModelParserGenerator implements TypeGenerator {
       exports: true,
     });
     staticClass
-      .importObject(this._baseStaticClassName)
+      .importObject(this._baseClassParserName)
       .importObject("Model")
       .importObject("ParsedObjectPropertyInfo")
       .importObject("ElementPropertyConstraint", "./type")
@@ -100,16 +98,17 @@ export class ModelParserGenerator implements TypeGenerator {
       name: "parseObject",
       isStatic: true,
       access: TsAccess.Public,
+      returnType: "void",
     });
     parseObjectMethod
-      .parameter({ name: "model", type: "Model" })
+      .parameter({ name: "model", type: "Model", shouldBeInterface: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
-      .parameter({ name: "aggregateContext", type: "AggregateContext" })
-      .parameter({ name: "parsingErrors", type: "ParsingError[]" })
-      .parameter({ name: "object", type: "any" });
+      .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
+      .parameter({ name: "parsingErrors", type: "ParsingError[]", mightBeAny: true })
+      .parameter({ name: "object", type: "any", mightBeAny: true });
 
-    parseObjectMethod.body.line(`${this._baseStaticClassName}.parseObject(
+    parseObjectMethod.body.line(`${this._baseClassParserName}.parseObject(
       model,
       objectPropertyInfoList,
       elementPropertyConstraints,
