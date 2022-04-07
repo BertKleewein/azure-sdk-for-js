@@ -31,10 +31,12 @@ export class ModelParserGenerator implements TypeGenerator {
     functionCreateParser
       .importObject("ModelParsingOption", "./enum")
       .importObject("ModelParser")
-      .importObject("ModelParserImpl");
+      .importObject("ModelParserImpl")
+      .importObject("ParserInitializer");
     functionCreateParser.parameter({ name: "parsingOptions", type: "ModelParsingOption" });
 
     functionCreateParser.body
+      .line(`ParserInitializer.initialize();`)
       .line(`const impl = new ModelParserImpl();`)
       .line(`impl.options = parsingOptions;`)
       .line(`return impl;`);
@@ -87,7 +89,7 @@ export class ModelParserGenerator implements TypeGenerator {
       exports: true,
     });
     staticClass
-      .importObject(this._baseClassParserName)
+      .importObject("ParserCollection")
       .importObject("Model")
       .importObject("ParsedObjectPropertyInfo")
       .importObject("ElementPropertyConstraint", "./type")
@@ -108,7 +110,7 @@ export class ModelParserGenerator implements TypeGenerator {
       .parameter({ name: "parsingErrors", type: "ParsingError[]", mightBeAny: true })
       .parameter({ name: "object", type: "any", mightBeAny: true });
 
-    parseObjectMethod.body.line(`${this._baseClassParserName}.parseObject(
+    parseObjectMethod.body.line(`ParserCollection.${this._baseClassParserName}.parseObject(
       model,
       objectPropertyInfoList,
       elementPropertyConstraints,

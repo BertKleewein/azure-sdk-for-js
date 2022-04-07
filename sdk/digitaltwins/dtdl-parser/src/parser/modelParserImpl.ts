@@ -35,8 +35,8 @@ export class ModelParserImpl implements ModelParser {
   }
 
   // codegen-outline-begin fields
-  static graphKeyword = "@graph";
-  static idKeyword = "@id";
+  private static graphKeyword = "@graph";
+  private static idKeyword = "@id";
   // codegen-outline-end
 
   // codegen-outline-begin methods

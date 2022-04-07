@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable sort-imports */
 
-import { EntityInfoParser } from "./entityInfoParser";
+import { ParserCollection } from "./parserCollection";
 import { Model } from "./model";
 import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { ElementPropertyConstraint } from "./type";
@@ -25,7 +25,7 @@ export class ModelParserStatic {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     object: any
   ): void {
-    EntityInfoParser.parseObject(
+    ParserCollection.EntityInfoParser.parseObject(
       model,
       objectPropertyInfoList,
       elementPropertyConstraints,

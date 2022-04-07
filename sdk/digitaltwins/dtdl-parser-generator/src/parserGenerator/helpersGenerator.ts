@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 /* eslint-disable sort-imports */
 
-import { TsClass, TsLibrary } from "../codeGenerator";
+import { TsAccess, TsClass, TsLibrary } from "../codeGenerator";
 import { NameFormatter } from "./nameFormatter";
 import { ParserGeneratorValues } from "./parserGeneratorValues";
 import { TypeGenerator } from "./typeGenerator";
@@ -39,6 +39,7 @@ export class HelpersGenerator implements TypeGenerator {
       name: "areListsIdEqual",
       returnType: "boolean",
       isStatic: true,
+      access: TsAccess.Public,
     });
     method
       .parameter({ name: "list1", type: `${this._baseClassName}[]` })
@@ -60,6 +61,7 @@ export class HelpersGenerator implements TypeGenerator {
       name: "areListsIdOrLiteralEqual",
       returnType: "boolean",
       isStatic: true,
+      access: TsAccess.Public,
     });
     method
       .parameter({ name: "list1", type: `${this._baseClassName}[]` })
@@ -92,6 +94,7 @@ export class HelpersGenerator implements TypeGenerator {
       name: "areDictionariesIdEqual",
       returnType: "boolean",
       isStatic: true,
+      access: TsAccess.Public,
     });
     method
       .parameter({ name: "dict1", type: `{[name:string]: ${this._baseClassName}}` })
@@ -114,6 +117,7 @@ export class HelpersGenerator implements TypeGenerator {
       name: "areDictionariesIdOrLiteralEqual",
       returnType: "boolean",
       isStatic: true,
+      access: TsAccess.Public,
     });
     method
       .parameter({ name: "dict1", type: `{[name:string]: any}` })

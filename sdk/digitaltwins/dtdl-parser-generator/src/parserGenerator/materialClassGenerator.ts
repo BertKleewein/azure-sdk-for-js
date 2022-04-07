@@ -273,6 +273,7 @@ export class MaterialClassGenerator implements TypeGenerator {
       exports: true,
       abstract: this._isAbstract,
       inheritance: inheritanceNames,
+      deferStaticInitialization: true,
     });
 
     obverseClass
@@ -283,6 +284,7 @@ export class MaterialClassGenerator implements TypeGenerator {
     const parserClass = parserLibrary.class({
       name: this._typeParserName,
       exports: true,
+      deferStaticInitialization: true,
     });
 
     parserClass
@@ -325,11 +327,11 @@ export class MaterialClassGenerator implements TypeGenerator {
       name: "parserClass",
       access: TsAccess.Public,
       isStatic: false,
-      type: "any",
+      type: "Parser",
+      value: `ParserCollection.${this._typeParserName}`,
     });
-
-    obverseClass.ctor.parameter({ name: "parserClass", type: "any", mightBeAny: true });
-    ctorScope.line(`this.parserClass = parserClass`);
+    obverseClass.importObject("Parser");
+    obverseClass.importObject("ParserCollection");
 
     MaterialClassPartitioner.generateConstructorCode(ctorScope, this._isPartition);
     MaterialClassParser.generateConstructorCode(ctorScope, this._parentTypeName === undefined);

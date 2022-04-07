@@ -30,7 +30,7 @@ export class DurationInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("duration");
@@ -84,7 +84,7 @@ export class DurationInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -235,32 +235,38 @@ export class DurationInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -292,7 +298,7 @@ export class DurationInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -446,7 +452,7 @@ export class DurationInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -464,14 +470,7 @@ export class DurationInfoParser {
     switch (typestring) {
       case "Duration":
       case "dtmi:dtdl:class:Duration;2":
-        elementInfo.ref = new DurationInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "duration",
-          DurationInfoParser
-        );
+        elementInfo.ref = new DurationInfoImpl(2, elementId, parentId, definedIn, "duration");
         materialKinds.push("duration");
         return true;
     }
@@ -565,11 +564,11 @@ export class DurationInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: DurationInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -581,6 +580,8 @@ export class DurationInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: DurationInfoImpl = elementInfoAsAny as DurationInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     for (const propKey in object) {
@@ -677,7 +678,7 @@ export class DurationInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -695,14 +696,7 @@ export class DurationInfoParser {
     switch (typestring) {
       case "Duration":
       case "dtmi:dtdl:class:Duration;3":
-        elementInfo.ref = new DurationInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "duration",
-          DurationInfoParser
-        );
+        elementInfo.ref = new DurationInfoImpl(3, elementId, parentId, definedIn, "duration");
         materialKinds.push("duration");
         return true;
     }
@@ -820,11 +814,11 @@ export class DurationInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: DurationInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -836,6 +830,8 @@ export class DurationInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: DurationInfoImpl = elementInfoAsAny as DurationInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     for (const propKey in object) {
@@ -932,7 +928,7 @@ export class DurationInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1028,7 +1024,7 @@ export class DurationInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1078,5 +1074,3 @@ export class DurationInfoParser {
     }
   }
 }
-
-DurationInfoParser.initialize();

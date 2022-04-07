@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { EntityInfo } from "./entityInfo";
 import { EntityKinds } from "./entityKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
@@ -25,7 +27,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.EntityInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -45,9 +47,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: EntityKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: EntityKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -59,7 +59,6 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -70,7 +69,7 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>().add("dtmi:dtdl:class:Entity");
   }
 
@@ -278,5 +277,3 @@ export abstract class EntityInfoImpl implements EntityInfo, TypeChecker {
     parsingErrors: ParsingError[]
   ): number;
 }
-
-EntityInfoImpl.initialize();

@@ -13,6 +13,8 @@ import { ContentInfo } from "./contentInfo";
 import { LanguageStringType } from "./type";
 import { ComplexSchemaInfoImpl } from "./complexSchemaInfoImpl";
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -48,7 +50,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
   private _schemasInstanceProperties: string[] = [];
   public _schemasAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemasAllowedVersionsV3: Set<number> = new Set<number>().add(3);
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.InterfaceInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -74,9 +76,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: InterfaceKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: InterfaceKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -91,7 +91,6 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = true;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -107,7 +106,7 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:Interface");
@@ -789,5 +788,3 @@ export class InterfaceInfoImpl implements InterfaceInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-InterfaceInfoImpl.initialize();

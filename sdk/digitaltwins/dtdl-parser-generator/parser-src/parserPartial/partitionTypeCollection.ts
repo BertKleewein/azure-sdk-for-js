@@ -14,7 +14,7 @@ export class PartitionTypeCollection {
 
   /* TODO everything below here to the next comment block should be codegenned. */
 
-  static initialize(): void {
+  public static initialize(): void {
     this._partitionTypeStrings = new Set<string>();
 
     this._partitionTypeStrings.add("Interface");

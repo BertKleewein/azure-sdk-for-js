@@ -23,25 +23,20 @@ import { ElementPropertyConstraint } from "./type";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { CommandPayloadInfoImpl } from "./commandPayloadInfoImpl";
-import { CommandPayloadInfoParser } from "./commandPayloadInfoParser";
 import { FieldInfoImpl } from "./fieldInfoImpl";
-import { FieldInfoParser } from "./fieldInfoParser";
 import { MapValueInfoImpl } from "./mapValueInfoImpl";
-import { MapValueInfoParser } from "./mapValueInfoParser";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
-import { SchemaInfoParser } from "./schemaInfoParser";
+import { ParserCollection } from "./parserCollection";
 import { CommandRequestInfoImpl } from "./commandRequestInfoImpl";
-import { CommandRequestInfoParser } from "./commandRequestInfoParser";
 import { CommandResponseInfoImpl } from "./commandResponseInfoImpl";
-import { CommandResponseInfoParser } from "./commandResponseInfoParser";
 export class SchemaFieldInfoParser {
   protected static _concreteKinds: { [x: number]: SchemaFieldKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("commandpayload");
@@ -60,7 +55,7 @@ export class SchemaFieldInfoParser {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of CommandRequest, CommandResponse, Field, or MapValue.`;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -211,32 +206,38 @@ export class SchemaFieldInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -268,7 +269,7 @@ export class SchemaFieldInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -425,7 +426,7 @@ export class SchemaFieldInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -448,33 +449,18 @@ export class SchemaFieldInfoParser {
           elementId,
           parentId,
           definedIn,
-          "commandpayload",
-          CommandPayloadInfoParser
+          "commandpayload"
         );
         materialKinds.push("commandpayload");
         return true;
       case "Field":
       case "dtmi:dtdl:class:Field;2":
-        elementInfo.ref = new FieldInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "field",
-          FieldInfoParser
-        );
+        elementInfo.ref = new FieldInfoImpl(2, elementId, parentId, definedIn, "field");
         materialKinds.push("field");
         return true;
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;2":
-        elementInfo.ref = new MapValueInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "mapvalue",
-          MapValueInfoParser
-        );
+        elementInfo.ref = new MapValueInfoImpl(2, elementId, parentId, definedIn, "mapvalue");
         materialKinds.push("mapvalue");
         return true;
     }
@@ -568,11 +554,11 @@ export class SchemaFieldInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: SchemaFieldInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -584,6 +570,8 @@ export class SchemaFieldInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: SchemaFieldInfoImpl = elementInfoAsAny as SchemaFieldInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let namePropertyMissing = true;
@@ -659,7 +647,7 @@ export class SchemaFieldInfoParser {
         case "schema":
         case "dtmi:dtdl:property:schema;2":
           schemaPropertyMissing = false;
-          valueCount = SchemaInfoParser.parseToken(
+          valueCount = ParserCollection.SchemaInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -747,7 +735,7 @@ export class SchemaFieldInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -770,8 +758,7 @@ export class SchemaFieldInfoParser {
           elementId,
           parentId,
           definedIn,
-          "commandrequest",
-          CommandRequestInfoParser
+          "commandrequest"
         );
         materialKinds.push("commandrequest");
         return true;
@@ -782,33 +769,18 @@ export class SchemaFieldInfoParser {
           elementId,
           parentId,
           definedIn,
-          "commandresponse",
-          CommandResponseInfoParser
+          "commandresponse"
         );
         materialKinds.push("commandresponse");
         return true;
       case "Field":
       case "dtmi:dtdl:class:Field;3":
-        elementInfo.ref = new FieldInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "field",
-          FieldInfoParser
-        );
+        elementInfo.ref = new FieldInfoImpl(3, elementId, parentId, definedIn, "field");
         materialKinds.push("field");
         return true;
       case "MapValue":
       case "dtmi:dtdl:class:MapValue;3":
-        elementInfo.ref = new MapValueInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "mapvalue",
-          MapValueInfoParser
-        );
+        elementInfo.ref = new MapValueInfoImpl(3, elementId, parentId, definedIn, "mapvalue");
         materialKinds.push("mapvalue");
         return true;
     }
@@ -926,11 +898,11 @@ export class SchemaFieldInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: SchemaFieldInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -942,6 +914,8 @@ export class SchemaFieldInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: SchemaFieldInfoImpl = elementInfoAsAny as SchemaFieldInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let namePropertyMissing = true;
@@ -1017,7 +991,7 @@ export class SchemaFieldInfoParser {
         case "schema":
         case "dtmi:dtdl:property:schema;3":
           schemaPropertyMissing = false;
-          valueCount = SchemaInfoParser.parseToken(
+          valueCount = ParserCollection.SchemaInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1105,7 +1079,7 @@ export class SchemaFieldInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1201,7 +1175,7 @@ export class SchemaFieldInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1251,5 +1225,3 @@ export class SchemaFieldInfoParser {
     }
   }
 }
-
-SchemaFieldInfoParser.initialize();

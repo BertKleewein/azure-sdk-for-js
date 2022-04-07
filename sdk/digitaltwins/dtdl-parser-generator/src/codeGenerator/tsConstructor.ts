@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsMethod, TsFunctionType, TsParameterParams, TsScope } from "./internal";
+import { TsAccess, TsMethod, TsFunctionType, TsParameterParams, TsScope } from "./internal";
 
 export class TsConstructor extends TsMethod {
   constructor(isStatic: boolean) {
@@ -11,6 +11,7 @@ export class TsConstructor extends TsMethod {
         functionType: TsFunctionType.Method,
         isStatic: true,
         returnType: "void",
+        access: TsAccess.Public,
       });
     } else {
       super({ name: "constructor", functionType: TsFunctionType.Method });

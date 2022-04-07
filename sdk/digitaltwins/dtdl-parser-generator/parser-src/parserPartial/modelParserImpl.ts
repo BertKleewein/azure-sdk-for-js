@@ -24,8 +24,8 @@ import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl
 import { ModelParserStatic } from "./modelParserStatic";
 export class ModelParserImpl {
   // codegen-outline-begin fields
-  static graphKeyword = "@graph";
-  static idKeyword = "@id";
+  private static graphKeyword = "@graph";
+  private static idKeyword = "@id";
   // codegen-outline-end
 
   constructor() {

@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { NamedLatentTypeInfo } from "./namedLatentTypeInfo";
 import { NamedLatentTypeKinds } from "./namedLatentTypeKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -30,7 +32,7 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
   public languageVersion?: number;
   public name?: string;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.NamedLatentTypeInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -54,9 +56,7 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: NamedLatentTypeKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: NamedLatentTypeKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -68,7 +68,6 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -84,7 +83,7 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:NamedEntity")
@@ -346,5 +345,3 @@ export class NamedLatentTypeInfoImpl implements NamedLatentTypeInfo, TypeChecker
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-NamedLatentTypeInfoImpl.initialize();

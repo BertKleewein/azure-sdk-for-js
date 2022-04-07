@@ -27,7 +27,7 @@ export class ReferenceInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._badTypeActionFormat = {};
     this._badTypeCauseFormat = {};
@@ -73,7 +73,7 @@ export class ReferenceInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -252,7 +252,7 @@ export class ReferenceInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -360,7 +360,7 @@ export class ReferenceInfoParser {
     // this ends the method.
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -456,7 +456,7 @@ export class ReferenceInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -506,5 +506,3 @@ export class ReferenceInfoParser {
     }
   }
 }
-
-ReferenceInfoParser.initialize();

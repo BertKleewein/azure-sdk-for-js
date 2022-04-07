@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { SchemaInfo } from "./schemaInfo";
 import { SchemaKinds } from "./schemaKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
@@ -25,7 +27,7 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.SchemaInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -45,9 +47,7 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: SchemaKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: SchemaKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -59,7 +59,6 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -70,7 +69,7 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:Schema");
@@ -257,5 +256,3 @@ export abstract class SchemaInfoImpl implements SchemaInfo, TypeChecker {
     throw new Error("Can not execute on an abstract class");
   }
 }
-
-SchemaInfoImpl.initialize();

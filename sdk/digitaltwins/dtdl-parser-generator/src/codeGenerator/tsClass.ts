@@ -33,8 +33,9 @@ export class TsClass extends TsDeclaration {
   private _setters: TsMethod[];
   private _inlines: TsInline[];
   private _suffixCode?: TsMultiLine;
+  public deferStaticInitialization?: boolean;
 
-  constructor({ name, exports, abstract, inheritance }: TsClassParams) {
+  constructor({ name, exports, abstract, inheritance, deferStaticInitialization }: TsClassParams) {
     super({ name, type: TsDeclarationType.Class, exports: exports });
     this._isAbstract = abstract;
     this.inheritance = inheritance;
@@ -44,6 +45,7 @@ export class TsClass extends TsDeclaration {
     this._getters = [];
     this._setters = [];
     this._inlines = [];
+    this.deferStaticInitialization = deferStaticInitialization;
   }
 
   get ctor(): TsConstructor {
@@ -241,7 +243,7 @@ export class TsClass extends TsDeclaration {
     }
     codeWriter.closeScope();
 
-    if (this._staticConstructor !== undefined) {
+    if (this._staticConstructor !== undefined && !this.deferStaticInitialization) {
       codeWriter.writeLine(`${this.name}.initialize();`);
     }
 

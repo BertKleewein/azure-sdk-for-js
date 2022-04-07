@@ -25,14 +25,13 @@ import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
-import { EnumValueInfoParser } from "./enumValueInfoParser";
-import { PrimitiveSchemaInfoParser } from "./primitiveSchemaInfoParser";
+import { ParserCollection } from "./parserCollection";
 export class EnumInfoParser {
   protected static _concreteKinds: { [x: number]: EnumKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("enum");
@@ -86,7 +85,7 @@ export class EnumInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -237,32 +236,38 @@ export class EnumInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -294,7 +299,7 @@ export class EnumInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -448,7 +453,7 @@ export class EnumInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -466,14 +471,7 @@ export class EnumInfoParser {
     switch (typestring) {
       case "Enum":
       case "dtmi:dtdl:class:Enum;2":
-        elementInfo.ref = new EnumInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "enum",
-          EnumInfoParser
-        );
+        elementInfo.ref = new EnumInfoImpl(2, elementId, parentId, definedIn, "enum");
         materialKinds.push("enum");
         return true;
     }
@@ -567,11 +565,11 @@ export class EnumInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: EnumInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -583,6 +581,8 @@ export class EnumInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: EnumInfoImpl = elementInfoAsAny as EnumInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let valueSchemaPropertyMissing = true;
@@ -643,7 +643,7 @@ export class EnumInfoParser {
           continue;
         case "enumValues":
         case "dtmi:dtdl:property:enumValues;2":
-          valueCount = EnumValueInfoParser.parseToken(
+          valueCount = ParserCollection.EnumValueInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -687,7 +687,7 @@ export class EnumInfoParser {
         case "valueSchema":
         case "dtmi:dtdl:property:valueSchema;2":
           valueSchemaPropertyMissing = false;
-          valueCount = PrimitiveSchemaInfoParser.parseToken(
+          valueCount = ParserCollection.PrimitiveSchemaInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -779,7 +779,7 @@ export class EnumInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -797,14 +797,7 @@ export class EnumInfoParser {
     switch (typestring) {
       case "Enum":
       case "dtmi:dtdl:class:Enum;3":
-        elementInfo.ref = new EnumInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "enum",
-          EnumInfoParser
-        );
+        elementInfo.ref = new EnumInfoImpl(3, elementId, parentId, definedIn, "enum");
         materialKinds.push("enum");
         return true;
     }
@@ -922,11 +915,11 @@ export class EnumInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: EnumInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -938,6 +931,8 @@ export class EnumInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: EnumInfoImpl = elementInfoAsAny as EnumInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let valueSchemaPropertyMissing = true;
@@ -998,7 +993,7 @@ export class EnumInfoParser {
           continue;
         case "enumValues":
         case "dtmi:dtdl:property:enumValues;3":
-          EnumValueInfoParser.parseToken(
+          ParserCollection.EnumValueInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1020,7 +1015,7 @@ export class EnumInfoParser {
         case "valueSchema":
         case "dtmi:dtdl:property:valueSchema;3":
           valueSchemaPropertyMissing = false;
-          valueCount = PrimitiveSchemaInfoParser.parseToken(
+          valueCount = ParserCollection.PrimitiveSchemaInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1112,7 +1107,7 @@ export class EnumInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1208,7 +1203,7 @@ export class EnumInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1258,5 +1253,3 @@ export class EnumInfoParser {
     }
   }
 }
-
-EnumInfoParser.initialize();

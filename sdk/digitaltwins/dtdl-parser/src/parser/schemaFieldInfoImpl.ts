@@ -13,6 +13,8 @@ import { LanguageStringType } from "./type";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
 import { SchemaInfo } from "./schemaInfo";
 import { EntityInfoImpl } from "./entityInfoImpl";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
@@ -35,7 +37,7 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
   public schema?: SchemaInfo;
   public _schemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.SchemaFieldInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -55,9 +57,7 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: SchemaFieldKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: SchemaFieldKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -69,7 +69,6 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -80,7 +79,7 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:NamedEntity")
@@ -340,5 +339,3 @@ export abstract class SchemaFieldInfoImpl implements SchemaFieldInfo, TypeChecke
     throw new Error("Can not execute on an abstract class");
   }
 }
-
-SchemaFieldInfoImpl.initialize();

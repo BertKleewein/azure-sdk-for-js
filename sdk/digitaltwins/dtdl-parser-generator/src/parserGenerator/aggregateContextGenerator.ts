@@ -63,6 +63,7 @@ export class AggregateContextGenerator implements TypeGenerator {
         type: `{[x:string]: number}`,
         isStatic: true,
         value: "{}",
+        access: TsAccess.Private,
       });
     contextClass.inline("./parser-src/parserPartial/aggregateContext.ts", "fields");
   }

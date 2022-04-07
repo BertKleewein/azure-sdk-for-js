@@ -12,6 +12,8 @@ import { ObjectKinds } from "./objectKinds";
 import { LanguageStringType } from "./type";
 import { FieldInfoImpl } from "./fieldInfoImpl";
 import { FieldInfo } from "./fieldInfo";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -36,7 +38,7 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
   public _fieldsAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _fieldsAllowedVersionsV3: Set<number> = new Set<number>().add(3);
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.ObjectInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -60,9 +62,7 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ObjectKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: ObjectKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -75,7 +75,6 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -91,7 +90,7 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:ComplexSchema")
       .add("dtmi:dtdl:class:Entity")
@@ -581,5 +580,3 @@ export class ObjectInfoImpl implements ObjectInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-ObjectInfoImpl.initialize();

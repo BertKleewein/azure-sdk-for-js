@@ -30,7 +30,7 @@ export class UnitAttributeInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[3] = [];
@@ -82,7 +82,7 @@ export class UnitAttributeInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -233,32 +233,38 @@ export class UnitAttributeInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -290,7 +296,7 @@ export class UnitAttributeInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -447,7 +453,7 @@ export class UnitAttributeInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -539,8 +545,7 @@ export class UnitAttributeInfoParser {
             elementId,
             parentId,
             definedIn,
-            "unitattribute",
-            UnitAttributeInfoParser
+            "unitattribute"
           );
           (elementInfo.ref as UnitAttributeInfoImpl).addType(
             supplementalTypeId.value,
@@ -557,11 +562,11 @@ export class UnitAttributeInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: UnitAttributeInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -573,6 +578,8 @@ export class UnitAttributeInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: UnitAttributeInfoImpl = elementInfoAsAny as UnitAttributeInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let namePropertyMissing = true;
@@ -693,7 +700,7 @@ export class UnitAttributeInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -809,8 +816,7 @@ export class UnitAttributeInfoParser {
             elementId,
             parentId,
             definedIn,
-            "unitattribute",
-            UnitAttributeInfoParser
+            "unitattribute"
           );
           (elementInfo.ref as UnitAttributeInfoImpl).addType(
             supplementalTypeId.value,
@@ -827,11 +833,11 @@ export class UnitAttributeInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: UnitAttributeInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -843,6 +849,8 @@ export class UnitAttributeInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: UnitAttributeInfoImpl = elementInfoAsAny as UnitAttributeInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let namePropertyMissing = true;
@@ -963,7 +971,7 @@ export class UnitAttributeInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1059,7 +1067,7 @@ export class UnitAttributeInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1109,5 +1117,3 @@ export class UnitAttributeInfoParser {
     }
   }
 }
-
-UnitAttributeInfoParser.initialize();

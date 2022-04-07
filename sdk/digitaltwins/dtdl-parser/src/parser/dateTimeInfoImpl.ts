@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { DateTimeInfo } from "./dateTimeInfo";
 import { DateTimeKinds } from "./dateTimeKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -28,7 +30,7 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.DateTimeInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -54,9 +56,7 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: DateTimeKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: DateTimeKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -68,7 +68,6 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -84,7 +83,7 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:DateTime")
       .add("dtmi:dtdl:class:Entity")
@@ -413,5 +412,3 @@ export class DateTimeInfoImpl implements DateTimeInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-DateTimeInfoImpl.initialize();

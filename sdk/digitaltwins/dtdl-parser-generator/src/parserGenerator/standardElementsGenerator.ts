@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 /* eslint-disable valid-jsdoc */
 
-import { TsClass, TsLibrary } from "../codeGenerator";
+import { TsAccess, TsClass, TsLibrary } from "../codeGenerator";
 import { NameFormatter } from "./nameFormatter";
 import { ParserGeneratorValues } from "./parserGeneratorValues";
 import { TypeGenerator } from "./typeGenerator";
@@ -39,7 +39,6 @@ export class StandardElementsGenerator implements TypeGenerator {
     this._generateGetElementMethod(standardElementsClass);
     this._generateGetDigestElementsMethod(standardElementsClass);
     standardElementsClass.inline("./parser-src/parserPartial/standardElements.ts", "methods");
-    standardElementsClass.suffixCode.line("StandardElements.initialize();");
   }
 
   private _generateGetElementMethod(standardElementsClass: TsClass): void {
@@ -47,6 +46,7 @@ export class StandardElementsGenerator implements TypeGenerator {
       name: "getElement",
       returnType: this._baseClassName,
       isStatic: true,
+      access: TsAccess.Private,
     });
     method.parameter({
       name: "elementId",
@@ -61,6 +61,7 @@ export class StandardElementsGenerator implements TypeGenerator {
       name: "getDigestElements",
       returnType: "any",
       isStatic: true,
+      access: TsAccess.Private,
     });
     const digests = method.body.multiLine("return [");
     for (const digestElement of this._digestElements) {

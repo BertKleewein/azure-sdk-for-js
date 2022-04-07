@@ -25,14 +25,13 @@ import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
-import { MapKeyInfoParser } from "./mapKeyInfoParser";
-import { MapValueInfoParser } from "./mapValueInfoParser";
+import { ParserCollection } from "./parserCollection";
 export class MapInfoParser {
   protected static _concreteKinds: { [x: number]: MapKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("map");
@@ -86,7 +85,7 @@ export class MapInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -237,32 +236,38 @@ export class MapInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -294,7 +299,7 @@ export class MapInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -448,7 +453,7 @@ export class MapInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -466,7 +471,7 @@ export class MapInfoParser {
     switch (typestring) {
       case "Map":
       case "dtmi:dtdl:class:Map;2":
-        elementInfo.ref = new MapInfoImpl(2, elementId, parentId, definedIn, "map", MapInfoParser);
+        elementInfo.ref = new MapInfoImpl(2, elementId, parentId, definedIn, "map");
         materialKinds.push("map");
         return true;
     }
@@ -560,11 +565,11 @@ export class MapInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: MapInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -576,6 +581,8 @@ export class MapInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: MapInfoImpl = elementInfoAsAny as MapInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let mapKeyPropertyMissing = true;
@@ -639,7 +646,7 @@ export class MapInfoParser {
         case "mapKey":
         case "dtmi:dtdl:property:mapKey;2":
           mapKeyPropertyMissing = false;
-          valueCount = MapKeyInfoParser.parseToken(
+          valueCount = ParserCollection.MapKeyInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -683,7 +690,7 @@ export class MapInfoParser {
         case "mapValue":
         case "dtmi:dtdl:property:mapValue;2":
           mapValuePropertyMissing = false;
-          valueCount = MapValueInfoParser.parseToken(
+          valueCount = ParserCollection.MapValueInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -786,7 +793,7 @@ export class MapInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -804,7 +811,7 @@ export class MapInfoParser {
     switch (typestring) {
       case "Map":
       case "dtmi:dtdl:class:Map;3":
-        elementInfo.ref = new MapInfoImpl(3, elementId, parentId, definedIn, "map", MapInfoParser);
+        elementInfo.ref = new MapInfoImpl(3, elementId, parentId, definedIn, "map");
         materialKinds.push("map");
         return true;
     }
@@ -922,11 +929,11 @@ export class MapInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: MapInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -938,6 +945,8 @@ export class MapInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: MapInfoImpl = elementInfoAsAny as MapInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let mapKeyPropertyMissing = true;
@@ -1001,7 +1010,7 @@ export class MapInfoParser {
         case "mapKey":
         case "dtmi:dtdl:property:mapKey;3":
           mapKeyPropertyMissing = false;
-          valueCount = MapKeyInfoParser.parseToken(
+          valueCount = ParserCollection.MapKeyInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1045,7 +1054,7 @@ export class MapInfoParser {
         case "mapValue":
         case "dtmi:dtdl:property:mapValue;3":
           mapValuePropertyMissing = false;
-          valueCount = MapValueInfoParser.parseToken(
+          valueCount = ParserCollection.MapValueInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1148,7 +1157,7 @@ export class MapInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1244,7 +1253,7 @@ export class MapInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1294,5 +1303,3 @@ export class MapInfoParser {
     }
   }
 }
-
-MapInfoParser.initialize();

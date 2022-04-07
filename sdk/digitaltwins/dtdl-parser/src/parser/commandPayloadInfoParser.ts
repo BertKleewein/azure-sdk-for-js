@@ -25,17 +25,15 @@ import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
-import { SchemaInfoParser } from "./schemaInfoParser";
+import { ParserCollection } from "./parserCollection";
 import { CommandRequestInfoImpl } from "./commandRequestInfoImpl";
-import { CommandRequestInfoParser } from "./commandRequestInfoParser";
 import { CommandResponseInfoImpl } from "./commandResponseInfoImpl";
-import { CommandResponseInfoParser } from "./commandResponseInfoParser";
 export class CommandPayloadInfoParser {
   protected static _concreteKinds: { [x: number]: CommandPayloadKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("commandpayload");
@@ -90,7 +88,7 @@ export class CommandPayloadInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -241,32 +239,38 @@ export class CommandPayloadInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -298,7 +302,7 @@ export class CommandPayloadInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -455,7 +459,7 @@ export class CommandPayloadInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -478,8 +482,7 @@ export class CommandPayloadInfoParser {
           elementId,
           parentId,
           definedIn,
-          "commandpayload",
-          CommandPayloadInfoParser
+          "commandpayload"
         );
         materialKinds.push("commandpayload");
         return true;
@@ -574,11 +577,11 @@ export class CommandPayloadInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: CommandPayloadInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -590,6 +593,8 @@ export class CommandPayloadInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: CommandPayloadInfoImpl = elementInfoAsAny as CommandPayloadInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let namePropertyMissing = true;
@@ -665,7 +670,7 @@ export class CommandPayloadInfoParser {
         case "schema":
         case "dtmi:dtdl:property:schema;2":
           schemaPropertyMissing = false;
-          valueCount = SchemaInfoParser.parseToken(
+          valueCount = ParserCollection.SchemaInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -768,7 +773,7 @@ export class CommandPayloadInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -791,8 +796,7 @@ export class CommandPayloadInfoParser {
           elementId,
           parentId,
           definedIn,
-          "commandrequest",
-          CommandRequestInfoParser
+          "commandrequest"
         );
         materialKinds.push("commandrequest");
         return true;
@@ -803,8 +807,7 @@ export class CommandPayloadInfoParser {
           elementId,
           parentId,
           definedIn,
-          "commandresponse",
-          CommandResponseInfoParser
+          "commandresponse"
         );
         materialKinds.push("commandresponse");
         return true;
@@ -923,11 +926,11 @@ export class CommandPayloadInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: CommandPayloadInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -939,6 +942,8 @@ export class CommandPayloadInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: CommandPayloadInfoImpl = elementInfoAsAny as CommandPayloadInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let namePropertyMissing = true;
@@ -1014,7 +1019,7 @@ export class CommandPayloadInfoParser {
         case "schema":
         case "dtmi:dtdl:property:schema;3":
           schemaPropertyMissing = false;
-          valueCount = SchemaInfoParser.parseToken(
+          valueCount = ParserCollection.SchemaInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1117,7 +1122,7 @@ export class CommandPayloadInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1213,7 +1218,7 @@ export class CommandPayloadInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1263,5 +1268,3 @@ export class CommandPayloadInfoParser {
     }
   }
 }
-
-CommandPayloadInfoParser.initialize();

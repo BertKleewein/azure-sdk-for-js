@@ -15,6 +15,8 @@ import { MapKeyInfo } from "./mapKeyInfo";
 import { EntityInfoImpl } from "./entityInfoImpl";
 import { MapValueInfoImpl } from "./mapValueInfoImpl";
 import { MapValueInfo } from "./mapValueInfo";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -44,7 +46,7 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
   private _mapValueInstanceProperties: string[] = [];
   public _mapValueAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _mapValueAllowedVersionsV3: Set<number> = new Set<number>().add(3);
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.MapInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -68,9 +70,7 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: MapKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: MapKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -82,7 +82,6 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -98,7 +97,7 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:ComplexSchema")
       .add("dtmi:dtdl:class:Entity")
@@ -685,5 +684,3 @@ export class MapInfoImpl implements MapInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-MapInfoImpl.initialize();

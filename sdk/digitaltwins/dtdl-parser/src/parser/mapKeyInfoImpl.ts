@@ -13,6 +13,8 @@ import { LanguageStringType } from "./type";
 import { StringInfoImpl } from "./stringInfoImpl";
 import { StringInfo } from "./stringInfo";
 import { EntityInfoImpl } from "./entityInfoImpl";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -40,7 +42,7 @@ export class MapKeyInfoImpl implements MapKeyInfo, TypeChecker {
   private _schemaInstanceProperties: string[] = [];
   public _schemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3);
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.MapKeyInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -64,9 +66,7 @@ export class MapKeyInfoImpl implements MapKeyInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: MapKeyKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: MapKeyKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -78,7 +78,6 @@ export class MapKeyInfoImpl implements MapKeyInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -94,7 +93,7 @@ export class MapKeyInfoImpl implements MapKeyInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:MapKey")
@@ -536,5 +535,3 @@ export class MapKeyInfoImpl implements MapKeyInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-MapKeyInfoImpl.initialize();

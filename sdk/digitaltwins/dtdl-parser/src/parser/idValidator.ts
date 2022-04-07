@@ -13,12 +13,12 @@ import { ParsingException } from "./parsingException";
  * A static class for determining whether a string is a valid identifier.
  **/
 export class IdValidator {
-  static idDefinitionMaxLengths: Map<number, number> = new Map();
-  static idDefinitionRegexPatterns: Map<number, RegExp> = new Map();
-  static idReferenceMaxLengths: Map<number, number> = new Map();
-  static idReferenceRegexPatterns: Map<number, RegExp> = new Map();
+  public static idDefinitionMaxLengths: Map<number, number> = new Map();
+  public static idDefinitionRegexPatterns: Map<number, RegExp> = new Map();
+  public static idReferenceMaxLengths: Map<number, number> = new Map();
+  public static idReferenceRegexPatterns: Map<number, RegExp> = new Map();
 
-  static initialize(): void {
+  public static initialize(): void {
     IdValidator.idDefinitionMaxLengths.set(2, 2048);
     IdValidator.idDefinitionRegexPatterns.set(
       2,
@@ -43,13 +43,13 @@ export class IdValidator {
   }
 
   // codegen-outline-begin constants
-  static GLOBAL_ID_PATTERN_3 = new RegExp(
+  private static GLOBAL_ID_PATTERN_3 = new RegExp(
     "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\\.[1-9][0-9]{0,5})?)?(?:#(?:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)?)?$"
   );
-  static GLOBAL_ID_PATTERN_2 = new RegExp(
+  private static GLOBAL_ID_PATTERN_2 = new RegExp(
     "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$"
   );
-  static MAX_LENGTH = 2048;
+  private static MAX_LENGTH = 2048;
   // codegen-outline-end
 
   // codegen-outline-begin methods

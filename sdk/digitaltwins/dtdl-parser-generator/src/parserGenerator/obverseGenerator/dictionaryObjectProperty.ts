@@ -108,10 +108,10 @@ export class DictionaryObjectProperty extends ObjectProperty {
         switchScope.line(`${this.missingPropertyVariable} = false;`);
       }
       switchScope.line(
-        `${valueCountAssignment}${this.versionedParserName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
+        `${valueCountAssignment}ParserCollection.${this.versionedParserName[dtdlVersion]}.parseToken(model, objectPropertyInfoList, elementPropertyConstraints, ${valueConstraints}, aggregateContext, parsingErrors, propValue, elementInfo.${ParserGeneratorValues.IdentifierName}, ${definedIn}, '${this.propertyName}', '${dtmiSegment}', '${this.keyProperty}', ${propertyVersionDigest.idRequired}, ${propertyVersionDigest.typeRequired}, allowIdReferenceSyntax, elementInfo._${this.allowedVersionsField}V${dtdlVersion});`
       );
 
-      parserClass.importObject(this.versionedParserName[dtdlVersion]);
+      parserClass.importObject("ParserCollection");
       if (propertyVersionDigest.minCount !== undefined) {
         switchScope
           .if(`${valueCountVar} < ${propertyVersionDigest.minCount}`)

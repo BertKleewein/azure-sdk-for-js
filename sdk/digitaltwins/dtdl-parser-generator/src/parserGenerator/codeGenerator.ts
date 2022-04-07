@@ -28,6 +28,7 @@ import { NameFormatter } from "./nameFormatter";
 import { DescendantControlFactory } from "./obverseGenerator/descendantControlFactory";
 import { ExtensibleMaterialClass } from "./obverseGenerator/extensibleMaterialClass";
 import { SupplementalPropertyInfoGenerator } from "./supplementalPropertyInfoGenerator";
+import { ParserCollectionGenerator } from "./parserCollectionGenerator";
 
 const destinationDirectories = ["enum", "type"];
 
@@ -41,6 +42,7 @@ const filesToCopyDirectly = [
   "internalDtmi.ts",
   "jsonSyntaxError.ts",
   "literalValidator.ts",
+  "parser.ts",
   "parsingError.ts",
   "parsingErrorImpl.ts",
   "parsingException.ts",
@@ -153,6 +155,10 @@ export class ParserCodeGenerator {
         baseClassName
       )
     );
+
+    let classesWithParsers = Object.keys(parsedMetamodelDigest["materialClasses"]);
+    classesWithParsers.push("reference");
+    typeGenerators.push(new ParserCollectionGenerator(classesWithParsers));
 
     typeGenerators.push(...this._generateMaterialClasses(parsedMetamodelDigest));
 

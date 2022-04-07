@@ -25,13 +25,13 @@ import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
-import { InterfaceInfoParser } from "./interfaceInfoParser";
+import { ParserCollection } from "./parserCollection";
 export class ComponentInfoParser {
   protected static _concreteKinds: { [x: number]: ComponentKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("component");
@@ -85,7 +85,7 @@ export class ComponentInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -236,32 +236,38 @@ export class ComponentInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -293,7 +299,7 @@ export class ComponentInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -447,7 +453,7 @@ export class ComponentInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -465,14 +471,7 @@ export class ComponentInfoParser {
     switch (typestring) {
       case "Component":
       case "dtmi:dtdl:class:Component;2":
-        elementInfo.ref = new ComponentInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "component",
-          ComponentInfoParser
-        );
+        elementInfo.ref = new ComponentInfoImpl(2, elementId, parentId, definedIn, "component");
         materialKinds.push("component");
         return true;
     }
@@ -566,11 +565,11 @@ export class ComponentInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: ComponentInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -582,6 +581,8 @@ export class ComponentInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: ComponentInfoImpl = elementInfoAsAny as ComponentInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let namePropertyMissing = true;
@@ -657,7 +658,7 @@ export class ComponentInfoParser {
         case "schema":
         case "dtmi:dtdl:property:schema;2":
           schemaPropertyMissing = false;
-          valueCount = InterfaceInfoParser.parseToken(
+          valueCount = ParserCollection.InterfaceInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -760,7 +761,7 @@ export class ComponentInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -778,14 +779,7 @@ export class ComponentInfoParser {
     switch (typestring) {
       case "Component":
       case "dtmi:dtdl:class:Component;3":
-        elementInfo.ref = new ComponentInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "component",
-          ComponentInfoParser
-        );
+        elementInfo.ref = new ComponentInfoImpl(3, elementId, parentId, definedIn, "component");
         materialKinds.push("component");
         return true;
     }
@@ -903,11 +897,11 @@ export class ComponentInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: ComponentInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -919,6 +913,8 @@ export class ComponentInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: ComponentInfoImpl = elementInfoAsAny as ComponentInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let namePropertyMissing = true;
@@ -994,7 +990,7 @@ export class ComponentInfoParser {
         case "schema":
         case "dtmi:dtdl:property:schema;3":
           schemaPropertyMissing = false;
-          valueCount = InterfaceInfoParser.parseToken(
+          valueCount = ParserCollection.InterfaceInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1097,7 +1093,7 @@ export class ComponentInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1193,7 +1189,7 @@ export class ComponentInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1243,5 +1239,3 @@ export class ComponentInfoParser {
     }
   }
 }
-
-ComponentInfoParser.initialize();

@@ -25,13 +25,13 @@ import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
-import { FieldInfoParser } from "./fieldInfoParser";
+import { ParserCollection } from "./parserCollection";
 export class ObjectInfoParser {
   protected static _concreteKinds: { [x: number]: ObjectKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("object");
@@ -85,7 +85,7 @@ export class ObjectInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -236,32 +236,38 @@ export class ObjectInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -293,7 +299,7 @@ export class ObjectInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -447,7 +453,7 @@ export class ObjectInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -465,14 +471,7 @@ export class ObjectInfoParser {
     switch (typestring) {
       case "Object":
       case "dtmi:dtdl:class:Object;2":
-        elementInfo.ref = new ObjectInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "object",
-          ObjectInfoParser
-        );
+        elementInfo.ref = new ObjectInfoImpl(2, elementId, parentId, definedIn, "object");
         materialKinds.push("object");
         return true;
     }
@@ -566,11 +565,11 @@ export class ObjectInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: ObjectInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -582,6 +581,8 @@ export class ObjectInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: ObjectInfoImpl = elementInfoAsAny as ObjectInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     for (const propKey in object) {
@@ -641,7 +642,7 @@ export class ObjectInfoParser {
           continue;
         case "fields":
         case "dtmi:dtdl:property:fields;2":
-          valueCount = FieldInfoParser.parseToken(
+          valueCount = ParserCollection.FieldInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -722,7 +723,7 @@ export class ObjectInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -740,14 +741,7 @@ export class ObjectInfoParser {
     switch (typestring) {
       case "Object":
       case "dtmi:dtdl:class:Object;3":
-        elementInfo.ref = new ObjectInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "object",
-          ObjectInfoParser
-        );
+        elementInfo.ref = new ObjectInfoImpl(3, elementId, parentId, definedIn, "object");
         materialKinds.push("object");
         return true;
     }
@@ -865,11 +859,11 @@ export class ObjectInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: ObjectInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -881,6 +875,8 @@ export class ObjectInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: ObjectInfoImpl = elementInfoAsAny as ObjectInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     for (const propKey in object) {
@@ -939,7 +935,7 @@ export class ObjectInfoParser {
           continue;
         case "fields":
         case "dtmi:dtdl:property:fields;3":
-          FieldInfoParser.parseToken(
+          ParserCollection.FieldInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -998,7 +994,7 @@ export class ObjectInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1094,7 +1090,7 @@ export class ObjectInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1144,5 +1140,3 @@ export class ObjectInfoParser {
     }
   }
 }
-
-ObjectInfoParser.initialize();

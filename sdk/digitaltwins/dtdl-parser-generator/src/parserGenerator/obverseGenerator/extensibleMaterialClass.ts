@@ -38,7 +38,6 @@ export class ExtensibleMaterialClass {
     if (extensibleMaterialSubtypes.includes(this._typeName)) {
       if (parserClass.name !== this._className) {
         parserClass.importObject(this._className);
-        parserClass.importObject(this._parserClassName);
       }
       switchOnExtensionKind
         .line(
@@ -46,7 +45,7 @@ export class ExtensibleMaterialClass {
             this._dtdlVersion
           }, elementId, ${parentIdVar}, ${definedInVar}, '${NameFormatter.formatNameAsKindString(
             this._kindValue
-          )}', ${this._parserClassName});`
+          )}');`
         )
         .line(
           `(elementInfo.ref as ${this._className}).addType(supplementalTypeId.value, supplementalTypeInfo);`

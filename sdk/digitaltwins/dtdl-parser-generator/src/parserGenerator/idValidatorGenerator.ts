@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { StringRestriction } from "./metamodelDigest";
-import { TsLibrary } from "../codeGenerator";
+import { TsAccess, TsLibrary } from "../codeGenerator";
 import { TypeGenerator } from "./typeGenerator";
 
 export class IdValidatorGenerator implements TypeGenerator {
@@ -41,24 +41,28 @@ export class IdValidatorGenerator implements TypeGenerator {
       isStatic: true,
       type: "Map<number, number>",
       value: "new Map()",
+      access: TsAccess.Public,
     });
     restrictionsClass.field({
       name: "idDefinitionRegexPatterns",
       isStatic: true,
       type: "Map<number, RegExp>",
       value: "new Map()",
+      access: TsAccess.Public,
     });
     restrictionsClass.field({
       name: "idReferenceMaxLengths",
       isStatic: true,
       type: "Map<number, number>",
       value: "new Map()",
+      access: TsAccess.Public,
     });
     restrictionsClass.field({
       name: "idReferenceRegexPatterns",
       isStatic: true,
       type: "Map<number, RegExp>",
       value: "new Map()",
+      access: TsAccess.Public,
     });
 
     for (const [key, value] of Object.entries(this._identifierDefinitionRestrictions)) {

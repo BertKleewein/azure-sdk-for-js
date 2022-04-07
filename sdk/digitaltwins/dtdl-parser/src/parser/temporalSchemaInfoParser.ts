@@ -23,13 +23,9 @@ import { ElementPropertyConstraint } from "./type";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { DateInfoImpl } from "./dateInfoImpl";
-import { DateInfoParser } from "./dateInfoParser";
 import { DateTimeInfoImpl } from "./dateTimeInfoImpl";
-import { DateTimeInfoParser } from "./dateTimeInfoParser";
 import { DurationInfoImpl } from "./durationInfoImpl";
-import { DurationInfoParser } from "./durationInfoParser";
 import { TimeInfoImpl } from "./timeInfoImpl";
-import { TimeInfoParser } from "./timeInfoParser";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
@@ -38,7 +34,7 @@ export class TemporalSchemaInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("date");
@@ -58,7 +54,7 @@ export class TemporalSchemaInfoParser {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that is not a standard value for this property.`;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -209,32 +205,38 @@ export class TemporalSchemaInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -266,7 +268,7 @@ export class TemporalSchemaInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -423,7 +425,7 @@ export class TemporalSchemaInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -441,50 +443,22 @@ export class TemporalSchemaInfoParser {
     switch (typestring) {
       case "Date":
       case "dtmi:dtdl:class:Date;2":
-        elementInfo.ref = new DateInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "date",
-          DateInfoParser
-        );
+        elementInfo.ref = new DateInfoImpl(2, elementId, parentId, definedIn, "date");
         materialKinds.push("date");
         return true;
       case "DateTime":
       case "dtmi:dtdl:class:DateTime;2":
-        elementInfo.ref = new DateTimeInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "datetime",
-          DateTimeInfoParser
-        );
+        elementInfo.ref = new DateTimeInfoImpl(2, elementId, parentId, definedIn, "datetime");
         materialKinds.push("datetime");
         return true;
       case "Duration":
       case "dtmi:dtdl:class:Duration;2":
-        elementInfo.ref = new DurationInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "duration",
-          DurationInfoParser
-        );
+        elementInfo.ref = new DurationInfoImpl(2, elementId, parentId, definedIn, "duration");
         materialKinds.push("duration");
         return true;
       case "Time":
       case "dtmi:dtdl:class:Time;2":
-        elementInfo.ref = new TimeInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "time",
-          TimeInfoParser
-        );
+        elementInfo.ref = new TimeInfoImpl(2, elementId, parentId, definedIn, "time");
         materialKinds.push("time");
         return true;
     }
@@ -578,11 +552,11 @@ export class TemporalSchemaInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: TemporalSchemaInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -594,6 +568,8 @@ export class TemporalSchemaInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: TemporalSchemaInfoImpl = elementInfoAsAny as TemporalSchemaInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     for (const propKey in object) {
@@ -675,7 +651,7 @@ export class TemporalSchemaInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -693,50 +669,22 @@ export class TemporalSchemaInfoParser {
     switch (typestring) {
       case "Date":
       case "dtmi:dtdl:class:Date;3":
-        elementInfo.ref = new DateInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "date",
-          DateInfoParser
-        );
+        elementInfo.ref = new DateInfoImpl(3, elementId, parentId, definedIn, "date");
         materialKinds.push("date");
         return true;
       case "DateTime":
       case "dtmi:dtdl:class:DateTime;3":
-        elementInfo.ref = new DateTimeInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "datetime",
-          DateTimeInfoParser
-        );
+        elementInfo.ref = new DateTimeInfoImpl(3, elementId, parentId, definedIn, "datetime");
         materialKinds.push("datetime");
         return true;
       case "Duration":
       case "dtmi:dtdl:class:Duration;3":
-        elementInfo.ref = new DurationInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "duration",
-          DurationInfoParser
-        );
+        elementInfo.ref = new DurationInfoImpl(3, elementId, parentId, definedIn, "duration");
         materialKinds.push("duration");
         return true;
       case "Time":
       case "dtmi:dtdl:class:Time;3":
-        elementInfo.ref = new TimeInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "time",
-          TimeInfoParser
-        );
+        elementInfo.ref = new TimeInfoImpl(3, elementId, parentId, definedIn, "time");
         materialKinds.push("time");
         return true;
     }
@@ -854,11 +802,11 @@ export class TemporalSchemaInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: TemporalSchemaInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -870,6 +818,8 @@ export class TemporalSchemaInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: TemporalSchemaInfoImpl = elementInfoAsAny as TemporalSchemaInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     for (const propKey in object) {
@@ -951,7 +901,7 @@ export class TemporalSchemaInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1047,7 +997,7 @@ export class TemporalSchemaInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1097,5 +1047,3 @@ export class TemporalSchemaInfoParser {
     }
   }
 }
-
-TemporalSchemaInfoParser.initialize();

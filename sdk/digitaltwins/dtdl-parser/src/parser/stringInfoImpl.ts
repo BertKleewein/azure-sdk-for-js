@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { StringInfo } from "./stringInfo";
 import { StringKinds } from "./stringKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -28,7 +30,7 @@ export class StringInfoImpl implements StringInfo, TypeChecker {
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.StringInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -52,9 +54,7 @@ export class StringInfoImpl implements StringInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: StringKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: StringKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -66,7 +66,6 @@ export class StringInfoImpl implements StringInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -82,7 +81,7 @@ export class StringInfoImpl implements StringInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:PrimitiveSchema")
@@ -394,5 +393,3 @@ export class StringInfoImpl implements StringInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-StringInfoImpl.initialize();

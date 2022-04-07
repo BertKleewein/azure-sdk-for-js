@@ -38,7 +38,7 @@ export class AggregateContext {
   private _localTermDefinitions: TermDict;
   private _localPrefixDefinitions: PrefixDict;
   // codegen-outline-end
-  static _affiliateContextsImplicitDtdlVersions: any;
+  private static _affiliateContextsImplicitDtdlVersions: any;
 
   // codegen-outline-begin methods
   constructor(

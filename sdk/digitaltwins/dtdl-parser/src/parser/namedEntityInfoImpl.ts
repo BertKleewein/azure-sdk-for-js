@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { NamedEntityInfo } from "./namedEntityInfo";
 import { NamedEntityKinds } from "./namedEntityKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
@@ -28,7 +30,7 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
   public name?: string;
   public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.NamedEntityInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -48,9 +50,7 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: NamedEntityKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: NamedEntityKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -62,7 +62,6 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -73,7 +72,7 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:NamedEntity");
@@ -260,5 +259,3 @@ export abstract class NamedEntityInfoImpl implements NamedEntityInfo, TypeChecke
     throw new Error("Can not execute on an abstract class");
   }
 }
-
-NamedEntityInfoImpl.initialize();

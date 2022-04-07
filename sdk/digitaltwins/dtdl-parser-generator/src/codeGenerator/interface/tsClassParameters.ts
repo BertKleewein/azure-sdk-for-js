@@ -8,4 +8,5 @@ export interface TsClassParams {
   exports?: boolean;
   abstract?: boolean;
   inheritance?: TsInheritanceType[];
+  deferStaticInitialization?: boolean;
 }

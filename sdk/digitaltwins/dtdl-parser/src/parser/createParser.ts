@@ -9,10 +9,12 @@
 import { ModelParsingOption } from "./enum";
 import { ModelParser } from "./modelParser";
 import { ModelParserImpl } from "./modelParserImpl";
+import { ParserInitializer } from "./parserInitializer";
 /**
  * Function for creation of the model parser.
  **/
 export function createParser(parsingOptions: ModelParsingOption): ModelParser {
+  ParserInitializer.initialize();
   const impl = new ModelParserImpl();
   impl.options = parsingOptions;
   return impl;

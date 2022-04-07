@@ -118,7 +118,7 @@ export class ConcreteSubclass {
     }
     methodScope
       .line(
-        `${elementInfoStr} = new ${this.className}(${this._dtdlVersion}, ${elementIdStr}, ${parentIdStr}, ${definedInStr},'${this._kindValue}', ${this.parserClassName});`
+        `${elementInfoStr} = new ${this.className}(${this._dtdlVersion}, ${elementIdStr}, ${parentIdStr}, ${definedInStr},'${this._kindValue}');`
       )
       // .line(`materialKinds.push(${this._kindValue});`)
       // TODO Should enum value be always lower case

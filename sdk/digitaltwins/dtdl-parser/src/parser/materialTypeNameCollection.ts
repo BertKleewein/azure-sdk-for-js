@@ -10,9 +10,9 @@
  * A collection of all material type names
  **/
 export class MaterialTypeNameCollection {
-  static typeNames: Set<string>;
+  public static typeNames: Set<string>;
 
-  static initialize(): void {
+  public static initialize(): void {
     MaterialTypeNameCollection.typeNames = new Set<string>();
     MaterialTypeNameCollection.typeNames.add("Array");
     MaterialTypeNameCollection.typeNames.add("dtmi:dtdl:class:Array;2");
@@ -135,7 +135,7 @@ export class MaterialTypeNameCollection {
     MaterialTypeNameCollection.typeNames.add("dtmi:dtdl:class:NamedLatentType;3");
   }
 
-  static isMaterialType(typeString: string): boolean {
+  public static isMaterialType(typeString: string): boolean {
     return MaterialTypeNameCollection.typeNames.has(typeString);
   }
 }

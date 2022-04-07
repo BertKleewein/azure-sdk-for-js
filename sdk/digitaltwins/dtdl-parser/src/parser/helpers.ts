@@ -12,7 +12,7 @@ import { LanguageStringType } from "./type";
  * A static class that holds various helper functions.
  **/
 export class Helpers {
-  static areListsIdEqual(list1: EntityInfo[], list2: EntityInfo[]): boolean {
+  public static areListsIdEqual(list1: EntityInfo[], list2: EntityInfo[]): boolean {
     if (list1.length !== list2.length) {
       return false;
     }
@@ -26,7 +26,7 @@ export class Helpers {
     return true;
   }
 
-  static areListsIdOrLiteralEqual(list1: EntityInfo[], list2: EntityInfo[]): boolean {
+  public static areListsIdOrLiteralEqual(list1: EntityInfo[], list2: EntityInfo[]): boolean {
     if (list1.length !== list2.length) {
       return false;
     }
@@ -48,7 +48,7 @@ export class Helpers {
     return true;
   }
 
-  static areDictionariesIdEqual(
+  public static areDictionariesIdEqual(
     dict1: { [name: string]: EntityInfo },
     dict2: { [name: string]: EntityInfo }
   ): boolean {
@@ -65,7 +65,7 @@ export class Helpers {
     return true;
   }
 
-  static areDictionariesIdOrLiteralEqual(
+  public static areDictionariesIdOrLiteralEqual(
     dict1: { [name: string]: any },
     dict2: { [name: string]: any }
   ): boolean {
@@ -86,7 +86,7 @@ export class Helpers {
   }
 
   // codegen-outline-begin methods
-  static areDictionariesLiteralEqual(
+  public static areDictionariesLiteralEqual(
     dict1: LanguageStringType,
     dict2: LanguageStringType
   ): boolean {
@@ -101,11 +101,11 @@ export class Helpers {
     return true;
   }
 
-  static getDataTypeString(_datatype: unknown): string {
+  public static getDataTypeString(_datatype: unknown): string {
     throw new Error("getDataTypeString is unnecessary in Typescript.");
   }
 
-  static getJsonTextFromToken(_token: unknown): string {
+  public static getJsonTextFromToken(_token: unknown): string {
     throw new Error("getJsonTextFromToken is unnecessary in Typescript.");
   }
   // codegen-outline-end

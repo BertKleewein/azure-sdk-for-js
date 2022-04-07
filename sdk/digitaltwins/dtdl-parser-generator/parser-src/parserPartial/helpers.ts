@@ -6,7 +6,7 @@ import { LanguageStringType } from "../type/langstringType";
 
 export class Helpers {
   // codegen-outline-begin methods
-  static areDictionariesLiteralEqual(
+  public static areDictionariesLiteralEqual(
     dict1: LanguageStringType,
     dict2: LanguageStringType
   ): boolean {
@@ -21,11 +21,11 @@ export class Helpers {
     return true;
   }
 
-  static getDataTypeString(_datatype: unknown): string {
+  public static getDataTypeString(_datatype: unknown): string {
     throw new Error("getDataTypeString is unnecessary in Typescript.");
   }
 
-  static getJsonTextFromToken(_token: unknown): string {
+  public static getJsonTextFromToken(_token: unknown): string {
     throw new Error("getJsonTextFromToken is unnecessary in Typescript.");
   }
   // codegen-outline-end

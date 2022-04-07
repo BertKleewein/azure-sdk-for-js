@@ -52,9 +52,11 @@ export class TsCatch extends TsScope {
 
 // @public
 export class TsClass extends TsDeclaration {
-    constructor({ name, exports, abstract, inheritance }: TsClassParams);
+    constructor({ name, exports, abstract, inheritance, deferStaticInitialization }: TsClassParams);
     // (undocumented)
     get ctor(): TsConstructor;
+    // (undocumented)
+    deferStaticInitialization?: boolean;
     // (undocumented)
     field(input: TsFieldParams): TsClass;
     // (undocumented)
@@ -97,6 +99,8 @@ export class TsClass extends TsDeclaration {
 export interface TsClassParams {
     // (undocumented)
     abstract?: boolean;
+    // (undocumented)
+    deferStaticInitialization?: boolean;
     // (undocumented)
     exports?: boolean;
     // (undocumented)

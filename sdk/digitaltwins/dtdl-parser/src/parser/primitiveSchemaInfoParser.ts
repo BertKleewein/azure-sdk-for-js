@@ -23,25 +23,15 @@ import { ElementPropertyConstraint } from "./type";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { BooleanInfoImpl } from "./booleanInfoImpl";
-import { BooleanInfoParser } from "./booleanInfoParser";
 import { DateInfoImpl } from "./dateInfoImpl";
-import { DateInfoParser } from "./dateInfoParser";
 import { DateTimeInfoImpl } from "./dateTimeInfoImpl";
-import { DateTimeInfoParser } from "./dateTimeInfoParser";
 import { DoubleInfoImpl } from "./doubleInfoImpl";
-import { DoubleInfoParser } from "./doubleInfoParser";
 import { DurationInfoImpl } from "./durationInfoImpl";
-import { DurationInfoParser } from "./durationInfoParser";
 import { FloatInfoImpl } from "./floatInfoImpl";
-import { FloatInfoParser } from "./floatInfoParser";
 import { IntegerInfoImpl } from "./integerInfoImpl";
-import { IntegerInfoParser } from "./integerInfoParser";
 import { LongInfoImpl } from "./longInfoImpl";
-import { LongInfoParser } from "./longInfoParser";
 import { StringInfoImpl } from "./stringInfoImpl";
-import { StringInfoParser } from "./stringInfoParser";
 import { TimeInfoImpl } from "./timeInfoImpl";
-import { TimeInfoParser } from "./timeInfoParser";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
@@ -50,7 +40,7 @@ export class PrimitiveSchemaInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("boolean");
@@ -82,7 +72,7 @@ export class PrimitiveSchemaInfoParser {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that is not a standard value for this property.`;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -233,32 +223,38 @@ export class PrimitiveSchemaInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -290,7 +286,7 @@ export class PrimitiveSchemaInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -447,7 +443,7 @@ export class PrimitiveSchemaInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -465,122 +461,52 @@ export class PrimitiveSchemaInfoParser {
     switch (typestring) {
       case "Boolean":
       case "dtmi:dtdl:class:Boolean;2":
-        elementInfo.ref = new BooleanInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "boolean",
-          BooleanInfoParser
-        );
+        elementInfo.ref = new BooleanInfoImpl(2, elementId, parentId, definedIn, "boolean");
         materialKinds.push("boolean");
         return true;
       case "Date":
       case "dtmi:dtdl:class:Date;2":
-        elementInfo.ref = new DateInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "date",
-          DateInfoParser
-        );
+        elementInfo.ref = new DateInfoImpl(2, elementId, parentId, definedIn, "date");
         materialKinds.push("date");
         return true;
       case "DateTime":
       case "dtmi:dtdl:class:DateTime;2":
-        elementInfo.ref = new DateTimeInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "datetime",
-          DateTimeInfoParser
-        );
+        elementInfo.ref = new DateTimeInfoImpl(2, elementId, parentId, definedIn, "datetime");
         materialKinds.push("datetime");
         return true;
       case "Double":
       case "dtmi:dtdl:class:Double;2":
-        elementInfo.ref = new DoubleInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "double",
-          DoubleInfoParser
-        );
+        elementInfo.ref = new DoubleInfoImpl(2, elementId, parentId, definedIn, "double");
         materialKinds.push("double");
         return true;
       case "Duration":
       case "dtmi:dtdl:class:Duration;2":
-        elementInfo.ref = new DurationInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "duration",
-          DurationInfoParser
-        );
+        elementInfo.ref = new DurationInfoImpl(2, elementId, parentId, definedIn, "duration");
         materialKinds.push("duration");
         return true;
       case "Float":
       case "dtmi:dtdl:class:Float;2":
-        elementInfo.ref = new FloatInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "float",
-          FloatInfoParser
-        );
+        elementInfo.ref = new FloatInfoImpl(2, elementId, parentId, definedIn, "float");
         materialKinds.push("float");
         return true;
       case "Integer":
       case "dtmi:dtdl:class:Integer;2":
-        elementInfo.ref = new IntegerInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "integer",
-          IntegerInfoParser
-        );
+        elementInfo.ref = new IntegerInfoImpl(2, elementId, parentId, definedIn, "integer");
         materialKinds.push("integer");
         return true;
       case "Long":
       case "dtmi:dtdl:class:Long;2":
-        elementInfo.ref = new LongInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "long",
-          LongInfoParser
-        );
+        elementInfo.ref = new LongInfoImpl(2, elementId, parentId, definedIn, "long");
         materialKinds.push("long");
         return true;
       case "String":
       case "dtmi:dtdl:class:String;2":
-        elementInfo.ref = new StringInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "string",
-          StringInfoParser
-        );
+        elementInfo.ref = new StringInfoImpl(2, elementId, parentId, definedIn, "string");
         materialKinds.push("string");
         return true;
       case "Time":
       case "dtmi:dtdl:class:Time;2":
-        elementInfo.ref = new TimeInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "time",
-          TimeInfoParser
-        );
+        elementInfo.ref = new TimeInfoImpl(2, elementId, parentId, definedIn, "time");
         materialKinds.push("time");
         return true;
     }
@@ -674,11 +600,11 @@ export class PrimitiveSchemaInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: PrimitiveSchemaInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -690,6 +616,8 @@ export class PrimitiveSchemaInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: PrimitiveSchemaInfoImpl = elementInfoAsAny as PrimitiveSchemaInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     for (const propKey in object) {
@@ -771,7 +699,7 @@ export class PrimitiveSchemaInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -789,122 +717,52 @@ export class PrimitiveSchemaInfoParser {
     switch (typestring) {
       case "Boolean":
       case "dtmi:dtdl:class:Boolean;3":
-        elementInfo.ref = new BooleanInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "boolean",
-          BooleanInfoParser
-        );
+        elementInfo.ref = new BooleanInfoImpl(3, elementId, parentId, definedIn, "boolean");
         materialKinds.push("boolean");
         return true;
       case "Date":
       case "dtmi:dtdl:class:Date;3":
-        elementInfo.ref = new DateInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "date",
-          DateInfoParser
-        );
+        elementInfo.ref = new DateInfoImpl(3, elementId, parentId, definedIn, "date");
         materialKinds.push("date");
         return true;
       case "DateTime":
       case "dtmi:dtdl:class:DateTime;3":
-        elementInfo.ref = new DateTimeInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "datetime",
-          DateTimeInfoParser
-        );
+        elementInfo.ref = new DateTimeInfoImpl(3, elementId, parentId, definedIn, "datetime");
         materialKinds.push("datetime");
         return true;
       case "Double":
       case "dtmi:dtdl:class:Double;3":
-        elementInfo.ref = new DoubleInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "double",
-          DoubleInfoParser
-        );
+        elementInfo.ref = new DoubleInfoImpl(3, elementId, parentId, definedIn, "double");
         materialKinds.push("double");
         return true;
       case "Duration":
       case "dtmi:dtdl:class:Duration;3":
-        elementInfo.ref = new DurationInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "duration",
-          DurationInfoParser
-        );
+        elementInfo.ref = new DurationInfoImpl(3, elementId, parentId, definedIn, "duration");
         materialKinds.push("duration");
         return true;
       case "Float":
       case "dtmi:dtdl:class:Float;3":
-        elementInfo.ref = new FloatInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "float",
-          FloatInfoParser
-        );
+        elementInfo.ref = new FloatInfoImpl(3, elementId, parentId, definedIn, "float");
         materialKinds.push("float");
         return true;
       case "Integer":
       case "dtmi:dtdl:class:Integer;3":
-        elementInfo.ref = new IntegerInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "integer",
-          IntegerInfoParser
-        );
+        elementInfo.ref = new IntegerInfoImpl(3, elementId, parentId, definedIn, "integer");
         materialKinds.push("integer");
         return true;
       case "Long":
       case "dtmi:dtdl:class:Long;3":
-        elementInfo.ref = new LongInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "long",
-          LongInfoParser
-        );
+        elementInfo.ref = new LongInfoImpl(3, elementId, parentId, definedIn, "long");
         materialKinds.push("long");
         return true;
       case "String":
       case "dtmi:dtdl:class:String;3":
-        elementInfo.ref = new StringInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "string",
-          StringInfoParser
-        );
+        elementInfo.ref = new StringInfoImpl(3, elementId, parentId, definedIn, "string");
         materialKinds.push("string");
         return true;
       case "Time":
       case "dtmi:dtdl:class:Time;3":
-        elementInfo.ref = new TimeInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "time",
-          TimeInfoParser
-        );
+        elementInfo.ref = new TimeInfoImpl(3, elementId, parentId, definedIn, "time");
         materialKinds.push("time");
         return true;
     }
@@ -1022,11 +880,11 @@ export class PrimitiveSchemaInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: PrimitiveSchemaInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -1038,6 +896,8 @@ export class PrimitiveSchemaInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: PrimitiveSchemaInfoImpl = elementInfoAsAny as PrimitiveSchemaInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     for (const propKey in object) {
@@ -1119,7 +979,7 @@ export class PrimitiveSchemaInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1215,7 +1075,7 @@ export class PrimitiveSchemaInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1265,5 +1125,3 @@ export class PrimitiveSchemaInfoParser {
     }
   }
 }
-
-PrimitiveSchemaInfoParser.initialize();

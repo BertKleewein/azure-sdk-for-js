@@ -12,6 +12,8 @@ import { RelationshipKinds } from "./relationshipKinds";
 import { LanguageStringType } from "./type";
 import { PropertyInfoImpl } from "./propertyInfoImpl";
 import { PropertyInfo } from "./propertyInfo";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -45,7 +47,7 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
   public targetPropertyRegexPatternV2: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$/;
   public targetPropertyRegexPatternV3: RegExp = /^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\.[1-9][0-9]{0,5})?)?$/;
   public writable?: boolean;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.RelationshipInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -69,9 +71,7 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: RelationshipKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: RelationshipKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -85,7 +85,6 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -101,7 +100,7 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Content")
       .add("dtmi:dtdl:class:Entity")
@@ -524,5 +523,3 @@ export class RelationshipInfoImpl implements RelationshipInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-RelationshipInfoImpl.initialize();

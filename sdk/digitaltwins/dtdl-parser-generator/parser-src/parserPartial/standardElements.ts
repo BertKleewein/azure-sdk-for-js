@@ -16,7 +16,7 @@ export class StandardElements {
   // codegen-outline-end
 
   // codegen-outline-begin methods
-  static initialize(): void {
+  public static initialize(): void {
     this._standardModel = new Model();
     this._elementReferences = {};
 
@@ -62,7 +62,7 @@ export class StandardElements {
     return true;
   }
 
-  static parseResourceIntoStandardModel(
+  private static parseResourceIntoStandardModel(
     resource: any[],
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -85,7 +85,7 @@ export class StandardElements {
   }
   // codegen-outline-end
 
-  static getDigestElements(): any {
+  private static getDigestElements(): any {
     throw new Error("GetDigestElements Not Implemented");
   }
 }

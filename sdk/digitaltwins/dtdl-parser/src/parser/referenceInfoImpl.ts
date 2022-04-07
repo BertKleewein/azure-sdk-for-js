@@ -9,6 +9,8 @@
 import { TypeChecker } from "./type";
 import { ReferenceInfo } from "./referenceInfo";
 import { ReferenceKinds } from "./referenceKinds";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -23,7 +25,7 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
   public childOf: string | undefined;
   public definedIn: string | undefined;
   public entityKind: ReferenceKinds;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.ReferenceInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -47,9 +49,7 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ReferenceKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: ReferenceKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -59,7 +59,6 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -75,7 +74,7 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>();
   }
 
@@ -303,5 +302,3 @@ export class ReferenceInfoImpl implements ReferenceInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-ReferenceInfoImpl.initialize();

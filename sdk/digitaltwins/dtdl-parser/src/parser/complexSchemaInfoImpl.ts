@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { ComplexSchemaInfo } from "./complexSchemaInfo";
 import { ComplexSchemaKinds } from "./complexSchemaKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
@@ -26,7 +28,7 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.ComplexSchemaInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -46,9 +48,7 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: ComplexSchemaKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: ComplexSchemaKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -60,7 +60,6 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -71,7 +70,7 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:ComplexSchema")
       .add("dtmi:dtdl:class:Entity")
@@ -299,5 +298,3 @@ export abstract class ComplexSchemaInfoImpl implements ComplexSchemaInfo, TypeCh
     throw new Error("Can not execute on an abstract class");
   }
 }
-
-ComplexSchemaInfoImpl.initialize();

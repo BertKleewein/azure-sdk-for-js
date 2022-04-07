@@ -13,6 +13,8 @@ import { LanguageStringType } from "./type";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
 import { SchemaInfo } from "./schemaInfo";
 import { EntityInfoImpl } from "./entityInfoImpl";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -40,7 +42,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
   private _schemaInstanceProperties: string[] = [];
   public _schemaAllowedVersionsV2: Set<number> = new Set<number>().add(2);
   public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.FieldInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -64,9 +66,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: FieldKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: FieldKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -78,7 +78,6 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -94,7 +93,7 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:Field")
@@ -563,5 +562,3 @@ export class FieldInfoImpl implements FieldInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-FieldInfoImpl.initialize();

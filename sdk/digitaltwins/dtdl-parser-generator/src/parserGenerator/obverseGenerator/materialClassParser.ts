@@ -158,7 +158,13 @@ export class MaterialClassParser {
       .importObject("ValueConstraint", "./type/valueConstraint");
 
     const parseObjMethod = parserClass
-      .method({ name: "parseObject", returnType: "any", abstract: false, isStatic: true })
+      .method({
+        name: "parseObject",
+        returnType: "any",
+        abstract: false,
+        isStatic: true,
+        access: TsAccess.Public,
+      })
       .parameter({ name: "model", type: "Model", shouldBeInterface: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
@@ -291,10 +297,11 @@ export class MaterialClassParser {
     for (const dtdlVersion of dtdlVersions) {
       const switchCase = switchScope.scope(`case ${dtdlVersion}:`);
       switchCase
+        .if(`elementInfo.parserClass?.parsePropertiesV${dtdlVersion} !== undefined`)
         .line(
-          `elementInfo.parserClass.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
-        )
-        .line(`break;`);
+          `elementInfo.parserClass?.parsePropertiesV${dtdlVersion}(model, elementInfo, objectPropertyInfoList, elementPropertyConstraints, childAggregateContext, parsingErrors, object, definedIn, allowIdReferenceSyntax);`
+        );
+      switchCase.line(`break;`);
     }
     parseObjMethod.body
       .line(`model.dict[elementId] = elementInfo;`)
@@ -327,6 +334,7 @@ export class MaterialClassParser {
         returnType: `${typeName}|undefined`,
         abstract: false,
         isStatic: true,
+        access: TsAccess.Private,
       })
       .parameter({ name: "tokenArr", type: "any[]" })
       .parameter({ name: "elementId", type: "string" })
@@ -480,7 +488,13 @@ export class MaterialClassParser {
   ): void {
     const methodName = "tryParseTypeStringV" + dtdlVersion;
     const tryParseTypeStringMethod = parserClass
-      .method({ name: methodName, returnType: "boolean", abstract: false, isStatic: true })
+      .method({
+        name: methodName,
+        returnType: "boolean",
+        abstract: false,
+        isStatic: true,
+        access: TsAccess.Private,
+      })
       .parameter({ name: "typestring", type: "string" })
       .parameter({ name: "elementId", type: "string" })
       .parameter({ name: "parentId", type: "string|undefined" })
@@ -499,7 +513,6 @@ export class MaterialClassParser {
     concreteSubclasses.forEach((subclass) => {
       if (parserClass.name !== subclass.className) {
         parserClass.importObject(subclass.className);
-        parserClass.importObject(subclass.parserClassName);
       }
       subclass.addCaseToParseTypeStringSwitch(
         tryParseTypeStringMethod.body,
@@ -613,9 +626,15 @@ export class MaterialClassParser {
     const methodName = "parsePropertiesV" + dtdlVersion;
     const typeNameImpl = typeName + "Impl";
     const parsePropertiesMethod = parserClass
-      .method({ name: methodName, returnType: "void", abstract: false, isStatic: true })
+      .method({
+        name: methodName,
+        returnType: "void",
+        abstract: false,
+        isStatic: true,
+        access: TsAccess.Public,
+      })
       .parameter({ name: "model", type: "Model", shouldBeInterface: true })
-      .parameter({ name: "elementInfo", type: typeNameImpl, shouldBeInterface: true })
+      .parameter({ name: "elementInfoAsAny", type: "any", mightBeAny: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
       .parameter({ name: "aggregateContext", type: "AggregateContext", shouldBeInterface: true })
@@ -623,6 +642,10 @@ export class MaterialClassParser {
       .parameter({ name: "object", type: "{[index: string]: any}" })
       .parameter({ name: "definedIn", type: "string|undefined", mightBeUnused: true })
       .parameter({ name: "allowIdReferenceSyntax", type: "boolean", mightBeUnused: true });
+
+    parsePropertiesMethod.body.line(
+      `const elementInfo: ${typeNameImpl} = elementInfoAsAny as ${typeNameImpl}`
+    );
 
     parserClass
       .importObject("Model")
@@ -705,7 +728,13 @@ export class MaterialClassParser {
   ): void {
     const methodName = "parseToken";
     const parseTokenMethod = parserClass
-      .method({ name: methodName, returnType: "number", abstract: false, isStatic: true })
+      .method({
+        name: methodName,
+        returnType: "number",
+        abstract: false,
+        isStatic: true,
+        access: TsAccess.Public,
+      })
       .parameter({ name: "model", type: "Model", shouldBeInterface: true })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
@@ -830,7 +859,13 @@ export class MaterialClassParser {
     _classIsAbstract: boolean
   ): void {
     const method = parserClass
-      .method({ name: "parseIdString", returnType: "void", abstract: false, isStatic: true })
+      .method({
+        name: "parseIdString",
+        returnType: "void",
+        abstract: false,
+        isStatic: true,
+        access: TsAccess.Private,
+      })
       .parameter({ name: "objectPropertyInfoList", type: "ParsedObjectPropertyInfo[]" })
       .parameter({ name: "elementPropertyConstraints", type: "ElementPropertyConstraint[]" })
       .parameter({ name: "valueConstraints", type: "ValueConstraint[]" })

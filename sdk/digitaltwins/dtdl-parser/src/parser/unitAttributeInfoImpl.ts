@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { UnitAttributeInfo } from "./unitAttributeInfo";
 import { UnitAttributeKinds } from "./unitAttributeKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -31,7 +33,7 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
   public name?: string;
   public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.UnitAttributeInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -55,9 +57,7 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: UnitAttributeKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: UnitAttributeKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -69,7 +69,6 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -85,7 +84,7 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:NamedEntity")
@@ -378,5 +377,3 @@ export class UnitAttributeInfoImpl implements UnitAttributeInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-UnitAttributeInfoImpl.initialize();

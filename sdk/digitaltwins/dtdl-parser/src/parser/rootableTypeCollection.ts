@@ -14,7 +14,7 @@ export class RootableTypeCollection {
   private static _rootableTypeStrings: { [dtdlVersion: number]: Set<string> };
   private static _rootableTypeDescriptions: { [dtdlVersion: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._rootableTypeStrings = {
       "2": new Set<string>(),
       "3": new Set<string>()

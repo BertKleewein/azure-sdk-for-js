@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { NumericSchemaInfo } from "./numericSchemaInfo";
 import { NumericSchemaKinds } from "./numericSchemaKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { InDTMI } from "./internalDtmi";
 import { Model } from "./model";
@@ -25,7 +27,7 @@ export abstract class NumericSchemaInfoImpl implements NumericSchemaInfo, TypeCh
   public description?: LanguageStringType;
   public displayName?: LanguageStringType;
   public languageVersion?: number;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.NumericSchemaInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -45,9 +47,7 @@ export abstract class NumericSchemaInfoImpl implements NumericSchemaInfo, TypeCh
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: NumericSchemaKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: NumericSchemaKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -59,7 +59,6 @@ export abstract class NumericSchemaInfoImpl implements NumericSchemaInfo, TypeCh
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -70,7 +69,7 @@ export abstract class NumericSchemaInfoImpl implements NumericSchemaInfo, TypeCh
     this._idOfDescendantSchemaArray = undefined;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:NumericSchema")
@@ -259,5 +258,3 @@ export abstract class NumericSchemaInfoImpl implements NumericSchemaInfo, TypeCh
     throw new Error("Can not execute on an abstract class");
   }
 }
-
-NumericSchemaInfoImpl.initialize();

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { TsLibrary } from "../codeGenerator";
+import { TsAccess, TsLibrary } from "../codeGenerator";
 import { TypeGenerator } from "./typeGenerator";
 
 export class MaterialTypeNameCollectionGenerator implements TypeGenerator {
@@ -32,7 +32,12 @@ export class MaterialTypeNameCollectionGenerator implements TypeGenerator {
     const collectionClass = parserLibrary.class({ name: `${className}`, exports: true });
     collectionClass.docString.line(`A collection of all material type names`);
     // TODO Needs a field declared globally outside the class.
-    collectionClass.field({ name: "typeNames", type: "Set<string>", isStatic: true });
+    collectionClass.field({
+      name: "typeNames",
+      type: "Set<string>",
+      isStatic: true,
+      access: TsAccess.Public,
+    });
 
     const staticConstructor = collectionClass.staticCtor;
     staticConstructor.body.line(`${className}.typeNames = new Set<string>();`);
@@ -44,6 +49,7 @@ export class MaterialTypeNameCollectionGenerator implements TypeGenerator {
       name: "isMaterialType",
       returnType: "boolean",
       isStatic: true,
+      access: TsAccess.Public,
     });
     isMaterialTypeMethod.parameter({ name: "typeString", type: "string" });
     isMaterialTypeMethod.body.line(`return MaterialTypeNameCollection.typeNames.has(typeString)`);

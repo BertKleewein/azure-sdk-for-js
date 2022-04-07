@@ -8,7 +8,7 @@ export class RootableTypeCollection {
 
   /* TODO everything below here to the next comment block should be codegenned. */
 
-  static initialize(): void {
+  public static initialize(): void {
     this._rootableTypeStrings = {
       "2": new Set<string>(),
       "3": new Set<string>(),

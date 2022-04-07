@@ -13,6 +13,8 @@ import { LanguageStringType } from "./type";
 import { SchemaInfoImpl } from "./schemaInfoImpl";
 import { SchemaInfo } from "./schemaInfo";
 import { EntityInfoImpl } from "./entityInfoImpl";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -38,7 +40,7 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
   public _schemaValueConstraints: ValueConstraint[] = [];
   private _schemaInstanceProperties: string[] = [];
   public _schemaAllowedVersionsV3: Set<number> = new Set<number>().add(3).add(2);
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.CommandResponseInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -62,9 +64,7 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: CommandResponseKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: CommandResponseKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -76,7 +76,6 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -92,7 +91,7 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:CommandPayload")
       .add("dtmi:dtdl:class:CommandResponse")
@@ -483,5 +482,3 @@ export class CommandResponseInfoImpl implements CommandResponseInfo, TypeChecker
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-CommandResponseInfoImpl.initialize();

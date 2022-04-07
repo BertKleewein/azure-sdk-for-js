@@ -19,7 +19,7 @@ export class InDTMI {
   private _absolutePath: string = "";
   private _fragment: string = "";
 
-  static createDtmi(value: string): InDTMI | undefined {
+  public static createDtmi(value: string): InDTMI | undefined {
     if (DTMI_REGEX.test(value)) {
       return new InDTMI(value);
     } else {

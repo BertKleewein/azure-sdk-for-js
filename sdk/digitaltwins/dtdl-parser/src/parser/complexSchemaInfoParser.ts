@@ -23,13 +23,9 @@ import { ElementPropertyConstraint } from "./type";
 import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { ArrayInfoImpl } from "./arrayInfoImpl";
-import { ArrayInfoParser } from "./arrayInfoParser";
 import { EnumInfoImpl } from "./enumInfoImpl";
-import { EnumInfoParser } from "./enumInfoParser";
 import { MapInfoImpl } from "./mapInfoImpl";
-import { MapInfoParser } from "./mapInfoParser";
 import { ObjectInfoImpl } from "./objectInfoImpl";
-import { ObjectInfoParser } from "./objectInfoParser";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
 import { ValueParser } from "./valueParser";
@@ -38,7 +34,7 @@ export class ComplexSchemaInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("array");
@@ -58,7 +54,7 @@ export class ComplexSchemaInfoParser {
     this._badTypeCauseFormat[3] = `{primaryId:p} property '{property}' has value{secondaryId:e} that does not have @type of Array, Enum, Map, or Object.`;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -209,32 +205,38 @@ export class ComplexSchemaInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -266,7 +268,7 @@ export class ComplexSchemaInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -423,7 +425,7 @@ export class ComplexSchemaInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -441,43 +443,22 @@ export class ComplexSchemaInfoParser {
     switch (typestring) {
       case "Array":
       case "dtmi:dtdl:class:Array;2":
-        elementInfo.ref = new ArrayInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "array",
-          ArrayInfoParser
-        );
+        elementInfo.ref = new ArrayInfoImpl(2, elementId, parentId, definedIn, "array");
         materialKinds.push("array");
         return true;
       case "Enum":
       case "dtmi:dtdl:class:Enum;2":
-        elementInfo.ref = new EnumInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "enum",
-          EnumInfoParser
-        );
+        elementInfo.ref = new EnumInfoImpl(2, elementId, parentId, definedIn, "enum");
         materialKinds.push("enum");
         return true;
       case "Map":
       case "dtmi:dtdl:class:Map;2":
-        elementInfo.ref = new MapInfoImpl(2, elementId, parentId, definedIn, "map", MapInfoParser);
+        elementInfo.ref = new MapInfoImpl(2, elementId, parentId, definedIn, "map");
         materialKinds.push("map");
         return true;
       case "Object":
       case "dtmi:dtdl:class:Object;2":
-        elementInfo.ref = new ObjectInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "object",
-          ObjectInfoParser
-        );
+        elementInfo.ref = new ObjectInfoImpl(2, elementId, parentId, definedIn, "object");
         materialKinds.push("object");
         return true;
     }
@@ -571,11 +552,11 @@ export class ComplexSchemaInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: ComplexSchemaInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -587,6 +568,8 @@ export class ComplexSchemaInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: ComplexSchemaInfoImpl = elementInfoAsAny as ComplexSchemaInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     for (const propKey in object) {
@@ -668,7 +651,7 @@ export class ComplexSchemaInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -686,43 +669,22 @@ export class ComplexSchemaInfoParser {
     switch (typestring) {
       case "Array":
       case "dtmi:dtdl:class:Array;3":
-        elementInfo.ref = new ArrayInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "array",
-          ArrayInfoParser
-        );
+        elementInfo.ref = new ArrayInfoImpl(3, elementId, parentId, definedIn, "array");
         materialKinds.push("array");
         return true;
       case "Enum":
       case "dtmi:dtdl:class:Enum;3":
-        elementInfo.ref = new EnumInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "enum",
-          EnumInfoParser
-        );
+        elementInfo.ref = new EnumInfoImpl(3, elementId, parentId, definedIn, "enum");
         materialKinds.push("enum");
         return true;
       case "Map":
       case "dtmi:dtdl:class:Map;3":
-        elementInfo.ref = new MapInfoImpl(3, elementId, parentId, definedIn, "map", MapInfoParser);
+        elementInfo.ref = new MapInfoImpl(3, elementId, parentId, definedIn, "map");
         materialKinds.push("map");
         return true;
       case "Object":
       case "dtmi:dtdl:class:Object;3":
-        elementInfo.ref = new ObjectInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "object",
-          ObjectInfoParser
-        );
+        elementInfo.ref = new ObjectInfoImpl(3, elementId, parentId, definedIn, "object");
         materialKinds.push("object");
         return true;
     }
@@ -840,11 +802,11 @@ export class ComplexSchemaInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: ComplexSchemaInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -856,6 +818,8 @@ export class ComplexSchemaInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: ComplexSchemaInfoImpl = elementInfoAsAny as ComplexSchemaInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     for (const propKey in object) {
@@ -937,7 +901,7 @@ export class ComplexSchemaInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1033,7 +997,7 @@ export class ComplexSchemaInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1083,5 +1047,3 @@ export class ComplexSchemaInfoParser {
     }
   }
 }
-
-ComplexSchemaInfoParser.initialize();

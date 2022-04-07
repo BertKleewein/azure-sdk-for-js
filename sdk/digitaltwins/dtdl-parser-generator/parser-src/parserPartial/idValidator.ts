@@ -12,28 +12,28 @@ import { createParsingError } from "./parsingErrorImpl";
 
 export class IdValidator {
   // codegen-outline-begin constants
-  static GLOBAL_ID_PATTERN_3 = new RegExp(
+  private static GLOBAL_ID_PATTERN_3 = new RegExp(
     "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*(?:;[1-9][0-9]{0,8}(?:\\.[1-9][0-9]{0,5})?)?(?:#(?:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)?)?$"
   );
-  static GLOBAL_ID_PATTERN_2 = new RegExp(
+  private static GLOBAL_ID_PATTERN_2 = new RegExp(
     "^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$"
   );
-  static MAX_LENGTH = 2048;
+  private static MAX_LENGTH = 2048;
   // codegen-outline-end
 
-  static idDefinitionMaxLengths = new Map<number, number>();
+  private static idDefinitionMaxLengths = new Map<number, number>();
   // idDefinitionMaxLengths.set(2, MAX_LENGTH);
   // idDefinitionMaxLengths.set(3, MAX_LENGTH);
 
-  static idReferenceMaxLengths = new Map<number, number>();
+  private static idReferenceMaxLengths = new Map<number, number>();
   // idReferenceMaxLengths.set(2, MAX_LENGTH);
   // idReferenceMaxLengths.set(3, MAX_LENGTH);
 
-  static idDefinitionRegexPatterns = new Map<number, RegExp>();
+  private static idDefinitionRegexPatterns = new Map<number, RegExp>();
   // idDefinitionRegexPatterns.set(2, GLOBAL_ID_PATTERN_2);
   // idDefinitionRegexPatterns.set(3, GLOBAL_ID_PATTERN_3);
 
-  static idReferenceRegexPatterns = new Map<number, RegExp>();
+  private static idReferenceRegexPatterns = new Map<number, RegExp>();
   // idReferenceRegexPatterns.set(2, GLOBAL_ID_PATTERN_2);
   // idReferenceRegexPatterns.set(3, GLOBAL_ID_PATTERN_3);
 

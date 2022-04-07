@@ -43,6 +43,7 @@ export class PartitionTypeCollectionGenerator implements TypeGenerator {
       name: "initialize",
       isStatic: true,
       returnType: "void",
+      access: TsAccess.Public,
     });
     constructor.body.line(`this._partitionTypeStrings = new Set<string>()`);
 

@@ -30,7 +30,7 @@ export class LatentTypeInfoParser {
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[3] = [];
     this._badTypeActionFormat = {};
@@ -79,7 +79,7 @@ export class LatentTypeInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -230,17 +230,20 @@ export class LatentTypeInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -272,7 +275,7 @@ export class LatentTypeInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -404,7 +407,7 @@ export class LatentTypeInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -479,14 +482,7 @@ export class LatentTypeInfoParser {
 
       switch ((supplementalTypeInfo as SupplementalTypeInfoImpl)?.extensionKind) {
         case ExtensionKind.LATENTTYPE:
-          elementInfo.ref = new LatentTypeInfoImpl(
-            3,
-            elementId,
-            parentId,
-            definedIn,
-            "latenttype",
-            LatentTypeInfoParser
-          );
+          elementInfo.ref = new LatentTypeInfoImpl(3, elementId, parentId, definedIn, "latenttype");
           (elementInfo.ref as LatentTypeInfoImpl).addType(
             supplementalTypeId.value,
             supplementalTypeInfo
@@ -538,11 +534,11 @@ export class LatentTypeInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: LatentTypeInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -554,6 +550,8 @@ export class LatentTypeInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: LatentTypeInfoImpl = elementInfoAsAny as LatentTypeInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     for (const propKey in object) {
@@ -650,7 +648,7 @@ export class LatentTypeInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -746,7 +744,7 @@ export class LatentTypeInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -796,5 +794,3 @@ export class LatentTypeInfoParser {
     }
   }
 }
-
-LatentTypeInfoParser.initialize();

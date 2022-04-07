@@ -21,9 +21,9 @@ type PrefixDict = { [prefix: string]: string };
  **/
 export class AggregateContext {
   private static _dtdlVersionsAllowingLocalTerms: number[] = [0];
-  static _affiliateContextsImplicitDtdlVersions: { [x: string]: number } = {};
+  private static _affiliateContextsImplicitDtdlVersions: { [x: string]: number } = {};
 
-  static initialize(): void {
+  public static initialize(): void {
     this._affiliateContextsImplicitDtdlVersions["dtmi:iotcentral:context;2"] = 2;
 
     this._dtdlContextHistory = AggregateContext._getDtdlContextHistory();

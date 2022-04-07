@@ -10,6 +10,8 @@ import { TypeChecker } from "./type";
 import { EnumValueInfo } from "./enumValueInfo";
 import { EnumValueKinds } from "./enumValueKinds";
 import { LanguageStringType } from "./type";
+import { Parser } from "./parser";
+import { ParserCollection } from "./parserCollection";
 import { SupplementalTypeInfo } from "./supplementalTypeInfo";
 import { SupplementalTypeInfoImpl } from "./supplementalTypeInfoImpl";
 import { InDTMI } from "./internalDtmi";
@@ -34,7 +36,7 @@ export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
   public name?: string;
   public namePropertyRegexPatternV2: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
   public namePropertyRegexPatternV3: RegExp = /^[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?$/;
-  public parserClass: any;
+  public parserClass: Parser = ParserCollection.EnumValueInfoParser;
   public supplementalTypeIds: string[];
   public supplementalProperties: { [x: string]: any };
   public supplementalTypes: SupplementalTypeInfo[];
@@ -58,9 +60,7 @@ export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
     id: string,
     childOf: string | undefined,
     definedIn: string | undefined,
-    entityKind: EnumValueKinds,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    parserClass: any
+    entityKind: EnumValueKinds
   ) {
     this.dtdlVersion = dtdlVersion;
     this.id = id;
@@ -73,7 +73,6 @@ export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
     this.supplementalTypeIds = [];
     this.supplementalProperties = {};
     this.supplementalTypes = [];
-    this.parserClass = parserClass;
     this.isPartition = false;
     this.undefinedTypes = [];
     this.undefinedProperties = {};
@@ -89,7 +88,7 @@ export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
     this._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue = 0;
   }
 
-  static initialize(): void {
+  public static initialize(): void {
     this._versionlessTypes = new Set<string>()
       .add("dtmi:dtdl:class:Entity")
       .add("dtmi:dtdl:class:EnumValue")
@@ -412,5 +411,3 @@ export class EnumValueInfoImpl implements EnumValueInfo, TypeChecker {
       ._countOfContentsOrFieldsOrEnumValuesOrRequestOrResponseOrPropertiesOrSchemaOrElementSchemaOrMapValueNarrowValue;
   }
 }
-
-EnumValueInfoImpl.initialize();

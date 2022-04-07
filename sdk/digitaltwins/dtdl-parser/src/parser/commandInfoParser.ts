@@ -24,17 +24,14 @@ import { ValueConstraint } from "./type/valueConstraint";
 import { SupplementalTypeInfoStatic } from "./supplementalTypeInfoStatic";
 import { MaterialTypeNameCollection } from "./materialTypeNameCollection";
 import { ExtensionKind } from "./extensionKind";
-import { CommandTypeInfoParser } from "./commandTypeInfoParser";
+import { ParserCollection } from "./parserCollection";
 import { ValueParser } from "./valueParser";
-import { CommandPayloadInfoParser } from "./commandPayloadInfoParser";
-import { CommandRequestInfoParser } from "./commandRequestInfoParser";
-import { CommandResponseInfoParser } from "./commandResponseInfoParser";
 export class CommandInfoParser {
   protected static _concreteKinds: { [x: number]: CommandKinds[] };
   protected static _badTypeActionFormat: { [x: number]: string };
   protected static _badTypeCauseFormat: { [x: number]: string };
 
-  static initialize(): void {
+  public static initialize(): void {
     this._concreteKinds = {};
     this._concreteKinds[2] = [];
     this._concreteKinds[2].push("command");
@@ -88,7 +85,7 @@ export class CommandInfoParser {
     return false;
   }
 
-  static parseObject(
+  public static parseObject(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -239,32 +236,38 @@ export class CommandInfoParser {
     elementInfo.sourceObject = object;
     switch (childAggregateContext.dtdlVersion) {
       case 2: {
-        elementInfo.parserClass.parsePropertiesV2(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV2 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV2(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
 
       case 3: {
-        elementInfo.parserClass.parsePropertiesV3(
-          model,
-          elementInfo,
-          objectPropertyInfoList,
-          elementPropertyConstraints,
-          childAggregateContext,
-          parsingErrors,
-          object,
-          definedIn,
-          allowIdReferenceSyntax
-        );
+        if (elementInfo.parserClass?.parsePropertiesV3 !== undefined) {
+          elementInfo.parserClass?.parsePropertiesV3(
+            model,
+            elementInfo,
+            objectPropertyInfoList,
+            elementPropertyConstraints,
+            childAggregateContext,
+            parsingErrors,
+            object,
+            definedIn,
+            allowIdReferenceSyntax
+          );
+        }
+
         break;
       }
     }
@@ -296,7 +299,7 @@ export class CommandInfoParser {
     }
   }
 
-  static parseTypeArray(
+  private static parseTypeArray(
     tokenArr: any[],
     elementId: string,
     parentId: string | undefined,
@@ -450,7 +453,7 @@ export class CommandInfoParser {
     // this ends the method.
   }
 
-  static tryParseTypeStringV2(
+  private static tryParseTypeStringV2(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -468,14 +471,7 @@ export class CommandInfoParser {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;2":
-        elementInfo.ref = new CommandInfoImpl(
-          2,
-          elementId,
-          parentId,
-          definedIn,
-          "command",
-          CommandInfoParser
-        );
+        elementInfo.ref = new CommandInfoImpl(2, elementId, parentId, definedIn, "command");
         materialKinds.push("command");
         return true;
     }
@@ -569,11 +565,11 @@ export class CommandInfoParser {
     return true;
   }
 
-  static parsePropertiesV2(
+  public static parsePropertiesV2(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: CommandInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -585,6 +581,8 @@ export class CommandInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: CommandInfoImpl = elementInfoAsAny as CommandInfoImpl;
+
     elementInfo.languageVersion = 2;
 
     let namePropertyMissing = true;
@@ -611,7 +609,7 @@ export class CommandInfoParser {
       switch (propKey) {
         case "commandType":
         case "dtmi:dtdl:property:commandType;2":
-          valueCount = CommandTypeInfoParser.parseToken(
+          valueCount = ParserCollection.CommandTypeInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -690,7 +688,7 @@ export class CommandInfoParser {
           continue;
         case "request":
         case "dtmi:dtdl:property:request;2":
-          valueCount = CommandPayloadInfoParser.parseToken(
+          valueCount = ParserCollection.CommandPayloadInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -722,7 +720,7 @@ export class CommandInfoParser {
           continue;
         case "response":
         case "dtmi:dtdl:property:response;2":
-          valueCount = CommandPayloadInfoParser.parseToken(
+          valueCount = ParserCollection.CommandPayloadInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -803,7 +801,7 @@ export class CommandInfoParser {
     }
   }
 
-  static tryParseTypeStringV3(
+  private static tryParseTypeStringV3(
     typestring: string,
     elementId: string,
     parentId: string | undefined,
@@ -821,14 +819,7 @@ export class CommandInfoParser {
     switch (typestring) {
       case "Command":
       case "dtmi:dtdl:class:Command;3":
-        elementInfo.ref = new CommandInfoImpl(
-          3,
-          elementId,
-          parentId,
-          definedIn,
-          "command",
-          CommandInfoParser
-        );
+        elementInfo.ref = new CommandInfoImpl(3, elementId, parentId, definedIn, "command");
         materialKinds.push("command");
         return true;
     }
@@ -946,11 +937,11 @@ export class CommandInfoParser {
     return true;
   }
 
-  static parsePropertiesV3(
+  public static parsePropertiesV3(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
-    // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
-    elementInfo: CommandInfoImpl,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    elementInfoAsAny: any,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -962,6 +953,8 @@ export class CommandInfoParser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     allowIdReferenceSyntax: boolean
   ): void {
+    const elementInfo: CommandInfoImpl = elementInfoAsAny as CommandInfoImpl;
+
     elementInfo.languageVersion = 3;
 
     let namePropertyMissing = true;
@@ -988,7 +981,7 @@ export class CommandInfoParser {
       switch (propKey) {
         case "commandType":
         case "dtmi:dtdl:property:commandType;3":
-          valueCount = CommandTypeInfoParser.parseToken(
+          valueCount = ParserCollection.CommandTypeInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1067,7 +1060,7 @@ export class CommandInfoParser {
           continue;
         case "request":
         case "dtmi:dtdl:property:request;3":
-          valueCount = CommandRequestInfoParser.parseToken(
+          valueCount = ParserCollection.CommandRequestInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1099,7 +1092,7 @@ export class CommandInfoParser {
           continue;
         case "response":
         case "dtmi:dtdl:property:response;3":
-          valueCount = CommandResponseInfoParser.parseToken(
+          valueCount = ParserCollection.CommandResponseInfoParser.parseToken(
             model,
             objectPropertyInfoList,
             elementPropertyConstraints,
@@ -1180,7 +1173,7 @@ export class CommandInfoParser {
     }
   }
 
-  static parseToken(
+  public static parseToken(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     model: Model,
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
@@ -1276,7 +1269,7 @@ export class CommandInfoParser {
     return valueCount;
   }
 
-  static parseIdString(
+  private static parseIdString(
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     elementPropertyConstraints: ElementPropertyConstraint[],
     valueConstraints: ValueConstraint[],
@@ -1326,5 +1319,3 @@ export class CommandInfoParser {
     }
   }
 }
-
-CommandInfoParser.initialize();

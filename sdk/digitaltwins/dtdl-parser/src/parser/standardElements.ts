@@ -18,14 +18,14 @@ type EntityInfo = any;
  * A collection of values of standard elements from the DTDL metamodel.
  **/
 export class StandardElements {
-  static getElement(
+  private static getElement(
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
     elementId: InDTMI
   ): EntityInfo {
     return this._standardModel.dict[elementId.value];
   }
 
-  static getDigestElements(): any {
+  private static getDigestElements(): any {
     return [
       {
         "@context": "dtmi:dtdl:context;2",
@@ -4208,7 +4208,7 @@ export class StandardElements {
   // codegen-outline-end
 
   // codegen-outline-begin methods
-  static initialize(): void {
+  public static initialize(): void {
     this._standardModel = new Model();
     this._elementReferences = {};
 
@@ -4254,7 +4254,7 @@ export class StandardElements {
     return true;
   }
 
-  static parseResourceIntoStandardModel(
+  private static parseResourceIntoStandardModel(
     resource: any[],
     objectPropertyInfoList: ParsedObjectPropertyInfo[],
     // eslint-disable-next-line @azure/azure-sdk/ts-use-interface-parameters
@@ -4277,5 +4277,3 @@ export class StandardElements {
   }
   // codegen-outline-end
 }
-
-StandardElements.initialize();

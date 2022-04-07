@@ -7,10 +7,10 @@
 import { SupplementalTypeCollectionImpl } from "./supplementalTypeCollectionImpl";
 
 export class SupplementalTypeInfoStatic {
-  static supplementalTypeCollection: SupplementalTypeCollectionImpl =
+  public static supplementalTypeCollection: SupplementalTypeCollectionImpl =
     new SupplementalTypeCollectionImpl();
 
-  static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
+  public static retrieveSupplementalTypeCollection(): SupplementalTypeCollectionImpl {
     return this.supplementalTypeCollection;
   }
 }
