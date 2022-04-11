@@ -40,7 +40,8 @@
   "files": [
     "dist/",
     "dist-esm/src/",
-    "types/dtdl-parser.d.ts",
+    "types/*",
+    "types/src/",
     "README.md",
     "LICENSE"
   ],
