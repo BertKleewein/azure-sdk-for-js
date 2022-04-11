@@ -21,7 +21,6 @@ import { Model } from "./model";
 import { PropertyConstraint } from "./type/propertyConstraint";
 import { SupplementalTypeInfoParams } from "./type/supplementalInfoTypeParams";
 import { ValueParser } from "../valueParser";
-import { URL } from "url";
 import { ParsingError } from "./parsingError";
 import { createParsingError } from "./parsingErrorImpl";
 

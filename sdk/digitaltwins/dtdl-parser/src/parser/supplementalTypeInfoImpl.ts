@@ -22,7 +22,6 @@ import { ParsedObjectPropertyInfo } from "./parsedObjectPropertyInfo";
 import { EntityKinds } from "./entityKinds";
 import { Model } from "./model";
 import { ExtensionKind } from "./extensionKind";
-import { URL } from "url";
 /**
  * Class that provides information about a type is not materialized as a TS class.
  **/

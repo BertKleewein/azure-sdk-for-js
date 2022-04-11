@@ -61,8 +61,7 @@ export class SupplementalTypeInfoGenerator implements TypeGenerator {
       .importObject("ParsedObjectPropertyInfo")
       .importObject(this._baseEnumName as string)
       .importObject("Model")
-      .importObject("ExtensionKind")
-      .importObject("URL", "url");
+      .importObject("ExtensionKind");
 
     infoClass.docString.line(
       "Class that provides information about a type is not materialized as a TS class."
